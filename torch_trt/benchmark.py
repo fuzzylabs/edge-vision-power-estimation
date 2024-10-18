@@ -114,6 +114,7 @@ def benchmark(args: argparse.Namespace) -> None:
 
     print(f"Start timing using backend {args.backend} ...")
     torch.cuda.synchronize()
+    # Recorded in milliseconds
     start = torch.cuda.Event(enable_timing=True)
     end = torch.cuda.Event(enable_timing=True)
     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
@@ -140,6 +141,7 @@ def benchmark(args: argparse.Namespace) -> None:
 
         end.record()
         torch.cuda.synchronize()
+    # Convert milliseconds to seconds
     timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
     avg_throughput = args.input_shape[0] / np.mean(timings)
     print("Benchmarking complete ...")
