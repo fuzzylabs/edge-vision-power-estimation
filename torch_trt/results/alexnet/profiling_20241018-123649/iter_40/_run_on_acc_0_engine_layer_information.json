@@ -1,0 +1,654 @@
+{"Layers": [{
+  "Name": "Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu]",
+  "LayerType": "Reformat",
+  "Inputs": [
+  {
+    "Name": "x",
+    "Location": "Device",
+    "Dimensions": [1,3,224,224],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu]",
+    "Location": "Device",
+    "Dimensions": [1,3,224,224],
+    "Format/Datatype": "Channel major FP16 format where channel % 4 == 0"
+  }],
+  "ParameterType": "Reformat",
+  "Origin": "REFORMAT",
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu]",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu]",
+    "Location": "Device",
+    "Dimensions": [1,3,224,224],
+    "Format/Datatype": "Channel major FP16 format where channel % 4 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 1) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,64,55,55],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [11,11],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [2,2],
+  "PostPadding": [2,2],
+  "Stride": [4,4],
+  "Dilation": [1,1],
+  "OutMaps": 64,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 23232},
+  "Bias": {"Type": "Half", "Count": 64},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x32x64_stage1_warpsize4x1x1_g1_tensor16x8x16_aligna8_alignc8",
+  "TacticValue": "0x280b0ad3c23d8442",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[MAX]-[aten_ops.max_pool2d.default]-[/features/2/max_pool2d_default]",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 1) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,64,55,55],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 2) [Pooling]_output",
+    "Location": "Device",
+    "Dimensions": [1,64,27,27],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "MAX",
+  "WindowSize": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [2,2],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 1,
+  "TacticName": "sm50_xmma_pooling_coalescedC_NHWC_kMAX_3_False",
+  "TacticValue": "0xdb415cba6b0e9137",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/3/convolution_1] + [RELU]-[aten_ops.relu.default]-[/features/4/relu_1]",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 2) [Pooling]_output",
+    "Location": "Device",
+    "Dimensions": [1,64,27,27],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 4) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,192,27,27],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [5,5],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [2,2],
+  "PostPadding": [2,2],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 192,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 307200},
+  "Bias": {"Type": "Half", "Count": 192},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16",
+  "TacticValue": "0x7273dde1d0cd3bd5",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[MAX]-[aten_ops.max_pool2d.default]-[/features/5/max_pool2d_default_1]",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 4) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,192,27,27],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 5) [Pooling]_output",
+    "Location": "Device",
+    "Dimensions": [1,192,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "MAX",
+  "WindowSize": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [2,2],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 1,
+  "TacticName": "sm50_xmma_pooling_coalescedC_NHWC_kMAX_3_False",
+  "TacticValue": "0xdb415cba6b0e9137",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/6/convolution_2] + [RELU]-[aten_ops.relu.default]-[/features/7/relu_2]",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 5) [Pooling]_output",
+    "Location": "Device",
+    "Dimensions": [1,192,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 7) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,384,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 384,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 663552},
+  "Bias": {"Type": "Half", "Count": 384},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16_aACCESS",
+  "TacticValue": "0x841c601dec2a75bc",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/8/convolution_3] + [RELU]-[aten_ops.relu.default]-[/features/9/relu_3]",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 7) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,384,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 9) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,256,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 256,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 884736},
+  "Bias": {"Type": "Half", "Count": 256},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_t1r3s3",
+  "TacticValue": "0xa033e20ae9f412b2",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/10/convolution_4] + [RELU]-[aten_ops.relu.default]-[/features/11/relu_4]",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 9) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,256,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 11) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,256,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 256,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 589824},
+  "Bias": {"Type": "Half", "Count": 256},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16_aACCESS",
+  "TacticValue": "0x841c601dec2a75bc",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[MAX]-[aten_ops.max_pool2d.default]-[/features/12/max_pool2d_default_2]",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 11) [Activation]_output",
+    "Location": "Device",
+    "Dimensions": [1,256,13,13],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 12) [Pooling]_output",
+    "Location": "Device",
+    "Dimensions": [1,256,6,6],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "MAX",
+  "WindowSize": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [2,2],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 1,
+  "TacticName": "sm50_xmma_pooling_max_nhwc_FP16FP32_WINDOWSIZE_3_NOT_PROPAGATE_NAN_2D",
+  "TacticValue": "0xee73a603ebea4565",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "Reformatting CopyNode for Input Tensor 0 to [SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]",
+  "LayerType": "Reformat",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 12) [Pooling]_output",
+    "Location": "Device",
+    "Dimensions": [1,256,6,6],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to [SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]",
+    "Location": "Device",
+    "Dimensions": [1,256,6,6],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "ParameterType": "Reformat",
+  "Origin": "REFORMAT",
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to [SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]",
+    "Location": "Device",
+    "Dimensions": [1,256,6,6],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 13) [Shuffle]_output",
+    "Location": "Device",
+    "Dimensions": [1,9216],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "Forced Cast ITensor [SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]_output from DataType.HALF to DataType.HALF - [aten_ops.torch.ops.aten.clone.default]-[/classifier/0/clone]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 13) [Shuffle]_output",
+    "Location": "Device",
+    "Dimensions": [1,9216],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 14) [Identity]_output",
+    "Location": "Device",
+    "Dimensions": [1,9216],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 14) [Identity]_output",
+    "Location": "Device",
+    "Dimensions": [1,9216],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm]",
+    "Location": "Device",
+    "Dimensions": [1,9216,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm] + /classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_/classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/1/addmm_add] + [RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]",
+  "LayerType": "CaskGemmConvolution",
+  "Inputs": [
+  {
+    "Name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm]",
+    "Location": "Device",
+    "Dimensions": [1,9216,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "[RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [1,1],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 4096,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 37748736},
+  "Bias": {"Type": "Half", "Count": 4096},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm50_xmma_cublas_gemvx_f16f16_f32_f32_tn_n_int32_unit_n_launch_param4x32x32_strided_unit_stride",
+  "TacticValue": "0x0000000000020707",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "squeeze_after_[RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "[RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "squeeze_after_[RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,4096],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "Forced Cast ITensor [RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]_output from DataType.HALF to DataType.HALF - [aten_ops.torch.ops.aten.clone.default]-[/classifier/3/clone_1]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "squeeze_after_[RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,4096],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "(Unnamed Layer* 21) [Identity]_output",
+    "Location": "Device",
+    "Dimensions": [1,4096],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_mm]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "(Unnamed Layer* 21) [Identity]_output",
+    "Location": "Device",
+    "Dimensions": [1,4096],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_mm]",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_mm] + /classifier/4/addmm_1_constant_0 + /classifier/4/addmm_1_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/4/addmm_1_constant_0 + /classifier/4/addmm_1_add_broadcast_to_same_shape_lhs_broadcast_/classifier/4/addmm_1_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_add] + [RELU]-[aten_ops.relu.default]-[/classifier/5/relu_6]",
+  "LayerType": "CaskGemmConvolution",
+  "Inputs": [
+  {
+    "Name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_mm]",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "[RELU]-[aten_ops.relu.default]-[/classifier/5/relu_6]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [1,1],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 4096,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 16777216},
+  "Bias": {"Type": "Half", "Count": 4096},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm50_xmma_cublas_gemvx_f16f16_f32_f32_tn_n_int32_unit_n_launch_param4x32x32_strided_unit_stride",
+  "TacticValue": "0x0000000000020707",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "Reformatting CopyNode for Input Tensor 0 to [MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_mm] + /classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_/classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "[RELU]-[aten_ops.relu.default]-[/classifier/5/relu_6]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to [MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_mm] + /classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_/classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_mm] + /classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_/classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+  "LayerType": "CaskGemmConvolution",
+  "Inputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to [MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_mm] + /classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_/classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+    "Location": "Device",
+    "Dimensions": [1,4096,1,1],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,1000,1,1],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [1,1],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 1000,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 4096000},
+  "Bias": {"Type": "Half", "Count": 1000},
+  "HasBias": 1,
+  "HasReLU": 0,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "NONE",
+  "TacticName": "ampere_h16816gemm_64x64_ldg8_relu_stages_64x5_nn_v1",
+  "TacticValue": "0x0000000000020247",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "Reformatting CopyNode for Input Tensor 0 to copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]_out_tensor",
+    "Location": "Device",
+    "Dimensions": [1,1000,1,1],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+    "Location": "Device",
+    "Dimensions": [1,1000,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+    "Location": "Device",
+    "Dimensions": [1,1000,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "output0",
+    "Location": "Device",
+    "Dimensions": [1,1000],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+}],
+"Bindings": ["x"
+,"output0"
+]}

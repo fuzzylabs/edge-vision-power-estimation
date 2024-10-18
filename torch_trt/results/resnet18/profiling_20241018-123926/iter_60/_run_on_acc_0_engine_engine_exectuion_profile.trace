@@ -1,0 +1,236 @@
+[
+  {
+    "name": "Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/conv1/convolution] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/bn1/_native_batch_norm_legit_no_training] + [RELU]-[aten_ops.relu.default]-[/relu/relu]",
+    "ph": "X",
+    "ts": 0,
+    "dur": 165.888,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/conv1/convolution] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/bn1/_native_batch_norm_legit_no_training] + [RELU]-[aten_ops.relu.default]-[/relu/relu]",
+    "ph": "X",
+    "ts": 165.888,
+    "dur": 456.064,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MAX]-[aten_ops.max_pool2d.default]-[/maxpool/max_pool2d_default]",
+    "ph": "X",
+    "ts": 621.952,
+    "dur": 132.736,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer1/0/conv1/convolution_1] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer1/0/bn1/_native_batch_norm_legit_no_training_1] + [RELU]-[aten_ops.relu.default]-[/layer1/0/relu/relu_1]",
+    "ph": "X",
+    "ts": 754.688,
+    "dur": 257.024,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer1/0/conv2/convolution_2] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer1/0/bn2/_native_batch_norm_legit_no_training_2] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer1/0/add] + [RELU]-[aten_ops.relu.default]-[/layer1/0/relu/relu_2]",
+    "ph": "X",
+    "ts": 1011.71,
+    "dur": 267.392,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer1/1/conv1/convolution_3] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer1/1/bn1/_native_batch_norm_legit_no_training_3] + [RELU]-[aten_ops.relu.default]-[/layer1/1/relu/relu_3]",
+    "ph": "X",
+    "ts": 1279.1,
+    "dur": 251.776,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer1/1/conv2/convolution_4] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer1/1/bn2/_native_batch_norm_legit_no_training_4] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer1/1/add_1] + [RELU]-[aten_ops.relu.default]-[/layer1/1/relu/relu_4]",
+    "ph": "X",
+    "ts": 1530.88,
+    "dur": 263.232,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer2/0/conv1/convolution_5] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer2/0/bn1/_native_batch_norm_legit_no_training_5] + [RELU]-[aten_ops.relu.default]-[/layer2/0/relu/relu_5]",
+    "ph": "X",
+    "ts": 1794.11,
+    "dur": 220.096,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer2/0/downsample/0/convolution_7] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer2/0/downsample/1/_native_batch_norm_legit_no_training_7]",
+    "ph": "X",
+    "ts": 2014.21,
+    "dur": 141.312,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer2/0/conv2/convolution_6] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer2/0/bn2/_native_batch_norm_legit_no_training_6] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer2/0/add_2] + [RELU]-[aten_ops.relu.default]-[/layer2/0/relu/relu_6]",
+    "ph": "X",
+    "ts": 2155.52,
+    "dur": 272.384,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer2/1/conv1/convolution_8] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer2/1/bn1/_native_batch_norm_legit_no_training_8] + [RELU]-[aten_ops.relu.default]-[/layer2/1/relu/relu_7]",
+    "ph": "X",
+    "ts": 2427.9,
+    "dur": 293.888,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer2/1/conv2/convolution_9] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer2/1/bn2/_native_batch_norm_legit_no_training_9] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer2/1/add_3] + [RELU]-[aten_ops.relu.default]-[/layer2/1/relu/relu_8]",
+    "ph": "X",
+    "ts": 2721.79,
+    "dur": 284.672,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer3/0/conv1/convolution_10] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer3/0/bn1/_native_batch_norm_legit_no_training_10] + [RELU]-[aten_ops.relu.default]-[/layer3/0/relu/relu_9]",
+    "ph": "X",
+    "ts": 3006.46,
+    "dur": 223.232,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer3/0/downsample/0/convolution_12] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer3/0/downsample/1/_native_batch_norm_legit_no_training_12]",
+    "ph": "X",
+    "ts": 3229.7,
+    "dur": 152.576,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer3/0/conv2/convolution_11] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer3/0/bn2/_native_batch_norm_legit_no_training_11] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer3/0/add_4] + [RELU]-[aten_ops.relu.default]-[/layer3/0/relu/relu_10]",
+    "ph": "X",
+    "ts": 3382.27,
+    "dur": 350.208,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer3/1/conv1/convolution_13] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer3/1/bn1/_native_batch_norm_legit_no_training_13] + [RELU]-[aten_ops.relu.default]-[/layer3/1/relu/relu_11]",
+    "ph": "X",
+    "ts": 3732.48,
+    "dur": 317.44,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer3/1/conv2/convolution_14] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer3/1/bn2/_native_batch_norm_legit_no_training_14] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer3/1/add_5] + [RELU]-[aten_ops.relu.default]-[/layer3/1/relu/relu_12]",
+    "ph": "X",
+    "ts": 4049.92,
+    "dur": 318.464,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer4/0/conv1/convolution_15] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer4/0/bn1/_native_batch_norm_legit_no_training_15] + [RELU]-[aten_ops.relu.default]-[/layer4/0/relu/relu_13]",
+    "ph": "X",
+    "ts": 4368.38,
+    "dur": 285.696,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer4/0/downsample/0/convolution_17] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer4/0/downsample/1/_native_batch_norm_legit_no_training_17]",
+    "ph": "X",
+    "ts": 4654.08,
+    "dur": 131.584,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer4/0/conv2/convolution_16] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer4/0/bn2/_native_batch_norm_legit_no_training_16] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer4/0/add_6] + [RELU]-[aten_ops.relu.default]-[/layer4/0/relu/relu_14]",
+    "ph": "X",
+    "ts": 4785.66,
+    "dur": 453.376,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer4/1/conv1/convolution_18] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer4/1/bn1/_native_batch_norm_legit_no_training_18] + [RELU]-[aten_ops.relu.default]-[/layer4/1/relu/relu_15]",
+    "ph": "X",
+    "ts": 5239.04,
+    "dur": 434.144,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/layer4/1/conv2/convolution_19] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/layer4/1/bn2/_native_batch_norm_legit_no_training_19] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/layer4/1/add_7] + [RELU]-[aten_ops.relu.default]-[/layer4/1/relu/relu_16]",
+    "ph": "X",
+    "ts": 5673.18,
+    "dur": 444.544,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[REDUCE]-[aten_ops.mean.dim]-[/avgpool/mean]",
+    "ph": "X",
+    "ts": 6117.73,
+    "dur": 103.072,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/fc/addmm_mm] + /fc/addmm_constant_0 + /fc/addmm_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/fc/addmm_constant_0 + /fc/addmm_add_broadcast_to_same_shape_lhs_broadcast_/fc/addmm_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/fc/addmm_add]",
+    "ph": "X",
+    "ts": 6220.8,
+    "dur": 153.856,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Reformatting CopyNode for Input Tensor 0 to copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/fc/addmm_add]",
+    "ph": "X",
+    "ts": 6374.66,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/fc/addmm_add]",
+    "ph": "X",
+    "ts": 6374.66,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  }
+]
