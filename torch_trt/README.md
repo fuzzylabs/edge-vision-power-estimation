@@ -30,7 +30,7 @@ There are two approaches to run this project.
 > Note: Building and install `torch-tensort` package takes about 15 mins.
 
 ```bash
-uv venv -- python 3.11
+uv venv --python 3.11
 source .venv/bin/activate
 uv pip install -r pyproject.toml
 ```
