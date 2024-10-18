@@ -12,6 +12,15 @@ For `tensorrt` backend we also store the profiling traces under the `model_name/
 
 > Note: The profiling trace for layer-wise latency of TensorRT models can be viewed at <https://ui.perfetto.dev/>.
 
+Tested this on machine with following configuration
+
+```txt
+Python - 3.11
+uv - 0.4.7
+GPU - Nvidia GeForce RTX 3060 Mobile
+OS - Ubuntu 22.04.5 LTS
+```
+
 ## Getting Started
 
 There are two approaches to run this project.
