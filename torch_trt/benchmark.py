@@ -127,6 +127,8 @@ def benchmark(args: argparse.Namespace) -> None:
             if args.backend == "tensorrt" and (i % args.profiler_iter) == 0:
                 # Hack for enabling profiling
                 # https://github.com/pytorch/TensorRT/issues/1467
+                # Records traces in milliseconds
+                # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
                 profiling_dir = (
                     f"{args.result_dir}/{args.model}/profiling_{current_dt}/iter_{i}"
                 )
