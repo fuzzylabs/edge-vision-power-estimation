@@ -52,10 +52,10 @@ uv run benchmark.py --model mobilenet_v2 --backend tensorrt --save-result
 uv run viz_profiler.py
 
 # Mobilenetv2 model 
-uv run viz_profiler.py --profiler-dir results/mobilenet_v2/profiling_20241018-123805
+uv run viz_profiler.py --profiler-dir results/mobilenet_v2/profiling_20241020-030751
 
 # Resnet18 model 
-uv run viz_profiler.py --profiler-dir results/resnet18/profiling_20241018-123926
+uv run viz_profiler.py --profiler-dir results/resnet18/profiling_20241020-030834
 ```
 
 An example output is shown below. The table shows following information for TensorRT model

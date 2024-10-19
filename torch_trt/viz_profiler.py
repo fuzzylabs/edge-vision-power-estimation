@@ -203,7 +203,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--profiler-dir",
         type=str,
-        default="results/alexnet/profiling_20241018-123649",
+        default="results/alexnet/profiling_20241020-030442",
         help="Specify name of profiler folder for the model",
     )
 

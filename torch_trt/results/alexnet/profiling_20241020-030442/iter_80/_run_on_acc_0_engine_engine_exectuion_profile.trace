@@ -1,0 +1,173 @@
+[
+  {
+    "name": "Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu]",
+    "ph": "X",
+    "ts": 0,
+    "dur": 288.64,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu]",
+    "ph": "X",
+    "ts": 288.64,
+    "dur": 585.856,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MAX]-[aten_ops.max_pool2d.default]-[/features/2/max_pool2d_default]",
+    "ph": "X",
+    "ts": 874.496,
+    "dur": 103.296,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/3/convolution_1] + [RELU]-[aten_ops.relu.default]-[/features/4/relu_1]",
+    "ph": "X",
+    "ts": 977.792,
+    "dur": 538.624,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MAX]-[aten_ops.max_pool2d.default]-[/features/5/max_pool2d_default_1]",
+    "ph": "X",
+    "ts": 1516.42,
+    "dur": 101.408,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/6/convolution_2] + [RELU]-[aten_ops.relu.default]-[/features/7/relu_2]",
+    "ph": "X",
+    "ts": 1617.82,
+    "dur": 364.512,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/8/convolution_3] + [RELU]-[aten_ops.relu.default]-[/features/9/relu_3]",
+    "ph": "X",
+    "ts": 1982.34,
+    "dur": 561.152,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/10/convolution_4] + [RELU]-[aten_ops.relu.default]-[/features/11/relu_4]",
+    "ph": "X",
+    "ts": 2543.49,
+    "dur": 405.504,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MAX]-[aten_ops.max_pool2d.default]-[/features/12/max_pool2d_default_2]",
+    "ph": "X",
+    "ts": 2948.99,
+    "dur": 99.52,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]",
+    "ph": "X",
+    "ts": 3048.51,
+    "dur": 91.84,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]_output from DataType.HALF to DataType.HALF - [aten_ops.torch.ops.aten.clone.default]-[/classifier/0/clone]",
+    "ph": "X",
+    "ts": 3140.35,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm]",
+    "ph": "X",
+    "ts": 3140.35,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm] + /classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_/classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/1/addmm_add] + [RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]",
+    "ph": "X",
+    "ts": 3140.35,
+    "dur": 4818.94,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "squeeze_after_[RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]",
+    "ph": "X",
+    "ts": 7959.3,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [RELU]-[aten_ops.relu.default]-[/classifier/2/relu_5]_output from DataType.HALF to DataType.HALF - [aten_ops.torch.ops.aten.clone.default]-[/classifier/3/clone_1]",
+    "ph": "X",
+    "ts": 7959.3,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_mm]",
+    "ph": "X",
+    "ts": 7959.3,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_mm] + /classifier/4/addmm_1_constant_0 + /classifier/4/addmm_1_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/4/addmm_1_constant_0 + /classifier/4/addmm_1_add_broadcast_to_same_shape_lhs_broadcast_/classifier/4/addmm_1_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/4/addmm_1_add] + [RELU]-[aten_ops.relu.default]-[/classifier/5/relu_6]",
+    "ph": "X",
+    "ts": 7959.3,
+    "dur": 2194.5,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_mm] + /classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/6/addmm_2_constant_0 + /classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_/classifier/6/addmm_2_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+    "ph": "X",
+    "ts": 10153.8,
+    "dur": 646.432,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/6/addmm_2_add]",
+    "ph": "X",
+    "ts": 10800.2,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  }
+]

@@ -1,0 +1,11 @@
+[
+
+{
+  "name": "aten::view",
+  "ph": "X",
+  "ts": 10.380000,
+  "dur": 3.797000,
+  "tid": 1,
+  "pid": "CPU Functions",
+  "args": {}
+}]
