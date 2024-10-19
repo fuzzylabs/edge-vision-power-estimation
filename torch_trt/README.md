@@ -52,10 +52,10 @@ uv run benchmark.py --model mobilenet_v2 --backend tensorrt --save-result
 uv run viz_profiler.py
 
 # Mobilenetv2 model 
-uv run viz_profiler.py --profile-dir results/mobilenet_v2/profiling_20241018-123805
+uv run viz_profiler.py --profiler-dir results/mobilenet_v2/profiling_20241018-123805
 
 # Resnet18 model 
-uv run viz_profiler.py --profile-dir results/resnet18/profiling_20241018-123926
+uv run viz_profiler.py --profiler-dir results/resnet18/profiling_20241018-123926
 ```
 
 An example output is shown below. The table shows following information for TensorRT model
@@ -111,9 +111,15 @@ Exploring and reading [Torch-Tensorrt documentation](https://pytorch.org/TensorR
 
 It is not particularly clear which approach to prefer for a new user. For this experiment, I used `Dyanmo` approach that uses a FX Graph Module to create a TensorRT module.
 
-There were few notes/limitations to this library.
+Additionally, there are two approaches to create tensorrt module using `Dynamo`
 
-* Dynamo approach does not provide `INT8` support at the moment.
+* `torch.compile` [approach](https://pytorch.org/TensorRT/dynamo/torch_compile.html): This approach did not provide a way to get the underlying tensorrt engine.
+
+* [Exported program approach](https://pytorch.org/TensorRT/dynamo/dynamo_export.html) which is what we use as our approach that provides a way to access the converted tensorrt module.
+
+There were few notes/limitations regarding `Torch-Tensorrt` library.
+
+* Dynamo approach does not provide `INT` precision support at the moment.
 
 * `use_python_runtime` parameter to the compiler changes which profiler is being used.
   * If set to `True`, it uses [PythonTorchTensorRTModule](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_PythonTorchTensorRTModule.py#L26C7-L26C32) as it's runtime. This approach _does not_ provide an option in it's [enable_profiling](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_PythonTorchTensorRTModule.py#L417) function to save the layer-wise latency. It instead just prints the traces on the stdout.

@@ -107,7 +107,7 @@ def benchmark(args: argparse.Namespace) -> None:
     print(f"Using {DEVICE=} for benchmarking")
     st = time.perf_counter()
     print("Warm up ...")
-    with torch.inference_mode():
+    with torch.no_grad():
         for _ in range(args.warmup):
             _ = model(input_data)
     print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
@@ -120,7 +120,7 @@ def benchmark(args: argparse.Namespace) -> None:
     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
     end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
 
-    with torch.inference_mode():
+    with torch.no_grad():
         start.record()
         for i in tqdm(range(args.runs)):
 

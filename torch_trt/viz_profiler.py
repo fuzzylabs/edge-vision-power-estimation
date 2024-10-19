@@ -39,11 +39,11 @@ def read_trace_file(file_path: str) -> Any:
     return data
 
 
-def load_trace_data(profile_dir: str) -> dict[str, LayerInfo]:
+def load_trace_data(profiler_dir: str) -> dict[str, LayerInfo]:
     """Extract latencies for each layer across multiple files.
 
     Args:
-        profile_dir: Path to profiler and trace data
+        profiler_dir: Path to profiler and trace data
 
     Returns:
         Dictionary mapping layer of name and
@@ -52,7 +52,7 @@ def load_trace_data(profile_dir: str) -> dict[str, LayerInfo]:
     layer_data: dict[str, LayerInfo] = {}
 
     trace_file_paths = (
-        f"{profile_dir}/*/_run_on_acc_0_engine_engine_exectuion_profile.trace"
+        f"{profiler_dir}/*/_run_on_acc_0_engine_engine_exectuion_profile.trace"
     )
     for trace_file in tqdm(glob.glob(trace_file_paths), desc="Processing Trace Files"):
         data = read_trace_file(trace_file)
@@ -73,19 +73,19 @@ def load_trace_data(profile_dir: str) -> dict[str, LayerInfo]:
 
 
 def load_layer_metadata(
-    profile_dir: str, layer_data: dict[str, LayerInfo]
+    profiler_dir: str, layer_data: dict[str, LayerInfo]
 ) -> list[LayerInfo]:
     """Extract layer related information.
 
     Args:
-        profile_dir: Path to profiler and trace data
+        profiler_dir: Path to profiler and trace data
         layer_data: Dictionary mapping layer of name and
             corresponding latencies for the layer
 
     Returns:
         List of all metadata related to layer
     """
-    layer_file_paths = f"{profile_dir}/*/_run_on_acc_0_engine_layer_information.json"
+    layer_file_paths = f"{profiler_dir}/*/_run_on_acc_0_engine_layer_information.json"
     layer_file_path = glob.glob(layer_file_paths)[0]
     layer_info_data = read_trace_file(layer_file_path)
 
@@ -98,17 +98,17 @@ def load_layer_metadata(
     return list(layer_data.values())
 
 
-def load_layer_data(profile_dir: str) -> list[LayerInfo]:
+def load_layer_data(profiler_dir: str) -> list[LayerInfo]:
     """Extract layer and it's metadata from profiler data.
 
     Args:
-        profile_dir: Path to profiler and trace data
+        profiler_dir: Path to profiler and trace data
 
     Returns:
         List of all metadata related to layer
     """
-    layer_data = load_trace_data(profile_dir)
-    return load_layer_metadata(profile_dir, layer_data)
+    layer_data = load_trace_data(profiler_dir)
+    return load_layer_metadata(profiler_dir, layer_data)
 
 
 def create_dataframe(layer_infos: list[LayerInfo]) -> pd.DataFrame:
@@ -185,11 +185,11 @@ def main(args: argparse.Namespace) -> None:
         args: Arguments from CLI
     """
     console = Console()
-    model_name = str(args.profile_dir.split("/")[1]).capitalize()
-    save_fig_dir = "/".join(args.profile_dir.split("/")[:2])
+    model_name = str(args.profiler_dir.split("/")[1]).capitalize()
+    save_fig_dir = "/".join(args.profiler_dir.split("/")[:2])
 
     # Show layer information and latency
-    layer_infos = load_layer_data(args.profile_dir)
+    layer_infos = load_layer_data(args.profiler_dir)
     table = layer_information(model_name, layer_infos)
     console.print(table)
 
@@ -201,7 +201,7 @@ if __name__ == "__main__":
         prog="Visualize tensorrt profiler trace",
     )
     parser.add_argument(
-        "--profile-dir",
+        "--profiler-dir",
         type=str,
         default="results/alexnet/profiling_20241018-123649",
         help="Specify name of profiler folder for the model",
