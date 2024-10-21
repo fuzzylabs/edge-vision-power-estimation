@@ -1,0 +1,1505 @@
+[
+  {
+    "name": "Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features_0/0/convolution] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features_0/1/_native_batch_norm_legit_no_training]",
+    "ph": "X",
+    "ts": 0,
+    "dur": 312,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features_0/0/convolution] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features_0/1/_native_batch_norm_legit_no_training]",
+    "ph": "X",
+    "ts": 312,
+    "dur": 186.464,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features_0/1/_native_batch_norm_legit_no_training]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features_0/2/_to_copy]",
+    "ph": "X",
+    "ts": 498.464,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features_0/2/clamp_min_rhs + /features_0/2/clamp_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features_0/2/clamp_max_rhs + /features_0/2/clamp_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features_0/2/clamp_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features_0/2/clamp_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features_0/2/clamp_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features_0/2/clamp_min])))",
+    "ph": "X",
+    "ts": 498.464,
+    "dur": 107.232,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features_0/2/clamp_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features_0/2/_to_copy_1]",
+    "ph": "X",
+    "ts": 605.696,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/1/conv_0/0/convolution_1] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/1/conv_0/1/_native_batch_norm_legit_no_training_1]",
+    "ph": "X",
+    "ts": 605.696,
+    "dur": 196.608,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/1/conv_0/1/_native_batch_norm_legit_no_training_1]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/1/conv_0/2/_to_copy_2]",
+    "ph": "X",
+    "ts": 802.304,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/1/conv_0/2/clamp_1_min_rhs + /features/1/conv_0/2/clamp_1_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/1/conv_0/2/clamp_1_max_rhs + /features/1/conv_0/2/clamp_1_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/1/conv_0/2/clamp_1_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/1/conv_0/2/clamp_1_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/1/conv_0/2/clamp_1_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/1/conv_0/2/clamp_1_min])))",
+    "ph": "X",
+    "ts": 802.304,
+    "dur": 101.76,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/1/conv_0/2/clamp_1_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/1/conv_0/2/_to_copy_3]",
+    "ph": "X",
+    "ts": 904.064,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/1/conv/1/convolution_2] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/1/conv/2/_native_batch_norm_legit_no_training_2]",
+    "ph": "X",
+    "ts": 904.064,
+    "dur": 133.344,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/2/conv_0/0/convolution_3] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/2/conv_0/1/_native_batch_norm_legit_no_training_3]",
+    "ph": "X",
+    "ts": 1037.41,
+    "dur": 236.576,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/2/conv_0/1/_native_batch_norm_legit_no_training_3]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/2/conv_0/2/_to_copy_4]",
+    "ph": "X",
+    "ts": 1273.98,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/2/conv_0/2/clamp_2_min_rhs + /features/2/conv_0/2/clamp_2_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/2/conv_0/2/clamp_2_max_rhs + /features/2/conv_0/2/clamp_2_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/2/conv_0/2/clamp_2_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/2/conv_0/2/clamp_2_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/2/conv_0/2/clamp_2_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/2/conv_0/2/clamp_2_min])))",
+    "ph": "X",
+    "ts": 1273.98,
+    "dur": 236.544,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/2/conv_0/2/clamp_2_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/2/conv_0/2/_to_copy_5]",
+    "ph": "X",
+    "ts": 1510.53,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/2/conv_1/0/convolution_4] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/2/conv_1/1/_native_batch_norm_legit_no_training_4]",
+    "ph": "X",
+    "ts": 1510.53,
+    "dur": 207.168,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/2/conv_1/1/_native_batch_norm_legit_no_training_4]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/2/conv_1/2/_to_copy_6]",
+    "ph": "X",
+    "ts": 1717.7,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/2/conv_1/2/clamp_3_min_rhs + /features/2/conv_1/2/clamp_3_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/2/conv_1/2/clamp_3_max_rhs + /features/2/conv_1/2/clamp_3_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/2/conv_1/2/clamp_3_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/2/conv_1/2/clamp_3_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/2/conv_1/2/clamp_3_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/2/conv_1/2/clamp_3_min])))",
+    "ph": "X",
+    "ts": 1717.7,
+    "dur": 98.304,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/2/conv_1/2/clamp_3_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/2/conv_1/2/_to_copy_7]",
+    "ph": "X",
+    "ts": 1816,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/2/conv/2/convolution_5] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/2/conv/3/_native_batch_norm_legit_no_training_5]",
+    "ph": "X",
+    "ts": 1816,
+    "dur": 167.392,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/3/conv_0/0/convolution_6] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/3/conv_0/1/_native_batch_norm_legit_no_training_6]",
+    "ph": "X",
+    "ts": 1983.39,
+    "dur": 185.248,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/3/conv_0/1/_native_batch_norm_legit_no_training_6]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/3/conv_0/2/_to_copy_8]",
+    "ph": "X",
+    "ts": 2168.64,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/3/conv_0/2/clamp_4_min_rhs + /features/3/conv_0/2/clamp_4_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/3/conv_0/2/clamp_4_max_rhs + /features/3/conv_0/2/clamp_4_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/3/conv_0/2/clamp_4_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/3/conv_0/2/clamp_4_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/3/conv_0/2/clamp_4_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/3/conv_0/2/clamp_4_min])))",
+    "ph": "X",
+    "ts": 2168.64,
+    "dur": 108,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/3/conv_0/2/clamp_4_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/3/conv_0/2/_to_copy_9]",
+    "ph": "X",
+    "ts": 2276.64,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/3/conv_1/0/convolution_7] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/3/conv_1/1/_native_batch_norm_legit_no_training_7]",
+    "ph": "X",
+    "ts": 2276.64,
+    "dur": 214.176,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/3/conv_1/1/_native_batch_norm_legit_no_training_7]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/3/conv_1/2/_to_copy_10]",
+    "ph": "X",
+    "ts": 2490.82,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/3/conv_1/2/clamp_5_min_rhs + /features/3/conv_1/2/clamp_5_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/3/conv_1/2/clamp_5_max_rhs + /features/3/conv_1/2/clamp_5_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/3/conv_1/2/clamp_5_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/3/conv_1/2/clamp_5_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/3/conv_1/2/clamp_5_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/3/conv_1/2/clamp_5_min])))",
+    "ph": "X",
+    "ts": 2490.82,
+    "dur": 108.608,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/3/conv_1/2/clamp_5_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/3/conv_1/2/_to_copy_11]",
+    "ph": "X",
+    "ts": 2599.42,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/3/conv/2/convolution_8] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/3/conv/3/_native_batch_norm_legit_no_training_8] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/3/add]",
+    "ph": "X",
+    "ts": 2599.42,
+    "dur": 161.984,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/4/conv_0/0/convolution_9] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/4/conv_0/1/_native_batch_norm_legit_no_training_9]",
+    "ph": "X",
+    "ts": 2761.41,
+    "dur": 175.008,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/4/conv_0/1/_native_batch_norm_legit_no_training_9]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/4/conv_0/2/_to_copy_12]",
+    "ph": "X",
+    "ts": 2936.42,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/4/conv_0/2/clamp_6_min_rhs + /features/4/conv_0/2/clamp_6_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/4/conv_0/2/clamp_6_max_rhs + /features/4/conv_0/2/clamp_6_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/4/conv_0/2/clamp_6_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/4/conv_0/2/clamp_6_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/4/conv_0/2/clamp_6_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/4/conv_0/2/clamp_6_min])))",
+    "ph": "X",
+    "ts": 2936.42,
+    "dur": 107.648,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/4/conv_0/2/clamp_6_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/4/conv_0/2/_to_copy_13]",
+    "ph": "X",
+    "ts": 3044.06,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/4/conv_1/0/convolution_10] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/4/conv_1/1/_native_batch_norm_legit_no_training_10]",
+    "ph": "X",
+    "ts": 3044.06,
+    "dur": 136.416,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/4/conv_1/1/_native_batch_norm_legit_no_training_10]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/4/conv_1/2/_to_copy_14]",
+    "ph": "X",
+    "ts": 3180.48,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/4/conv_1/2/clamp_7_min_rhs + /features/4/conv_1/2/clamp_7_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/4/conv_1/2/clamp_7_max_rhs + /features/4/conv_1/2/clamp_7_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/4/conv_1/2/clamp_7_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/4/conv_1/2/clamp_7_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/4/conv_1/2/clamp_7_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/4/conv_1/2/clamp_7_min])))",
+    "ph": "X",
+    "ts": 3180.48,
+    "dur": 84.096,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/4/conv_1/2/clamp_7_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/4/conv_1/2/_to_copy_15]",
+    "ph": "X",
+    "ts": 3264.58,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/4/conv/2/convolution_11] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/4/conv/3/_native_batch_norm_legit_no_training_11]",
+    "ph": "X",
+    "ts": 3264.58,
+    "dur": 124.416,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/5/conv_0/0/convolution_12] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/5/conv_0/1/_native_batch_norm_legit_no_training_12]",
+    "ph": "X",
+    "ts": 3388.99,
+    "dur": 124.608,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/5/conv_0/1/_native_batch_norm_legit_no_training_12]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/5/conv_0/2/_to_copy_16]",
+    "ph": "X",
+    "ts": 3513.6,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/5/conv_0/2/clamp_8_min_rhs + /features/5/conv_0/2/clamp_8_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/5/conv_0/2/clamp_8_max_rhs + /features/5/conv_0/2/clamp_8_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/5/conv_0/2/clamp_8_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/5/conv_0/2/clamp_8_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/5/conv_0/2/clamp_8_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/5/conv_0/2/clamp_8_min])))",
+    "ph": "X",
+    "ts": 3513.6,
+    "dur": 84.992,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/5/conv_0/2/clamp_8_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/5/conv_0/2/_to_copy_17]",
+    "ph": "X",
+    "ts": 3598.59,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/5/conv_1/0/convolution_13] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/5/conv_1/1/_native_batch_norm_legit_no_training_13]",
+    "ph": "X",
+    "ts": 3598.59,
+    "dur": 128.224,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/5/conv_1/1/_native_batch_norm_legit_no_training_13]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/5/conv_1/2/_to_copy_18]",
+    "ph": "X",
+    "ts": 3726.82,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/5/conv_1/2/clamp_9_min_rhs + /features/5/conv_1/2/clamp_9_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/5/conv_1/2/clamp_9_max_rhs + /features/5/conv_1/2/clamp_9_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/5/conv_1/2/clamp_9_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/5/conv_1/2/clamp_9_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/5/conv_1/2/clamp_9_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/5/conv_1/2/clamp_9_min])))",
+    "ph": "X",
+    "ts": 3726.82,
+    "dur": 82.272,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/5/conv_1/2/clamp_9_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/5/conv_1/2/_to_copy_19]",
+    "ph": "X",
+    "ts": 3809.09,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/5/conv/2/convolution_14] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/5/conv/3/_native_batch_norm_legit_no_training_14] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/5/add_1]",
+    "ph": "X",
+    "ts": 3809.09,
+    "dur": 121.12,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/6/conv_0/0/convolution_15] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/6/conv_0/1/_native_batch_norm_legit_no_training_15]",
+    "ph": "X",
+    "ts": 3930.21,
+    "dur": 122.592,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/6/conv_0/1/_native_batch_norm_legit_no_training_15]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/6/conv_0/2/_to_copy_20]",
+    "ph": "X",
+    "ts": 4052.8,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/6/conv_0/2/clamp_10_min_rhs + /features/6/conv_0/2/clamp_10_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/6/conv_0/2/clamp_10_max_rhs + /features/6/conv_0/2/clamp_10_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/6/conv_0/2/clamp_10_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/6/conv_0/2/clamp_10_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/6/conv_0/2/clamp_10_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/6/conv_0/2/clamp_10_min])))",
+    "ph": "X",
+    "ts": 4052.8,
+    "dur": 84.192,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/6/conv_0/2/clamp_10_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/6/conv_0/2/_to_copy_21]",
+    "ph": "X",
+    "ts": 4136.99,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/6/conv_1/0/convolution_16] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/6/conv_1/1/_native_batch_norm_legit_no_training_16]",
+    "ph": "X",
+    "ts": 4136.99,
+    "dur": 140.512,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/6/conv_1/1/_native_batch_norm_legit_no_training_16]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/6/conv_1/2/_to_copy_22]",
+    "ph": "X",
+    "ts": 4277.5,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/6/conv_1/2/clamp_11_min_rhs + /features/6/conv_1/2/clamp_11_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/6/conv_1/2/clamp_11_max_rhs + /features/6/conv_1/2/clamp_11_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/6/conv_1/2/clamp_11_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/6/conv_1/2/clamp_11_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/6/conv_1/2/clamp_11_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/6/conv_1/2/clamp_11_min])))",
+    "ph": "X",
+    "ts": 4277.5,
+    "dur": 86.432,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/6/conv_1/2/clamp_11_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/6/conv_1/2/_to_copy_23]",
+    "ph": "X",
+    "ts": 4363.94,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/6/conv/2/convolution_17] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/6/conv/3/_native_batch_norm_legit_no_training_17] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/6/add_2]",
+    "ph": "X",
+    "ts": 4363.94,
+    "dur": 123.072,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/7/conv_0/0/convolution_18] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/7/conv_0/1/_native_batch_norm_legit_no_training_18]",
+    "ph": "X",
+    "ts": 4487.01,
+    "dur": 123.04,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/7/conv_0/1/_native_batch_norm_legit_no_training_18]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/7/conv_0/2/_to_copy_24]",
+    "ph": "X",
+    "ts": 4610.05,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/7/conv_0/2/clamp_12_min_rhs + /features/7/conv_0/2/clamp_12_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/7/conv_0/2/clamp_12_max_rhs + /features/7/conv_0/2/clamp_12_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/7/conv_0/2/clamp_12_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/7/conv_0/2/clamp_12_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/7/conv_0/2/clamp_12_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/7/conv_0/2/clamp_12_min])))",
+    "ph": "X",
+    "ts": 4610.05,
+    "dur": 85.248,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/7/conv_0/2/clamp_12_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/7/conv_0/2/_to_copy_25]",
+    "ph": "X",
+    "ts": 4695.3,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/7/conv_1/0/convolution_19] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/7/conv_1/1/_native_batch_norm_legit_no_training_19]",
+    "ph": "X",
+    "ts": 4695.3,
+    "dur": 106.656,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/7/conv_1/1/_native_batch_norm_legit_no_training_19]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/7/conv_1/2/_to_copy_26]",
+    "ph": "X",
+    "ts": 4801.95,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/7/conv_1/2/clamp_13_min_rhs + /features/7/conv_1/2/clamp_13_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/7/conv_1/2/clamp_13_max_rhs + /features/7/conv_1/2/clamp_13_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/7/conv_1/2/clamp_13_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/7/conv_1/2/clamp_13_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/7/conv_1/2/clamp_13_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/7/conv_1/2/clamp_13_min])))",
+    "ph": "X",
+    "ts": 4801.95,
+    "dur": 76.224,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/7/conv_1/2/clamp_13_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/7/conv_1/2/_to_copy_27]",
+    "ph": "X",
+    "ts": 4878.18,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/7/conv/2/convolution_20] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/7/conv/3/_native_batch_norm_legit_no_training_20]",
+    "ph": "X",
+    "ts": 4878.18,
+    "dur": 112.8,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/8/conv_0/0/convolution_21] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/8/conv_0/1/_native_batch_norm_legit_no_training_21]",
+    "ph": "X",
+    "ts": 4990.98,
+    "dur": 132.16,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/8/conv_0/1/_native_batch_norm_legit_no_training_21]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/8/conv_0/2/_to_copy_28]",
+    "ph": "X",
+    "ts": 5123.14,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/8/conv_0/2/clamp_14_min_rhs + /features/8/conv_0/2/clamp_14_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/8/conv_0/2/clamp_14_max_rhs + /features/8/conv_0/2/clamp_14_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/8/conv_0/2/clamp_14_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/8/conv_0/2/clamp_14_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/8/conv_0/2/clamp_14_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/8/conv_0/2/clamp_14_min])))",
+    "ph": "X",
+    "ts": 5123.14,
+    "dur": 79.296,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/8/conv_0/2/clamp_14_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/8/conv_0/2/_to_copy_29]",
+    "ph": "X",
+    "ts": 5202.43,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/8/conv_1/0/convolution_22] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/8/conv_1/1/_native_batch_norm_legit_no_training_22]",
+    "ph": "X",
+    "ts": 5202.43,
+    "dur": 112.64,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/8/conv_1/1/_native_batch_norm_legit_no_training_22]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/8/conv_1/2/_to_copy_30]",
+    "ph": "X",
+    "ts": 5315.07,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/8/conv_1/2/clamp_15_min_rhs + /features/8/conv_1/2/clamp_15_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/8/conv_1/2/clamp_15_max_rhs + /features/8/conv_1/2/clamp_15_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/8/conv_1/2/clamp_15_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/8/conv_1/2/clamp_15_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/8/conv_1/2/clamp_15_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/8/conv_1/2/clamp_15_min])))",
+    "ph": "X",
+    "ts": 5315.07,
+    "dur": 79.936,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/8/conv_1/2/clamp_15_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/8/conv_1/2/_to_copy_31]",
+    "ph": "X",
+    "ts": 5395.01,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/8/conv/2/convolution_23] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/8/conv/3/_native_batch_norm_legit_no_training_23] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/8/add_3]",
+    "ph": "X",
+    "ts": 5395.01,
+    "dur": 126.976,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/9/conv_0/0/convolution_24] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/9/conv_0/1/_native_batch_norm_legit_no_training_24]",
+    "ph": "X",
+    "ts": 5521.98,
+    "dur": 124.992,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/9/conv_0/1/_native_batch_norm_legit_no_training_24]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/9/conv_0/2/_to_copy_32]",
+    "ph": "X",
+    "ts": 5646.98,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/9/conv_0/2/clamp_16_min_rhs + /features/9/conv_0/2/clamp_16_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/9/conv_0/2/clamp_16_max_rhs + /features/9/conv_0/2/clamp_16_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/9/conv_0/2/clamp_16_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/9/conv_0/2/clamp_16_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/9/conv_0/2/clamp_16_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/9/conv_0/2/clamp_16_min])))",
+    "ph": "X",
+    "ts": 5646.98,
+    "dur": 82.976,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/9/conv_0/2/clamp_16_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/9/conv_0/2/_to_copy_33]",
+    "ph": "X",
+    "ts": 5729.95,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/9/conv_1/0/convolution_25] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/9/conv_1/1/_native_batch_norm_legit_no_training_25]",
+    "ph": "X",
+    "ts": 5729.95,
+    "dur": 109.888,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/9/conv_1/1/_native_batch_norm_legit_no_training_25]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/9/conv_1/2/_to_copy_34]",
+    "ph": "X",
+    "ts": 5839.84,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/9/conv_1/2/clamp_17_min_rhs + /features/9/conv_1/2/clamp_17_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/9/conv_1/2/clamp_17_max_rhs + /features/9/conv_1/2/clamp_17_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/9/conv_1/2/clamp_17_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/9/conv_1/2/clamp_17_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/9/conv_1/2/clamp_17_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/9/conv_1/2/clamp_17_min])))",
+    "ph": "X",
+    "ts": 5839.84,
+    "dur": 81.216,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/9/conv_1/2/clamp_17_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/9/conv_1/2/_to_copy_35]",
+    "ph": "X",
+    "ts": 5921.06,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/9/conv/2/convolution_26] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/9/conv/3/_native_batch_norm_legit_no_training_26] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/9/add_4]",
+    "ph": "X",
+    "ts": 5921.06,
+    "dur": 126.976,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/10/conv_0/0/convolution_27] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/10/conv_0/1/_native_batch_norm_legit_no_training_27]",
+    "ph": "X",
+    "ts": 6048.03,
+    "dur": 127.104,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/10/conv_0/1/_native_batch_norm_legit_no_training_27]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/10/conv_0/2/_to_copy_36]",
+    "ph": "X",
+    "ts": 6175.14,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/10/conv_0/2/clamp_18_min_rhs + /features/10/conv_0/2/clamp_18_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/10/conv_0/2/clamp_18_max_rhs + /features/10/conv_0/2/clamp_18_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/10/conv_0/2/clamp_18_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/10/conv_0/2/clamp_18_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/10/conv_0/2/clamp_18_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/10/conv_0/2/clamp_18_min])))",
+    "ph": "X",
+    "ts": 6175.14,
+    "dur": 80.032,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/10/conv_0/2/clamp_18_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/10/conv_0/2/_to_copy_37]",
+    "ph": "X",
+    "ts": 6255.17,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/10/conv_1/0/convolution_28] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/10/conv_1/1/_native_batch_norm_legit_no_training_28]",
+    "ph": "X",
+    "ts": 6255.17,
+    "dur": 121.952,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/10/conv_1/1/_native_batch_norm_legit_no_training_28]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/10/conv_1/2/_to_copy_38]",
+    "ph": "X",
+    "ts": 6377.12,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/10/conv_1/2/clamp_19_min_rhs + /features/10/conv_1/2/clamp_19_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/10/conv_1/2/clamp_19_max_rhs + /features/10/conv_1/2/clamp_19_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/10/conv_1/2/clamp_19_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/10/conv_1/2/clamp_19_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/10/conv_1/2/clamp_19_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/10/conv_1/2/clamp_19_min])))",
+    "ph": "X",
+    "ts": 6377.12,
+    "dur": 79.936,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/10/conv_1/2/clamp_19_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/10/conv_1/2/_to_copy_39]",
+    "ph": "X",
+    "ts": 6457.06,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/10/conv/2/convolution_29] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/10/conv/3/_native_batch_norm_legit_no_training_29] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/10/add_5]",
+    "ph": "X",
+    "ts": 6457.06,
+    "dur": 132.096,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/11/conv_0/0/convolution_30] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/11/conv_0/1/_native_batch_norm_legit_no_training_30]",
+    "ph": "X",
+    "ts": 6589.15,
+    "dur": 123.904,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/11/conv_0/1/_native_batch_norm_legit_no_training_30]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/11/conv_0/2/_to_copy_40]",
+    "ph": "X",
+    "ts": 6713.06,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/11/conv_0/2/clamp_20_min_rhs + /features/11/conv_0/2/clamp_20_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/11/conv_0/2/clamp_20_max_rhs + /features/11/conv_0/2/clamp_20_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/11/conv_0/2/clamp_20_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/11/conv_0/2/clamp_20_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/11/conv_0/2/clamp_20_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/11/conv_0/2/clamp_20_min])))",
+    "ph": "X",
+    "ts": 6713.06,
+    "dur": 79.104,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/11/conv_0/2/clamp_20_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/11/conv_0/2/_to_copy_41]",
+    "ph": "X",
+    "ts": 6792.16,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/11/conv_1/0/convolution_31] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/11/conv_1/1/_native_batch_norm_legit_no_training_31]",
+    "ph": "X",
+    "ts": 6792.16,
+    "dur": 122.112,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/11/conv_1/1/_native_batch_norm_legit_no_training_31]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/11/conv_1/2/_to_copy_42]",
+    "ph": "X",
+    "ts": 6914.27,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/11/conv_1/2/clamp_21_min_rhs + /features/11/conv_1/2/clamp_21_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/11/conv_1/2/clamp_21_max_rhs + /features/11/conv_1/2/clamp_21_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/11/conv_1/2/clamp_21_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/11/conv_1/2/clamp_21_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/11/conv_1/2/clamp_21_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/11/conv_1/2/clamp_21_min])))",
+    "ph": "X",
+    "ts": 6914.27,
+    "dur": 80.96,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/11/conv_1/2/clamp_21_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/11/conv_1/2/_to_copy_43]",
+    "ph": "X",
+    "ts": 6995.23,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/11/conv/2/convolution_32] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/11/conv/3/_native_batch_norm_legit_no_training_32]",
+    "ph": "X",
+    "ts": 6995.23,
+    "dur": 133.184,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/12/conv_0/0/convolution_33] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/12/conv_0/1/_native_batch_norm_legit_no_training_33]",
+    "ph": "X",
+    "ts": 7128.42,
+    "dur": 153.824,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/12/conv_0/1/_native_batch_norm_legit_no_training_33]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/12/conv_0/2/_to_copy_44]",
+    "ph": "X",
+    "ts": 7282.24,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/12/conv_0/2/clamp_22_min_rhs + /features/12/conv_0/2/clamp_22_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/12/conv_0/2/clamp_22_max_rhs + /features/12/conv_0/2/clamp_22_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/12/conv_0/2/clamp_22_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/12/conv_0/2/clamp_22_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/12/conv_0/2/clamp_22_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/12/conv_0/2/clamp_22_min])))",
+    "ph": "X",
+    "ts": 7282.24,
+    "dur": 81.92,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/12/conv_0/2/clamp_22_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/12/conv_0/2/_to_copy_45]",
+    "ph": "X",
+    "ts": 7364.16,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/12/conv_1/0/convolution_34] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/12/conv_1/1/_native_batch_norm_legit_no_training_34]",
+    "ph": "X",
+    "ts": 7364.16,
+    "dur": 128.32,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/12/conv_1/1/_native_batch_norm_legit_no_training_34]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/12/conv_1/2/_to_copy_46]",
+    "ph": "X",
+    "ts": 7492.48,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/12/conv_1/2/clamp_23_min_rhs + /features/12/conv_1/2/clamp_23_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/12/conv_1/2/clamp_23_max_rhs + /features/12/conv_1/2/clamp_23_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/12/conv_1/2/clamp_23_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/12/conv_1/2/clamp_23_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/12/conv_1/2/clamp_23_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/12/conv_1/2/clamp_23_min])))",
+    "ph": "X",
+    "ts": 7492.48,
+    "dur": 87.104,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/12/conv_1/2/clamp_23_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/12/conv_1/2/_to_copy_47]",
+    "ph": "X",
+    "ts": 7579.58,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/12/conv/2/convolution_35] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/12/conv/3/_native_batch_norm_legit_no_training_35] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/12/add_6]",
+    "ph": "X",
+    "ts": 7579.58,
+    "dur": 138.24,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/13/conv_0/0/convolution_36] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/13/conv_0/1/_native_batch_norm_legit_no_training_36]",
+    "ph": "X",
+    "ts": 7717.82,
+    "dur": 149.728,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/13/conv_0/1/_native_batch_norm_legit_no_training_36]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/13/conv_0/2/_to_copy_48]",
+    "ph": "X",
+    "ts": 7867.55,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/13/conv_0/2/clamp_24_min_rhs + /features/13/conv_0/2/clamp_24_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/13/conv_0/2/clamp_24_max_rhs + /features/13/conv_0/2/clamp_24_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/13/conv_0/2/clamp_24_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/13/conv_0/2/clamp_24_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/13/conv_0/2/clamp_24_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/13/conv_0/2/clamp_24_min])))",
+    "ph": "X",
+    "ts": 7867.55,
+    "dur": 83.008,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/13/conv_0/2/clamp_24_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/13/conv_0/2/_to_copy_49]",
+    "ph": "X",
+    "ts": 7950.56,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/13/conv_1/0/convolution_37] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/13/conv_1/1/_native_batch_norm_legit_no_training_37]",
+    "ph": "X",
+    "ts": 7950.56,
+    "dur": 124.928,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/13/conv_1/1/_native_batch_norm_legit_no_training_37]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/13/conv_1/2/_to_copy_50]",
+    "ph": "X",
+    "ts": 8075.49,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/13/conv_1/2/clamp_25_min_rhs + /features/13/conv_1/2/clamp_25_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/13/conv_1/2/clamp_25_max_rhs + /features/13/conv_1/2/clamp_25_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/13/conv_1/2/clamp_25_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/13/conv_1/2/clamp_25_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/13/conv_1/2/clamp_25_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/13/conv_1/2/clamp_25_min])))",
+    "ph": "X",
+    "ts": 8075.49,
+    "dur": 83.168,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/13/conv_1/2/clamp_25_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/13/conv_1/2/_to_copy_51]",
+    "ph": "X",
+    "ts": 8158.66,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/13/conv/2/convolution_38] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/13/conv/3/_native_batch_norm_legit_no_training_38] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/13/add_7]",
+    "ph": "X",
+    "ts": 8158.66,
+    "dur": 141.568,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/14/conv_0/0/convolution_39] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/14/conv_0/1/_native_batch_norm_legit_no_training_39]",
+    "ph": "X",
+    "ts": 8300.23,
+    "dur": 150.656,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/14/conv_0/1/_native_batch_norm_legit_no_training_39]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/14/conv_0/2/_to_copy_52]",
+    "ph": "X",
+    "ts": 8450.88,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/14/conv_0/2/clamp_26_min_rhs + /features/14/conv_0/2/clamp_26_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/14/conv_0/2/clamp_26_max_rhs + /features/14/conv_0/2/clamp_26_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/14/conv_0/2/clamp_26_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/14/conv_0/2/clamp_26_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/14/conv_0/2/clamp_26_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/14/conv_0/2/clamp_26_min])))",
+    "ph": "X",
+    "ts": 8450.88,
+    "dur": 84,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/14/conv_0/2/clamp_26_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/14/conv_0/2/_to_copy_53]",
+    "ph": "X",
+    "ts": 8534.88,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/14/conv_1/0/convolution_40] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/14/conv_1/1/_native_batch_norm_legit_no_training_40]",
+    "ph": "X",
+    "ts": 8534.88,
+    "dur": 111.616,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/14/conv_1/1/_native_batch_norm_legit_no_training_40]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/14/conv_1/2/_to_copy_54]",
+    "ph": "X",
+    "ts": 8646.5,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/14/conv_1/2/clamp_27_min_rhs + /features/14/conv_1/2/clamp_27_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/14/conv_1/2/clamp_27_max_rhs + /features/14/conv_1/2/clamp_27_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/14/conv_1/2/clamp_27_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/14/conv_1/2/clamp_27_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/14/conv_1/2/clamp_27_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/14/conv_1/2/clamp_27_min])))",
+    "ph": "X",
+    "ts": 8646.5,
+    "dur": 80.896,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/14/conv_1/2/clamp_27_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/14/conv_1/2/_to_copy_55]",
+    "ph": "X",
+    "ts": 8727.39,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/14/conv/2/convolution_41] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/14/conv/3/_native_batch_norm_legit_no_training_41]",
+    "ph": "X",
+    "ts": 8727.39,
+    "dur": 137.248,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/15/conv_0/0/convolution_42] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/15/conv_0/1/_native_batch_norm_legit_no_training_42]",
+    "ph": "X",
+    "ts": 8864.64,
+    "dur": 152.64,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/15/conv_0/1/_native_batch_norm_legit_no_training_42]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/15/conv_0/2/_to_copy_56]",
+    "ph": "X",
+    "ts": 9017.28,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/15/conv_0/2/clamp_28_min_rhs + /features/15/conv_0/2/clamp_28_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/15/conv_0/2/clamp_28_max_rhs + /features/15/conv_0/2/clamp_28_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/15/conv_0/2/clamp_28_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/15/conv_0/2/clamp_28_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/15/conv_0/2/clamp_28_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/15/conv_0/2/clamp_28_min])))",
+    "ph": "X",
+    "ts": 9017.28,
+    "dur": 84.096,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/15/conv_0/2/clamp_28_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/15/conv_0/2/_to_copy_57]",
+    "ph": "X",
+    "ts": 9101.38,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/15/conv_1/0/convolution_43] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/15/conv_1/1/_native_batch_norm_legit_no_training_43]",
+    "ph": "X",
+    "ts": 9101.38,
+    "dur": 111.616,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/15/conv_1/1/_native_batch_norm_legit_no_training_43]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/15/conv_1/2/_to_copy_58]",
+    "ph": "X",
+    "ts": 9212.99,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/15/conv_1/2/clamp_29_min_rhs + /features/15/conv_1/2/clamp_29_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/15/conv_1/2/clamp_29_max_rhs + /features/15/conv_1/2/clamp_29_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/15/conv_1/2/clamp_29_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/15/conv_1/2/clamp_29_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/15/conv_1/2/clamp_29_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/15/conv_1/2/clamp_29_min])))",
+    "ph": "X",
+    "ts": 9212.99,
+    "dur": 85.088,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/15/conv_1/2/clamp_29_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/15/conv_1/2/_to_copy_59]",
+    "ph": "X",
+    "ts": 9298.08,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/15/conv/2/convolution_44] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/15/conv/3/_native_batch_norm_legit_no_training_44] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/15/add_8]",
+    "ph": "X",
+    "ts": 9298.08,
+    "dur": 160.992,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/16/conv_0/0/convolution_45] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/16/conv_0/1/_native_batch_norm_legit_no_training_45]",
+    "ph": "X",
+    "ts": 9459.07,
+    "dur": 147.584,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/16/conv_0/1/_native_batch_norm_legit_no_training_45]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/16/conv_0/2/_to_copy_60]",
+    "ph": "X",
+    "ts": 9606.66,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/16/conv_0/2/clamp_30_min_rhs + /features/16/conv_0/2/clamp_30_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/16/conv_0/2/clamp_30_max_rhs + /features/16/conv_0/2/clamp_30_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/16/conv_0/2/clamp_30_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/16/conv_0/2/clamp_30_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/16/conv_0/2/clamp_30_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/16/conv_0/2/clamp_30_min])))",
+    "ph": "X",
+    "ts": 9606.66,
+    "dur": 86.016,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/16/conv_0/2/clamp_30_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/16/conv_0/2/_to_copy_61]",
+    "ph": "X",
+    "ts": 9692.67,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/16/conv_1/0/convolution_46] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/16/conv_1/1/_native_batch_norm_legit_no_training_46]",
+    "ph": "X",
+    "ts": 9692.67,
+    "dur": 109.664,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/16/conv_1/1/_native_batch_norm_legit_no_training_46]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/16/conv_1/2/_to_copy_62]",
+    "ph": "X",
+    "ts": 9802.34,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/16/conv_1/2/clamp_31_min_rhs + /features/16/conv_1/2/clamp_31_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/16/conv_1/2/clamp_31_max_rhs + /features/16/conv_1/2/clamp_31_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/16/conv_1/2/clamp_31_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/16/conv_1/2/clamp_31_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/16/conv_1/2/clamp_31_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/16/conv_1/2/clamp_31_min])))",
+    "ph": "X",
+    "ts": 9802.34,
+    "dur": 83.392,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/16/conv_1/2/clamp_31_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/16/conv_1/2/_to_copy_63]",
+    "ph": "X",
+    "ts": 9885.73,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/16/conv/2/convolution_47] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/16/conv/3/_native_batch_norm_legit_no_training_47] + [ELEMENTWISE]-[aten_ops.add.Tensor]-[/features/16/add_9]",
+    "ph": "X",
+    "ts": 9885.73,
+    "dur": 163.104,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/17/conv_0/0/convolution_48] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/17/conv_0/1/_native_batch_norm_legit_no_training_48]",
+    "ph": "X",
+    "ts": 10048.8,
+    "dur": 146.304,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/17/conv_0/1/_native_batch_norm_legit_no_training_48]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/17/conv_0/2/_to_copy_64]",
+    "ph": "X",
+    "ts": 10195.1,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/17/conv_0/2/clamp_32_min_rhs + /features/17/conv_0/2/clamp_32_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/17/conv_0/2/clamp_32_max_rhs + /features/17/conv_0/2/clamp_32_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/17/conv_0/2/clamp_32_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/17/conv_0/2/clamp_32_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/17/conv_0/2/clamp_32_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/17/conv_0/2/clamp_32_min])))",
+    "ph": "X",
+    "ts": 10195.1,
+    "dur": 82.016,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/17/conv_0/2/clamp_32_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/17/conv_0/2/_to_copy_65]",
+    "ph": "X",
+    "ts": 10277.2,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/17/conv_1/0/convolution_49] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/17/conv_1/1/_native_batch_norm_legit_no_training_49]",
+    "ph": "X",
+    "ts": 10277.2,
+    "dur": 102.688,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/17/conv_1/1/_native_batch_norm_legit_no_training_49]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features/17/conv_1/2/_to_copy_66]",
+    "ph": "X",
+    "ts": 10379.8,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features/17/conv_1/2/clamp_33_min_rhs + /features/17/conv_1/2/clamp_33_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features/17/conv_1/2/clamp_33_max_rhs + /features/17/conv_1/2/clamp_33_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features/17/conv_1/2/clamp_33_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/17/conv_1/2/clamp_33_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features/17/conv_1/2/clamp_33_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/17/conv_1/2/clamp_33_min])))",
+    "ph": "X",
+    "ts": 10379.8,
+    "dur": 82.176,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features/17/conv_1/2/clamp_33_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features/17/conv_1/2/_to_copy_67]",
+    "ph": "X",
+    "ts": 10462,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features/17/conv/2/convolution_50] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features/17/conv/3/_native_batch_norm_legit_no_training_50]",
+    "ph": "X",
+    "ts": 10462,
+    "dur": 164.064,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[CONVOLUTION]-[aten_ops.convolution.default]-[/features_18/0/convolution_51] + [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features_18/1/_native_batch_norm_legit_no_training_51]",
+    "ph": "X",
+    "ts": 10626.1,
+    "dur": 184.096,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SCALE]-[aten_ops._native_batch_norm_legit_no_training.default]-[/features_18/1/_native_batch_norm_legit_no_training_51]_output from DataType.HALF to DataType.FLOAT - [aten_ops.torch.ops.aten._to_copy.default]-[/features_18/2/_to_copy_68]",
+    "ph": "X",
+    "ts": 10810.2,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "PWN(/features_18/2/clamp_34_min_rhs + /features_18/2/clamp_34_min_broadcast_to_same_shape_rhs_broadcast, PWN(PWN(/features_18/2/clamp_34_max_rhs + /features_18/2/clamp_34_max_broadcast_to_same_shape_rhs_broadcast, PWN([SLICE]-[aten_ops.clamp.default]-[/features_18/2/clamp_34_max_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features_18/2/clamp_34_max])), PWN([SLICE]-[aten_ops.clamp.default]-[/features_18/2/clamp_34_min_broadcast_to_same_shape_expand_rhs_val] + [ELEMENTWISE]-[aten_ops.clamp.default]-[/features_18/2/clamp_34_min])))",
+    "ph": "X",
+    "ts": 10810.2,
+    "dur": 78.112,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [ELEMENTWISE]-[aten_ops.clamp.default]-[/features_18/2/clamp_34_min]_output_clamp.default from DataType.FLOAT to DataType.HALF - [aten_ops.torch.ops.aten._to_copy.default]-[/features_18/2/_to_copy_69]",
+    "ph": "X",
+    "ts": 10888.3,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[REDUCE]-[aten_ops.mean.dim]-[__/mean]",
+    "ph": "X",
+    "ts": 10888.3,
+    "dur": 119.136,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Reformatting CopyNode for Input Tensor 0 to [SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]",
+    "ph": "X",
+    "ts": 11007.4,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]",
+    "ph": "X",
+    "ts": 11007.4,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Forced Cast ITensor [SHUFFLE]-[aten_ops.reshape.default]-[__/reshape_default]_output from DataType.HALF to DataType.HALF - [aten_ops.torch.ops.aten.clone.default]-[/classifier/0/clone]",
+    "ph": "X",
+    "ts": 11007.4,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "reshape_before_[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm]",
+    "ph": "X",
+    "ts": 11007.4,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Reformatting CopyNode for Input Tensor 0 to [MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm] + /classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_/classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/1/addmm_add]",
+    "ph": "X",
+    "ts": 11007.4,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "[MATRIX_MULTIPLY]-[aten_ops.addmm.default]-[/classifier/1/addmm_mm] + /classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast + unsqueeze_node_after_/classifier/1/addmm_constant_0 + /classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_/classifier/1/addmm_add_broadcast_to_same_shape_lhs_broadcast_output + [ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/1/addmm_add]",
+    "ph": "X",
+    "ts": 11007.4,
+    "dur": 281.856,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "Reformatting CopyNode for Input Tensor 0 to copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/1/addmm_add]",
+    "ph": "X",
+    "ts": 11289.3,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  },
+  {
+    "name": "copied_squeeze_after_[ELEMENTWISE]-[aten_ops.addmm.default]-[/classifier/1/addmm_add]",
+    "ph": "X",
+    "ts": 11289.3,
+    "dur": 0,
+    "tid": 1,
+    "pid": "_run_on_acc_0_engine Engine Execution",
+    "args": {}
+  }
+]

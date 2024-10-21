@@ -139,7 +139,7 @@ def plot_layer_name_latencies(layer_infos: list[LayerInfo], save_fig_dir: str) -
     df = create_dataframe(layer_infos)
     plt.figure(figsize=(25, 25))
     sns.boxplot(x="Layer Name", y="Latency", data=df)
-    plt.xticks(rotation=90, ha="right")
+    plt.xticks(rotation=45, ha="right")
     plt.xlabel("Layer Name")
     plt.ylabel("Latency (sec)")
     plt.title("Layer-wise Latencies")
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--profiler-dir",
         type=str,
-        default="results/alexnet/profiling_20241020-030442",
+        default="results/alexnet/profiling_20241021-160746",
         help="Specify name of profiler folder for the model",
     )
 

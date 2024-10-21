@@ -69,10 +69,10 @@ uv run benchmark.py --model mobilenet_v2 --backend tensorrt --save-result
 uv run viz_profiler.py
 
 # Mobilenetv2 model 
-uv run viz_profiler.py --profiler-dir results/mobilenet_v2/profiling_20241020-030751
+uv run viz_profiler.py --profiler-dir results/mobilenet_v2/profiling_20241021-160820
 
 # Resnet18 model 
-uv run viz_profiler.py --profiler-dir results/resnet18/profiling_20241020-030834
+uv run viz_profiler.py --profiler-dir results/resnet18/profiling_20241021-160906
 ```
 
 An example output is shown below. The table shows following information for TensorRT model
@@ -84,7 +84,9 @@ An example output is shown below. The table shows following information for Tens
 
 ![Layerwise Latency](./assets/layer_wise_latency.png)
 
-There are boxplots for various model under the `results/model_name` directory. The boxplot plots layer-wise latency for each layer of the TensorRT model.
+There are boxplots for various model under the `results/model_name` directory. The boxplot plots layer-wise latency for each layer of the TensorRT model. An example of `resnet18` model shown below.
+
+![Layerwise Latency](./results/resnet18/layer_latencies_boxplot.png)
 
 ### Visualize latency and throughput across backends
 

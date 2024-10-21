@@ -1,0 +1,51 @@
+[
+
+{
+  "name": "aten::empty",
+  "ph": "X",
+  "ts": 6.573000,
+  "dur": 6.292000,
+  "tid": 1,
+  "pid": "CPU Functions",
+  "args": {}
+},
+
+{
+  "name": "aten::empty_strided",
+  "ph": "X",
+  "ts": 15.811000,
+  "dur": 2.265000,
+  "tid": 1,
+  "pid": "CPU Functions",
+  "args": {}
+},
+
+{
+  "name": "aten::copy_",
+  "ph": "X",
+  "ts": 18.707000,
+  "dur": 12.856000,
+  "tid": 1,
+  "pid": "CPU Functions",
+  "args": {}
+},
+
+{
+  "name": "aten::_to_copy",
+  "ph": "X",
+  "ts": 14.318000,
+  "dur": 17.675000,
+  "tid": 1,
+  "pid": "CPU Functions",
+  "args": {}
+},
+
+{
+  "name": "aten::to",
+  "ph": "X",
+  "ts": 13.637000,
+  "dur": 18.607000,
+  "tid": 1,
+  "pid": "CPU Functions",
+  "args": {}
+}]

@@ -35,9 +35,10 @@ BACKENDS = [
 
 class BenchmarkMetrics(BaseModel):
     config: dict[str, Any]
+    total_time: float  # in seconds
     date: str
-    latencies: list[float]
-    avg_latency: float
+    latencies: list[float]  # in seconds
+    avg_latency: float  # in seconds
     avg_throughput: float
 
 
@@ -72,6 +73,10 @@ def benchmark(args: argparse.Namespace) -> None:
     Args:
         args: Arguments from CLI.
     """
+    start = torch.cuda.Event(enable_timing=True)
+    end = torch.cuda.Event(enable_timing=True)
+    start.record()
+
     current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
@@ -115,24 +120,22 @@ def benchmark(args: argparse.Namespace) -> None:
     print(f"Start timing using backend {args.backend} ...")
     torch.cuda.synchronize()
     # Recorded in milliseconds
-    start = torch.cuda.Event(enable_timing=True)
-    end = torch.cuda.Event(enable_timing=True)
     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
     end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
 
     with torch.no_grad():
-        start.record()
         for i in tqdm(range(args.runs)):
 
             if args.backend == "tensorrt" and (i % args.profiler_iter) == 0:
                 # Hack for enabling profiling
                 # https://github.com/pytorch/TensorRT/issues/1467
-                # Records traces in milliseconds
-                # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
                 profiling_dir = (
                     f"{args.result_dir}/{args.model}/profiling_{current_dt}/iter_{i}"
                 )
                 Path(profiling_dir).mkdir(exist_ok=True, parents=True)
+
+                # Records traces in milliseconds
+                # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
                 list(model.named_children())[0][1].enable_profiling(
                     profiling_results_dir=profiling_dir
                 )
@@ -147,19 +150,22 @@ def benchmark(args: argparse.Namespace) -> None:
     timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
     avg_throughput = args.input_shape[0] / np.mean(timings)
     print("Benchmarking complete ...")
-    print(f"Total time for experiment: {start.elapsed_time(end) * 1.0e-3} sec")
+    # Convert milliseconds to seconds
+    total_exp_time = start.elapsed_time(end) * 1.0e-3
+    print(f"Total time for experiment: {total_exp_time} sec")
 
     results = BenchmarkMetrics(
         config=vars(args),
+        total_time=total_exp_time,  # in seconds
         date=current_dt,
-        latencies=timings,
+        latencies=timings,  # in seconds
         avg_throughput=avg_throughput,
-        avg_latency=np.mean(timings),
+        avg_latency=np.mean(timings),  # in seconds
     )
 
     if args.save_result:
         save_dir = f"{args.result_dir}/{args.model}"
-        Path(save_dir).mkdir(exist_ok=True)
+        Path(save_dir).mkdir(exist_ok=True, parents=True)
         file_name = f"{args.model}_{args.backend}_{current_dt}.json"
         file_path = f"{save_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
@@ -168,7 +174,7 @@ def benchmark(args: argparse.Namespace) -> None:
     print(results)
     if args.backend == "tensorrt":
         print(
-            f"View the results of trace for {profiling_dir}/'_run_on_acc_0_engine_engine_exectuion_profile.trace' "
+            f"View the results of trace for '{profiling_dir}/_run_on_acc_0_engine_engine_exectuion_profile.trace' "
             "in UI at https://ui.perfetto.dev "
         )
 
