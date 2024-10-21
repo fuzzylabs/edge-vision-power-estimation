@@ -35,6 +35,23 @@ source .venv/bin/activate
 uv pip install -r pyproject.toml
 ```
 
+### Docker
+
+> Note: Size of Docker image `nvcr.io/nvidia/pytorch:24.09-py3` is around 9 GB.
+
+```bash
+docker run --gpus all -it --rm -v $(pwd)/:/workspace/  nvcr.io/nvidia/pytorch:24.09-py3
+```
+
+Inside docker container run the benchmark script using following command,
+
+```bash
+cd torch_trt
+python benchmark.py --model mobilenet_v2 --backend pytorch --save-result
+```
+
+> Note: Replace `uv` in following commands with `python` if running the script inside docker container.
+
 ### Run the benchmark script
 
 For example let us run the benchmark script using Mobilenetv2 model from [pytorch hub](https://pytorch.org/hub/pytorch_vision_mobilenet_v2/)
@@ -85,21 +102,6 @@ uv run viz.py --model-dir results/resnet18
 The comparison plots for each model are saved nder the `results/model_name` directory. An example of `resnet18` model shown below.
 
 ![Latency and Throughput](./results/resnet18/latency_throughput.png)
-
-### Docker
-
-> Note: Size of Docker image `nvcr.io/nvidia/pytorch:24.09-py3` is around 9 GB.
-
-```bash
-docker run --gpus all -it --rm -v $(pwd)/:/workspace/  nvcr.io/nvidia/pytorch:24.09-py3
-```
-
-Inside docker container run the benchmark script using following command,
-
-```bash
-cd torch_trt
-python benchmark.py --model mobilenet_v2 --backend pytorch --save-result
-```
 
 ## Notes and Limitations
 
