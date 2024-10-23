@@ -1,3 +1,5 @@
+"""Script for collecting power usage during the inference cycle of a given CNN model.."""
+
 from multiprocessing import Process, Event
 from multiprocessing.synchronize import Event as EventClass
 from time import perf_counter
