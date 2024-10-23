@@ -2,9 +2,10 @@ from multiprocessing import Process, Event
 from multiprocessing.synchronize import Event as EventClass
 from time import perf_counter
 import argparse
+from pathlib import Path
 
 
-def power_logging(event: EventClass, args: argparse.Namespace) -> None:
+def power_logging(event: EventClass, args: argparse.Namespace) -> list[str]:
     """
     Read voltage, current and power from sys file. 
 
@@ -12,25 +13,26 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
         event: An object that manages a flag for communication among processes.
         args: Arguments from CLI.
     """
-    with open(args.log_file, "w") as f:
-        start_time = perf_counter()
+    Path(args.result_dir).mkdir(exist_ok=True, parents=True)
 
-        while not event.is_set():
-            with open("", "r") as voltage_file: # Replace with sys file path 
-                voltage = float(voltage_file.read())
-            with open("", "r") as current_file: # Replace with sys file path 
-                current = float(current_file.read())
+    logs = []
+    start_time = perf_counter()
 
-            power = (voltage * current)
-            timestamp = perf_counter() - start_time
+    while not event.is_set():
+        with open("", "r") as vdd_in: # vdd_in is global power consumption of the board
+            mW = float(vdd_in.read())
 
-            f.write(f"{timestamp},{voltage},{current},{power}\n")
+        timestamp = perf_counter() - start_time
+        logs.append(f"{timestamp},{mW}\n")
 
-            # For now stop after 5 seconds
-            if perf_counter() - start_time > 5:
-                event.set()
-            # The above will be moved to the inference function later
-            # where an event will be set after inference has finished. 
+        # For now stop after 5 seconds
+        if perf_counter() - start_time > 5:
+            event.set()
+        # The above will be moved to the inference function later
+        # where an event will be set after inference has finished.
+    
+    with open(f"{args.result_dir}/{start_time}", "w") as f:
+        f.writelines(logs)
 
 
 if __name__ == "__main__":
@@ -39,9 +41,10 @@ if __name__ == "__main__":
         description="Collect power usage data during inference cycles for ImageNet pretrained CNN models."
     )
     parser.add_argument(
-        "--log-file-output-path",
+        "--result-dir",
         type=str,
-        help="The path of the log file output."
+        default="results",
+        help="The directory to save the log result."
     )
     args = parser.parse_args()
 
