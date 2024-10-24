@@ -97,7 +97,7 @@ uv run viz.py --model-dir results/mobilenet_v2
 uv run viz.py --model-dir results/resnet18
 ```
 
-The comparison plots for each model are saved nder the `results/model_name` directory. An example of `mobilenetv2` model shown below.
+The comparison plots for each model are saved under the `results/model_name` directory. An example of `mobilenetv2` model shown below.
 
 ![Latency and Throughput](./results/mobilenet_v2/latency_throughput.png)
 

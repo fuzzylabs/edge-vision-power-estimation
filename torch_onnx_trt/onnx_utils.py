@@ -8,7 +8,6 @@ import torch
 import numpy as np
 from pydantic import BaseModel
 import onnxruntime as ort
-import tensorrt as trt
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 DTYPE_MAPPING = {"float32": "fp32", "float16": "fp16", "bfloat16": "bfp16"}
