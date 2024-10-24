@@ -100,3 +100,9 @@ uv run viz.py --model-dir results/resnet18
 The comparison plots for each model are saved nder the `results/model_name` directory. An example of `mobilenetv2` model shown below.
 
 ![Latency and Throughput](./results/mobilenet_v2/latency_throughput.png)
+
+## Notes and Limitations
+
+* We are limited by the support of [ONNX Operators](https://github.com/onnx/onnx-tensorrt/blob/main/docs/operators.md) using this approach.
+
+* ONNX Runtime also supports [TensorRT](https://onnxruntime.ai/docs/execution-providers/TensorRT-ExecutionProvider.html) as it's execution provider. We don't have to write a TensorRT Python API inference runtime and engine builder ourselves. ONNX runtime would take care of it for us. This approach is not tested.
