@@ -2,9 +2,10 @@
 
 from multiprocessing import Process, Event
 from multiprocessing.synchronize import Event as EventClass
-from time import perf_counter
+from time import time
 import argparse
 from pathlib import Path
+from datetime import datetime
 
 
 def power_logging(event: EventClass, args: argparse.Namespace) -> None:
@@ -18,24 +19,25 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
     Path(args.result_dir).mkdir(exist_ok=True, parents=True)
 
     logs = []
-    start_time = perf_counter()
+    start_time = time()  # Current Unix timestamp
 
     while not event.is_set():
         with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as vdd_in: # vdd_in is global power consumption of the board
             mW = float(vdd_in.read())
 
-        timestamp = perf_counter() - start_time
-        logs.append(f"{timestamp},{mW}\n")
+        current_time = datetime.now().strftime("%H:%M:%S.%f")  # Time with seconds and microseconds
+        logs.append(f"{current_time},{mW}\n")  # Log the time and power
 
         # For now stop after 5 seconds
-        if perf_counter() - start_time > 5:
+        if time() - start_time > 5:
             event.set()
         # The above will be moved to the inference function later
         # where an event will be set after inference has finished.
 
-    with open(f"{args.result_dir}/{start_time}.log", "w") as f:
-        f.writelines(logs)
 
+    current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
+    with open(f"{args.result_dir}/power_log_{current_dt}.log", "w") as f:
+        f.writelines(logs)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
