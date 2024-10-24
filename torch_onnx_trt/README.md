@@ -46,8 +46,57 @@ pip install onnxruntime-gpu==1.19.2
 
 ### Run the benchmark script
 
-For example let us run the benchmark script using `Mobilenetv2` model from [pytorch hub](https://pytorch.org/hub/pytorch_vision_mobilenet_v2/)
+For example let us run the benchmark script using Mobilenetv2 model from [pytorch hub](https://pytorch.org/hub/pytorch_vision_mobilenet_v2/)
 
 ```bash
 uv run benchmark.py --model mobilenet_v2 --backend onnx --save-result
+# Build tensorrt engine
+uv run trt/build_engine.py --onnx models/mobilnet_v2/mobilnet_v2_fp16.onnx
+# Use tensorrt backend
+uv run benchmark.py --model mobilenet_v2 --backend tensorrt --save-result
 ```
+
+> Note: We first have to build a TensorRT engine using [build_engine.py](./trt/build_engine.py) script and the run benchmark using the TensorRT engine.
+
+### Visualize TensorRT profiler
+
+```bash
+# By default alexnet model is used
+uv run viz_profiler.py
+
+# Mobilenetv2 model 
+uv run viz_profiler.py --profiler-dir results/mobilenet_v2/trt_profiling
+
+# Resnet18 model 
+uv run viz_profiler.py --profiler-dir results/resnet18/trt_profiling
+```
+
+An example output is shown below. The table shows following information for TensorRT model
+
+* Layer Name
+* Input Dimension
+* Output Dimension
+* Average Latency for layer (milliseconds)
+
+![Layerwise Latency](./assets/layer_wise_latency.png)
+
+There are boxplots for various model under the `results/model_name` directory. The boxplot plots layer-wise latency for each layer of the TensorRT model. An example of `resnet18` model shown below.
+
+![Layerwise Latency](./results/resnet18/trt_layer_latencies_boxplot.png)
+
+### Visualize latency and throughput across backends
+
+```bash
+# By default alexnet model is used
+uv run viz.py
+
+# Mobilenetv2 model 
+uv run viz.py --model-dir results/mobilenet_v2
+
+# Resnet18 model 
+uv run viz.py --model-dir results/resnet18
+```
+
+The comparison plots for each model are saved nder the `results/model_name` directory. An example of `mobilenetv2` model shown below.
+
+![Latency and Throughput](./results/mobilenet_v2/latency_throughput.png)
