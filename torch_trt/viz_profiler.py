@@ -59,7 +59,9 @@ def load_trace_data(profiler_dir: str) -> dict[str, LayerInfo]:
 
         for layer in data:
             layer_name = layer["name"]
-            duration = round(layer["dur"] / 1e3, 3)
+            # Assuming the recorded time is in milliseconds for the trace
+            # Note: I think it's in microseconds
+            duration = layer["dur"]
             if layer_name not in layer_data:
                 layer_data[layer_name] = LayerInfo(
                     layer_name=layer_name,
@@ -141,8 +143,8 @@ def plot_layer_name_latencies(layer_infos: list[LayerInfo], save_fig_dir: str) -
     sns.boxplot(x="Layer Name", y="Latency", data=df)
     plt.xticks(rotation=45, ha="right")
     plt.xlabel("Layer Name")
-    plt.ylabel("Latency (sec)")
-    plt.title("Layer-wise Latencies")
+    plt.ylabel("Latency (ms)")
+    plt.title("Layer-wise Latencies (in ms)")
     plt.savefig(save_path, dpi=300)
     print(f"Saved boxplot to {save_path}")
 
@@ -165,7 +167,7 @@ def layer_information(model_name: str, layer_infos: list[LayerInfo]) -> Table:
     table.add_column("Layer Type", style="red")
     table.add_column("Input Dimension", style="cyan")
     table.add_column("Output Dimension", style="blue")
-    table.add_column("Average Latency (sec)", justify="right", style="green")
+    table.add_column("Average Latency (ms)", justify="right", style="green")
 
     for layer in layer_infos:
         table.add_row(
@@ -173,7 +175,7 @@ def layer_information(model_name: str, layer_infos: list[LayerInfo]) -> Table:
             layer.layer_type,
             str(layer.input_dimension),
             str(layer.output_dimension),
-            str(round(np.mean(layer.latencies), 3)),
+            str(round(np.mean(layer.latencies), 5)),
         )
     return table
 

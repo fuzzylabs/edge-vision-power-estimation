@@ -1,0 +1,979 @@
+{
+    "Layers": [
+        {
+            "Name": "Reformatting CopyNode for Input Tensor 0 to /features/features.0/Conv + /features/features.1/Relu",
+            "LayerType": "Reformat",
+            "Inputs": [
+                {
+                    "Name": "input",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        3,
+                        224,
+                        224
+                    ],
+                    "Format/Datatype": "Row major linear FP16 format"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "Reformatted Input Tensor 0 to /features/features.0/Conv + /features/features.1/Relu",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        3,
+                        224,
+                        224
+                    ],
+                    "Format/Datatype": "Channel major FP32 format"
+                }
+            ],
+            "ParameterType": "Reformat",
+            "Origin": "REFORMAT",
+            "TacticValue": "0x00000000000003e8",
+            "StreamId": 0,
+            "Metadata": ""
+        },
+        {
+            "Name": "/features/features.0/Conv + /features/features.1/Relu",
+            "LayerType": "CaskConvolution",
+            "Inputs": [
+                {
+                    "Name": "Reformatted Input Tensor 0 to /features/features.0/Conv + /features/features.1/Relu",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        3,
+                        224,
+                        224
+                    ],
+                    "Format/Datatype": "Channel major FP32 format"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.1/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        64,
+                        55,
+                        55
+                    ],
+                    "Format/Datatype": "Channel major FP32 format"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                11,
+                11
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                2,
+                2
+            ],
+            "PostPadding": [
+                2,
+                2
+            ],
+            "Stride": [
+                4,
+                4
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 64,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 23232
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 64
+            },
+            "HasBias": 1,
+            "HasReLU": 1,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "RELU",
+            "TacticName": "sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_f32f32_tf32f32_f32_nhwckrsc_nhwc_tilesize128x32x16_stage1_warpsize4x1x1_g1_tensor16x8x8_aligna4_alignc4",
+            "TacticValue": "0xf231cca3335919a4",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.0/Conv]\u001e[ONNX Layer: /features/features.1/Relu]"
+        },
+        {
+            "Name": "Reformatting CopyNode for Input Tensor 0 to /features/features.2/MaxPool",
+            "LayerType": "NoOp",
+            "Inputs": [
+                {
+                    "Name": "/features/features.1/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        64,
+                        55,
+                        55
+                    ],
+                    "Format/Datatype": "Channel major FP32 format"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "Reformatted Input Tensor 0 to /features/features.2/MaxPool",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        64,
+                        55,
+                        55
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "TacticValue": "0x0000000000000000",
+            "StreamId": 0,
+            "Metadata": ""
+        },
+        {
+            "Name": "/features/features.2/MaxPool",
+            "LayerType": "CaskPooling",
+            "Inputs": [
+                {
+                    "Name": "Reformatted Input Tensor 0 to /features/features.2/MaxPool",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        64,
+                        55,
+                        55
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.2/MaxPool_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        64,
+                        27,
+                        27
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "ParameterType": "Pooling",
+            "PoolingType": "MAX",
+            "WindowSize": [
+                3,
+                3
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                0,
+                0
+            ],
+            "PostPadding": [
+                0,
+                0
+            ],
+            "Stride": [
+                2,
+                2
+            ],
+            "BlendFactor": 0,
+            "AverageCountExcludesPadding": 1,
+            "TacticName": "sm50_xmma_pooling_max_nhwc_FP32FP32_WINDOWSIZE_3_NOT_PROPAGATE_NAN_2D",
+            "TacticValue": "0x789b2859f2e03e79",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.2/MaxPool]"
+        },
+        {
+            "Name": "/features/features.3/Conv + /features/features.4/Relu",
+            "LayerType": "CaskConvolution",
+            "Inputs": [
+                {
+                    "Name": "/features/features.2/MaxPool_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        64,
+                        27,
+                        27
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.4/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        192,
+                        27,
+                        27
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                5,
+                5
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                2,
+                2
+            ],
+            "PostPadding": [
+                2,
+                2
+            ],
+            "Stride": [
+                1,
+                1
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 192,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 307200
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 192
+            },
+            "HasBias": 1,
+            "HasReLU": 1,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "RELU",
+            "TacticName": "sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_f32f32_tf32f32_f32_nhwckrsc_nhwc_tilesize128x16x64_stage1_warpsize4x1x1_g1_tensor16x8x8",
+            "TacticValue": "0x10383a0781d24dde",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.3/Conv]\u001e[ONNX Layer: /features/features.4/Relu]"
+        },
+        {
+            "Name": "/features/features.5/MaxPool",
+            "LayerType": "CaskPooling",
+            "Inputs": [
+                {
+                    "Name": "/features/features.4/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        192,
+                        27,
+                        27
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.5/MaxPool_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        192,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "ParameterType": "Pooling",
+            "PoolingType": "MAX",
+            "WindowSize": [
+                3,
+                3
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                0,
+                0
+            ],
+            "PostPadding": [
+                0,
+                0
+            ],
+            "Stride": [
+                2,
+                2
+            ],
+            "BlendFactor": 0,
+            "AverageCountExcludesPadding": 1,
+            "TacticName": "sm50_xmma_pooling_max_nhwc_FP32FP32_WINDOWSIZE_3_NOT_PROPAGATE_NAN_2D",
+            "TacticValue": "0x789b2859f2e03e79",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.5/MaxPool]"
+        },
+        {
+            "Name": "Reformatting CopyNode for Input Tensor 0 to /features/features.6/Conv + /features/features.7/Relu",
+            "LayerType": "Reformat",
+            "Inputs": [
+                {
+                    "Name": "/features/features.5/MaxPool_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        192,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Channel major FP32 format where channel % 4 == 0"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "Reformatted Input Tensor 0 to /features/features.6/Conv + /features/features.7/Relu",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        192,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Reformat",
+            "Origin": "REFORMAT",
+            "TacticValue": "0x0000000000000000",
+            "StreamId": 0,
+            "Metadata": ""
+        },
+        {
+            "Name": "/features/features.6/Conv + /features/features.7/Relu",
+            "LayerType": "CaskConvolution",
+            "Inputs": [
+                {
+                    "Name": "Reformatted Input Tensor 0 to /features/features.6/Conv + /features/features.7/Relu",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        192,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.7/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        384,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                3,
+                3
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                1,
+                1
+            ],
+            "PostPadding": [
+                1,
+                1
+            ],
+            "Stride": [
+                1,
+                1
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 384,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 663552
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 384
+            },
+            "HasBias": 1,
+            "HasReLU": 1,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "RELU",
+            "TacticName": "ampere_scudnn_winograd_128x128_ldg1_ldg4_relu_tile148t_nt_v1",
+            "TacticValue": "0x94119b4c514b211a",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.6/Conv]\u001e[ONNX Layer: /features/features.7/Relu]"
+        },
+        {
+            "Name": "/features/features.8/Conv + /features/features.9/Relu",
+            "LayerType": "CaskConvolution",
+            "Inputs": [
+                {
+                    "Name": "/features/features.7/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        384,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.9/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        256,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                3,
+                3
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                1,
+                1
+            ],
+            "PostPadding": [
+                1,
+                1
+            ],
+            "Stride": [
+                1,
+                1
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 256,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 884736
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 256
+            },
+            "HasBias": 1,
+            "HasReLU": 1,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "RELU",
+            "TacticName": "ampere_scudnn_winograd_128x128_ldg1_ldg4_relu_tile148t_nt_v1",
+            "TacticValue": "0x94119b4c514b211a",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.8/Conv]\u001e[ONNX Layer: /features/features.9/Relu]"
+        },
+        {
+            "Name": "/features/features.10/Conv + /features/features.11/Relu",
+            "LayerType": "CaskConvolution",
+            "Inputs": [
+                {
+                    "Name": "/features/features.9/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        256,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.11/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        256,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                3,
+                3
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                1,
+                1
+            ],
+            "PostPadding": [
+                1,
+                1
+            ],
+            "Stride": [
+                1,
+                1
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 256,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 589824
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 256
+            },
+            "HasBias": 1,
+            "HasReLU": 1,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "RELU",
+            "TacticName": "ampere_scudnn_winograd_128x128_ldg1_ldg4_relu_tile148t_nt_v1",
+            "TacticValue": "0x94119b4c514b211a",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.10/Conv]\u001e[ONNX Layer: /features/features.11/Relu]"
+        },
+        {
+            "Name": "/features/features.12/MaxPool",
+            "LayerType": "CaskPooling",
+            "Inputs": [
+                {
+                    "Name": "/features/features.11/Relu_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        256,
+                        13,
+                        13
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/features/features.12/MaxPool_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        256,
+                        6,
+                        6
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Pooling",
+            "PoolingType": "MAX",
+            "WindowSize": [
+                3,
+                3
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                0,
+                0
+            ],
+            "PostPadding": [
+                0,
+                0
+            ],
+            "Stride": [
+                2,
+                2
+            ],
+            "BlendFactor": 0,
+            "AverageCountExcludesPadding": 1,
+            "TacticName": "sm50_xmma_pooling_tiled_FP32NCHW_kMAX_tP7_tQ7_tR3_tS3_tU2_tV2_tUnroll3_tThreads225",
+            "TacticValue": "0x552fb57ee00d44f2",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /features/features.12/MaxPool]"
+        },
+        {
+            "Name": "/Flatten + reshape_before_/classifier/classifier.1/Gemm",
+            "LayerType": "NoOp",
+            "Inputs": [
+                {
+                    "Name": "/features/features.12/MaxPool_output_0",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        256,
+                        6,
+                        6
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "reshape_before_/classifier/classifier.1/Gemm",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        9216,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "TacticValue": "0x0000000000000000",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /Flatten]\u001e[ONNX Layer: /classifier/classifier.1/Gemm]"
+        },
+        {
+            "Name": "/classifier/classifier.1/Gemm + (Unnamed Layer* 25) [ElementWise] + /classifier/classifier.2/Relu",
+            "LayerType": "CaskGemmConvolution",
+            "Inputs": [
+                {
+                    "Name": "reshape_before_/classifier/classifier.1/Gemm",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        9216,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/classifier/classifier.2/Relu_out_tensor",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        4096,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                1,
+                1
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                0,
+                0
+            ],
+            "PostPadding": [
+                0,
+                0
+            ],
+            "Stride": [
+                1,
+                1
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 4096,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 37748736
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 4096
+            },
+            "HasBias": 1,
+            "HasReLU": 1,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "RELU",
+            "TacticName": "sm50_xmma_cublas_gemvx_f32f32_f32_f32_tn_n_int32_unit_n_launch_param4x32x32_strided_unit_stride",
+            "TacticValue": "0x00000000000206f4",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /classifier/classifier.1/Gemm]\u001e[ONNX Layer: /classifier/classifier.2/Relu]"
+        },
+        {
+            "Name": "/classifier/classifier.4/Gemm + (Unnamed Layer* 31) [ElementWise] + /classifier/classifier.5/Relu",
+            "LayerType": "CaskGemmConvolution",
+            "Inputs": [
+                {
+                    "Name": "/classifier/classifier.2/Relu_out_tensor",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        4096,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/classifier/classifier.5/Relu_out_tensor",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        4096,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                1,
+                1
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                0,
+                0
+            ],
+            "PostPadding": [
+                0,
+                0
+            ],
+            "Stride": [
+                1,
+                1
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 4096,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 16777216
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 4096
+            },
+            "HasBias": 1,
+            "HasReLU": 1,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "RELU",
+            "TacticName": "sm50_xmma_cublas_gemvx_f32f32_f32_f32_tn_n_int32_unit_n_launch_param4x32x32_strided_unit_stride",
+            "TacticValue": "0x00000000000206f4",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /classifier/classifier.4/Gemm]\u001e[ONNX Layer: /classifier/classifier.5/Relu]"
+        },
+        {
+            "Name": "/classifier/classifier.6/Gemm + (Unnamed Layer* 37) [ElementWise]",
+            "LayerType": "CaskGemmConvolution",
+            "Inputs": [
+                {
+                    "Name": "/classifier/classifier.5/Relu_out_tensor",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        4096,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "/classifier/classifier.6/Gemm_conv_out",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        1000,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "ParameterType": "Convolution",
+            "Kernel": [
+                1,
+                1
+            ],
+            "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+            "PrePadding": [
+                0,
+                0
+            ],
+            "PostPadding": [
+                0,
+                0
+            ],
+            "Stride": [
+                1,
+                1
+            ],
+            "Dilation": [
+                1,
+                1
+            ],
+            "OutMaps": 1000,
+            "Groups": 1,
+            "Weights": {
+                "Type": "Float",
+                "Count": 4096000
+            },
+            "Bias": {
+                "Type": "Float",
+                "Count": 1000
+            },
+            "HasBias": 1,
+            "HasReLU": 0,
+            "HasSparseWeights": 0,
+            "HasDynamicFilter": 0,
+            "HasDynamicBias": 0,
+            "HasResidual": 0,
+            "ConvXAsActInputIdx": -1,
+            "BiasAsActInputIdx": -1,
+            "ResAsActInputIdx": -1,
+            "Activation": "NONE",
+            "TacticName": "sm50_xmma_cublas_gemvx_f32f32_f32_f32_nn_n_int32_unit_n_launch_param64x8x1_strided_unit_stride",
+            "TacticValue": "0x00000000000203e9",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /classifier/classifier.6/Gemm]"
+        },
+        {
+            "Name": "reshape_after_/classifier/classifier.6/Gemm",
+            "LayerType": "NoOp",
+            "Inputs": [
+                {
+                    "Name": "/classifier/classifier.6/Gemm_conv_out",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        1000,
+                        1,
+                        1
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "Reformatted Output Tensor 0 to reshape_after_/classifier/classifier.6/Gemm",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        1000
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "TacticValue": "0x0000000000000000",
+            "StreamId": 0,
+            "Metadata": "[ONNX Layer: /classifier/classifier.6/Gemm]"
+        },
+        {
+            "Name": "Reformatting CopyNode for Output Tensor 0 to reshape_after_/classifier/classifier.6/Gemm",
+            "LayerType": "Reformat",
+            "Inputs": [
+                {
+                    "Name": "Reformatted Output Tensor 0 to reshape_after_/classifier/classifier.6/Gemm",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        1000
+                    ],
+                    "Format/Datatype": "Row major linear FP32"
+                }
+            ],
+            "Outputs": [
+                {
+                    "Name": "output",
+                    "Location": "Device",
+                    "Dimensions": [
+                        1,
+                        1000
+                    ],
+                    "Format/Datatype": "Row major linear FP16 format"
+                }
+            ],
+            "ParameterType": "Reformat",
+            "Origin": "REFORMAT",
+            "TacticValue": "0x00000000000003e8",
+            "StreamId": 0,
+            "Metadata": ""
+        }
+    ],
+    "Bindings": [
+        "input",
+        "output"
+    ]
+}

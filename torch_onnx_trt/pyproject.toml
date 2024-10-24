@@ -1,0 +1,21 @@
+[project]
+name = "torch-onnx-trt"
+version = "0.1.0"
+description = "Benchmark and visualize latency, throughput and layer-wise latency for CNN models."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "matplotlib>=3.9.2",
+    "numpy>=2.0.2",
+    "pandas>=2.2.3",
+    "pydantic>=2.9.2",
+    "rich>=13.9.2",
+    "seaborn>=0.13.2",
+    "tensorrt==10.1.0",
+    "torch==2.4.1",
+    "torchvision==0.19.1",
+    "tqdm>=4.66.5",
+    "onnxruntime-gpu==1.19.2",
+    "onnx==1.17.0",
+    "cuda-python==12.6.0",
+]

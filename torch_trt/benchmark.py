@@ -36,7 +36,7 @@ BACKENDS = [
 class BenchmarkMetrics(BaseModel):
     config: dict[str, Any]
     total_time: float  # in seconds
-    date: str
+    timestamp: str
     latencies: list[float]  # in seconds
     avg_latency: float  # in seconds
     avg_throughput: float
@@ -157,7 +157,7 @@ def benchmark(args: argparse.Namespace) -> None:
     results = BenchmarkMetrics(
         config=vars(args),
         total_time=total_exp_time,  # in seconds
-        date=current_dt,
+        timestamp=current_dt,
         latencies=timings,  # in seconds
         avg_throughput=avg_throughput,
         avg_latency=np.mean(timings),  # in seconds

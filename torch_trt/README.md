@@ -16,7 +16,7 @@ Tested this on machine with following configuration
 
 ```txt
 Python - 3.11
-uv - 0.4.7
+uv - 0.4.25
 GPU - Nvidia GeForce RTX 3060 Mobile
 OS - Ubuntu 22.04.5 LTS
 ```
@@ -80,7 +80,7 @@ An example output is shown below. The table shows following information for Tens
 * Layer Name
 * Input Dimension
 * Output Dimension
-* Average Latency for layer (seconds)
+* Average Latency for layer (milliseconds)
 
 ![Layerwise Latency](./assets/layer_wise_latency.png)
 
