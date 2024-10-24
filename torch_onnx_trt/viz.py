@@ -85,9 +85,9 @@ def main(args: argparse.Namespace) -> None:
     Args:
         args: Arguments from CLI
     """
-    # Get last 3 benchmark files
+    # Get last 2 benchmark files
     # TODO: Limitation when multiple benchmark json files are present.
-    json_files = list(Path(args.model_dir).glob("*.json"))[:3]
+    json_files = list(Path(args.model_dir).glob("*.json"))[:2]
     df = create_dataframe(json_files)
     plot_latency_throughput(df, args.model_dir)
 

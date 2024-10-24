@@ -6,8 +6,8 @@ def setup_timing_cache(config: trt.IBuilderConfig, timing_cache_path: str):
     """Sets up the builder to use the timing cache file, and creates it if it does not already exist.
 
     Args:
-        config: _description_
-        timing_cache_path: _description_
+        config: Config used by trt engine builder
+        timing_cache_path: Path to save timing cache
     """
     buffer = b""
     if os.path.exists(timing_cache_path):
@@ -21,8 +21,8 @@ def save_timing_cache(config: trt.IBuilderConfig, timing_cache_path: str):
     """Saves the config's timing cache to file.
 
     Args:
-        config: _description_
-        timing_cache_path: _description_
+        config: Config used by trt engine builder
+        timing_cache_path: Path to save timing cache
     """
     timing_cache: trt.ITimingCache = config.get_timing_cache()
     with open(timing_cache_path, "wb") as timing_cache_file:

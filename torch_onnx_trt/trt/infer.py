@@ -8,6 +8,8 @@ import time
 
 
 class CustomProfiler(trt.IProfiler):
+    """Custom Profiler for logging layer-wise latency."""
+
     def __init__(self):
         trt.IProfiler.__init__(self)
         self.layers = {}

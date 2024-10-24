@@ -151,8 +151,8 @@ def memcpy_host_to_device(device_ptr: int, host_arr: np.ndarray):
     """Wrapper for cudaMemcpy which infers copy size and does error checking.
 
     Args:
-        device_ptr: _description_
-        host_arr: _description_
+        device_ptr: Target memory address on the GPU.
+        host_arr: Input numpy array to be moved to GPU
     """
     nbytes = host_arr.size * host_arr.itemsize
     cuda_call(
@@ -166,8 +166,8 @@ def memcpy_device_to_host(host_arr: np.ndarray, device_ptr: int):
     """Wrapper for cudaMemcpy which infers copy size and does error checking.
 
     Args:
-        host_arr: _description_
-        device_ptr: _description_
+        host_arr: Input numpy array to be moved to GPU
+        device_ptr: Target memory address on the GPU.
     """
     nbytes = host_arr.size * host_arr.itemsize
     cuda_call(
