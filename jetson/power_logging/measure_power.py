@@ -6,6 +6,9 @@ from time import time
 import argparse
 from pathlib import Path
 from datetime import datetime
+import torch
+from model import prepare_inference
+from tqdm import tqdm
 
 
 def power_logging(event: EventClass, args: argparse.Namespace) -> None:
@@ -39,6 +42,28 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
     with open(f"{args.result_dir}/power_log_{current_dt}.log", "w") as f:
         f.writelines(logs)
 
+
+def inference_process(
+    event: EventClass,
+    args: argparse.Namespace,
+    trt_model,
+    input_data
+):
+    print(f"Start timing inference cycles.")
+    torch.cuda.synchronize()
+    # Recorded in milliseconds
+    start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
+    end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
+
+    with torch.no_grad():
+        for i in tqdm(range(args.runs)):
+            start_events[i].record()
+            _ = model(input_data)
+            end_events[i].record()
+        torch.cuda.synchronize()
+    
+    timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="Power Logging for CNN Inference Cycle",
@@ -51,6 +76,8 @@ if __name__ == "__main__":
         help="The directory to save the log result."
     )
     args = parser.parse_args()
+
+    model, input_data = prepare_inference(args)
 
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))

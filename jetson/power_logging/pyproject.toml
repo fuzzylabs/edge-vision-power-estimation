@@ -4,4 +4,14 @@ version = "0.1.0"
 description = "Collect power usage data during inference cycles for ImageNet pretrained CNN models."
 readme = "README.md"
 requires-python = ">=3.11"
+<<<<<<< Updated upstream
 dependencies = []
+=======
+dependencies = [
+    "tensorrt==10.1.0",
+    "torch-tensorrt==2.4.0",
+    # Requires python version <= 3.11
+    "torch==2.4.1",
+    "torchvision==0.19.1",
+]
+>>>>>>> Stashed changes
