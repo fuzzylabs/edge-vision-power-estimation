@@ -7,7 +7,7 @@ import argparse
 from pathlib import Path
 
 
-def power_logging(event: EventClass, args: argparse.Namespace) -> list[str]:
+def power_logging(event: EventClass, args: argparse.Namespace) -> None:
     """
     Read voltage, current and power from sys file.
 
@@ -33,7 +33,7 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> list[str]:
         # The above will be moved to the inference function later
         # where an event will be set after inference has finished.
 
-    with open(f"{args.result_dir}/{start_time}", "w") as f:
+    with open(f"{args.result_dir}/{start_time}.log", "w") as f:
         f.writelines(logs)
 
 
