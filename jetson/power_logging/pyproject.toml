@@ -3,5 +3,5 @@ name = "power-logging"
 version = "0.1.0"
 description = "Collect power usage data during inference cycles for ImageNet pretrained CNN models."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = []

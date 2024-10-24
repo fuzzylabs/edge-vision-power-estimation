@@ -9,7 +9,7 @@ from pathlib import Path
 
 def power_logging(event: EventClass, args: argparse.Namespace) -> list[str]:
     """
-    Read voltage, current and power from sys file. 
+    Read voltage, current and power from sys file.
 
     Args:
         event: An object that manages a flag for communication among processes.
@@ -21,7 +21,7 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> list[str]:
     start_time = perf_counter()
 
     while not event.is_set():
-        with open("", "r") as vdd_in: # vdd_in is global power consumption of the board
+        with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as vdd_in: # vdd_in is global power consumption of the board
             mW = float(vdd_in.read())
 
         timestamp = perf_counter() - start_time
@@ -32,7 +32,7 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> list[str]:
             event.set()
         # The above will be moved to the inference function later
         # where an event will be set after inference has finished.
-    
+
     with open(f"{args.result_dir}/{start_time}", "w") as f:
         f.writelines(logs)
 
