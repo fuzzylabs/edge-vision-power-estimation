@@ -2,13 +2,10 @@
 
 from multiprocessing import Process, Event
 from multiprocessing.synchronize import Event as EventClass
-from time import time
 import argparse
 from pathlib import Path
 from datetime import datetime
-import torch
-from model import prepare_inference
-from tqdm import tqdm
+from model.benchmark import benchmark
 
 
 def power_logging(event: EventClass, args: argparse.Namespace) -> None:
@@ -27,7 +24,7 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
         with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as vdd_in: # vdd_in is global power consumption of the board
             mW = float(vdd_in.read())
 
-        current_time = datetime.now().strftime("%H:%M:%S.%f")  # Time with seconds and microseconds
+        current_time = datetime.now().strftime("%Y%m%d-%H:%M:%S.%f")  # Time with seconds and microseconds
         logs.append(f"{current_time},{mW}\n")  # Log the time and power
 
     current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -35,59 +32,21 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
         f.writelines(logs)
 
 
-def layer_hook(layer_name, layer, input, output):
-    current_time = datetime.now().strftime("%H:%M:%S.%f")
-    print(f"Layer: {layer_name}, Time: {current_time}")
-    
+def inference(
+    event: EventClass,
+    args: argparse.Namespace,
+) -> None:
+    """
+    Call the benchmark function to start inferencing cycles.
 
-def register_hooks(model):
-    hooks = []
-    for name, layer in model.named_modules():
-        hook = layer.register_forward_hook(lambda l, i, o: layer_hook(name, l, i, o))
-        hooks.append(hook)
-    return hooks
+    Save layer wise latency with time stamp.
 
-
-def inference(event, args, model, input_data):
-    print(f"Start timing inference cycles.")
-    torch.cuda.synchronize()
-
-    # Register hooks for layer timing
-    hooks = register_hooks(model)
-
-    with torch.no_grad():
-        for i in tqdm(range(args.runs)):
-            _ = model(input_data)
-        torch.cuda.synchronize()
-
-    # Remove hooks after inference
-    for hook in hooks:
-        hook.remove()
-
+    Args:
+        event: An object that manages a flag for communication among processes.
+        args: _Arguments from CLI.
+    """
+    benchmark(args)
     event.set()
-
-# def inference_process(
-#     event: EventClass,
-#     args: argparse.Namespace,
-#     model,
-#     input_data
-# ):
-#     print(f"Start timing inference cycles.")
-#     torch.cuda.synchronize()
-#     # Recorded in milliseconds
-#     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
-#     end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
-
-#     with torch.no_grad():
-#         for i in tqdm(range(args.runs)):
-#             start_events[i].record()
-#             _ = model(input_data)
-#             end_events[i].record()
-#         torch.cuda.synchronize()
-    
-#     event.set()
-    
-#     timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -97,7 +56,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model",
         type=str,
-        default="alexnet",
+        default="mobilenet_v2",
         help="Specify name of pretrained CNN model from PyTorch Hub."
         "For more information on PyTorch Hub visit: "
         "https://pytorch.org/hub/research-models",
@@ -118,6 +77,12 @@ if __name__ == "__main__":
         nargs="+",
         default=[1, 3, 224, 224],
         help="Input shape BCHW",
+    )
+    parser.add_argument(
+        "--warmup",
+        type=int,
+        default=50,
+        help="Number of iterations to perform warmup before benchmarking",
     )
     parser.add_argument(
         "--runs",
@@ -146,13 +111,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    model, input_data = prepare_inference(args)
-
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))
     power_logging_process.start()
 
-    inference_process = Process(target=inference, args=(event, args, model, input_data))
+    inference_process = Process(target=inference, args=(event, args))
     inference_process.start()
 
     power_logging_process.join()
