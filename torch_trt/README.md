@@ -83,7 +83,7 @@ An example output is shown below. The table shows following information for Tens
 * Layer Name
 * Input Dimension
 * Output Dimension
-* Average Latency for layer (in smilliseconds)
+* Average Latency for layer (in milliseconds)
 
 ![Layerwise Latency](./assets/layer_wise_latency.png)
 
