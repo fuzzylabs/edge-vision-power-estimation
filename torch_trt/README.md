@@ -8,7 +8,10 @@ There are 3 backends supported by benchmark script
 
 The latency and throughput for all the backends are stored in json file under `model_name` folder.
 
-For `tensorrt` backend we also store the profiling traces under the `model_name/profiling_{datetimestamp}` folder. We calculate layer-wise latency for `runs` (total number of runs to benchmark) iterations and save the trace every `profiler-iter` iterations to the disk.
+For `tensorrt` backend we also store the profiling traces under the `model_name/trt_profiling` folder. There are two JSON files saved as part of this backend:
+
+1. `trt_layer_latency.json`: This file contains layer-wise latency for each run. An example for alexnet model [here](./results/alexnet/trt_profiling/trt_layer_latency.json).
+2. `trt_engine_info.json`: This file contains detailed information for each layer in the TensorRT model including the number of weights, biases, filter, stride, and padding. An example for alexnet model [here](./results/alexnet/trt_profiling/trt_engine_info.json).
 
 > Note: The profiling trace for layer-wise latency of TensorRT models can be viewed at <https://ui.perfetto.dev/>.
 
@@ -69,10 +72,10 @@ uv run benchmark.py --model mobilenet_v2 --backend tensorrt --save-result
 uv run viz_profiler.py
 
 # Mobilenetv2 model 
-uv run viz_profiler.py --profiler-dir results/mobilenet_v2/profiling_20241021-160820
+uv run viz_profiler.py --profiler-dir results/mobilenet_v2/trt_profiling
 
 # Resnet18 model 
-uv run viz_profiler.py --profiler-dir results/resnet18/profiling_20241021-160906
+uv run viz_profiler.py --profiler-dir results/resnet18/trt_profiling
 ```
 
 An example output is shown below. The table shows following information for TensorRT model
@@ -80,13 +83,13 @@ An example output is shown below. The table shows following information for Tens
 * Layer Name
 * Input Dimension
 * Output Dimension
-* Average Latency for layer (milliseconds)
+* Average Latency for layer (in smilliseconds)
 
 ![Layerwise Latency](./assets/layer_wise_latency.png)
 
 There are boxplots for various model under the `results/model_name` directory. The boxplot plots layer-wise latency for each layer of the TensorRT model. An example of `resnet18` model shown below.
 
-![Layerwise Latency](./results/resnet18/layer_latencies_boxplot.png)
+![Layerwise Latency](./results/resnet18/trt_layer_latencies_boxplot.png)
 
 ### Visualize latency and throughput across backends
 
@@ -126,7 +129,7 @@ There were few notes/limitations regarding `Torch-Tensorrt` library.
 * Dynamo approach does not provide `INT` precision support at the moment.
 
 * `use_python_runtime` parameter to the compiler changes which profiler is being used.
-  * If set to `True`, it uses [PythonTorchTensorRTModule](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_PythonTorchTensorRTModule.py#L26C7-L26C32) as it's runtime. This approach _does not_ provide an option in it's [enable_profiling](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_PythonTorchTensorRTModule.py#L417) function to save the layer-wise latency. It instead just prints the traces on the stdout.
+  * If set to `True`, it uses [PythonTorchTensorRTModule](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_PythonTorchTensorRTModule.py#L26C7-L26C32) as it's runtime. This approach _does not_ provide an option in it's [enable_profiling](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_PythonTorchTensorRTModule.py#L417) function to save the layer-wise latency. It instead just prints the traces on the stdout. In our implementation, we have written [utility functions](./trt_utils.py) around this implementation to save layer-wise latency and tensorrt engine information to JSON files.
   * If set to `False`, it uses [TorchTensorRTModule](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_TorchTensorRTModule.py#L53) as it's runtime. This approach _does_ provide [option](https://github.com/pytorch/TensorRT/blob/d11ff5c14cb45c975b4a9698b211ebacf1a36bb7/py/torch_tensorrt/dynamo/runtime/_TorchTensorRTModule.py#L283) to store the profiling traces in a directory.
 
 * At present there's no clean way to profile as noted in one of the issues on the TensorRT repo : <https://github.com/pytorch/TensorRT/issues/1467>. We use a hacky approach to enable profiling as suggested in the comment on the issue.

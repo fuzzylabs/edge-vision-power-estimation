@@ -4,7 +4,6 @@ from .runtime import memcpy_device_to_host, memcpy_host_to_device, cuda_call
 import numpy as np
 from pathlib import Path
 import json
-import time
 
 
 class CustomProfiler(trt.IProfiler):
@@ -13,12 +12,10 @@ class CustomProfiler(trt.IProfiler):
     def __init__(self):
         trt.IProfiler.__init__(self)
         self.layers = {}
-        self.updates_count = 0
 
     def report_layer_time(self, layer_name, ms):
         if layer_name not in self.layers:
             self.layers[layer_name] = []
-            self.updates_count += 1
 
         self.layers[layer_name].append(ms)
 
@@ -102,7 +99,7 @@ class TensorRTInfer:
         with open(engine_json_path, "w") as fp:
             json.dump(json.loads(engine_json), fp, indent=4)
 
-    def save_layer_wise_profiling(self, layer_latency_dir: str) -> str:
+    def save_layer_wise_profiling(self, layer_latency_dir: str) -> None:
         layer_latency = self.context.profiler.layers
         # Save layer wise latency information
         layer_latency_path = Path(layer_latency_dir) / "trt_layer_latency.json"
@@ -137,15 +134,8 @@ class TensorRTInfer:
         # Prepare the output data
         output = np.zeros(*self.output_spec())
 
-        # st = time.perf_counter()
         # Process I/O and execute the network
         memcpy_host_to_device(self.inputs[0]["allocation"], np.ascontiguousarray(batch))
-        # print(f"Time taken moving 1: {time.perf_counter()-st} sec")
-        # st1 = time.perf_counter()
         self.context.execute_v2(self.allocations)
-        # print(f"Time taken inference: {time.perf_counter()-st1} sec")
-        # st2 = time.perf_counter()
         memcpy_device_to_host(output, self.outputs[0]["allocation"])
-        # print(f"Time taken moving 2: {time.perf_counter()-st2} sec")
-        # print(f"Time taken final: {time.perf_counter()-st} sec")
         return output

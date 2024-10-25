@@ -22,6 +22,7 @@ import numpy as np
 import argparse
 import json
 from pydantic import BaseModel
+from trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
 
 cudnn.benchmark = True
 
@@ -106,7 +107,7 @@ def benchmark(args: argparse.Namespace) -> None:
             # Set to True for verbose output
             debug=True,
             # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
-            use_python_runtime=False,
+            use_python_runtime=True,
         )
 
     print(f"Using {DEVICE=} for benchmarking")
@@ -126,19 +127,16 @@ def benchmark(args: argparse.Namespace) -> None:
     with torch.no_grad():
         for i in tqdm(range(args.runs)):
 
-            if args.backend == "tensorrt" and (i % args.profiler_iter) == 0:
+            if args.backend == "tensorrt":
                 # Hack for enabling profiling
                 # https://github.com/pytorch/TensorRT/issues/1467
-                profiling_dir = (
-                    f"{args.result_dir}/{args.model}/profiling_{current_dt}/iter_{i}"
-                )
+                profiling_dir = f"{args.result_dir}/{args.model}/trt_profiling"
                 Path(profiling_dir).mkdir(exist_ok=True, parents=True)
 
                 # Records traces in milliseconds
                 # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
-                list(model.named_children())[0][1].enable_profiling(
-                    profiling_results_dir=profiling_dir
-                )
+                mod = list(model.named_children())[0][1]
+                mod.enable_profiling(profiler=CustomProfiler())
 
             start_events[i].record()
             _ = model(input_data)
@@ -146,6 +144,12 @@ def benchmark(args: argparse.Namespace) -> None:
 
         end.record()
         torch.cuda.synchronize()
+
+    # Save layer-wise latency and engine information to json file.
+    if args.backend == "tensorrt":
+        save_layer_wise_profiling(mod, profiling_dir)
+        save_engine_info(mod, profiling_dir)
+
     # Convert milliseconds to seconds
     timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
     avg_throughput = args.input_shape[0] / np.mean(timings)
@@ -241,12 +245,6 @@ if __name__ == "__main__":
         type=int,
         default=5,
         help="Minimum number of operators per TRT-Engine Block",
-    )
-    parser.add_argument(
-        "--profiler-iter",
-        type=int,
-        default=20,
-        help="Save profile trace to disk for every 20 iteration.",
     )
     parser.add_argument(
         "--save-result",
