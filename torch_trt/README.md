@@ -13,8 +13,6 @@ For `tensorrt` backend we also store the profiling traces under the `model_name/
 1. `trt_layer_latency.json`: This file contains layer-wise latency for each run. An example for alexnet model [here](./results/alexnet/trt_profiling/trt_layer_latency.json).
 2. `trt_engine_info.json`: This file contains detailed information for each layer in the TensorRT model including the number of weights, biases, filter, stride, and padding. An example for alexnet model [here](./results/alexnet/trt_profiling/trt_engine_info.json).
 
-> Note: The profiling trace for layer-wise latency of TensorRT models can be viewed at <https://ui.perfetto.dev/>.
-
 Tested this on machine with following configuration
 
 ```txt

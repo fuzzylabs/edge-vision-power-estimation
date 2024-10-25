@@ -176,11 +176,6 @@ def benchmark(args: argparse.Namespace) -> None:
             json.dump(results.model_dump_json(indent=4), outfile)
 
     print(results)
-    if args.backend == "tensorrt":
-        print(
-            f"View the results of trace for '{profiling_dir}/_run_on_acc_0_engine_engine_exectuion_profile.trace' "
-            "in UI at https://ui.perfetto.dev "
-        )
 
 
 if __name__ == "__main__":
