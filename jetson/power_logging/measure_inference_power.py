@@ -53,6 +53,7 @@ def inference(
     benchmark(args)
     event.set()
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="Power Logging for CNN Inference Cycle",
