@@ -1,8 +1,14 @@
-# Power Consumption Estimation
+# Power Consumption Prediction
 
-## Power Consumption Measurement
+This project contains script to measure and estimate power consumption of ML models on Jetson device.
 
-We explore various approaches for measuring power consumption for CNN models.
+## Structure
 
-* [Torch-TensorRT](./torch_trt/README.md)
-* [PyTorch-ONNX-TensorRT](./torch_onnx_trt/README.md)
+```bash
+.
+├── desktop   # Power measurement benchmarking script for desktop
+├── jetson    # Power measurement benchmarking script for jetson
+└── README.md
+
+2 directories, 1 file
+```
