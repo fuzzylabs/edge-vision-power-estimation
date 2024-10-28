@@ -6,6 +6,9 @@ import argparse
 from pathlib import Path
 from datetime import datetime
 from model.benchmark import benchmark
+import multiprocessing
+
+multiprocessing.set_start_method('spawn', force=True)
 
 
 def power_logging(event: EventClass, args: argparse.Namespace) -> None:

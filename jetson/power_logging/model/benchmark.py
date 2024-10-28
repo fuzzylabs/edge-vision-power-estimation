@@ -22,7 +22,7 @@ import numpy as np
 import argparse
 import json
 from pydantic import BaseModel
-from trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
+from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
 
 
 cudnn.benchmark = True
