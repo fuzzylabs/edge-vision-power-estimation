@@ -9,7 +9,6 @@ from rich.table import Table
 import argparse
 from rich.markup import escape
 import numpy as np
-from tqdm import tqdm
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -39,8 +38,8 @@ def read_trace_file(file_path: str) -> Any:
     return data
 
 
-def load_trace_data(profiler_dir: str) -> dict[str, LayerInfo]:
-    """Extract latencies for each layer across multiple files.
+def load_trace_trt_data(profiler_dir: str) -> dict[str, LayerInfo]:
+    """Extract latencies for each layer across multiple files for TRT.
 
     Args:
         profiler_dir: Path to profiler and trace data
@@ -51,24 +50,18 @@ def load_trace_data(profiler_dir: str) -> dict[str, LayerInfo]:
     """
     layer_data: dict[str, LayerInfo] = {}
 
-    trace_file_paths = (
-        f"{profiler_dir}/*/_run_on_acc_0_engine_engine_exectuion_profile.trace"
-    )
-    for trace_file in tqdm(glob.glob(trace_file_paths), desc="Processing Trace Files"):
-        data = read_trace_file(trace_file)
-
-        for layer in data:
-            layer_name = layer["name"]
-            duration = round(layer["dur"] / 1e3, 3)
-            if layer_name not in layer_data:
-                layer_data[layer_name] = LayerInfo(
-                    layer_name=layer_name,
-                    layer_type="",
-                    input_dimension=[],
-                    output_dimension=[],
-                    latencies=[],
-                )
-            layer_data[layer_name].latencies.append(duration)
+    trace_file_path = f"{profiler_dir}/trt_layer_latency.json"
+    data = read_trace_file(trace_file_path)
+    for layer_name, latencies in data.items():
+        # Recorded in milliseconds
+        duration = [dur for dur in latencies]
+        layer_data[layer_name] = LayerInfo(
+            layer_name=layer_name,
+            layer_type="",
+            input_dimension=[],
+            output_dimension=[],
+            latencies=duration,
+        )
     return layer_data
 
 
@@ -85,7 +78,7 @@ def load_layer_metadata(
     Returns:
         List of all metadata related to layer
     """
-    layer_file_paths = f"{profiler_dir}/*/_run_on_acc_0_engine_layer_information.json"
+    layer_file_paths = f"{profiler_dir}/trt_engine_info.json"
     layer_file_path = glob.glob(layer_file_paths)[0]
     layer_info_data = read_trace_file(layer_file_path)
 
@@ -98,7 +91,7 @@ def load_layer_metadata(
     return list(layer_data.values())
 
 
-def load_layer_data(profiler_dir: str) -> list[LayerInfo]:
+def load_layer_data(profiler_dir: str, backend: str) -> list[LayerInfo]:
     """Extract layer and it's metadata from profiler data.
 
     Args:
@@ -107,7 +100,7 @@ def load_layer_data(profiler_dir: str) -> list[LayerInfo]:
     Returns:
         List of all metadata related to layer
     """
-    layer_data = load_trace_data(profiler_dir)
+    layer_data = load_trace_trt_data(profiler_dir)
     return load_layer_metadata(profiler_dir, layer_data)
 
 
@@ -128,21 +121,23 @@ def create_dataframe(layer_infos: list[LayerInfo]) -> pd.DataFrame:
     return df
 
 
-def plot_layer_name_latencies(layer_infos: list[LayerInfo], save_fig_dir: str) -> None:
+def plot_layer_name_latencies(
+    layer_infos: list[LayerInfo], save_fig_dir: str, backend: str
+) -> None:
     """Plot a boxplot for layer-wise latencies and save it to a file.
 
     Args:
         layer_infos: List of all metadata related to layer
         save_fig_dir: Directory to save figure.
     """
-    save_path = os.path.join(save_fig_dir, "layer_latencies_boxplot.png")
+    save_path = os.path.join(save_fig_dir, f"{backend}_layer_latencies_boxplot.png")
     df = create_dataframe(layer_infos)
     plt.figure(figsize=(25, 25))
     sns.boxplot(x="Layer Name", y="Latency", data=df)
     plt.xticks(rotation=45, ha="right")
     plt.xlabel("Layer Name")
-    plt.ylabel("Latency (sec)")
-    plt.title("Layer-wise Latencies")
+    plt.ylabel("Latency (ms)")
+    plt.title("Layer-wise Latencies (in ms)")
     plt.savefig(save_path, dpi=300)
     print(f"Saved boxplot to {save_path}")
 
@@ -165,7 +160,7 @@ def layer_information(model_name: str, layer_infos: list[LayerInfo]) -> Table:
     table.add_column("Layer Type", style="red")
     table.add_column("Input Dimension", style="cyan")
     table.add_column("Output Dimension", style="blue")
-    table.add_column("Average Latency (sec)", justify="right", style="green")
+    table.add_column("Average Latency (ms)", justify="right", style="green")
 
     for layer in layer_infos:
         table.add_row(
@@ -173,9 +168,24 @@ def layer_information(model_name: str, layer_infos: list[LayerInfo]) -> Table:
             layer.layer_type,
             str(layer.input_dimension),
             str(layer.output_dimension),
-            str(round(np.mean(layer.latencies), 3)),
+            str(round(np.mean(layer.latencies), 5)),
         )
     return table
+
+
+def parse_trace_dir(dir: str) -> tuple[str, str]:
+    """Parse TensorRT trace directory to extract model name and backend.
+
+    Args:
+        dir: Directory containing tensorrt trace file.
+
+    Returns:
+        A tuple containing string of model name and backend
+    """
+    names = dir.split("/")
+    model_name = names[1]
+    backend = names[2].split("_")[0]
+    return model_name.capitalize(), backend
 
 
 def main(args: argparse.Namespace) -> None:
@@ -185,15 +195,15 @@ def main(args: argparse.Namespace) -> None:
         args: Arguments from CLI
     """
     console = Console()
-    model_name = str(args.profiler_dir.split("/")[1]).capitalize()
+    model_name, backend = parse_trace_dir(str(args.profiler_dir))
     save_fig_dir = "/".join(args.profiler_dir.split("/")[:2])
 
     # Show layer information and latency
-    layer_infos = load_layer_data(args.profiler_dir)
+    layer_infos = load_layer_data(args.profiler_dir, backend)
     table = layer_information(model_name, layer_infos)
     console.print(table)
 
-    plot_layer_name_latencies(layer_infos, save_fig_dir)
+    plot_layer_name_latencies(layer_infos, save_fig_dir, backend)
 
 
 if __name__ == "__main__":
@@ -203,7 +213,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--profiler-dir",
         type=str,
-        default="results/alexnet/profiling_20241021-160746",
+        default="results/alexnet/trt_profiling",
         help="Specify name of profiler folder for the model",
     )
 
