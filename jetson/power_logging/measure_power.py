@@ -24,11 +24,13 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
     logs = []
 
     while not event.is_set():
-        with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as vdd_in: # vdd_in is global power consumption of the board
-            mW = float(vdd_in.read())
+        with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as voltage:
+            mV = float(voltage.read())
+        with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/curr1_input", "r") as current:
+            mC = float(current.read())
 
         current_time = datetime.now().strftime("%Y%m%d-%H:%M:%S.%f")  # Time with seconds and microseconds
-        logs.append(f"{current_time},{mW}\n")  # Log the time and power
+        logs.append(f"{current_time},{mV}, {mC}\n")  # Log the time, voltage and current.
 
     current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
     with open(f"{args.result_dir}/power_log_{current_dt}.log", "w") as f:
