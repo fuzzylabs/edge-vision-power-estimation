@@ -13,9 +13,12 @@ import argparse
 from rich import print
 
 
-def power_logging() -> list[tuple]:
+def power_logging(args: argparse.Namespace) -> list[tuple]:
     """
     Measure voltage and current from the system file for a duration of 1 minute.
+
+    Args:
+        args: Command-line arguments, including the output directory for storing the log file
 
     Returns:
         A list of instantaneous voltage and current readings captured during the measurement period.
@@ -23,8 +26,8 @@ def power_logging() -> list[tuple]:
     logs = []
     start_time = time.time()  # Record the start time
 
-    print("Logging idling power usage for 1 minute...")
-    while (time.time() - start_time) < 60:  # Run for 1 minute
+    print(f"Logging idling power usage for {args.idle_duration} seconds ...")
+    while (time.time() - start_time) < args.idle_duration:  # Run for 1 minute
         # Read voltage and current from sys file
         with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as voltage:
             mV = float(voltage.read())
@@ -71,11 +74,17 @@ if __name__ == "__main__":
         description="Collect power usage data when Jetson is idling."
     )
     parser.add_argument(
+        "--idle-duration",
+        type=int,
+        default=60,
+        help="Duration (in seconds) to measure power usage during idle state. Default is 60 seconds."
+    )
+    parser.add_argument(
         "--result-dir",
         type=str,
         default="results",
         help="The directory to save the log result."
     )
     args = parser.parse_args()
-    logs = power_logging()
+    logs = power_logging(args)
     compute_average_idling_power(args, logs)
