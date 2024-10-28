@@ -56,6 +56,6 @@ python measure_inference_power.py
 
 This script generates multiple log and trace files. The two primary files of interest are:
 1. `power_log_{timestamp}.log`: Logs power measurements during inference.
-2. `trt.log`: Contains additional inference information.
+2. `trt_layer_latency.json`: Contains layer execution time with the corresponding timestamp.
 
 By default, all results are saved in the `results` folder.
