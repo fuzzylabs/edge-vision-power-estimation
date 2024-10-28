@@ -2,7 +2,7 @@
 
 There are two processes for measuring the power for an inference cycle:
 1. The power logging process
-2. The inference process (WIP)
+2. The inference process
 
 The final output would be a graph of power consumption per layer.
 

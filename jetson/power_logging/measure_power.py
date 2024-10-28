@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--runs",
         type=int,
-        default=100,
+        default=30000,
         help="Number of inference cycle to run"
     )
     parser.add_argument(
