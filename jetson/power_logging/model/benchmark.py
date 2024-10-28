@@ -87,6 +87,7 @@ def benchmark(args: argparse.Namespace) -> None:
 
     input_data = input_data.to(dtype)
     model = model.to(dtype)
+    print(f"Using {DEVICE=} for benchmarking")
 
     exp_program = torch.export.export(model, tuple([input_data]))
     model = torch_tensorrt.dynamo.compile(
@@ -101,7 +102,6 @@ def benchmark(args: argparse.Namespace) -> None:
         use_python_runtime=True,
     )
 
-    print(f"Using {DEVICE=} for benchmarking")
     st = time.perf_counter()
     print("Warm up ...")
     with torch.no_grad():

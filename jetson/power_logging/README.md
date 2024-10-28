@@ -46,12 +46,12 @@ To run the this script:
 python measure_idling_power.py
 ```
 
-2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument.
+2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument, 30000 cycles will run by default.
 
-For example, to run `measure_inference_power.py` with 10,000 inference cycles:
 
+To run the this script:
 ```bash
-python measure_inference_power.py --runs 10000
+python measure_inference_power.py
 ```
 
 This script generates multiple log and trace files. The two primary files of interest are:
