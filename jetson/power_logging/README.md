@@ -8,7 +8,7 @@ The goal is to produce a graph of power consumption per layer. (*WIP SD-57*)
 
 The power measurement and inference process have been tested on the Jetson Orin Nano.
 
-## Getting Started 
+## Getting Started
 
 ### Maximise Jetson Orin Performance and Set Fan Speed
 
@@ -26,15 +26,13 @@ To use our power measurement script, run it inside the Docker image `nvcr.io/nvi
 Start the container with:
 
 ```bash
-sudo docker run --runtime=nvidia -it -v <your_project_directory>:/home nvcr.io/nvidia/pytorch:24.06-py3-igpu
+sudo docker run --runtime=nvidia -it -v /home/tom/Desktop/innovation-power-estimation-models:/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
 ```
 
 Since we’ve mounted our project directory to `/home`, switch to that directory before running the script:
 
 ```bash
-cd /home
-ls
-# Your project folder should appear here, e.g., innovation-power-estimation-models
+cd /home/innovation-power-estimation-models/jetson/power_logging
 ```
 
 ### Running Power Measurement Scripts
@@ -42,6 +40,11 @@ ls
 You’ll need to run two scripts for measuring power:
 
 1. **[measure_idling_power.py](measure_idling_power.py)** - Measures the idling power of the Jetson Orin Nano. Ensure the performance settings are applied before running this. This script outputs an `idling_power_log_{timestamp}.log` file with idling power data.
+
+To run the this script:
+```bash
+python measure_idling_power.py
+```
 
 2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument.
 

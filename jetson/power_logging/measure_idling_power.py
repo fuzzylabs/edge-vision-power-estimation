@@ -6,15 +6,11 @@ The same setting that will be used for inference.
 To maximize Jetson Orin performance and fan speed:
     sudo /usr/bin/jetson_clocks --fan
 """
-from pathlib import Path
-import argparse
-from datetime import datetime
-
-
 import time
 from datetime import datetime
 from pathlib import Path
 import argparse
+from rich import print
 
 
 def power_logging() -> list[tuple]:
@@ -27,15 +23,17 @@ def power_logging() -> list[tuple]:
     logs = []
     start_time = time.time()  # Record the start time
 
+    print("Logging idling power usage for 1 minute...")
     while (time.time() - start_time) < 60:  # Run for 1 minute
         # Read voltage and current from sys file
         with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as voltage:
             mV = float(voltage.read())
         with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/curr1_input", "r") as current:
             mC = float(current.read())
- 
+
         logs.append((mV, mC))
-    
+    print("Power logging complete.")
+
     return logs
 
 
@@ -45,21 +43,25 @@ def compute_average_idling_power(args: argparse.Namespace, logs: list[tuple]) ->
 
     Args:
         args: Command-line arguments, including the output directory for storing the log file.
-        logs: A list of tuples containing instantaneous voltage (mV) and current (mA) readings 
+        logs: A list of tuples containing instantaneous voltage (mV) and current (mA) readings
               recorded during the measurement period.
 
     Writes:
         A log file in the specified output directory containing the computed average idling power in mW.
     """
+    print(f"Computing average idling power.")
     mWs = [mV * mC for mV, mC in logs]
     average_mW = sum(mWs) / len(mWs)
+    print(f"Average idling power: {average_mW} mW")
 
     # Ensure the results directory exists
     Path(args.result_dir).mkdir(exist_ok=True, parents=True)
-    
+
     current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
     with open(f"{args.result_dir}/idling_power_log_{current_dt}.log", "w") as f:
         f.writelines(f"The average idling power measured: {average_mW} mW")
+
+    print(f"Log file created at {args.result_dir}/idling_power_log_{current_dt}.log")
 
 
 
