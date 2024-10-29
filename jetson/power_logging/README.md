@@ -59,7 +59,7 @@ python measure_idling_power.py
 2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument, 30000 cycles will run by default.
 
 
-To run the this script:
+To run the this script with default settings:
 ```bash
 python measure_inference_power.py
 ```
