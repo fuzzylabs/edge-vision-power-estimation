@@ -6,7 +6,17 @@ To measure power consumption during an inference cycle, two processes are used s
 
 The goal is to produce a graph of power consumption per layer. (*WIP SD-57*)
 
-The power measurement and inference process have been tested on the Jetson Orin Nano.
+The power measurement and inference process have been tested on the Jetson Orion Nano Development Kit.
+
+## Approach
+
+We will implement two processes:
+
+1. A power logging process that continuously records power consumption with timestamps.
+
+2. An inference process that timestamps and logs execution times for each layer.
+
+By aligning these timestamps, we can map power usage to each layer's execution time, enabling precise measurement of power consumed per layer. To refine accuracy, we will repeat this process n times, calculating the average power consumption per layer. This approach is inspired by the profiling paper.
 
 ## Getting Started
 
@@ -21,12 +31,12 @@ sudo /usr/bin/jetson_clocks --fan
 ### Running the Power Measurement
 
 To use our power measurement script, run it inside the Docker image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` (approx. 5 GB in size).
-> **Important**: Use the specified image to avoid compatibility issues with `tensorrt` and `torch_tensorrt` versions.
+> **Important**: Important: Use this exact Docker image to ensure compatibility with tensorrt==10.1.0 and torch_tensorrt==2.4.0.
 
 Start the container with:
 
 ```bash
-sudo docker run --runtime=nvidia -it -v /home/tom/Desktop/innovation-power-estimation-models:/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
+sudo docker run --runtime=nvidia -it -v ${pwd}:/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
 ```
 
 Since we’ve mounted our project directory to `/home`, switch to that directory before running the script:

@@ -30,7 +30,7 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
             mC = float(current.read())
 
         current_time = datetime.now().strftime("%Y%m%d-%H:%M:%S.%f")  # Time with seconds and microseconds
-        logs.append(f"{current_time},{mV}, {mC}\n")  # Log the time, voltage and current.
+        logs.append(f"{current_time},{mV},{mC}\n")  # Log the time, voltage and current.
 
     current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
     with open(f"{args.result_dir}/power_log_{current_dt}.log", "w") as f:
