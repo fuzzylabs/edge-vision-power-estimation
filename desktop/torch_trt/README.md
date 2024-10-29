@@ -22,6 +22,8 @@ GPU - Nvidia GeForce RTX 3060 Mobile
 OS - Ubuntu 22.04.5 LTS
 ```
 
+An introduction documentation to Torch-TensorRT : [Readme](./docs/TorchTensorRT.md).
+
 ## Getting Started
 
 There are two approaches to run this project.

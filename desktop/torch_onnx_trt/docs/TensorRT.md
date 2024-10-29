@@ -22,7 +22,7 @@ Building a TensorRT engine consists of following steps
 
     The network is usually constructed by parsing an ONNX model. TensorRT also provides other approaches like creating a network layer by layer using using TensorRT’s `Layer` ([C++](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_layer.html), [Python](https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Graph/LayerBase.html#ilayer)) and `Tensor` ([C++](https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_tensor.html), [Python](https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Graph/LayerBase.html#itensor)) interfaces. An example of creating network definition from scratch [here](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#create_network_python).
 
-    In our code [build_engine.py](./trt/build_engine.py), this is done by `create_network` function. It creates a TensorRT network definition by parsing input ONNX model.
+    In our code [build_engine.py](../trt/build_engine.py), this is done by `create_network` function. It creates a TensorRT network definition by parsing input ONNX model.
 
 2. Specify a configuration for the builder.
 
@@ -36,7 +36,7 @@ Building a TensorRT engine consists of following steps
     * `add_optimization_profile` : By default, TensorRT optimizes the model based on the input shapes (batch size, image size, and so on) at which it was defined. However, the builder can be configured to adjust the input dimensions at runtime. TensorRT creates an optimized engine for each profile, choosing CUDA kernels that work for all shapes within the [minimum, maximum] range and are fastest for the optimization point - typically different kernels for each profile. You can then select among profiles at runtime.
     * `set_tactic_sources`: Various combinations of tactics that can be used by TensorRT while selecting optimal kernel. [Here is list](https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/BuilderConfig.html#tensorrt.TacticSource) of all available tactics.
 
-    In our code [build_engine.py](./trt/build_engine.py), this configuration is set by `self.config` instance variable.
+    In our code [build_engine.py](../trt/build_engine.py), this configuration is set by `self.config` instance variable.
 
 3. Call builder to create a optimized TensorRT engine.
 
@@ -44,7 +44,7 @@ Building a TensorRT engine consists of following steps
 
     The builder eliminates dead computations, folds constants, and reorders and combines operations to run more efficiently on the GPU. It can optionally reduce the precision of floating-point computations, either by simply running them in 16-bit floating point, or by quantizing floating point values so that calculations can be performed using 8-bit integers. It also times multiple implementations of each layer with varying data formats, then computes an optimal schedule to execute the model, minimizing the combined cost of kernel executions and format transforms.
 
-    In our code [build_engine.py](./trt/create_engine.py), this is done by `create_engine` function. It creates a TensorRT network definition by parsing input ONNX model. The builder creates the engine in a serialized form called a plan, which can be deserialized immediately or saved to disk for later use.
+    In our code [build_engine.py](../trt/create_engine.py), this is done by `create_engine` function. It creates a TensorRT network definition by parsing input ONNX model. The builder creates the engine in a serialized form called a plan, which can be deserialized immediately or saved to disk for later use.
 
 ### Inference phase
 
@@ -54,7 +54,7 @@ In inference phase, we use the optimized engine to run the inference. The rough 
 * Create an execution context from the engine. (`context` instance variable)
 * For each input, we allocate input buffer and run inference using execution context. (`infer` method). It takes care of allocating space for input and output, moving input from host to GPU, and moving the output from GPU to host back.
 
-In our code [infer.py](./trt/infer.py), creates a inference runtime and implements above steps.
+In our code [infer.py](../trt/infer.py), creates a inference runtime and implements above steps.
 
 **Notes**
 
@@ -111,7 +111,7 @@ class CustomProfiler(trt.IProfiler):
 
 We can modify this `CustomProfiler` class to get timestamp as well when the layer executed (not exactly but with slight delay).
 
-We attach this profiler using `enable_profiling` method of `TensorRTInfer` class in [infer.py](./trt/infer.py).
+We attach this profiler using `enable_profiling` method of `TensorRTInfer` class in [infer.py](../trt/infer.py).
 
 ### Plugins
 
