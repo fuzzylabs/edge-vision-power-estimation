@@ -58,6 +58,12 @@ To run the this script:
 python measure_idling_power.py
 ```
 
+Alternatively, we can specify the idling duration such as 120 seconds:
+```bash
+python measure_idling_power.py \
+    --idle-duration 120
+```
+
 2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument, 30000 cycles will run by default.
 
 
