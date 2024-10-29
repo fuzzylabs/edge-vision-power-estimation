@@ -36,7 +36,7 @@ To use our power measurement script, run it inside the Docker image `nvcr.io/nvi
 Start the container with:
 
 ```bash
-sudo docker run --runtime=nvidia -it -v $(pwd):/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
+sudo docker run --runtime=nvidia --ipc=host -it -v $(pwd):/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
 ```
 
 > Note: Make sure you are in the project folder.
@@ -64,6 +64,14 @@ python measure_idling_power.py
 To run the this script with default settings:
 ```bash
 python measure_inference_power.py
+```
+
+Alternatively, we can run the power measuring script with various models, specify the number of inference cycles, or save results to different directories, use the following command:
+```bash
+python measure_inference_power.py \
+    --model <pytorch_hub_model_name> \
+    --runs RUNS \
+    --result-dir RESULT_DIR
 ```
 
 This script generates multiple log and trace files. The two primary files of interest are:
