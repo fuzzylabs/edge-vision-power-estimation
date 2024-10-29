@@ -33,7 +33,7 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
         logs.append(f"{current_time},{mV},{mC}\n")  # Log the time, voltage and current.
 
     current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
-    with open(f"{args.result_dir}/power_log_{current_dt}.log", "w") as f:
+    with open(f"{args.result_dir}/{args.runs}_cycles_power_log_{current_dt}.log", "w") as f:
         f.writelines(logs)
 
 
