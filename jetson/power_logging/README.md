@@ -6,7 +6,14 @@ To measure power consumption during an inference cycle, two processes are used s
 
 The goal is to produce a graph of power consumption per layer. (*WIP SD-57*)
 
-The power measurement and inference process have been tested on the Jetson Orion Nano Development Kit.
+The power measurement and inference process have been tested on the Jetson Orion Nano Development Kit with the following configuration:
+
+```txt
+JetPack 6.1
+Jetson Linux 36.4
+Docker 27.3.1
+OS - Ubuntu 22.04-based root file system
+```
 
 ## Approach
 
