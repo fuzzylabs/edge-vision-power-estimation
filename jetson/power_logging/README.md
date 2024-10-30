@@ -15,6 +15,8 @@ Docker 27.3.1
 OS - Ubuntu 22.04-based root file system
 ```
 
+Check [Running the Power Measurement](#running-the-power-measurement) section for the Docker image used for running the experiment. The **EXACT** image must be used.
+
 ## Approach
 
 We will implement two processes:
@@ -29,7 +31,7 @@ By aligning these timestamps, we can map power usage to each layer's execution t
 
 ### Maximise Jetson Orin Performance and Set Fan Speed
 
-Run the following command to maximize performance and set the fan speed:
+Run the following command to maximise performance and set the fan speed:
 
 ```bash
 sudo /usr/bin/jetson_clocks --fan
@@ -37,8 +39,8 @@ sudo /usr/bin/jetson_clocks --fan
 
 ### Running the Power Measurement
 
-To use our power measurement script, run it inside the Docker image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` (approx. 5 GB in size).
-> **Important**: Important: Use this exact Docker image to ensure compatibility with tensorrt==10.1.0 and torch_tensorrt==2.4.0.
+To use our power measurement script, run it inside this Docker image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` (approx. 5 GB in size).
+> **Important**: Use this exact Docker image to ensure compatibility with tensorrt==10.1.0 and torch_tensorrt==2.4.0.
 
 Start the container with:
 
@@ -46,7 +48,7 @@ Start the container with:
 sudo docker run --runtime=nvidia --ipc=host -it -v $(pwd):/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
 ```
 
-> Note: Make sure you are in the project folder.
+> Note: Make sure you are in the project folder when you run the above command.
 
 Since we’ve mounted our project directory to `/home`, switch to that directory before running the script:
 
@@ -88,7 +90,7 @@ python measure_inference_power.py \
 ```
 
 This script generates multiple log and trace files. The two primary files of interest are:
-1. `power_log_{timestamp}.log`: Logs power measurements during inference.
+1. `{n}_cycles_power_log_{timestamp}.log`: Logs power measurements during inference.
 2. `trt_layer_latency.json`: Contains layer execution time with the corresponding timestamp.
 
 By default, all results are saved in the `results` folder.
