@@ -58,11 +58,13 @@ In our code [infer.py](../trt/infer.py), creates a inference runtime and impleme
 
 **Notes**
 
-* TensorRT has graph fusion optimizations, one engine layer may correspond to multiple ONNX ops in the original model. A list of various types of supported fusion: <https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#fusion-types>
+* TensorRT has graph fusion optimizations, one engine layer may correspond to multiple ONNX ops in the original model. A list of various types of supported fusion: <https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#enable-fusion>.
 
 * Serialized engines are not portable across platforms. Engines are specific to the exact GPU model that they were built on (in addition to the platform). The sections on [version compatibility](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#version-compat) and [hardware compatibility](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#hardware-compat) with some limitations.
 
 * TensorRT builder uses timing to find the fastest kernel to implement a given layer. Timing kernels are subject to noise, such as other work running on the GPU, GPU clock speed fluctuations, etc. Timing noise means that the same implementation may not be selected on successive runs of the builder.
+
+* [Timing Cache](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#timing-cache) records the latencies of each tactic for a specific layer configuration. The tactic latencies are reused if TensorRT encounters another layer with an identical configuration. Therefore, by reusing the same timing cache across multiple engine buildings runs with the same INetworkDefinition and builder config, you can make TensorRT select an identical set of tactics in the resulting engines
 
 * If GPU clock speeds differ between engine serialization and runtime systems, the tactics chosen by the serialization system may not be optimal for the runtime system and may incur some performance degradation.
 
@@ -123,4 +125,12 @@ TensorRT ships with a library of plugins; the source for many of these and some 
 
 Guide: <https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#measure-performance>
 
-Recommendation for best practices when running benchmarking or maximising performance using TensorRT SDK.
+Recommendation for best practices when running benchmarking or maximising performance using TensorRT SDK. It provides details on how to use CUDA profiling tools such as [NVIDIA Nsight™ Systems](https://developer.nvidia.com/nsight-systems).
+
+To run our benchmark script with NVIDIA Nsight™ Systems, we run the following command
+
+```bash
+nsys profile -o alexnet-profile uv run benchmark.py
+```
+
+Next, open the generated `alexnet-profile.nsys-rep` file in the Nsight Systems GUI to visualize the captured profiling results.
