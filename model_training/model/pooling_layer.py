@@ -50,7 +50,7 @@ def create_power_pipeline() -> Pipeline:
 
 
 def create_runtime_pipeline() -> Pipeline:
-    """Create pooling layer power prediction pipeline."""
+    """Create pooling layer runtime prediction pipeline."""
     return create_pipeline(
         features_mapping,
         polynomial_degree=3,
