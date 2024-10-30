@@ -1,24 +1,96 @@
 # Measuring Power
 
-There are two processes for measuring the power for an inference cycle:
-1. The power logging process
-2. The inference process (WIP)
+To measure power consumption during an inference cycle, two processes are used similar to the profiling energy paper:
+1. **Power Logging Process**: Captures power data.
+2. **Inference Process**: Runs inference to measure power used by each layer.
 
-The final output would be a graph of power consumption per layer.
+The goal is to produce a graph of power consumption per layer. (*WIP SD-57*)
 
-Tested the power logging process on the Jetson Orin Nano.
+The power measurement and inference process have been tested on the Jetson Orion Nano Development Kit with the following configuration:
 
-## Getting Started 
-
-```bash
-uv venv --python 3.11
-source .venv/bin/activate
+```txt
+JetPack 6.1
+Jetson Linux 36.4
+Docker 27.3.1
+OS - Ubuntu 22.04-based root file system
 ```
 
-### Running the power logger
+Check [Running the Power Measurement](#running-the-power-measurement) section for the Docker image used for running the experiment. The **EXACT** image must be used.
+
+## Approach
+
+We will implement two processes:
+
+1. A power logging process that continuously records power consumption with timestamps.
+
+2. An inference process that timestamps and logs execution times for each layer.
+
+By aligning these timestamps, we can map power usage to each layer's execution time, enabling precise measurement of power consumed per layer. To refine accuracy, we will repeat this process n times, calculating the average power consumption per layer. This approach is inspired by the profiling paper.
+
+## Getting Started
+
+### Maximise Jetson Orin Performance and Set Fan Speed
+
+Run the following command to maximise performance and set the fan speed:
 
 ```bash
-uv run python measure_power.py
+sudo /usr/bin/jetson_clocks --fan
 ```
 
-By default the results will be output into the results folder.
+### Running the Power Measurement
+
+To use our power measurement script, run it inside this Docker image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` (approx. 5 GB in size).
+> **Important**: Use this exact Docker image to ensure compatibility with tensorrt==10.1.0 and torch_tensorrt==2.4.0.
+
+Start the container with:
+
+```bash
+sudo docker run --runtime=nvidia --ipc=host -it -v $(pwd):/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
+```
+
+> Note: Make sure you are in the project folder when you run the above command.
+
+Since we’ve mounted our project directory to `/home`, switch to that directory before running the script:
+
+```bash
+cd /home/innovation-power-estimation-models/jetson/power_logging
+```
+
+### Running Power Measurement Scripts
+
+You’ll need to run two scripts for measuring power:
+
+1. **[measure_idling_power.py](measure_idling_power.py)** - Measures the idling power of the Jetson Orin Nano. Ensure the performance settings are applied before running this. This script outputs an `idling_power_log_{timestamp}.log` file with idling power data.
+
+To run the this script:
+```bash
+python measure_idling_power.py
+```
+
+Alternatively, we can specify the idling duration such as 120 seconds:
+```bash
+python measure_idling_power.py \
+    --idle-duration 120
+```
+
+2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument, 30000 cycles will run by default.
+
+
+To run the this script with default settings:
+```bash
+python measure_inference_power.py
+```
+
+Alternatively, we can run the power measuring script with various models, specify the number of inference cycles, or save results to different directories, use the following command:
+```bash
+python measure_inference_power.py \
+    --model <pytorch_hub_model_name> \
+    --runs RUNS \
+    --result-dir RESULT_DIR
+```
+
+This script generates multiple log and trace files. The two primary files of interest are:
+1. `{n}_cycles_power_log_{timestamp}.log`: Logs power measurements during inference.
+2. `trt_layer_latency.json`: Contains layer execution time with the corresponding timestamp.
+
+By default, all results are saved in the `results` folder.
