@@ -1,0 +1,17 @@
+[project]
+name = "torch-onnx-trtexec"
+version = "0.1.0"
+description = "Benchmarking TensorRT model using trtexec CLI"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "rich>=13.9.3",
+    "tensorrt==10.1.0",
+    "torch==2.4.1",
+    "torchvision==0.19.1",
+    "trex",
+]
+
+
+[tool.uv.sources]
+trex = { git = "https://github.com/NVIDIA/TensorRT.git/", subdirectory = "tools/experimental/trt-engine-explorer" }
