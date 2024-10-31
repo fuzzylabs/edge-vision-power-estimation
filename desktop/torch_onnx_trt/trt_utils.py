@@ -8,6 +8,8 @@ import torch
 import numpy as np
 from pydantic import BaseModel
 from trt.infer import TensorRTInfer
+from trt.runtime import cuda_call
+from cuda import cudart
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 DTYPE_MAPPING = {"float32": "fp32", "float16": "fp16", "bfloat16": "bfp16"}
@@ -55,15 +57,14 @@ def benchmark_trt(args, input_data) -> BenchmarkMetrics:
 
     # Run inference
     print(f"Start timing using backend {args.backend} ...")
-    torch.cuda.synchronize()
     # Recorded in milliseconds
-    start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
-    end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
+    start_events = [cuda_call(cudart.cudaEventCreate()) for _ in range(args.runs)]
+    end_events = [cuda_call(cudart.cudaEventCreate()) for _ in range(args.runs)]
     for i in tqdm(range(args.runs)):
-        start_events[i].record()
+        cuda_call(cudart.cudaEventRecord(start_events[i], 0))
         _ = trt_infer.infer(input_data.cpu().numpy())
-        end_events[i].record()
-    torch.cuda.synchronize()
+        cuda_call(cudart.cudaEventRecord(end_events[i], 0))
+        cuda_call(cudart.cudaEventSynchronize(end_events[i]))
 
     # Save profiling information
     trt_profile_dir = Path(f"{args.result_dir}/{args.model}/trt_profiling")
@@ -72,7 +73,7 @@ def benchmark_trt(args, input_data) -> BenchmarkMetrics:
     trt_infer.save_layer_wise_profiling(trt_profile_dir)
 
     # Convert milliseconds to seconds
-    timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
+    timings = [cuda_call(cudart.cudaEventElapsedTime(s, e)) * 1.0e-3 for s, e in zip(start_events, end_events)]
     avg_throughput = args.input_shape[0] / np.mean(timings)
     results = BenchmarkMetrics(
         trt_load_time=trt_load_time,  # in seconds
