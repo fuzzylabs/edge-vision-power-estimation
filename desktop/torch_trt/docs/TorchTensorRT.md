@@ -56,7 +56,7 @@ Exploring and reading [Torch-Tensorrt documentation](https://pytorch.org/TensorR
 - TorchScript Frontend
 - FX Frontend
 
-It is not particularly clear which approach to prefer for a new user. For this experiment, I used `Dyanmo` approach that uses a FX Graph Module to create a TensorRT module. (Update: More clear spending more time going through and writing it down, TorchScript and FX frontend are legacy frontends and they are present for backward compatibility. Dynamo is the approach that should be used.)
+It is not particularly clear which approach to prefer for a new user. For this experiment, I used `Dynamo` approach that uses a FX Graph Module to create a TensorRT module. (Update: More clear spending more time going through and writing it down, TorchScript and FX frontend are legacy frontends and they are present for backward compatibility. Dynamo is the approach that should be used.)
 
 Additionally, there are two approaches to create tensorrt module using `Dynamo`
 
