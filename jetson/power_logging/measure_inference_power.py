@@ -48,7 +48,7 @@ def inference(
 
     Args:
         event: An object that manages a flag for communication among processes.
-        args: _Arguments from CLI.
+        args: Arguments from CLI.
     """
     benchmark(args)
     event.set()

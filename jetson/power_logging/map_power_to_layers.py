@@ -1,10 +1,19 @@
-"""This script maps the power to the individual layer."""
+"""This script maps the power to the individual layer.
+
+python map_power_to_layers.py \
+    --power-log-path results_for_testing/5_cycles_power_log_20241030-150646.log \
+    --trt-layer-latency-path results_for_testing/trt_layer_latency.json \
+    --trt-engine-info results_for_testing/trt_engine_info.json \
+    --result-dir results_for_testing
+
+"""
 import json
 from datetime import datetime, timedelta
 from bisect import bisect_left
 from collections import defaultdict
-
-LAYERS_OF_INTEREST = {'PointWiseV2', 'CaskConvolution', 'CaskPooling', 'CaskGemmConvolution'}
+from pathlib import Path
+import pandas as pd
+import argparse
 
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
@@ -143,43 +152,126 @@ def get_layer_average_power_used(
 
             avg_power = compute_average_power_used_from_logs(logs)
             layer_power_used_for_all_cycles[layer_name].append(avg_power)
-    
-    # Calculate the overall average power used for each layer
-    res = {layer_name: sum(powers) / len(powers)
+
+    return {layer_name: sum(powers) / len(powers)
            for layer_name, powers in layer_power_used_for_all_cycles.items() if powers}
+
+
+def get_layer_average_run_time(
+    trt_layer_latency: dict[str, list[list[float, str]]],
+) -> dict[str, float]:
+    """
+    Calculates average runtime per layer.
+
+    Args:
+        trt_layer_latency (dict): Layer timings.
+
+    Returns:
+        dict: Average runtime per layer.
+    """
+    avg_runtime = defaultdict(float)
+
+    for layer_name, layer_times in trt_layer_latency.items():
+        total_runtime = sum(duration for duration, _ in layer_times)
+        avg_runtime[layer_name] = total_runtime / len(layer_times)
     
-    return res
+    return avg_runtime
+
+
+def save_result_to_csv(
+    average_power_used_by_layer: dict[str, float],
+    average_layer_run_time: dict[str, float],
+    trt_engine_info: dict[str, str],
+    args: argparse.Namespace,
+) -> None:
+    """
+    Save the power used and run time of individual layers to a csv.
+
+    Args:
+        average_power_used_by_layer: Dictionary of layer names and their average power used.
+        average_layer_run_time: Average runtime per layer.
+        trt_engine_info: Dictionary of layer infos.
+        args: Arguments from CLI.
+    """
+    # Creates a mapping of layer type based on layer name
+    layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
+
+    average_power_and_run_time = average_power_used_by_layer
+
+    for layer_name, average_run_time in average_layer_run_time.items():
+        average_power_and_run_time[layer_name] = (layer_name_type_mapping[layer_name], average_power_and_run_time[layer_name], average_run_time)
+
+    df = pd.DataFrame.from_dict(average_power_and_run_time, orient="index")
+    df.index.name = "layer name"
+    df.rename(columns={0: "layer_type", 1: "average_power", 2: "average_run_time"}, inplace=True)
+
+    df.to_csv(f"{args.result_dir}/average_power_and_run_time.csv")
 
 
 def read_log_files(
-    power_log_path: str,
-    trt_layer_latency_path: str
+    args: argparse.Namespace,
 ) -> tuple[list[str], dict]:
     """
     Reads power log and TRT layer latency data from specified file paths.
 
     Args:
-        power_log_path: Path to the power log file.
-        trt_layer_latency_path: Path to the TRT layer latency json file.
+        args: Arguments from CLI.
 
     Returns:
-        A tuple containing the power logs, and layer latency.
+        A tuple containing the power logs, layer latency and layer info.
     """
-    with open(power_log_path) as power_log_file, open(
-        trt_layer_latency_path) as trt_layer_latency_file:
-        return power_log_file.readlines(), json.load(trt_layer_latency_file)
+    with open(args.power_log_path) as power_log_file, open(
+        args.trt_layer_latency_path) as trt_layer_latency_file, open(
+            args.trt_engine_info) as trt_engine_info_file:
+        return power_log_file.readlines(), json.load(trt_layer_latency_file), json.load(trt_engine_info_file)
 
 
 if __name__ == "__main__":
-    power_log, trt_layer_latency = read_log_files(
-        power_log_path="jetson/power_logging/results_for_testing/5_cycles_power_log_20241030-150646.log",
-        trt_layer_latency_path="jetson/power_logging/results_for_testing/trt_layer_latency.json"
+    parser = argparse.ArgumentParser(
+        prog="Power Mapping With Logs Collected on Jetson",
+        description="Map power usage data during inference cycles for ImageNet pretrained CNN models."
     )
+    parser.add_argument(
+        "--power-log-path",
+        type=Path,
+        help="The path of where the power log file are stored."
+        "The file should have the following format:"
+        "n_cycles_power_log_timestamp.log",
+    )
+    parser.add_argument(
+        "--trt-layer-latency-path",
+        type=Path,
+        help="The path of where the trt layer latency profile result are stored."
+        "The file should be stored under the `trt_profiling` directory",
+    )
+    parser.add_argument(
+        "--trt-engine-info",
+        type=Path,
+        help="The path of where the trt engine info are stored."
+        "The file should be stored under the `trt_profiling` directory",
+    )
+    parser.add_argument(
+        "--result-dir",
+        type=str,
+        default="results",
+        help="The directory to save the csv."
+    )
+    args = parser.parse_args()
+
+    power_log, trt_layer_latency, trt_engine_info = read_log_files(args)
 
     average_power_used_by_layer = get_layer_average_power_used(
         trt_layer_latency=trt_layer_latency,
         power_log=power_log
     )
 
-    with open(f"jetson/power_logging/results_for_testing/average_power_used_by_layer.json", "w") as f:
-        json.dump(average_power_used_by_layer, f, indent=4)
+    average_layer_run_time = get_layer_average_run_time(
+        trt_layer_latency=trt_layer_latency,
+    )
+
+    save_result_to_csv(
+        average_power_used_by_layer=average_power_used_by_layer,
+        average_layer_run_time=average_layer_run_time,
+        trt_engine_info=trt_engine_info,
+        args=args
+    )
