@@ -54,7 +54,7 @@ In inference phase, we use the optimized engine to run the inference. The rough 
 * Create an execution context from the engine. (`context` instance variable)
 * For each input, we allocate input buffer and run inference using execution context. (`infer` method). It takes care of allocating space for input and output, moving input from host to GPU, and moving the output from GPU to host back.
 
-In our code [infer.py](../trt/infer.py), creates a inference runtime and implements above steps.
+In our code [infer.py](../trt/infer.py), creates an inference runtime and implements above steps.
 
 **Notes**
 
