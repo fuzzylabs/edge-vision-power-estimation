@@ -9,8 +9,6 @@ python map_power_to_layers.py \
 """
 import json
 from datetime import datetime, timedelta
-from bisect import bisect_left
-from collections import defaultdict
 from pathlib import Path
 import pandas as pd
 import argparse
@@ -99,7 +97,7 @@ def compute_layer_metrics_by_cycle(
         for cycle_index, (execution_duration, execution_start_time) in enumerate(layer_times):
             current_log_index = 0
             start_timestamp = parse_timestamp(execution_start_time)
-            end_timestamp = start_timestamp + timedelta(seconds=execution_duration)
+            end_timestamp = start_timestamp + timedelta(milliseconds=execution_duration)
 
             # This stores the power measured point for the SAME cycle
             cycle_power_measurements = []
