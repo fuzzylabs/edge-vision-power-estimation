@@ -3,8 +3,7 @@
 To run benchmark script:
     python benchmark.py \
         --model <pytorch_hub_model_name> \
-        --dtype <dtype> \
-        --save-result
+        --dtype <dtype>
 
 """
 
@@ -107,8 +106,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--warmup",
         type=int,
-        default=50,
-        help="Number of iterations to perform warmup before benchmarking",
+        default=5000,
+        help="Minimum duration in ms to perform warmup before benchmarking."
+        "Defaults to warmup of 5000 ms i.e. 5 seconds.",
     )
     parser.add_argument(
         "--runs",
@@ -139,9 +139,9 @@ if __name__ == "__main__":
         "If not specified, models are saved in the current directory.",
     )
     parser.add_argument(
-        "--archive",
+        "--verbose",
         action="store_true",
-        help="create a TensorRT engine archive file (.tea)",
+        help="Print trtexec build and profiling logs to stdout",
     )
 
     args = parser.parse_args()
