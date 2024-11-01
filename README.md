@@ -8,7 +8,13 @@ This project contains script to measure and estimate power consumption of ML mod
 .
 ├── desktop   # Power measurement benchmarking script for desktop
 ├── jetson    # Power measurement benchmarking script for jetson
+├── model_training  # Power consumption modelling package
 └── README.md
 
-2 directories, 1 file
+3 directories, 1 file
 ```
+
+## Modelling Power Consumption
+
+We use a method adapted from the [NeuralPower](https://arxiv.org/abs/1710.05420) paper.
+
