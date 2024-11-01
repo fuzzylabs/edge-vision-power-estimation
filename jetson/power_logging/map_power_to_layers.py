@@ -70,140 +70,75 @@ def preprocess_power_log(power_log: list[str]) -> list[tuple]:
     return processed_log
 
 
-def get_corresponding_power_log_from_timestamp(
-    execution_duration: float,
-    execution_start_timestamp: str,
-    processed_log: list[tuple[datetime, float, float]],
-) -> list[tuple[float, float]]:
-    """
-    Finds log entries within the execution time window.
-
-    Args:
-        execution_duration: Duration in seconds.
-        execution_start_timestamp: Start timestamp as string.
-        processed_log: List of (datetime, voltage, current).
-
-    Returns:
-        List of (voltage, current) tuples within the time window.
-    """
-    start_timestamp = parse_timestamp(execution_start_timestamp)
-    end_timestamp = start_timestamp + timedelta(seconds=execution_duration)
-
-    timestamps = [entry[0] for entry in processed_log]
-    # We don't want to search through the power log file every time O(n).
-    # This is similar to binary search o(log n)
-    # We get the index of the next closest or matching timestamp in our power log file.
-    start_index = bisect_left(timestamps, start_timestamp)
-
-    matching_logs = []
-    for i in range(start_index, len(processed_log)):
-        log_timestamp, voltage, current = processed_log[i]
-        if log_timestamp > end_timestamp:
-            break
-        matching_logs.append((voltage, current))
-    
-    return matching_logs
-
-
-def compute_average_power_used_from_logs(logs: list[tuple[float, float]]) -> float:
-    """
-    Calculates the average power from voltage and current log entries.
-
-    Args:
-        logs: List of (voltage, current) tuples.
-
-    Returns:
-        Average power used as float.
-    """
-    if not logs:
-        return 0.0
-    
-    power_measurements = [voltage * current for voltage, current in logs]
-    return sum(power_measurements) / len(power_measurements)
-
-
-def get_layer_average_power_used(
-    trt_layer_latency: dict,
+def compute_layer_metrics_by_cycle(
+    trt_layer_latency: dict[str, list[list[float, str]]],
     power_log: list[str],
-) -> dict[str, float]:
+    trt_engine_info: dict[str, str]
+) -> list[dict[str, any]]:
     """
-    Calculates average power usage for each layer.
+    Calculates power usage and runtime for each layer in each cycle.
 
     Args:
         trt_layer_latency: Dictionary of layer timings.
         power_log: Raw power log entries.
+        trt_engine_info: Dictionary of layer information with types.
 
     Returns:
-        Dictionary of layer names and their average power used.
+        List of dictionaries, each representing a cycle's data for a layer,
+        including cycle number, layer name, type, power, and runtime.
     """
     processed_log = preprocess_power_log(power_log)
-    layer_power_used_for_all_cycles = defaultdict(list)
+    layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
+
+    metrics_by_cycle = []
+    num_power_logs = len(processed_log)
 
     for layer_name, layer_times in trt_layer_latency.items():
-        for time in layer_times:
-            execution_duration = time[0]
-            execution_start_time = time[1]
+        layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
 
-            logs = get_corresponding_power_log_from_timestamp(
-                execution_duration,
-                execution_start_time,
-                processed_log,
-            )
+        for cycle_index, (execution_duration, execution_start_time) in enumerate(layer_times):
+            current_log_index = 0
+            start_timestamp = parse_timestamp(execution_start_time)
+            end_timestamp = start_timestamp + timedelta(seconds=execution_duration)
 
-            avg_power = compute_average_power_used_from_logs(logs)
-            layer_power_used_for_all_cycles[layer_name].append(avg_power)
+            # This stores the power measured point for the SAME cycle
+            cycle_power_measurements = []
 
-    return {layer_name: sum(powers) / len(powers)
-           for layer_name, powers in layer_power_used_for_all_cycles.items() if powers}
+            while current_log_index < num_power_logs:
+                log_timestamp, voltage, current = processed_log[current_log_index]
+                # processed_log at current_log_index is exceed the execution window
+                if log_timestamp > end_timestamp:
+                    break
+                # processed_log at current_log_index is within the execution window
+                if log_timestamp >= start_timestamp:
+                    cycle_power_measurements.append(voltage * current)
+                current_log_index += 1
 
+            avg_cycle_power = sum(cycle_power_measurements) / len(cycle_power_measurements) if cycle_power_measurements else 0.0
+            metrics_by_cycle.append({
+                "cycle": cycle_index + 1,
+                "layer_name": layer_name,
+                "layer_type": layer_type,
+                "average_power": avg_cycle_power, # The is the average power of the same cycle.
+                "layer_run_time": execution_duration
+            })
 
-def get_layer_average_run_time(
-    trt_layer_latency: dict[str, list[list[float, str]]],
-) -> dict[str, float]:
-    """
-    Calculates average runtime per layer.
-
-    Args:
-        trt_layer_latency (dict): Layer timings.
-
-    Returns:
-        dict: Average runtime per layer.
-    """
-    avg_runtime = defaultdict(float)
-
-    for layer_name, layer_times in trt_layer_latency.items():
-        total_runtime = sum(duration for duration, _ in layer_times)
-        avg_runtime[layer_name] = total_runtime / len(layer_times)
-    
-    return avg_runtime
+    return metrics_by_cycle
 
 
 def save_result_to_csv(
-    average_power_used_by_layer: dict[str, float],
-    average_layer_run_time: dict[str, float],
-    trt_engine_info: dict[str, str],
+    metrics_by_cycle: list[dict[str, any]],
     args: argparse.Namespace,
 ) -> None:
     """
     Save the power used and run time of individual layers to a csv.
 
     Args:
-        average_power_used_by_layer: Dictionary of layer names and their average power used.
-        average_layer_run_time: Average runtime per layer.
-        trt_engine_info: Dictionary of layer infos.
+        metrics_by_cycle: List of dictionaries, each representing a cycle's data for a layer,
+            including cycle number, layer name, type, power, and runtime.
         args: Arguments from CLI.
     """
-    # Creates a mapping of layer type based on layer name
-    layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
-
-    average_power_and_run_time = average_power_used_by_layer
-
-    for layer_name, average_run_time in average_layer_run_time.items():
-        average_power_and_run_time[layer_name] = (layer_name_type_mapping[layer_name], average_power_and_run_time[layer_name], average_run_time)
-
-    df = pd.DataFrame.from_dict(average_power_and_run_time, orient="index")
-    df.index.name = "layer name"
-    df.rename(columns={0: "layer_type", 1: "average_power", 2: "average_run_time"}, inplace=True)
+    df = pd.DataFrame.from_dict(metrics_by_cycle)
 
     df.to_csv(f"{args.result_dir}/average_power_and_run_time.csv")
 
@@ -260,18 +195,13 @@ if __name__ == "__main__":
 
     power_log, trt_layer_latency, trt_engine_info = read_log_files(args)
 
-    average_power_used_by_layer = get_layer_average_power_used(
+    metrics_by_cycle = compute_layer_metrics_by_cycle(
         trt_layer_latency=trt_layer_latency,
-        power_log=power_log
-    )
-
-    average_layer_run_time = get_layer_average_run_time(
-        trt_layer_latency=trt_layer_latency,
+        power_log=power_log,
+        trt_engine_info=trt_engine_info,   
     )
 
     save_result_to_csv(
-        average_power_used_by_layer=average_power_used_by_layer,
-        average_layer_run_time=average_layer_run_time,
-        trt_engine_info=trt_engine_info,
+        metrics_by_cycle=metrics_by_cycle,
         args=args
     )
