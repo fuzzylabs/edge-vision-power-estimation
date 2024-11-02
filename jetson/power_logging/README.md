@@ -97,7 +97,7 @@ By default, all results are saved in the `results` folder.
 
 ### Mapping Power Consumption By Layer
 
-To map the individual layer power output for each cycle and produce a CSV file, you’ll need to have your benchmark data organized in the results folder. This data includes:
+To map the individual layer power output for each cycle and produce a CSV file, you’ll need to have your benchmark data from running the two power measurement scripts above which should be in the results folder. This data includes:
 
 1. {n}_cycles_power_log_{timestamp}.log
 2. {n}_seconds_idling_power_log_{timestamp}.log
