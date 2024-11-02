@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
 import argparse
+from collections import defaultdict
 
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
@@ -48,13 +49,13 @@ def parse_timestamp(timestamp: str) -> datetime:
 
 def preprocess_power_log(power_log: list[str]) -> list[tuple]:
     """
-    Convert each power log entry to (datetime, voltage, current).
+    Convert each power log entry to (datetime, power).
 
     Args:
         power_log: a read power log file
 
     Returns:
-        processed log for easy accessing voltage and current.
+        processed log for easy accessing the timestamp and power.
     """
     processed_log = []
 
@@ -68,58 +69,84 @@ def preprocess_power_log(power_log: list[str]) -> list[tuple]:
     return processed_log
 
 
+def preprocess_latency_data(trt_layer_latency: dict[str, list[list[float, str]]]) -> list[tuple]:
+    """
+    Preprocess and sort latency data by adjusted start time. See below for what adjusted start time mean.
+
+    Adjust start time:
+        Each layer (except the first in each cycle) starts at the previous layer's end time or its own recorded start time, whichever is later.
+
+        Check this thread for more detail:
+            https://fuzzy-labs.slack.com/archives/C07DTP3RGLA/p1730470951456389?thread_ts=1730281446.171379&cid=C07DTP3RGLA
+
+    Args:
+        trt_layer_latency: Dictionary containing latency data for each layer.
+
+    Returns:
+        List of tuples with (cycle, start_time, end_time, duration, layer_name), sorted by start time.
+    """
+    latency_data = defaultdict(list)
+
+    for layer_name, layer_times in trt_layer_latency.items():
+        for cycle, (execution_duration, execution_start_time) in enumerate(layer_times):
+            start_timestamp = parse_timestamp(execution_start_time)
+            duration = timedelta(milliseconds=execution_duration)
+            
+            # If not first layer.
+            if latency_data[cycle]:
+                previous_layer_end_time = latency_data[cycle][-1][2]
+                # Adjust start time if needed
+                start_timestamp = max(previous_layer_end_time, start_timestamp)
+
+            # Calculate end time based on adjusted start time
+            end_timestamp = start_timestamp + duration
+            latency_data[cycle].append((cycle, start_timestamp, end_timestamp, execution_duration, layer_name))
+
+    sorted_latency_data = [entry for cycle_data in latency_data.values() for entry in cycle_data]
+    sorted_latency_data.sort(key=lambda x: x[1])
+
+    return sorted_latency_data
+
+
 def compute_layer_metrics_by_cycle(
     trt_layer_latency: dict[str, list[list[float, str]]],
     power_log: list[str],
     trt_engine_info: dict[str, str]
 ) -> list[dict[str, any]]:
-    """
-    Calculates power usage and runtime for each layer in each cycle.
+    
+    power_logs = preprocess_power_log(power_log)  # Ensure this function returns [(timestamp, power1, power2), ...]
 
-    Args:
-        trt_layer_latency: Dictionary of layer timings.
-        power_log: Raw power log entries.
-        trt_engine_info: Dictionary of layer information with types.
-
-    Returns:
-        List of dictionaries, each representing a cycle's data for a layer,
-        including cycle number, layer name, type, power, and runtime.
-    """
-    processed_log = preprocess_power_log(power_log)
+    # Preprocess and sort latency data by start time
+    sorted_latency_data = preprocess_latency_data(trt_layer_latency)
     layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
 
     metrics_by_cycle = []
-    num_power_logs = len(processed_log)
+    power_index = 0
 
-    for layer_name, layer_times in trt_layer_latency.items():
+    for cycle, _, end_timestamp, execution_duration, layer_name in sorted_latency_data:
         layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
+        layer_power_measurements = []
 
-        for cycle_index, (execution_duration, execution_start_time) in enumerate(layer_times):
-            current_log_index = 0
-            start_timestamp = parse_timestamp(execution_start_time)
-            end_timestamp = start_timestamp + timedelta(milliseconds=execution_duration)
+        # Collect power measurements within start and end timestamp
+        while power_index < len(power_logs) and power_logs[power_index][0] <= end_timestamp:
+            layer_power_measurements.append(power_logs[power_index][1] * power_logs[power_index][2])
+            power_index += 1
+        
+        # Calculate average power if measurements exist
+        avg_layer_power = sum(layer_power_measurements) / len(layer_power_measurements) if layer_power_measurements else 0.0
 
-            # This stores the power measured point for the SAME cycle
-            cycle_power_measurements = []
+        # Append the results for this layer and cycle
+        metrics_by_cycle.append({
+            "cycle": cycle + 1,
+            "layer_name": layer_name,
+            "layer_type": layer_type,
+            "average_power": avg_layer_power,
+            "layer_run_time": execution_duration
+        })
 
-            while current_log_index < num_power_logs:
-                log_timestamp, voltage, current = processed_log[current_log_index]
-                # processed_log at current_log_index is exceed the execution window
-                if log_timestamp > end_timestamp:
-                    break
-                # processed_log at current_log_index is within the execution window
-                if log_timestamp >= start_timestamp:
-                    cycle_power_measurements.append(voltage * current)
-                current_log_index += 1
-
-            avg_cycle_power = sum(cycle_power_measurements) / len(cycle_power_measurements) if cycle_power_measurements else 0.0
-            metrics_by_cycle.append({
-                "cycle": cycle_index + 1,
-                "layer_name": layer_name,
-                "layer_type": layer_type,
-                "average_power": avg_cycle_power, # The is the average power of the same cycle.
-                "layer_run_time": execution_duration
-            })
+        # Adjust `power_log_index` to backtrack by 1 to re-evaluate on the next layer if needed
+        # This is because next layer start time could be equal to prev layer end time.
+        power_index = max(0, power_index - 1)
 
     return metrics_by_cycle
 
@@ -193,6 +220,7 @@ if __name__ == "__main__":
 
     power_log, trt_layer_latency, trt_engine_info = read_log_files(args)
 
+    # layer_type_mapping = map_layer_name_to_type(trt_engine_info)
     metrics_by_cycle = compute_layer_metrics_by_cycle(
         trt_layer_latency=trt_layer_latency,
         power_log=power_log,
