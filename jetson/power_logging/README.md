@@ -106,7 +106,7 @@ To map the individual layer power output for each cycle and produce a CSV file, 
 
 Once you have these files ready, you can proceed with the mapping process.
 
-> Note: The resulting CSV file will not be included in the repository due to its size exceeding GitHub's limits.
+> Note: The resulting CSV file can't be included in the repository due to its size exceeding GitHub's limits.
 
 ### Running the Mapping Script
 
