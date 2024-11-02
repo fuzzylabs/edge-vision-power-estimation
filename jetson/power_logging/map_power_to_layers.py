@@ -2,11 +2,11 @@
 
 Example command:
 python map_power_to_layers.py \
+    --idling-power-log-path results/60_seconds_idling_power_log_20241029-143005.log \
     --power-log-path results/5000_cycles_power_log_20241029-144359.log \
     --trt-layer-latency-path results/mobilenet_v2/trt_profiling/trt_layer_latency.json \
     --trt-engine-info results/mobilenet_v2/trt_profiling/trt_engine_info.json \
     --result-dir results
-
 """
 import json
 from datetime import datetime, timedelta
@@ -14,6 +14,7 @@ from pathlib import Path
 import pandas as pd
 import argparse
 from collections import defaultdict
+import re
 
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
@@ -110,11 +111,23 @@ def preprocess_latency_data(trt_layer_latency: dict[str, list[list[float, str]]]
 
 
 def compute_layer_metrics_by_cycle(
-    trt_layer_latency: dict[str, list[list[float, str]]],
     power_log: list[str],
+    idling_power: float,
+    trt_layer_latency: dict[str, list[list[float, str]]],
     trt_engine_info: dict[str, str]
 ) -> list[dict[str, any]]:
-    
+    """
+    Computes and aggregates power and timing metrics for each layer within a processing cycle.
+
+    Args:
+        power_log: Power log entries.
+        idling_power: Module idling power.
+        trt_layer_latency: Dictionary of layer timings.
+        trt_engine_info: Layer information from the profiler.
+
+    Returns:
+       A list of dictionaries, each representing metrics for a specific layer.
+    """
     power_logs = preprocess_power_log(power_log)  # Ensure this function returns [(timestamp, power1, power2), ...]
 
     # Preprocess and sort latency data by start time
@@ -141,7 +154,8 @@ def compute_layer_metrics_by_cycle(
             "cycle": cycle + 1,
             "layer_name": layer_name,
             "layer_type": layer_type,
-            "average_power_micro_watt": avg_layer_power,
+            "module_power_micro_watt": avg_layer_power,
+            "layer_power_micro_watt": avg_layer_power - idling_power,
             "layer_run_time": execution_duration
         })
 
@@ -150,6 +164,19 @@ def compute_layer_metrics_by_cycle(
         power_index = max(0, power_index - 1)
 
     return metrics_by_cycle
+
+
+def get_module_idling_power(idling_power_log: list[str]) -> float:
+    """
+    Get the module idling power measure from log.
+
+    Args:
+        idling_power_log: _description_
+
+    Returns:
+        _description_
+    """
+    return float(re.search(r"[\d.]+", idling_power_log[0]).group())
 
 
 def save_result_to_csv(
@@ -183,14 +210,22 @@ def read_log_files(
     """
     with open(args.power_log_path) as power_log_file, open(
         args.trt_layer_latency_path) as trt_layer_latency_file, open(
-            args.trt_engine_info) as trt_engine_info_file:
-        return power_log_file.readlines(), json.load(trt_layer_latency_file), json.load(trt_engine_info_file)
+            args.trt_engine_info) as trt_engine_info_file, open(
+                args.idling_power_log_path) as idling_power_log_file:
+        return power_log_file.readlines(), json.load(trt_layer_latency_file), json.load(trt_engine_info_file), idling_power_log_file.readlines()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="Power Mapping With Logs Collected on Jetson",
         description="Map power usage data during inference cycles for ImageNet pretrained CNN models."
+    )
+    parser.add_argument(
+        "--idling-power-log-path",
+        type=Path,
+        help="The path of where the idling power log file are stored."
+        "The file should have the following format:"
+        "n_seconds_idling_power_log_timestamp.log",
     )
     parser.add_argument(
         "--power-log-path",
@@ -219,13 +254,16 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    power_log, trt_layer_latency, trt_engine_info = read_log_files(args)
+    power_log, trt_layer_latency, trt_engine_info, idling_power_log = read_log_files(args)
 
-    # layer_type_mapping = map_layer_name_to_type(trt_engine_info)
+    module_idling_power = get_module_idling_power(idling_power_log)
+
+    layer_type_mapping = map_layer_name_to_type(trt_engine_info)
     metrics_by_cycle = compute_layer_metrics_by_cycle(
         trt_layer_latency=trt_layer_latency,
         power_log=power_log,
         trt_engine_info=trt_engine_info,   
+        idling_power=module_idling_power,
     )
 
     save_result_to_csv(
