@@ -1,10 +1,11 @@
 """This script maps the power to the individual layer.
 
+Example command:
 python map_power_to_layers.py \
-    --power-log-path results_for_testing/5_cycles_power_log_20241030-150646.log \
-    --trt-layer-latency-path results_for_testing/trt_layer_latency.json \
-    --trt-engine-info results_for_testing/trt_engine_info.json \
-    --result-dir results_for_testing
+    --power-log-path results/5000_cycles_power_log_20241029-144359.log \
+    --trt-layer-latency-path results/mobilenet_v2/trt_profiling/trt_layer_latency.json \
+    --trt-engine-info results/mobilenet_v2/trt_profiling/trt_engine_info.json \
+    --result-dir results
 
 """
 import json
