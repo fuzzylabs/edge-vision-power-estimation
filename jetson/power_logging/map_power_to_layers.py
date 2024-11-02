@@ -140,7 +140,7 @@ def compute_layer_metrics_by_cycle(
             "cycle": cycle + 1,
             "layer_name": layer_name,
             "layer_type": layer_type,
-            "average_power": avg_layer_power,
+            "average_power_micro_watt": avg_layer_power,
             "layer_run_time": execution_duration
         })
 
@@ -165,7 +165,7 @@ def save_result_to_csv(
     """
     df = pd.DataFrame.from_dict(metrics_by_cycle)
 
-    df.to_csv(f"{args.result_dir}/average_power_and_run_time.csv")
+    df.to_csv(f"{args.result_dir}/metrics_by_cycle.csv")
 
 
 def read_log_files(
