@@ -128,6 +128,7 @@ def compute_layer_metrics_by_cycle(
     Returns:
        A list of dictionaries, each representing metrics for a specific layer.
     """
+    print("Computing layer metrics...")
     power_logs = preprocess_power_log(power_log)  # Ensure this function returns [(timestamp, power1, power2), ...]
 
     # Preprocess and sort latency data by start time
@@ -171,11 +172,12 @@ def get_module_idling_power(idling_power_log: list[str]) -> float:
     Get the module idling power measure from log.
 
     Args:
-        idling_power_log: _description_
+        idling_power_log: loaded idling power log file.
 
     Returns:
-        _description_
+        Module idling power in micro-watt.
     """
+    print("Getting module idling power...")
     return float(re.search(r"[\d.]+", idling_power_log[0]).group())
 
 
@@ -192,8 +194,8 @@ def save_result_to_csv(
         args: Arguments from CLI.
     """
     df = pd.DataFrame.from_dict(metrics_by_cycle)
-
     df.to_csv(f"{args.result_dir}/metrics_by_cycle.csv")
+    print(f"Metric results save to {args.result_dir}/metrics_by_cycle.csv")
 
 
 def read_log_files(
@@ -208,6 +210,7 @@ def read_log_files(
     Returns:
         A tuple containing the power logs, layer latency and layer info.
     """
+    print("Loading log files...")
     with open(args.power_log_path) as power_log_file, open(
         args.trt_layer_latency_path) as trt_layer_latency_file, open(
             args.trt_engine_info) as trt_engine_info_file, open(
