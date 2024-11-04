@@ -32,16 +32,13 @@ uv pip install -r pyproject.toml
 
 ### Docker
 
+Build and run docker image using [Dockerfile](./Dockerfile)
+
 > Note: Size of Docker image `nvcr.io/nvidia/pytorch:24.09-py3` is around 9 GB.
 
 ```bash
-docker run --gpus all -it --rm -v $(pwd)/:/workspace/  nvcr.io/nvidia/pytorch:24.09-py3
-```
-
-Inside docker container, we install `onnxruntime-gpu` package
-
-```bash
-pip install onnxruntime-gpu==1.19.2
+docker build -t benchmark_torch_onnx_trt .
+docker run --gpus all -it -v $(pwd):/app benchmark_torch_onnx_trt
 ```
 
 > Note: Replace `uv run` in following commands with `python` if running the script inside docker container.
