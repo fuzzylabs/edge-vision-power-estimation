@@ -3,7 +3,7 @@
 Example command:
 python map_power_to_layers.py \
     --idling-power-log-path results/60_seconds_idling_power_log_20241029-143005.log \
-    --power-log-path results/5000_cycles_power_log_20241029-144359.log \
+    --power-log-path results/mobilenet_v2/5000_cycles_power_log_20241029-144359.log \
     --trt-layer-latency-path results/mobilenet_v2/trt_profiling/trt_layer_latency.json \
     --trt-engine-info results/mobilenet_v2/trt_profiling/trt_engine_info.json \
     --result-dir results
@@ -66,7 +66,7 @@ def preprocess_power_log(power_log: list[str]) -> list[tuple]:
         timestamp = parse_timestamp(parts[0])
         voltage = float(parts[1])
         current = float(parts[2])
-        processed_log.append((timestamp, voltage, current))
+        processed_log.append((timestamp, voltage * current))
 
     return processed_log
 
@@ -144,7 +144,7 @@ def compute_layer_metrics_by_cycle(
 
         # Collect power measurements within start and end timestamp
         while power_index < len(power_logs) and power_logs[power_index][0] <= end_timestamp:
-            layer_power_measurements.append(power_logs[power_index][1] * power_logs[power_index][2])
+            layer_power_measurements.append(power_logs[power_index][1])
             power_index += 1
         
         # Calculate average power if measurements exist
@@ -193,9 +193,11 @@ def save_result_to_csv(
             including cycle number, layer name, type, power, and runtime.
         args: Arguments from CLI.
     """
+    model_name = args.power_log_path.parts[1]
+
     df = pd.DataFrame.from_dict(metrics_by_cycle)
-    df.to_csv(f"{args.result_dir}/metrics_by_cycle.csv")
-    print(f"Metric results save to {args.result_dir}/metrics_by_cycle.csv")
+    df.to_csv(f"{args.result_dir}/{model_name}/metrics_by_cycle.csv")
+    print(f"Metric results save to {args.result_dir}/{model_name}/metrics_by_cycle.csv")
 
 
 def read_log_files(
