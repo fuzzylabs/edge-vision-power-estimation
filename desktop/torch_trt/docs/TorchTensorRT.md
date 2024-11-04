@@ -1,6 +1,6 @@
 # Torch-TensorRT
 
-Torch-TensorRT library provides easy interface to create and run inference using TensoRT engine for PyTorch models.
+Torch-TensorRT library provides easy interface to create and run inference using TensorRT engine for PyTorch models.
 
 ## Background
 
