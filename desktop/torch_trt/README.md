@@ -53,7 +53,7 @@ cd torch_trt
 python benchmark.py --model mobilenet_v2 --backend pytorch --save-result
 ```
 
-> Note: Replace `uv` in following commands with `python` if running the script inside docker container.
+> Note: Replace `uv run` in following commands with `python` if running the script inside docker container.
 
 ### Run the benchmark script
 
@@ -107,4 +107,3 @@ uv run viz.py --model-dir results/resnet18
 The comparison plots for each model are saved under the `results/model_name` directory. An example of `resnet18` model shown below.
 
 ![Latency and Throughput](./results/resnet18/latency_throughput.png)
-

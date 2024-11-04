@@ -50,9 +50,6 @@ def benchmark(args: argparse.Namespace) -> None:
     Args:
         args: Arguments from CLI.
     """
-    start_exp = time.perf_counter()
-
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
     model.eval().to(DEVICE)

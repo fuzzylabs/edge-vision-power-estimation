@@ -68,17 +68,17 @@ def build_engine_cmd(
     timing_cache_path: str,
     save_path: str,
 ) -> tuple[list[str], str]:
-    """_summary_
+    """Build trtexec command to build TensorRT engine.
 
     Args:
-        args: _description_
-        onnx_path: _description_
-        engine_path: _description_
-        timing_cache_path: _description_
-        save_path: _description_
+        args: Arguments from CLI
+        onnx_path: Path to onnx file
+        engine_path: Path to save TRT engine file
+        timing_cache_path: Path to save TRT timing cache file
+        save_path: Path to save TRT engine build log
 
     Returns:
-        _description_
+        A tuple containing trtexec command and name of build log file
     """
     graph_json_fname = f"{save_path}.graph.json"
     cmd_line = [
@@ -109,6 +109,18 @@ def build_engine_cmd(
 def profile_engine_cmd(
     args: argparse.Namespace, engine_path: str, timing_cache_path: str, save_path: str
 ):
+    """Build trtexec command to profile TensorRT engine.
+
+    Args:
+        args: Arguments from CLI
+        onnx_path: Path to onnx file
+        engine_path: Path to save TRT engine file
+        timing_cache_path: Path to save TRT timing cache file
+        save_path: Path to save TRT engine profile log
+
+    Returns:
+        A tuple containing trtexec command and name of profile log file
+    """
     profiling_json_fname = f"{save_path}.profile.json"
     graph_json_fname = f"{save_path}.graph.json"
     timing_json_fname = f"{save_path}.timing.json"
@@ -151,7 +163,16 @@ def build_engine(
     engine_path: str,
     save_path: str,
     tea: Optional[archiving.EngineArchive] = None,
-) -> bool:
+) -> None:
+    """Build TensorRT engine from ONNX model using trtexec CLI.
+
+    Args:
+        args: Arguments from CLI
+        onnx_path: Path to onnx file
+        engine_path: Path to save TRT engine file
+        save_path: Path to save TRT engine metadata file
+        tea: Save archived file for TRT engine. Defaults to None.
+    """
     print(f"Building the engine: {engine_path}")
     cmd_line, build_log_file = build_engine_cmd(
         args, onnx_path, engine_path, args.timing_cache_path, save_path
@@ -174,7 +195,15 @@ def profile_engine(
     engine_path: str,
     save_path: str,
     tea: Optional[archiving.EngineArchive] = None,
-) -> bool:
+) -> None:
+    """Profile built TensorRT engine using trtexec CLI.
+
+    Args:
+        args: Arguments from CLI
+        engine_path: Path to save TRT engine file
+        save_path: Path to save TRT engine metadata file
+        tea: Save archived file for TRT engine. Defaults to None.
+    """
     print(f"Profiling the engine: {engine_path}")
     cmd_line, profile_log_file = profile_engine_cmd(
         args, engine_path, args.timing_cache_path, save_path
@@ -199,8 +228,8 @@ def benchmark_trt(args: argparse.Namespace, onnx_path: str) -> None:
     Build and profile TensorRT engine from ONNX model using `trtexec`.
 
     Args:
-        args: _description_
-        onnx_path: _description_
+        args: Arguments from CLI
+        onnx_path: Path to load onnx file
     """
     engine_path = get_engine_path(onnx_path)
     if not args.timing_cache_path:

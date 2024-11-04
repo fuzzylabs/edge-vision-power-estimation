@@ -44,7 +44,7 @@ Inside docker container, we install `onnxruntime-gpu` package
 pip install onnxruntime-gpu==1.19.2
 ```
 
-> Note: Replace `uv` in following commands with `python` if running the script inside docker container.
+> Note: Replace `uv run` in following commands with `python` if running the script inside docker container.
 
 ### Run the benchmark script
 
