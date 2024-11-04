@@ -286,10 +286,61 @@ A helpful explaination for the performance metrics is also printed.
 [11/01/2024-10:33:09] [V] Latency: the summation of H2D Latency, GPU Compute Time, and D2H Latency. This is the latency to infer a single query.
 ```
 
-It provides insights if we are underutilizing the GPU resources and where the bottlenecks for performance might be.
+It provides insights if we are underutilizing the GPU resources and which operation (CPU transfer to GPU, GPU transfer to CPU, or [Enqueue](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#enqueue-bound-workload), GPU inference) might be the bottleneck for performance.
+
+The profiling logs dump  per-layer runtime latencies across all iterations.
+
+```txt
+[11/04/2024-08:01:03] [I] === Profile (14590 iterations ) ===
+[11/04/2024-08:01:03] [I]    Time(ms)     Avg.(ms)   Median(ms)   Time(%)   Layer
+[11/04/2024-08:01:03] [I]      135.15       0.0093       0.0092       1.8   Reformatting CopyNode for Input Tensor 0 to /features/features.0/Conv + /features/features.1/Relu
+[11/04/2024-08:01:03] [I]      355.08       0.0243       0.0246       4.6   /features/features.0/Conv + /features/features.1/Relu
+[11/04/2024-08:01:03] [I]       76.50       0.0052       0.0051       1.0   /features/features.2/MaxPool
+[11/04/2024-08:01:03] [I]      382.78       0.0262       0.0266       5.0   /features/features.3/Conv + /features/features.4/Relu
+[11/04/2024-08:01:03] [I]       67.48       0.0046       0.0049       0.9   /features/features.5/MaxPool
+[11/04/2024-08:01:03] [I]      273.80       0.0188       0.0184       3.6   /features/features.6/Conv + /features/features.7/Relu
+[11/04/2024-08:01:03] [I]      370.15       0.0254       0.0256       4.8   /features/features.8/Conv + /features/features.9/Relu
+[11/04/2024-08:01:03] [I]      292.85       0.0201       0.0204       3.8   /features/features.10/Conv + /features/features.11/Relu
+[11/04/2024-08:01:03] [I]       61.77       0.0042       0.0041       0.8   /features/features.12/MaxPool
+[11/04/2024-08:01:03] [I]       29.88       0.0020       0.0020       0.4   dummy_shape_call__mye622_0_myl9_0
+[11/04/2024-08:01:03] [I]       59.76       0.0041       0.0041       0.8   __myl_Res_myl9_1
+[11/04/2024-08:01:03] [I]     3495.36       0.2396       0.2396      45.7   /classifier/classifier_1/Gemm_myl9_2
+[11/04/2024-08:01:03] [I]     1598.80       0.1096       0.1096      20.9   /classifier/classifier_4/Gemm_myl9_3
+[11/04/2024-08:01:03] [I]      448.27       0.0307       0.0307       5.9   /classifier/classifier_6/Gemm_myl9_4
+[11/04/2024-08:01:03] [I]     7647.66       0.5242       0.5233     100.0   Total
+```
+
+For Alexnet TensorRT model, the final 3 dense layers (`Gemm`) take almost 70% of runtime. With this log, you can identify which layers take the largest portion of the end-to-end latency and is the performance bottleneck
 
 ## Bonus
 
 ### trex
 
+[Trex](https://github.com/NVIDIA/TensorRT/tree/main/tools/experimental/trt-engine-explorer/trex) is an experimental TensorRT engine explorer library that provides helpful plots and insights to visualize TensorRT engine, layers and it's latencies.
+
+In our code, [notebook](../notebooks/README.md) shows how we used this library.
+
 ### modelopt
+
+TensorRT > 10 have a deprecated support for integer quantization (`IInt8EntropyCalibrator2`). This approach used to create a int8 quantized model from input ONNX model using `trtexec` command or using API.
+
+> Starting with TensorRT 10.1, the INT8 Entropy Calibrator 2 implicit quantization has been deprecated and superseded by explicit quantization.
+
+[ModelOptimizer](https://nvidia.github.io/TensorRT-Model-Optimizer/index.html) package is [recommended approach](https://github.com/NVIDIA/TensorRT/issues/4095) for creating a qunatized model (ONNX or PyTorch). This library contains state-of-the-art model optimization techniques such as quantization, pruning, distillation, etc.
+
+Here's command to convert Resnet50 ONNX model to `int8` quantized ONNX model.
+
+```bash
+python3 -m modelopt.onnx.quantization --onnx_path resnet50-v1-12.onnx --quantize_mode int8
+        --output_path resnet50-v1-12-quantized.onnx
+```
+
+> It loads the original ONNX model from `resnet50-v1-12.onnx`, runs calibration using random data, inserts Quantize/Dequantize ops into the graph, and then saves the ONNX model with Quantize/Dequantize ops to `resnet50-v1-12-quantized.onnx`.
+
+This int8 quantized model can be used to create a TensorRT engine using `trtexec` command.
+
+```bash
+trtexec --onnx=resnet50-v1-12-quantized.onnx --shapes=data:4x3x224x224 --stronglyTyped --noDataTransfers --useCudaGraph --useSpinWait
+```
+
+> We use the `--stronglyTyped` flag instead of the `--fp16` flag to require TensorRT to strictly follow the data types in the quantized ONNX model, including all the INT8 Quantize/Dequantize ops.
