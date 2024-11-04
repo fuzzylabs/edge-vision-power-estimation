@@ -117,6 +117,8 @@ def profile_engine_cmd(
         "--verbose",
         "--noDataTransfers",
         "--useCudaGraph",
+        "--dumpLayerInfo",
+        "--dumpProfile",
         f"--warmUp={args.warmup}",  # duration in ms
         f"--iterations={args.runs}",
         # Profiling affects the performance of your kernel!

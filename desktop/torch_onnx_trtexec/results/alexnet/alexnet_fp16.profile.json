@@ -1,17 +1,17 @@
 [
-  { "count" : 13897 }
-, { "name" : "Reformatting CopyNode for Input Tensor 0 to /features/features.0/Conv + /features/features.1/Relu", "timeMs" : 129.789, "averageMs" : 0.00933934, "medianMs" : 0.009216, "percentage" : 1.69791 }
-, { "name" : "/features/features.0/Conv + /features/features.1/Relu", "timeMs" : 325.968, "averageMs" : 0.023456, "medianMs" : 0.023552, "percentage" : 4.26435 }
-, { "name" : "/features/features.2/MaxPool", "timeMs" : 71.2715, "averageMs" : 0.00512855, "medianMs" : 0.00512, "percentage" : 0.932381 }
-, { "name" : "/features/features.3/Conv + /features/features.4/Relu", "timeMs" : 436.18, "averageMs" : 0.0313866, "medianMs" : 0.03072, "percentage" : 5.70615 }
-, { "name" : "/features/features.5/MaxPool", "timeMs" : 76.4134, "averageMs" : 0.00549856, "medianMs" : 0.00512, "percentage" : 0.999648 }
-, { "name" : "/features/features.6/Conv + /features/features.7/Relu", "timeMs" : 273.085, "averageMs" : 0.0196507, "medianMs" : 0.019456, "percentage" : 3.57253 }
-, { "name" : "/features/features.8/Conv + /features/features.9/Relu", "timeMs" : 386.8, "averageMs" : 0.0278333, "medianMs" : 0.027648, "percentage" : 5.06015 }
-, { "name" : "/features/features.10/Conv + /features/features.11/Relu", "timeMs" : 294.892, "averageMs" : 0.0212198, "medianMs" : 0.021504, "percentage" : 3.8578 }
-, { "name" : "/features/features.12/MaxPool", "timeMs" : 71.0429, "averageMs" : 0.0051121, "medianMs" : 0.00512, "percentage" : 0.92939 }
-, { "name" : "dummy_shape_call__mye622_0_myl9_0", "timeMs" : 28.4623, "averageMs" : 0.00204809, "medianMs" : 0.002048, "percentage" : 0.372347 }
-, { "name" : "__myl_Res_myl9_1", "timeMs" : 56.9246, "averageMs" : 0.00409618, "medianMs" : 0.004096, "percentage" : 0.744694 }
-, { "name" : "/classifier/classifier_1/Gemm_myl9_2", "timeMs" : 3415.74, "averageMs" : 0.24579, "medianMs" : 0.24576, "percentage" : 44.6851 }
-, { "name" : "/classifier/classifier_4/Gemm_myl9_3", "timeMs" : 1579.46, "averageMs" : 0.113655, "medianMs" : 0.113664, "percentage" : 20.6627 }
-, { "name" : "/classifier/classifier_6/Gemm_myl9_4", "timeMs" : 497.999, "averageMs" : 0.035835, "medianMs" : 0.03584, "percentage" : 6.51488 }
+  { "count" : 14590 }
+, { "name" : "Reformatting CopyNode for Input Tensor 0 to /features/features.0/Conv + /features/features.1/Relu", "timeMs" : 135.153, "averageMs" : 0.00926341, "medianMs" : 0.009216, "percentage" : 1.76725 }
+, { "name" : "/features/features.0/Conv + /features/features.1/Relu", "timeMs" : 355.08, "averageMs" : 0.0243372, "medianMs" : 0.024576, "percentage" : 4.643 }
+, { "name" : "/features/features.2/MaxPool", "timeMs" : 76.4995, "averageMs" : 0.00524328, "medianMs" : 0.00512, "percentage" : 1.0003 }
+, { "name" : "/features/features.3/Conv + /features/features.4/Relu", "timeMs" : 382.785, "averageMs" : 0.0262361, "medianMs" : 0.026624, "percentage" : 5.00526 }
+, { "name" : "/features/features.5/MaxPool", "timeMs" : 67.4834, "averageMs" : 0.00462532, "medianMs" : 0.004864, "percentage" : 0.882406 }
+, { "name" : "/features/features.6/Conv + /features/features.7/Relu", "timeMs" : 273.805, "averageMs" : 0.0187666, "medianMs" : 0.018432, "percentage" : 3.58025 }
+, { "name" : "/features/features.8/Conv + /features/features.9/Relu", "timeMs" : 370.152, "averageMs" : 0.0253702, "medianMs" : 0.0256, "percentage" : 4.84007 }
+, { "name" : "/features/features.10/Conv + /features/features.11/Relu", "timeMs" : 292.855, "averageMs" : 0.0200723, "medianMs" : 0.020416, "percentage" : 3.82934 }
+, { "name" : "/features/features.12/MaxPool", "timeMs" : 61.7657, "averageMs" : 0.00423343, "medianMs" : 0.004096, "percentage" : 0.807642 }
+, { "name" : "dummy_shape_call__mye622_0_myl9_0", "timeMs" : 29.8819, "averageMs" : 0.00204811, "medianMs" : 0.002048, "percentage" : 0.390733 }
+, { "name" : "__myl_Res_myl9_1", "timeMs" : 59.7638, "averageMs" : 0.00409622, "medianMs" : 0.004096, "percentage" : 0.781466 }
+, { "name" : "/classifier/classifier_1/Gemm_myl9_2", "timeMs" : 3495.36, "averageMs" : 0.239573, "medianMs" : 0.239616, "percentage" : 45.705 }
+, { "name" : "/classifier/classifier_4/Gemm_myl9_3", "timeMs" : 1598.8, "averageMs" : 0.109582, "medianMs" : 0.109568, "percentage" : 20.9058 }
+, { "name" : "/classifier/classifier_6/Gemm_myl9_4", "timeMs" : 448.266, "averageMs" : 0.0307242, "medianMs" : 0.03072, "percentage" : 5.86148 }
 ]

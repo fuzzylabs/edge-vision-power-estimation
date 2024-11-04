@@ -2,6 +2,8 @@
 
 Thanks to [trt-engine-explorer](https://github.com/NVIDIA/TensorRT/tree/main/tools/experimental/trt-engine-explorer) library that does all of the heavy lifting and producing beautiful plots for the TensorRT profiling.
 
+> Note: This library is in experimental stage.
+
 Here we go through notebook on alexnet TensorRT engine. It requires following files for providing analysis saved during benchmarking
 
 ```bash
@@ -44,3 +46,5 @@ We can create a SVG of the TensorRT engine that provides various configuration s
 An example of exported alexnet SVG that provides average latency taken by particular layer.
 
 ![alexnet](../results/alexnet/alexnet_avg_latency.png)
+
+We also provide SVG for [resnet](../results/resnet18/resnet_layer_wise_latency.png) and [mobilenet_v2](../results/mobilenet_v2/mobilenet_v2_layer_wise_latency.png) models.
