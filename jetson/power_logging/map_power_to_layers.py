@@ -129,7 +129,7 @@ def compute_layer_metrics_by_cycle(
        A list of dictionaries, each representing metrics for a specific layer.
     """
     print("Computing layer metrics...")
-    power_logs = preprocess_power_log(power_log)  # Ensure this function returns [(timestamp, power1, power2), ...]
+    power_logs = preprocess_power_log(power_log)  # Ensure this function returns [(timestamp, power (micro watt)), ...]
 
     # Preprocess and sort latency data by start time
     sorted_latency_data = preprocess_latency_data(trt_layer_latency)
