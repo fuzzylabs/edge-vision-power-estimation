@@ -112,6 +112,8 @@ Once you have these files ready, you can proceed with the mapping process.
 
 It’s important to run the mapping script on your personal computer rather than on the Jetson device.
 
+To transfer the `results` directory, the simplest way to move the results directory from the Jetson device to your computer is using a USB drive.
+
 Step 1: Install Dependencies
 First, set up a virtual environment and install the necessary dependencies:
 
