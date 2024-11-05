@@ -2,7 +2,6 @@
 
 from pathlib import Path
 import time
-import argparse
 import torch
 
 DTYPE_MAPPING = {"float32": "fp32", "float16": "fp16", "bfloat16": "bfp16"}
