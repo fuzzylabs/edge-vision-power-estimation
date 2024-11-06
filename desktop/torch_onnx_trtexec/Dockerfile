@@ -1,5 +1,7 @@
 FROM nvcr.io/nvidia/pytorch:24.09-py3
 
+# pip wheel are not up to date.
+# We install this library from git source directly
 RUN pip install 'git+https://github.com/NVIDIA/TensorRT.git/#egg=trex&subdirectory=tools/experimental/trt-engine-explorer'
 
 # Create a user group
