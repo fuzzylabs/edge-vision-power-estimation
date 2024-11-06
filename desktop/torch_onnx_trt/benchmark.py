@@ -73,7 +73,7 @@ def benchmark(args: argparse.Namespace) -> None:
     if args.dtype == "float16":
         dtype = torch.float16
     if args.dtype == "bfloat16":
-        dtype = torch.float16
+        dtype = torch.bfloat16
 
     input_data = input_data.to(dtype)
     model = model.to(dtype)
