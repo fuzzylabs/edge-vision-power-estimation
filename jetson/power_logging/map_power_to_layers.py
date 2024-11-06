@@ -15,6 +15,7 @@ import pandas as pd
 import argparse
 from collections import defaultdict
 import re
+from tqdm import tqdm
 
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
@@ -73,19 +74,24 @@ def preprocess_power_log(power_log: list[str]) -> list[tuple]:
 
 def preprocess_latency_data(trt_layer_latency: dict[str, list[list[float, str]]]) -> list[tuple]:
     """
-    Preprocess and sort latency data by adjusted start time. See below for what adjusted start time mean.
+    Preprocess latency data by adjusting and sorting layers based on their start times.
 
-    Adjust start time:
-        Each layer (except the first in each cycle) starts at the previous layer's end time or its own recorded start time, whichever is later.
+    Start Time Adjustment:
+        For each layer (except the first in each cycle), adjust the start time to the later of its own recorded start time or the end time of the preceding layer.
 
-        Check this thread for more detail:
-            https://fuzzy-labs.slack.com/archives/C07DTP3RGLA/p1730470951456389?thread_ts=1730281446.171379&cid=C07DTP3RGLA
+        Example:
+            Suppose layer 1 finishes at 00:10 and takes 5 seconds to execute, giving it an end time of 00:15. 
+            If layer 2 has a recorded start time of 00:13 (which is before layer 1 ends), adjust layer 2's start time to 00:15 
+            to maintain the sequential flow, as only one layer can run at a time.
+
+        Note:
+            This discrepancy in start times is mostly likely an artifact from the layer profiler.
 
     Args:
         trt_layer_latency: Dictionary containing latency data for each layer.
 
     Returns:
-        List of tuples with (cycle, start_time, end_time, duration, layer_name), sorted by start time.
+        List of tuples (cycle, start_time, end_time, duration, layer_name), sorted by start time.
     """
     latency_data = defaultdict(list)
 
@@ -138,7 +144,7 @@ def compute_layer_metrics_by_cycle(
     metrics_by_cycle = []
     power_index = 0
 
-    for cycle, _, end_timestamp, execution_duration, layer_name in sorted_latency_data:
+    for cycle, _, end_timestamp, execution_duration, layer_name in tqdm(sorted_latency_data):
         layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
         layer_power_measurements = []
 
@@ -155,8 +161,8 @@ def compute_layer_metrics_by_cycle(
             "cycle": cycle + 1,
             "layer_name": layer_name,
             "layer_type": layer_type,
-            "module_power_micro_watt": avg_layer_power,
-            "layer_power_micro_watt": avg_layer_power - idling_power,
+            "layer_power_including_idle_power_micro_watt": avg_layer_power,
+            "layer_power_excluding_idle_power_micro_watt": avg_layer_power - idling_power,
             "layer_run_time": execution_duration
         })
 
