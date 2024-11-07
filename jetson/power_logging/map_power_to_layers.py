@@ -20,26 +20,26 @@ from tqdm import tqdm
 
 
 def read_log_file(file_path: str) -> list[str]:
-    """_summary_
+    """Read log file and return the contents from the file.
 
     Args:
-        file_path: _description_
+        file_path: Path to file
 
     Returns:
-        _description_
+        Contents as list of string from the file.
     """
     with open(file_path, "r") as fp:
         return fp.readlines()
 
 
 def read_json_file(file_path: str) -> dict:
-    """_summary_
+    """Read json file.
 
     Args:
-        file_path: _description_
+        file_path: Path to json file
 
     Returns:
-        _description_
+        Return the content as dict from json file.
     """
     with open(file_path, "r") as fp:
         return json.load(fp)
@@ -204,7 +204,8 @@ def compute_layer_metrics_by_cycle(
                 "layer_name": layer_name,
                 "layer_type": layer_type,
                 "layer_power_including_idle_power_micro_watt": avg_layer_power,
-                "layer_power_excluding_idle_power_micro_watt": avg_layer_power - avg_idling_power,
+                "layer_power_excluding_idle_power_micro_watt": avg_layer_power
+                - avg_idling_power,
                 "layer_run_time": execution_duration,
             }
         )
@@ -246,7 +247,7 @@ def save_result_to_csv(
     print(f"Metric results save to {args.result_dir}/{model_name}/{filename}")
 
 
-def parse_files(args: argparse.Namespace) -> tuple[list[str], dict]:
+def parse_files(args: argparse.Namespace) -> tuple:
     """Reads power log and TRT layer latency data from specified file paths.
 
     Args:
