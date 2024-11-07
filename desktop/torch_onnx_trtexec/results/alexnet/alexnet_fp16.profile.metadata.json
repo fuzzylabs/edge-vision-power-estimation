@@ -1,0 +1,89 @@
+{
+    "performance_summary": {
+        "Throughput": 2012.22,
+        "Latency": [
+            0.490234,
+            0.500977,
+            0.495324,
+            0.495605,
+            0.498047,
+            0.498535,
+            0.5
+        ],
+        "Enqueue Time": [
+            0.000976562,
+            0.0224609,
+            0.0017826,
+            0.00146484,
+            0.00244141,
+            0.00292969,
+            0.00537109
+        ],
+        "H2D Latency": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "GPU Compute Time": [
+            0.490234,
+            0.500977,
+            0.495324,
+            0.495605,
+            0.498047,
+            0.498535,
+            0.5
+        ],
+        "D2H Latency": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Total Host Walltime": 3.00117,
+        "Total GPU Compute Time": 2.99126
+    },
+    "inference_options": {
+        "Batch": "Explicit",
+        "Input inference shapes": "model",
+        "Iterations": "100",
+        "Duration": "3s (+ 5000ms warm up)",
+        "Sleep time": "0ms",
+        "Idle time": "0ms",
+        "Inference Streams": "1",
+        "ExposeDMA": "Disabled",
+        "Data transfers": "Disabled",
+        "Spin-wait": "Enabled",
+        "Multithreading": "Disabled",
+        "CUDA Graph": "Enabled",
+        "Separate profiling": "Enabled",
+        "Time Deserialize": "Disabled",
+        "Time Refit": "Disabled",
+        "NVTX verbosity": "2",
+        "Persistent Cache Ratio": "0",
+        "Optimization Profile Index": "0",
+        "Weight Streaming Budget": "100.000000%",
+        "Inputs": "",
+        "Debug Tensor Save Destinations": ""
+    },
+    "device_information": {
+        "Available Devices": "",
+        "Device 0": "\"NVIDIA GeForce RTX 3060 Laptop GPU\" UUID",
+        "Selected Device": "NVIDIA GeForce RTX 3060 Laptop GPU",
+        "Selected Device ID": "0",
+        "Selected Device UUID": "GPU-2580ec36-5574-ddc7-4615-63d57b5969e2",
+        "Compute Capability": 8.6,
+        "SMs": 30.0,
+        "Device Global Memory": "5937 MiB",
+        "Shared Memory per SM": "100 KiB",
+        "Memory Bus Width": 192.0,
+        "Application Compute Clock Rate": "1.425 GHz",
+        "Application Memory Clock Rate": "7.001 GHz"
+    }
+}

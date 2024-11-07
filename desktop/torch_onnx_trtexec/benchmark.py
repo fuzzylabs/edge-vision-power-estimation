@@ -2,33 +2,22 @@
 
 To run benchmark script:
     python benchmark.py \
-        --backend <backend> \
         --model <pytorch_hub_model_name> \
-        --dtype <dtype> \
-        --save-result
+        --dtype <dtype>
 
 """
 
-import json
-from rich import print
-from pathlib import Path
 from typing import Any
 from datetime import datetime
+import argparse
 import time
 import torch
 import torchvision
-import torch.backends.cudnn as cudnn
-import argparse
-from onnx_utils import benchmark_onnx
+
+from onnx_utils import save_onnx_model
 from trt_utils import benchmark_trt
 
-cudnn.benchmark = True
-
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BACKENDS = [
-    "onnx",
-    "tensorrt",
-]
 
 
 def load_model(model_name: str) -> Any:
@@ -54,17 +43,13 @@ def load_model(model_name: str) -> Any:
 
 
 def benchmark(args: argparse.Namespace) -> None:
-    """Benchmark latency and throughput across all backends.
+    """Benchmark latency and throughput for TensorRT.
 
-    Additionally for tensorrt backend, we calculate layer-wise
-    latency.
+    We use `trtexec` CLI to build a TensorRT engine from ONNX model.
 
     Args:
         args: Arguments from CLI.
     """
-    start_exp = time.perf_counter()
-
-    current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
     model.eval().to(DEVICE)
@@ -78,31 +63,11 @@ def benchmark(args: argparse.Namespace) -> None:
     input_data = input_data.to(dtype)
     model = model.to(dtype)
 
-    if args.backend == "onnx":
-        # Convert PyTorch to ONNX and benchmark
-        results = benchmark_onnx(args, model, input_data)
-    if args.backend == "tensorrt":
-        results = benchmark_trt(args, input_data)
+    # Export PyTorch model to ONNX and save it to disk
+    onnx_file_path = save_onnx_model(args, model, input_data)
 
-    end_exp = time.perf_counter()
-    print("Benchmarking complete ...")
-    # Convert milliseconds to seconds
-    total_exp_time = end_exp - start_exp
-    print(f"Total time for experiment: {total_exp_time} sec")
-
-    results.config = vars(args)
-    results.timestamp = current_dt
-    results.total_time = total_exp_time
-
-    if args.save_result:
-        save_dir = f"{args.result_dir}/{args.model}"
-        Path(save_dir).mkdir(exist_ok=True, parents=True)
-        file_name = f"{args.model}_{args.backend}_{current_dt}.json"
-        file_path = f"{save_dir}/{file_name}"
-        with open(file_path, "w", encoding="utf-8") as outfile:
-            json.dump(results.model_dump_json(indent=4), outfile)
-
-    print(results)
+    # Benchmark TensorRT engine using trtexec tool
+    benchmark_trt(args, onnx_file_path)
 
 
 if __name__ == "__main__":
@@ -117,13 +82,6 @@ if __name__ == "__main__":
         help="Specify name of pretrained CNN model from PyTorch Hub."
         "For more information on PyTorch Hub visit: "
         "https://pytorch.org/hub/research-models",
-    )
-    parser.add_argument(
-        "--backend",
-        type=str,
-        help="Backend to use for benchmarking",
-        default="onnx",
-        choices=BACKENDS,
     )
     parser.add_argument(
         "--dtype",
@@ -145,8 +103,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--warmup",
         type=int,
-        default=50,
-        help="Number of iterations to perform warmup before benchmarking",
+        default=5000,
+        help="Minimum duration in ms to perform warmup before benchmarking."
+        "Defaults to warmup of 5000 ms i.e. 5 seconds.",
     )
     parser.add_argument(
         "--runs",
@@ -156,11 +115,6 @@ if __name__ == "__main__":
         "to collect latency, throughput and layer-wise latency",
     )
     parser.add_argument(
-        "--save-result",
-        action="store_true",
-        help="Specify to save benchmark results to a json file",
-    )
-    parser.add_argument(
         "--result-dir",
         type=str,
         default="results",
@@ -168,11 +122,23 @@ if __name__ == "__main__":
         "If not specified, results are saved in the current directory.",
     )
     parser.add_argument(
+        "--timing-cache-path",
+        type=str,
+        default="",
+        help="Specify directory to save timing cache created while building TRT engine."
+        "If not specified, it will be under /tmp/ directory.",
+    )
+    parser.add_argument(
         "--model-dir",
         type=str,
         default="models",
         help="Specify directory to save ONNX models."
         "If not specified, models are saved in the current directory.",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Print trtexec build and profiling logs to stdout",
     )
 
     args = parser.parse_args()

@@ -1,0 +1,1030 @@
+{"Layers": [{
+  "Name": "Reformatting CopyNode for Input Tensor 0 to /conv1/Conv + /relu/Relu",
+  "LayerType": "Reformat",
+  "Inputs": [
+  {
+    "Name": "input",
+    "Location": "Device",
+    "Dimensions": [1,3,224,224],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to /conv1/Conv + /relu/Relu",
+    "Location": "Device",
+    "Dimensions": [1,3,224,224],
+    "Format/Datatype": "Channel major FP16 format where channel % 4 == 0"
+  }],
+  "ParameterType": "Reformat",
+  "Origin": "REFORMAT",
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "/conv1/Conv + /relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to /conv1/Conv + /relu/Relu",
+    "Location": "Device",
+    "Dimensions": [1,3,224,224],
+    "Format/Datatype": "Channel major FP16 format where channel % 4 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,112,112],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [7,7],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [3,3],
+  "PostPadding": [3,3],
+  "Stride": [2,2],
+  "Dilation": [1,1],
+  "OutMaps": 64,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 9408},
+  "Bias": {"Type": "Half", "Count": 64},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x32x16_stage1_warpsize4x1x1_g1_tensor16x8x16_aligna8_alignc8",
+  "TacticValue": "0xfb0beb2dd64ff6e8",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /conv1/Conv]\u001e[ONNX Layer: /relu/Relu]"
+},{
+  "Name": "/maxpool/MaxPool",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,112,112],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/maxpool/MaxPool_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "MAX",
+  "WindowSize": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [2,2],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 1,
+  "TacticName": "sm50_xmma_pooling_coalescedC_NHWC_kMAX_3_False",
+  "TacticValue": "0xdb415cba6b0e9137",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /maxpool/MaxPool]"
+},{
+  "Name": "/layer1/layer1.0/conv1/Conv + /layer1/layer1.0/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/maxpool/MaxPool_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer1/layer1.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 64,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 36864},
+  "Bias": {"Type": "Half", "Count": 64},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x64x64_stage3_warpsize2x2x1_g1_tensor16x8x16_t1r3s3_aACCESS",
+  "TacticValue": "0x263a38afd75e3a43",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer1/layer1.0/conv1/Conv]\u001e[ONNX Layer: /layer1/layer1.0/relu/Relu]"
+},{
+  "Name": "/layer1/layer1.0/conv2/Conv + /layer1/layer1.0/Add + /layer1/layer1.0/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer1/layer1.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/maxpool/MaxPool_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer1/layer1.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 64,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 36864},
+  "Bias": {"Type": "Half", "Count": 64},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x64x64_stage3_warpsize2x2x1_g1_tensor16x8x16_t1r3s3_aACCESS",
+  "TacticValue": "0x263a38afd75e3a43",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer1/layer1.0/conv2/Conv]\u001e[ONNX Layer: /layer1/layer1.0/Add]\u001e[ONNX Layer: /layer1/layer1.0/relu_1/Relu]"
+},{
+  "Name": "/layer1/layer1.1/conv1/Conv + /layer1/layer1.1/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer1/layer1.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer1/layer1.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 64,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 36864},
+  "Bias": {"Type": "Half", "Count": 64},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x64x64_stage3_warpsize2x2x1_g1_tensor16x8x16_t1r3s3_aACCESS",
+  "TacticValue": "0x263a38afd75e3a43",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer1/layer1.1/conv1/Conv]\u001e[ONNX Layer: /layer1/layer1.1/relu/Relu]"
+},{
+  "Name": "/layer1/layer1.1/conv2/Conv + /layer1/layer1.1/Add + /layer1/layer1.1/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer1/layer1.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/layer1/layer1.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer1/layer1.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 64,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 36864},
+  "Bias": {"Type": "Half", "Count": 64},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x64x64_stage3_warpsize2x2x1_g1_tensor16x8x16_t1r3s3_aACCESS",
+  "TacticValue": "0x263a38afd75e3a43",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer1/layer1.1/conv2/Conv]\u001e[ONNX Layer: /layer1/layer1.1/Add]\u001e[ONNX Layer: /layer1/layer1.1/relu_1/Relu]"
+},{
+  "Name": "/layer2/layer2.0/conv1/Conv + /layer2/layer2.0/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer1/layer1.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer2/layer2.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [2,2],
+  "Dilation": [1,1],
+  "OutMaps": 128,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 73728},
+  "Bias": {"Type": "Half", "Count": 128},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16_aACCESS",
+  "TacticValue": "0x841c601dec2a75bc",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer2/layer2.0/conv1/Conv]\u001e[ONNX Layer: /layer2/layer2.0/relu/Relu]"
+},{
+  "Name": "/layer2/layer2.0/conv2/Conv",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer2/layer2.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer2/layer2.0/conv2/Conv_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 128,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 147456},
+  "Bias": {"Type": "Half", "Count": 128},
+  "HasBias": 1,
+  "HasReLU": 0,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "NONE",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16_aACCESS",
+  "TacticValue": "0x841c601dec2a75bc",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer2/layer2.0/conv2/Conv]"
+},{
+  "Name": "/layer2/layer2.0/downsample/downsample.0/Conv + /layer2/layer2.0/Add + /layer2/layer2.0/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer1/layer1.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,64,56,56],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/layer2/layer2.0/conv2/Conv_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer2/layer2.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [1,1],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [2,2],
+  "Dilation": [1,1],
+  "OutMaps": 128,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 8192},
+  "Bias": {"Type": "Half", "Count": 128},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_indexed_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16",
+  "TacticValue": "0x4a81ea1e51436a30",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer2/layer2.0/downsample/downsample.0/Conv]\u001e[ONNX Layer: /layer2/layer2.0/Add]\u001e[ONNX Layer: /layer2/layer2.0/relu_1/Relu]"
+},{
+  "Name": "/layer2/layer2.1/conv1/Conv + /layer2/layer2.1/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer2/layer2.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer2/layer2.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 128,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 147456},
+  "Bias": {"Type": "Half", "Count": 128},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16_aACCESS",
+  "TacticValue": "0x841c601dec2a75bc",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer2/layer2.1/conv1/Conv]\u001e[ONNX Layer: /layer2/layer2.1/relu/Relu]"
+},{
+  "Name": "/layer2/layer2.1/conv2/Conv + /layer2/layer2.1/Add + /layer2/layer2.1/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer2/layer2.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/layer2/layer2.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer2/layer2.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 128,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 147456},
+  "Bias": {"Type": "Half", "Count": 128},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16_aACCESS",
+  "TacticValue": "0x841c601dec2a75bc",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer2/layer2.1/conv2/Conv]\u001e[ONNX Layer: /layer2/layer2.1/Add]\u001e[ONNX Layer: /layer2/layer2.1/relu_1/Relu]"
+},{
+  "Name": "/layer3/layer3.0/conv1/Conv + /layer3/layer3.0/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer2/layer2.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer3/layer3.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [2,2],
+  "Dilation": [1,1],
+  "OutMaps": 256,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 294912},
+  "Bias": {"Type": "Half", "Count": 256},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16",
+  "TacticValue": "0xf35e0311fa1cc516",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer3/layer3.0/conv1/Conv]\u001e[ONNX Layer: /layer3/layer3.0/relu/Relu]"
+},{
+  "Name": "/layer3/layer3.0/conv2/Conv",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer3/layer3.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer3/layer3.0/conv2/Conv_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 256,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 589824},
+  "Bias": {"Type": "Half", "Count": 256},
+  "HasBias": 1,
+  "HasReLU": 0,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "NONE",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16",
+  "TacticValue": "0xf35e0311fa1cc516",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer3/layer3.0/conv2/Conv]"
+},{
+  "Name": "/layer3/layer3.0/downsample/downsample.0/Conv + /layer3/layer3.0/Add + /layer3/layer3.0/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer2/layer2.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,128,28,28],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/layer3/layer3.0/conv2/Conv_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer3/layer3.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [1,1],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [2,2],
+  "Dilation": [1,1],
+  "OutMaps": 256,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 32768},
+  "Bias": {"Type": "Half", "Count": 256},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16",
+  "TacticValue": "0xf35e0311fa1cc516",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer3/layer3.0/downsample/downsample.0/Conv]\u001e[ONNX Layer: /layer3/layer3.0/Add]\u001e[ONNX Layer: /layer3/layer3.0/relu_1/Relu]"
+},{
+  "Name": "/layer3/layer3.1/conv1/Conv + /layer3/layer3.1/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer3/layer3.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer3/layer3.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 256,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 589824},
+  "Bias": {"Type": "Half", "Count": 256},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x1x2_g1_tensor16x8x16_aACCESS",
+  "TacticValue": "0x841c601dec2a75bc",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer3/layer3.1/conv1/Conv]\u001e[ONNX Layer: /layer3/layer3.1/relu/Relu]"
+},{
+  "Name": "/layer3/layer3.1/conv2/Conv + /layer3/layer3.1/Add + /layer3/layer3.1/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer3/layer3.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/layer3/layer3.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer3/layer3.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 256,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 589824},
+  "Bias": {"Type": "Half", "Count": 256},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16",
+  "TacticValue": "0xf35e0311fa1cc516",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer3/layer3.1/conv2/Conv]\u001e[ONNX Layer: /layer3/layer3.1/Add]\u001e[ONNX Layer: /layer3/layer3.1/relu_1/Relu]"
+},{
+  "Name": "/layer4/layer4.0/conv1/Conv + /layer4/layer4.0/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer3/layer3.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer4/layer4.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [2,2],
+  "Dilation": [1,1],
+  "OutMaps": 512,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 1179648},
+  "Bias": {"Type": "Half", "Count": 512},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_t1r3s3",
+  "TacticValue": "0xa033e20ae9f412b2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer4/layer4.0/conv1/Conv]\u001e[ONNX Layer: /layer4/layer4.0/relu/Relu]"
+},{
+  "Name": "/layer4/layer4.0/conv2/Conv",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer4/layer4.0/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer4/layer4.0/conv2/Conv_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 512,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 2359296},
+  "Bias": {"Type": "Half", "Count": 512},
+  "HasBias": 1,
+  "HasReLU": 0,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "NONE",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_t1r3s3",
+  "TacticValue": "0xa033e20ae9f412b2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer4/layer4.0/conv2/Conv]"
+},{
+  "Name": "/layer4/layer4.0/downsample/downsample.0/Conv + /layer4/layer4.0/Add + /layer4/layer4.0/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer3/layer3.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,256,14,14],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/layer4/layer4.0/conv2/Conv_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer4/layer4.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [1,1],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [2,2],
+  "Dilation": [1,1],
+  "OutMaps": 512,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 131072},
+  "Bias": {"Type": "Half", "Count": 512},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_t1r1s1",
+  "TacticValue": "0x2aa016c86360697f",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer4/layer4.0/downsample/downsample.0/Conv]\u001e[ONNX Layer: /layer4/layer4.0/Add]\u001e[ONNX Layer: /layer4/layer4.0/relu_1/Relu]"
+},{
+  "Name": "/layer4/layer4.1/conv1/Conv + /layer4/layer4.1/relu/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer4/layer4.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer4/layer4.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 512,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 2359296},
+  "Bias": {"Type": "Half", "Count": 512},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 0,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_t1r3s3",
+  "TacticValue": "0xa033e20ae9f412b2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer4/layer4.1/conv1/Conv]\u001e[ONNX Layer: /layer4/layer4.1/relu/Relu]"
+},{
+  "Name": "/layer4/layer4.1/conv2/Conv + /layer4/layer4.1/Add + /layer4/layer4.1/relu_1/Relu",
+  "LayerType": "CaskConvolution",
+  "Inputs": [
+  {
+    "Name": "/layer4/layer4.1/relu/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  },
+  {
+    "Name": "/layer4/layer4.0/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/layer4/layer4.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Convolution",
+  "Kernel": [3,3],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [1,1],
+  "PostPadding": [1,1],
+  "Stride": [1,1],
+  "Dilation": [1,1],
+  "OutMaps": 512,
+  "Groups": 1,
+  "Weights": {"Type": "Half", "Count": 2359296},
+  "Bias": {"Type": "Half", "Count": 512},
+  "HasBias": 1,
+  "HasReLU": 1,
+  "HasSparseWeights": 0,
+  "HasDynamicFilter": 0,
+  "HasDynamicBias": 0,
+  "HasResidual": 1,
+  "ConvXAsActInputIdx": -1,
+  "BiasAsActInputIdx": -1,
+  "ResAsActInputIdx": -1,
+  "Activation": "RELU",
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_t1r3s3",
+  "TacticValue": "0xa033e20ae9f412b2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /layer4/layer4.1/conv2/Conv]\u001e[ONNX Layer: /layer4/layer4.1/Add]\u001e[ONNX Layer: /layer4/layer4.1/relu_1/Relu]"
+},{
+  "Name": "/avgpool/GlobalAveragePool",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "/layer4/layer4.1/relu_1/Relu_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,7,7],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "/avgpool/GlobalAveragePool_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,1,1],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "AVERAGE",
+  "WindowSize": [7,7],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [1,1],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 1,
+  "TacticName": "sm50_xmma_pooling_fw_4d_FP16FP32NHWC_Average_FastDiv_CAlign4",
+  "TacticValue": "0x56d7b61f084f251e",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /avgpool/GlobalAveragePool]"
+},{
+  "Name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[fc.weight...(Unnamed Layer* 58) [ElementWise]]}",
+  "LayerType": "NoOp",
+  "Inputs": [
+  {
+    "Name": "/avgpool/GlobalAveragePool_output_0",
+    "Location": "Device",
+    "Dimensions": [1,512,1,1],
+    "Format/Datatype": "Channel major FP16 format where channel % 8 == 0"
+  }],
+  "Outputs": [
+  {
+    "Name": "Reformatted Input Tensor 0 to {ForeignNode[fc.weight...(Unnamed Layer* 58) [ElementWise]]}",
+    "Location": "Device",
+    "Dimensions": [1,512,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "TacticValue": "0x0000000000000000",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "dummy_shape_call__mye548_0_myl24_0",
+  "LayerType": "shape_call",
+  "Inputs": [],
+  "Outputs": [],
+  "TacticName": "",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "__myl_MulSumAdd_myl24_1",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "fc_bias _ ONNXTRT_Broadcast_constantHalf",
+    "Dimensions": [1,1000],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__mye519_dconst",
+    "Dimensions": [512,1000],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "Reformatted Input Tensor 0 to {ForeignNode[fc.weight...(Unnamed Layer* 58) [ElementWise]]}",
+    "Dimensions": [512,1],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "output",
+    "Dimensions": [1,1000],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_MulSumAdd_0x8622c45a2ac50005b4481bcb604814ec",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /fc/Gemm]"
+}],
+"Bindings": ["input"
+,"output"
+]}
