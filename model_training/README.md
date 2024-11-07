@@ -43,12 +43,12 @@ Next, we will perform data preprocessing to prepare training dataset.
 
     ```bash
     python convert_measurements.py \
-        training_data/mobilenet_v2 \
+        data/mobilenet_v2 \
         results/mobilenet_v2/power_runtime_mapping_layerwise.csv \
         results/mobilenet_v2/trt_profiling/trt_engine_info.json
     ```
 
-The final preprocessed data is present in [training_data](training_data) folder.
+The final preprocessed data for the model is present in [data/model-name](data) folder.
 
 ### Training
 

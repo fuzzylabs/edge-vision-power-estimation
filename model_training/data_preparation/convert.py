@@ -108,7 +108,7 @@ def convert_measurements_to_training_data(
 
     for layer_type in results:
         filepath = save_path / f"{layer_type}.csv"
-        if results[layer_type]:
+        if len(results[layer_type]) > 0:
             df = pd.DataFrame(results[layer_type])
             df.to_csv(filepath, index=False)
         else:
