@@ -11,6 +11,7 @@ LayerType = Literal["convolutional", "pooling", "dense"]
 
 class TensorRTInputOutput(BaseModel):
     """TensorRT layer input and output model."""
+
     dimensions: list[int] = Field(validation_alias="Dimensions")
 
     @field_validator("dimensions")
@@ -24,6 +25,7 @@ class TensorRTInputOutput(BaseModel):
 
 class TensorRTLayer(BaseModel):
     """TensorRT layer definition."""
+
     name: str = Field(validation_alias="Name")
 
     inputs: list[TensorRTInputOutput] = Field(validation_alias="Inputs")
@@ -55,11 +57,8 @@ class TensorRTLayer(BaseModel):
             return "pooling"
         elif self.parameter_type == "Convolution":
             return "convolutional"
-        # Case for Dense is missing, since we're yet to see one
-        else:
-            return None
-
-
+        elif self.layer_type == "gemm":
+            return "dense"
 
 
 class TensorRTEngineInfo(BaseModel):
@@ -67,6 +66,7 @@ class TensorRTEngineInfo(BaseModel):
 
     class Config:
         """Model configuration."""
+
         extra = "ignore"
 
     layers: list[TensorRTLayer] = Field(validation_alias="Layers")
@@ -76,5 +76,5 @@ def read_layers_info(path: Path) -> dict[str, TensorRTLayer]:
     """Read TensorRT engine info from file."""
     with open(path, "r") as f:
         json_content = json.load(f)
-        info = TensorRTEngineInfo.parse_obj(json_content)
+        info = TensorRTEngineInfo.model_validate(json_content)
         return {layer.name: layer for layer in info.layers}
