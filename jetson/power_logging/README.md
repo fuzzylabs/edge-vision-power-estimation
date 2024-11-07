@@ -4,7 +4,7 @@ To measure power consumption during an inference cycle, two processes are used s
 1. **Power Logging Process**: Captures power data.
 2. **Inference Process**: Runs inference to measure power used by each layer.
 
-The goal is to produce a graph of power consumption per layer. (*WIP SD-57*)
+The goal is to produce power consumption by layer which will be used as the training data.
 
 The power measurement and inference process have been tested on the Jetson Orion Nano Development Kit with the following configuration:
 
@@ -94,3 +94,57 @@ This script generates multiple log and trace files. The two primary files of int
 2. `trt_layer_latency.json`: Contains layer execution time with the corresponding timestamp.
 
 By default, all results are saved in the `results` folder.
+
+### Mapping Power Consumption By Layer
+
+To map the individual layer power output for each cycle and produce a CSV file, you’ll need to have your benchmark data from running the two power measurement scripts above which should be in the results folder. This data includes:
+
+1. {n}_cycles_power_log_{timestamp}.log
+2. {n}_seconds_idling_power_log_{timestamp}.log
+3. trt_layer_latency.json
+4. trt_engine_info.json
+
+Once you have these files ready, you can proceed with the mapping process.
+
+> Note: The resulting CSV file can't be included in the repository due to its size exceeding GitHub's limits.
+
+### Running the Mapping Script
+
+It’s important to run the mapping script on your personal computer rather than on the Jetson device.
+
+To transfer the `results` directory, the simplest way to move the results directory from the Jetson device to your computer is using a USB drive.
+
+Alternatively, you can send it via email, upload it to a S3 bucket or using Dropbox.
+
+Step 1: Install Dependencies
+First, set up a virtual environment and install the necessary dependencies:
+
+```bash
+uv venv --python 3.11
+source .venv/bin/activate
+uv pip install -r pyproject.toml
+```
+
+Step 2: Execute the Mapping Script
+Next, run the mapping script using the following command. Make sure to replace the placeholders with the actual paths to your log files:
+
+```bash
+python map_power_to_layers.py \
+    --idling-power-log-path <{n}_seconds_idling_power_log_{timestamp}.log> \
+    --power-log-path <{n}_cycles_power_log_{timestamp}.log> \
+    --trt-layer-latency-path <trt_layer_latency.json> \
+    --trt-engine-info <trt_engine_info.json> \
+    --result-dir results
+```
+
+### What do each columns mean in the result csv?
+
+| cycle  | layer_name | layer_type | module_power_micro_watt | layer_power_micro_watt | layer_run_time |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| The inference cycle number. | The name of the layer processed in the current cycle. | The type or category of the layer, derived from `trt_engine_info`. | The average power consumption (in micro-Watts) of the module during this cycle. | The net power consumption of the layer in this cycle, after subtracting `idling_power`. | The execution duration (in microseconds) for the layer in this cycle. |
+
+### Visualisation of how the mapping algorithm works
+
+![step0](./assets/step0.png)
+![step1](./assets/step1.png)
+![step2](./assets/step2.png)

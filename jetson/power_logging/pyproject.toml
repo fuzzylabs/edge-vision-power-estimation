@@ -4,4 +4,7 @@ version = "0.1.0"
 description = "Collect power usage data during inference cycles for ImageNet pretrained CNN models."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pandas>=2.2.3",
+    "tqdm>=4.66.6",
+]

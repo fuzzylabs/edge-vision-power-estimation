@@ -55,14 +55,14 @@ def compute_average_idling_power(args: argparse.Namespace, logs: list[tuple]) ->
     print(f"Computing average idling power.")
     mWs = [mV * mC for mV, mC in logs]
     average_mW = sum(mWs) / len(mWs)
-    print(f"Average idling power: {average_mW} mW")
+    print(f"Average idling power: {average_mW} muW")
 
     # Ensure the results directory exists
     Path(args.result_dir).mkdir(exist_ok=True, parents=True)
 
     current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
     with open(f"{args.result_dir}/{args.idle_duration}_seconds_idling_power_log_{current_dt}.log", "w") as f:
-        f.writelines(f"The average idling power measured: {average_mW} mW")
+        f.writelines(f"The average idling power measured: {average_mW} muW")
 
     print(f"Log file created at {args.result_dir}/{args.idle_duration}_seconds_idling_power_log_{current_dt}.log")
 
