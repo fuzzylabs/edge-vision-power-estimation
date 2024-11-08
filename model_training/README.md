@@ -52,4 +52,8 @@ The final preprocessed data for the model is present in [data/model-name](data) 
 
 ### Training
 
-`train.ipynb` shows how the pipelines can be trained and used
+[train.ipynb](./train.ipynb) shows how the pipelines can be trained and used.
+
+```bash
+uv run jupyter notebook
+```

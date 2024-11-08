@@ -13,7 +13,9 @@ def turn_into_mapping(column_names: list[str]) -> dict[str, int]:
     return {feature: i for i, feature in enumerate(column_names)}
 
 
-def read_data(file_path: Path, features: list[str]) -> (pd.DataFrame, pd.Series, pd.Series):
+def read_data(
+    file_path: Path, features: list[str]
+) -> (pd.DataFrame, pd.Series, pd.Series):
     """Read data for a layer.
 
     Args:
@@ -28,7 +30,9 @@ def read_data(file_path: Path, features: list[str]) -> (pd.DataFrame, pd.Series,
     df = pd.read_csv(file_path)
 
     input_features = df.loc[:, features]
-    power = df.power
+    # Convert microwatt to watt
+    power = df.power / 1e6
+    # Recorded in milliseconds
     runtime = df.runtime
 
     return input_features, power, runtime
@@ -36,17 +40,14 @@ def read_data(file_path: Path, features: list[str]) -> (pd.DataFrame, pd.Series,
 
 def _create_pipeline(transformer: TransformerMixin) -> Pipeline:
     """Create a neural power pipeline with given transformer."""
-    return Pipeline([
-        ("transformer", transformer),
-        ("lasso", LassoCV(cv=10))
-    ])
+    return Pipeline([("transformer", transformer), ("lasso", LassoCV(cv=10))])
 
 
 def create_pipeline(
     features_mapping: dict[str, int],
     polynomial_degree: int,
     is_log: bool = False,
-    special_terms_list: list[list[str]] | None= None,
+    special_terms_list: list[list[str]] | None = None,
 ) -> Pipeline:
     """Create a neural power pipeline.
 
@@ -60,18 +61,19 @@ def create_pipeline(
         Pipeline: neural power pipeline
     """
     regular_terms_transformer = get_regular_polynomial_terms_transformer(
-        degree=polynomial_degree,
-        is_log=is_log
+        degree=polynomial_degree, is_log=is_log
     )
     if special_terms_list is not None and len(special_terms_list) > 0:
         special_terms_transformer = get_special_polynomial_terms_transformer(
             features_mapping,
             special_terms_list,
         )
-        transformer = FeatureUnion([
-            ("regular_polynomial", regular_terms_transformer),
-            ("special_polynomial", special_terms_transformer)
-        ])
+        transformer = FeatureUnion(
+            [
+                ("regular_polynomial", regular_terms_transformer),
+                ("special_polynomial", special_terms_transformer),
+            ]
+        )
     else:
         transformer = regular_terms_transformer
 
@@ -83,19 +85,26 @@ def multiply_columns(input_arr: np.ndarray, column_indices: list[int]) -> np.nda
     return np.multiply.reduce(input_arr[:, column_indices], axis=1)
 
 
-def get_regular_polynomial_terms_transformer(degree: int, is_log: bool = False) -> Pipeline | TransformerMixin:
+def get_regular_polynomial_terms_transformer(
+    degree: int, is_log: bool = False
+) -> Pipeline | TransformerMixin:
     """Create a polynomial terms transformer."""
     polynomial_transformer = PolynomialFeatures(degree=degree)
     if is_log:
-        return Pipeline([
-            ("log2", FunctionTransformer(np.log2)),
-            ("polynomial_features", polynomial_transformer)
-        ])
+        return Pipeline(
+            [
+                # log2 produces -inf if any input feature (e.g. padding_0 or padding_1) is zero
+                ("log2", FunctionTransformer(np.log1p)),
+                ("polynomial_features", polynomial_transformer),
+            ]
+        )
     else:
         return polynomial_transformer
 
 
-def get_special_polynomial_terms_transformer(features_mapping: dict[str, int], terms_list: list[list[str]]) -> TransformerMixin:
+def get_special_polynomial_terms_transformer(
+    features_mapping: dict[str, int], terms_list: list[list[str]]
+) -> TransformerMixin:
     """Create a transformer for special polynomial terms."""
 
     def _build_special_terms(input_arr: np.ndarray) -> np.ndarray:
