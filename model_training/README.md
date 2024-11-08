@@ -15,7 +15,7 @@ This package trains layer-specific models for power consumption and runtime.
 Create virtual environment using `uv` and install dependencies required for the project.
 
 ```bash
-uv venv --python 3.11
+uv venv --python 3.12
 source .venv/bin/activate
 uv sync
 ```
@@ -55,5 +55,5 @@ The final preprocessed data for the model is present in [data/model-name](data) 
 [train.ipynb](./train.ipynb) shows how the pipelines can be trained and used.
 
 ```bash
-uv run jupyter notebook
+jupyter notebook
 ```
