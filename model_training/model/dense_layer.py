@@ -3,7 +3,7 @@ from pathlib import Path
 from sklearn.pipeline import Pipeline
 import pandas as pd
 
-from model_training.model.common import create_pipeline, turn_into_mapping, read_data
+from model.common import create_pipeline, turn_into_mapping, read_data
 
 features = [
     "batch_size",
@@ -12,6 +12,7 @@ features = [
 ]
 
 features_mapping = turn_into_mapping(features)
+
 
 def read_dense_data(path: Path) -> (pd.DataFrame, pd.Series, pd.Series):
     """Read data for a dense layer."""

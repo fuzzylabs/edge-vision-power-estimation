@@ -3,7 +3,7 @@ from pathlib import Path
 from sklearn.pipeline import Pipeline
 import pandas as pd
 
-from model_training.model.common import create_pipeline, turn_into_mapping, read_data
+from model.common import create_pipeline, turn_into_mapping, read_data
 
 features = [
     "batch_size",
@@ -16,23 +16,28 @@ features = [
     "kernel_0",
     "kernel_1",
     "stride_0",
-    "stride_1"
+    "stride_1",
 ]
 
 features_mapping = turn_into_mapping(features)
 
-TOTAL_INPUT_FEATURES = [
-    "batch_size", "input_size_0", "input_size_1", "input_size_2"
-]
+TOTAL_INPUT_FEATURES = ["batch_size", "input_size_0", "input_size_1", "input_size_2"]
 
 TOTAL_OUTPUT_FEATURES = [
-    "batch_size", "output_size_0", "output_size_1", "output_size_2"
+    "batch_size",
+    "output_size_0",
+    "output_size_1",
+    "output_size_2",
 ]
 
 TOTAL_NO_OPS = [
-    "batch_size", "input_size_0", "input_size_1", "input_size_2", "kernel_0", "kernel_1"
+    "batch_size",
+    "input_size_0",
+    "input_size_1",
+    "input_size_2",
+    "kernel_0",
+    "kernel_1",
 ]
-
 
 
 def read_pooling_data(path: Path) -> (pd.DataFrame, pd.Series, pd.Series):
@@ -45,7 +50,7 @@ def create_power_pipeline() -> Pipeline:
     return create_pipeline(
         features_mapping,
         polynomial_degree=3,
-        special_terms_list=[TOTAL_NO_OPS, TOTAL_INPUT_FEATURES, TOTAL_OUTPUT_FEATURES]
+        special_terms_list=[TOTAL_NO_OPS, TOTAL_INPUT_FEATURES, TOTAL_OUTPUT_FEATURES],
     )
 
 
@@ -54,5 +59,5 @@ def create_runtime_pipeline() -> Pipeline:
     return create_pipeline(
         features_mapping,
         polynomial_degree=3,
-        special_terms_list=[TOTAL_NO_OPS, TOTAL_INPUT_FEATURES, TOTAL_OUTPUT_FEATURES]
+        special_terms_list=[TOTAL_NO_OPS, TOTAL_INPUT_FEATURES, TOTAL_OUTPUT_FEATURES],
     )

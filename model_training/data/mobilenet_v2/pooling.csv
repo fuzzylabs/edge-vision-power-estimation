@@ -1,0 +1,2 @@
+batch_size,input_size_0,input_size_1,input_size_2,output_size_0,output_size_1,output_size_2,kernel_0,kernel_1,stride_0,stride_1,power,runtime,layer_name
+1,1280,7,7,1280,1,1,7,7,1,1,2375132.3347200486,0.013387992538387497,[REDUCE]-[aten_ops.mean.dim]-[__/mean]
