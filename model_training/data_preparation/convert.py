@@ -75,6 +75,8 @@ def convert_measurements_to_training_data(
         "dense": [],
     }
 
+    layers_ignored = set()
+
     for _, row in tqdm(measurements.iterrows(), total=measurements.shape[0]):
         layer_name = row.layer_name
         if layer_name not in layers_info:
@@ -102,7 +104,9 @@ def convert_measurements_to_training_data(
             features["layer_name"] = layer_name
             results["dense"].append(features)
         else:
-            continue
+            layers_ignored.add(layer_type)
+
+    print(f"Layer types ignored: {layers_ignored}")
 
     save_path.mkdir(parents=True, exist_ok=True)
 

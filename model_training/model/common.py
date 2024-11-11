@@ -8,6 +8,10 @@ from sklearn.preprocessing import FunctionTransformer, PolynomialFeatures
 import numpy as np
 
 
+MICROWATTS_IN_WATTS = 1e6
+
+CROSS_VALIDATION = 10
+
 def turn_into_mapping(column_names: list[str]) -> dict[str, int]:
     """Turn a list of features into a mapping from feature names to index."""
     return {feature: i for i, feature in enumerate(column_names)}
@@ -31,16 +35,16 @@ def read_data(
 
     input_features = df.loc[:, features]
     # Convert microwatt to watt
-    power = df.power / 1e6
+    power = df.power / MICROWATTS_IN_WATTS
     # Recorded in milliseconds
     runtime = df.runtime
 
     return input_features, power, runtime
 
 
-def _create_pipeline(transformer: TransformerMixin) -> Pipeline:
+def _create_pipeline(transformer: TransformerMixin, cv: int = CROSS_VALIDATION) -> Pipeline:
     """Create a neural power pipeline with given transformer."""
-    return Pipeline([("transformer", transformer), ("lasso", LassoCV(cv=10))])
+    return Pipeline([("transformer", transformer), ("lasso", LassoCV(cv=cv))])
 
 
 def create_pipeline(
@@ -54,7 +58,7 @@ def create_pipeline(
     Args:
         features_mapping (dict[str, int]): Mapping of feature names to indices.
         polynomial_degree (int): Polynomial degree of regular polynomial terms.
-        is_log (bool): Whether to log2 input features.
+        is_log (bool): Whether to log1p input features.
         special_terms_list (list[list[str]]): Definitions of special polynomial terms.
 
     Returns:
@@ -94,7 +98,7 @@ def get_regular_polynomial_terms_transformer(
         return Pipeline(
             [
                 # log2 produces -inf if any input feature (e.g. padding_0 or padding_1) is zero
-                ("log2", FunctionTransformer(np.log1p)),
+                ("log1p", FunctionTransformer(np.log1p)),
                 ("polynomial_features", polynomial_transformer),
             ]
         )

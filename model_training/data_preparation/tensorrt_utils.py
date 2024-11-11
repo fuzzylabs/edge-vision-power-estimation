@@ -5,10 +5,6 @@ from typing import Literal
 from pydantic import BaseModel, Field, ValidationError, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
-
-LayerType = Literal["convolutional", "pooling", "dense"]
-
-
 class TensorRTInputOutput(BaseModel):
     """TensorRT layer input and output model."""
 
@@ -46,12 +42,11 @@ class TensorRTLayer(BaseModel):
 
         return val
 
-    def get_layer_type(self) -> LayerType | None:
+    def get_layer_type(self) -> str:
         """Get layer type.
 
         Returns:
-            LayerType | None: a LayerType string, or None
-                if the layer type is not one that we model.
+            str: Name of the layer
         """
         if self.parameter_type == "Pooling":
             return "pooling"
@@ -59,7 +54,8 @@ class TensorRTLayer(BaseModel):
             return "convolutional"
         elif self.layer_type == "gemm":
             return "dense"
-
+        else:
+            return self.layer_type
 
 class TensorRTEngineInfo(BaseModel):
     """TensorRT engine information model."""
