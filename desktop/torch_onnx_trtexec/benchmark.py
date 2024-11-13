@@ -8,9 +8,7 @@ To run benchmark script:
 """
 
 from typing import Any
-from datetime import datetime
 import argparse
-import time
 import torch
 import torchvision
 
