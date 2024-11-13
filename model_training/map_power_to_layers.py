@@ -205,8 +205,7 @@ def compute_layer_metrics_by_cycle(
                 "layer_name": layer_name,
                 "layer_type": layer_type,
                 "layer_power_including_idle_power_micro_watt": avg_layer_power,
-                "layer_power_excluding_idle_power_micro_watt": avg_layer_power
-                - avg_idling_power,
+                "layer_power_excluding_idle_power_micro_watt": avg_layer_power - avg_idling_power,
                 "layer_run_time": execution_duration,
             }
         )
