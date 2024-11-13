@@ -1,5 +1,6 @@
 """Dagshub Client."""
 
+import argparse
 import dagshub
 
 
@@ -82,10 +83,75 @@ class DagsHubClient:
 
 
 if __name__ == "__main__":
-
-    dagshub_client = DagsHubClient(owner="dudeperf3ct", name="jetson-data")
-    dagshub_client.download_dataset(
-        remote_dir_path="results",
-        local_dir_path="results",
-        branch_name="raw_data",
+    parser = argparse.ArgumentParser(
+        description="Use DagsHub and DVC to version control datasets"
     )
+    parser.add_argument(
+        "--owner",
+        type=str,
+        default="fuzzylabs",
+        help="Name of user/organization on DagsHub.",
+    )
+    parser.add_argument(
+        "--name",
+        type=str,
+        default="edge-vision-power-estimation",
+        help="The directory to save the log result.",
+    )
+    parser.add_argument(
+        "--commit",
+        type=str,
+        default="Add dataset to DagsHub",
+        help="Commit message",
+    )
+    parser.add_argument(
+        "--branch",
+        type=str,
+        default="main",
+        help="Name of branch to push data",
+    )
+    parser.add_argument(
+        "--local-dir-path",
+        type=str,
+        default="raw_data",
+        help="The local directory to version control using DVC and DagsHub.",
+    )
+    parser.add_argument(
+        "--remote-dir-path",
+        type=str,
+        default="raw_data",
+        help="The remote directory to pull from DagsHub.",
+    )
+    parser.add_argument(
+        "--versioning",
+        type=str,
+        default="dvc",
+        help="Which versioning system to use to upload a file.",
+    )
+    parser.add_argument(
+        "--upload",
+        action="store_true",
+        help="Push data to DagsHub",
+    )
+    parser.add_argument(
+        "--download",
+        action="store_true",
+        help="Pull data from DagsHub",
+    )
+    args = parser.parse_args()
+
+    dagshub_client = DagsHubClient(owner=args.owner, name=args.name)
+    if args.upload:
+        print(f"Pushing {args.local_dir_path} directory to DagsHub")
+        dagshub_client.upload_dataset(
+            dataset_dir=args.local_dir_path,
+            commit_message=args.commit,
+            branch_name=args.branch,
+            versioning=args.versioning,
+        )
+    if args.download:
+        dagshub_client.download_dataset(
+            remote_dir_path=args.remote_dir_path,
+            local_dir_path=args.local_dir_path,
+            branch_name=args.branch,
+        )

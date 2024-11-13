@@ -9,6 +9,7 @@ python map_power_to_layers.py \
     --result-dir results
 """
 
+import shutil
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -204,7 +205,8 @@ def compute_layer_metrics_by_cycle(
                 "layer_name": layer_name,
                 "layer_type": layer_type,
                 "layer_power_including_idle_power_micro_watt": avg_layer_power,
-                "layer_power_excluding_idle_power_micro_watt": avg_layer_power - avg_idling_power,
+                "layer_power_excluding_idle_power_micro_watt": avg_layer_power
+                - avg_idling_power,
                 "layer_run_time": execution_duration,
             }
         )
@@ -239,11 +241,25 @@ def save_result_to_csv(
             including cycle number, layer name, type, power, and runtime.
         args: Arguments from CLI.
     """
-    filename = f"power_runtime_mapping_layerwise.csv"
     model_name = args.power_log_path.parts[1]
+    result_model_dir = f"{args.result_dir}/{model_name}"
+    Path(result_model_dir).mkdir(exist_ok=True, parents=True)
+
+    filename = f"power_runtime_mapping_layerwise.csv"
     df = pd.DataFrame.from_dict(metrics_by_cycle)
-    df.to_csv(f"{args.result_dir}/{model_name}/{filename}", index=False)
+    df.to_csv(f"{result_model_dir}/{filename}", index=False)
     print(f"Metric results save to {args.result_dir}/{model_name}/{filename}")
+
+
+def copy_trt_engine_to_target_dir(args: argparse.Namespace) -> None:
+    """Copy tensorrt engine info file to preprocessed data directory.
+
+    Args:
+        args: Arguments from CLI.
+    """
+    model_name = args.power_log_path.parts[1]
+    result_model_dir = f"{args.result_dir}/{model_name}"
+    shutil.copy2(src=args.trt_engine_info_path, dst=result_model_dir)
 
 
 def parse_files(args: argparse.Namespace) -> tuple:
@@ -298,7 +314,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--result-dir",
         type=str,
-        default="results",
+        default="preprocessed_data",
         help="The directory to save the csv.",
     )
     args = parser.parse_args()
@@ -316,3 +332,5 @@ if __name__ == "__main__":
     )
 
     save_result_to_csv(metrics_by_cycle=metrics_by_cycle, args=args)
+
+    copy_trt_engine_to_target_dir(args=args)

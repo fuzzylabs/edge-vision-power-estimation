@@ -156,4 +156,4 @@ cython_debug/
 # Mac
 *.DS_Store
 
-results
+raw_data
