@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "dagshub>=0.3.42",
     "jupyter>=1.1.1",
     "numpy>=2.1.2",
     "pandas>=2.2.3",
