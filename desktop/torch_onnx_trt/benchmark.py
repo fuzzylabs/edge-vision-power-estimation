@@ -100,7 +100,7 @@ def benchmark(args: argparse.Namespace) -> None:
         file_name = f"{args.model}_{args.backend}_{current_dt}.json"
         file_path = f"{save_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
-            json.dump(results.model_dump_json(indent=4), outfile)
+            json.dump(results.model_dump(), outfile, indent=4)
 
     print(results)
 

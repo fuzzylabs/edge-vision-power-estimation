@@ -1,6 +1,7 @@
 # Measuring Power
 
 To measure power consumption during an inference cycle, two processes are used similar to the profiling energy paper:
+
 1. **Power Logging Process**: Captures power data.
 2. **Inference Process**: Runs inference to measure power used by each layer.
 
@@ -63,11 +64,13 @@ You’ll need to run two scripts for measuring power:
 1. **[measure_idling_power.py](measure_idling_power.py)** - Measures the idling power of the Jetson Orin Nano. Ensure the performance settings are applied before running this. This script outputs an `idling_power_log_{timestamp}.log` file with idling power data.
 
 To run the this script:
+
 ```bash
 python measure_idling_power.py
 ```
 
 Alternatively, we can specify the idling duration such as 120 seconds:
+
 ```bash
 python measure_idling_power.py \
     --idle-duration 120
@@ -75,13 +78,14 @@ python measure_idling_power.py \
 
 2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument, 30000 cycles will run by default.
 
-
 To run the this script with default settings:
+
 ```bash
 python measure_inference_power.py
 ```
 
 Alternatively, we can run the power measuring script with various models, specify the number of inference cycles, or save results to different directories, use the following command:
+
 ```bash
 python measure_inference_power.py \
     --model <pytorch_hub_model_name> \
@@ -90,10 +94,42 @@ python measure_inference_power.py \
 ```
 
 This script generates multiple log and trace files. The two primary files of interest are:
+
 1. `{n}_cycles_power_log_{timestamp}.log`: Logs power measurements during inference.
 2. `trt_layer_latency.json`: Contains layer execution time with the corresponding timestamp.
 
-By default, all results are saved in the `results` folder.
+By default, all results are saved in the `RESULT_DIR` folder.
+
+### Data Versioning
+
+We use DagsHub and DVC to data version control
+
+There are two operations that we can perform for a data versioning.
+
+1. Upload the local data to be version control into DagsHub
+2. Download the version control dataset from DagsHub locally
+
+Upload dataset from `raw_data` folder to DagsHub.
+
+```bash
+python data_version.py \
+    --owner DAGSHUB_USERNAME \
+    --name DAGSHUB_REPONAME \
+    --local-dir-path raw_data \
+    --commit "Add raw data" \
+    --upload
+```
+
+Download dataset from `raw_data` folder from DagsHub locally.
+
+```bash
+python data_version.py \
+    --owner DAGSHUB_USERNAME \
+    --name DAGSHUB_REPONAME \
+    --local-dir-path raw_data \
+    --remote-dir-path raw_data \
+    --download
+```
 
 ### Mapping Power Consumption By Layer
 
@@ -107,41 +143,6 @@ To map the individual layer power output for each cycle and produce a CSV file, 
 Once you have these files ready, you can proceed with the mapping process.
 
 > Note: The resulting CSV file can't be included in the repository due to its size exceeding GitHub's limits.
-
-### Running the Mapping Script
-
-It’s important to run the mapping script on your personal computer rather than on the Jetson device.
-
-To transfer the `results` directory, the simplest way to move the results directory from the Jetson device to your computer is using a USB drive.
-
-Alternatively, you can send it via email, upload it to a S3 bucket or using Dropbox.
-
-Step 1: Install Dependencies
-First, set up a virtual environment and install the necessary dependencies:
-
-```bash
-uv venv --python 3.11
-source .venv/bin/activate
-uv pip install -r pyproject.toml
-```
-
-Step 2: Execute the Mapping Script
-Next, run the mapping script using the following command. Make sure to replace the placeholders with the actual paths to your log files:
-
-```bash
-python map_power_to_layers.py \
-    --idling-power-log-path <{n}_seconds_idling_power_log_{timestamp}.log> \
-    --power-log-path <{n}_cycles_power_log_{timestamp}.log> \
-    --trt-layer-latency-path <trt_layer_latency.json> \
-    --trt-engine-info <trt_engine_info.json> \
-    --result-dir results
-```
-
-### What do each columns mean in the result csv?
-
-| cycle  | layer_name | layer_type | module_power_micro_watt | layer_power_micro_watt | layer_run_time |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| The inference cycle number. | The name of the layer processed in the current cycle. | The type or category of the layer, derived from `trt_engine_info`. | The average power consumption (in micro-Watts) of the module during this cycle. | The net power consumption of the layer in this cycle, after subtracting `idling_power`. | The execution duration (in microseconds) for the layer in this cycle. |
 
 ### Visualisation of how the mapping algorithm works
 
