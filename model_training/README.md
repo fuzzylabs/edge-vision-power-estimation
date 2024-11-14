@@ -22,7 +22,34 @@ uv sync
 
 ### Data Versioning
 
-[TODO] Pull the benchmarking data from data versioning platform.
+We use DagsHub and DVC to data version control
+
+There are two operations that we can perform for a data versioning.
+
+1. Upload the local data to be version control into DagsHub
+2. Download the version control dataset from DagsHub locally
+
+Upload dataset from `raw_data` folder to DagsHub.
+
+```bash
+python data_version.py \
+    --owner DAGSHUB_USERNAME \
+    --name DAGSHUB_REPONAME \
+    --local-dir-path raw_data \
+    --commit "Add raw data" \
+    --upload
+```
+
+Download dataset from `raw_data` folder from DagsHub locally.
+
+```bash
+python data_version.py \
+    --owner DAGSHUB_USERNAME \
+    --name DAGSHUB_REPONAME \
+    --local-dir-path raw_data \
+    --remote-dir-path raw_data \
+    --download
+```
 
 ### Data preprocessing
 

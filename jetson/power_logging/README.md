@@ -100,6 +100,37 @@ This script generates multiple log and trace files. The two primary files of int
 
 By default, all results are saved in the `RESULT_DIR` folder.
 
+### Data Versioning
+
+We use DagsHub and DVC to data version control
+
+There are two operations that we can perform for a data versioning.
+
+1. Upload the local data to be version control into DagsHub
+2. Download the version control dataset from DagsHub locally
+
+Upload dataset from `raw_data` folder to DagsHub.
+
+```bash
+python data_version.py \
+    --owner DAGSHUB_USERNAME \
+    --name DAGSHUB_REPONAME \
+    --local-dir-path raw_data \
+    --commit "Add raw data" \
+    --upload
+```
+
+Download dataset from `raw_data` folder from DagsHub locally.
+
+```bash
+python data_version.py \
+    --owner DAGSHUB_USERNAME \
+    --name DAGSHUB_REPONAME \
+    --local-dir-path raw_data \
+    --remote-dir-path raw_data \
+    --download
+```
+
 ### Mapping Power Consumption By Layer
 
 To map the individual layer power output for each cycle and produce a CSV file, you’ll need to have your benchmark data from running the two power measurement scripts above which should be in the results folder. This data includes:
