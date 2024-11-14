@@ -23,7 +23,7 @@ import argparse
 import json
 from pydantic import BaseModel
 from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
-
+from model.lenet import LeNet
 
 cudnn.benchmark = True
 
@@ -52,6 +52,8 @@ def load_model(model_name: str) -> Any:
     Returns:
         PyTorch model
     """
+    if model_name == "lenet":
+        return LeNet()
     try:
         return torch.hub.load("pytorch/vision", model_name, weights="IMAGENET1K_V1")
     except:
@@ -97,7 +99,9 @@ def benchmark(args: argparse.Namespace) -> None:
         optimization_level=args.optimization_level,
         enabled_precisions={dtype},
         # Set to True for verbose output
-        debug=True,
+        # Performance Regression when rich library is available
+        # https://github.com/pytorch/TensorRT/issues/3215
+        debug=False,
         # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
         use_python_runtime=True,
     )

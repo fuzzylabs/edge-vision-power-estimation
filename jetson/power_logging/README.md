@@ -46,16 +46,8 @@ To use our power measurement script, run it inside this Docker image `nvcr.io/nv
 Start the container with:
 
 ```bash
-sudo docker build -t edge-power-measure .
-sudo docker run --runtime=nvidia --ipc=host -it edge-power-measure
-```
-
-> Note: Make sure you are in the project folder when you run the above command.
-
-Since we’ve mounted our project directory to `/home`, switch to that directory before running the script:
-
-```bash
-cd /home/innovation-power-estimation-models/jetson/power_logging
+sudo docker build -t edge-vision-benchmark -f Dockerfile.jetson .
+sudo docker run --runtime=nvidia --ipc=host -it edge-vision-benchmark
 ```
 
 ### Running Power Measurement Scripts
