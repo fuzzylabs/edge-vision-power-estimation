@@ -46,7 +46,8 @@ To use our power measurement script, run it inside this Docker image `nvcr.io/nv
 Start the container with:
 
 ```bash
-sudo docker run --runtime=nvidia --ipc=host -it -v $(pwd):/home/innovation-power-estimation-models nvcr.io/nvidia/pytorch:24.06-py3-igpu
+sudo docker build -t edge-power-measure .
+sudo docker run --runtime=nvidia --ipc=host -it edge-power-measure
 ```
 
 > Note: Make sure you are in the project folder when you run the above command.
