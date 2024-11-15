@@ -53,6 +53,8 @@ def load_model(model_name: str) -> Any:
     """
     if model_name == "lenet":
         return LeNet()
+    if model_name == "fcn_resnet50":
+        return torch.hub.load("pytorch/vision", model_name)
     try:
         return torch.hub.load("pytorch/vision", model_name, weights="IMAGENET1K_V1")
     except:
