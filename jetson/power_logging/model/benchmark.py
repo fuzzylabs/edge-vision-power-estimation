@@ -54,7 +54,7 @@ def load_model(model_name: str) -> Any:
     if model_name == "lenet":
         return LeNet()
     if model_name == "fcn_resnet50":
-        return torch.hub.load("pytorch/vision", model_name)
+        return torch.hub.load("pytorch/vision", model_name, pretrained=True)
     try:
         return torch.hub.load("pytorch/vision", model_name, weights="IMAGENET1K_V1")
     except:
@@ -86,7 +86,7 @@ def benchmark(args: argparse.Namespace) -> None:
     if args.dtype == "float16":
         dtype = torch.float16
     if args.dtype == "bfloat16":
-        dtype = torch.float16
+        dtype = torch.bfloat16
 
     input_data = input_data.to(dtype)
     model = model.to(dtype)

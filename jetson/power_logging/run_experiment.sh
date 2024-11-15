@@ -19,8 +19,10 @@ sleep 120
 
 # Models to benchmark
 # Using models mentioned in Neural Power
-# Section 3.3 covers various CNN architectures used for the experiment
-models=("alexnet" "vgg16" "vgg19" "googlenet" "fcn_resnet50" "mobilnet_v2" "resnet18" "lenet")
+# Section 3.3 covers various CNN architectures used for the experiment 
+# NOTE : fcn_resnet50 is a object detection model and does not work with TorchTensorRT library
+# TODO: Revisit fcn_resnet50 once this issue is addressed: https://github.com/pytorch/TensorRT/issues/3295
+models=("alexnet" "vgg16" "vgg19" "googlenet" "mobilenet_v2" "resnet18" "lenet")
 
 # Number of inference cycles
 RUNS=30000
