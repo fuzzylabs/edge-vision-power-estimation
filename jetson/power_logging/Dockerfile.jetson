@@ -18,4 +18,4 @@ WORKDIR /app
 
 COPY --chown=appuser:appuser . ./
 
-CMD [ "./run_experiment.sh" ]
+CMD ["/bin/bash", "./run_experiment.sh"]
