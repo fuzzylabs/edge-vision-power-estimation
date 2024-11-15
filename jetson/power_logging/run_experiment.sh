@@ -41,6 +41,7 @@ do
   python measure_inference_power.py \
     --model "$model" \
     --runs "$RUNS" \
+    --result-dir "$RESULT_DIR" \
     --optimization-level 3 \
     $INPUT_SHAPE
 done
