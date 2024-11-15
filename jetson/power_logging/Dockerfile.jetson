@@ -1,10 +1,6 @@
-# Dagshub user token
-# It can be obtained from User Settings
-ARG TOKEN
-
 FROM nvcr.io/nvidia/pytorch:24.06-py3-igpu
 
-ENV DAGSHUB_USER_TOKEN=$TOKEN
+ENV DAGSHUB_USER_TOKEN=dummy
 
 RUN pip install dagshub
 

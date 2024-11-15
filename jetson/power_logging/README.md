@@ -47,7 +47,7 @@ Start the container with:
 
 ```bash
 sudo docker build -t edge-vision-benchmark -f Dockerfile.jetson .
-sudo docker run -e "TOKEN=<dagshub-token>" --runtime=nvidia --ipc=host -d edge-vision-benchmark
+sudo docker run -e "DAGSHUB_USER_TOKEN=<dagshub-token>" --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
 ```
 
 > [!NOTE]  

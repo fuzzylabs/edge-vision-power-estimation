@@ -31,16 +31,17 @@ do
   echo "Running inference power measurement for model: $model"
 
   # Set input shape to be different for lenet model
-  if ["$model" == "lenet"]; then
+  if [ "$model" == "lenet" ]; then
     INPUT_SHAPE='--input-shape 1 1 32 32'
   else
     INPUT_SHAPE='--input-shape 1 3 224 224'
   fi
 
+  # Run the measure_inference_power.py script
   python measure_inference_power.py \
     --model "$model" \
     --runs "$RUNS" \
-    --result-dir "$RESULT_DIR" \
+    --optimization-level 3 \
     $INPUT_SHAPE
 done
 
