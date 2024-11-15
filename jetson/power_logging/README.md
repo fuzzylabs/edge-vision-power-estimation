@@ -47,11 +47,28 @@ Start the container with:
 
 ```bash
 sudo docker build -t edge-vision-benchmark -f Dockerfile.jetson .
-sudo docker run -e "DAGSHUB_USER_TOKEN=<dagshub-token>" --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
+sudo docker run -e DAGSHUB_USER_TOKEN=<dagshub-token> --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
 ```
 
 > [!NOTE]  
-> You can generate a long lived app dagshub token with no expiry date from your [User Settings](https://dagshub.com/user/settings/tokens).
+> You can generate a long lived app DagsHub token with no expiry date from your [User Settings](https://dagshub.com/user/settings/tokens).
+
+This will start running the [run_experiment.sh](./run_experiment.sh) script by default. You can also override by passing your custom experiment script.
+
+To follow the logs of the experiment, you can run the following command
+
+```bash
+sudo docker logs -f <container-name>
+```
+
+### Experiment Script
+
+The [run_experiment.sh](./run_experiment.sh) script performs following action
+
+1. Measure idle power consumption for 120 seconds using [measure_idling_power.py](measure_idling_power.py) script.
+2. Sleep for 120 seconds.
+3. Benchmark 7 CNN vision models using [measure_inference_power.py](measure_inference_power.py) script.
+4. Push the benchmark data to [fuzzylabs/edge-vision-power-estimation](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) DagsHub repo for data version control.
 
 ### Running Power Measurement Scripts
 
