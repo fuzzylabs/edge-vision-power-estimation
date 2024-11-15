@@ -9,7 +9,6 @@ To run benchmark script:
 
 """
 
-from rich import print
 from tqdm import tqdm
 from typing import Any
 from datetime import datetime
@@ -99,7 +98,7 @@ def benchmark(args: argparse.Namespace) -> None:
         optimization_level=args.optimization_level,
         enabled_precisions={dtype},
         # Set to True for verbose output
-        # Performance Regression when rich library is available
+        # NOTE: Performance Regression when rich library is available
         # https://github.com/pytorch/TensorRT/issues/3215
         debug=False,
         # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach

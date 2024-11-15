@@ -47,8 +47,11 @@ Start the container with:
 
 ```bash
 sudo docker build -t edge-vision-benchmark -f Dockerfile.jetson .
-sudo docker run --runtime=nvidia --ipc=host -it edge-vision-benchmark
+sudo docker run -e "TOKEN=<dagshub-token>" --runtime=nvidia --ipc=host -d edge-vision-benchmark
 ```
+
+> [!NOTE]  
+> You can generate a long lived app dagshub token with no expiry date from your [User Settings](https://dagshub.com/user/settings/tokens).
 
 ### Running Power Measurement Scripts
 
