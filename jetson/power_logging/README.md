@@ -35,7 +35,8 @@ By aligning these timestamps, we can map power usage to each layer's execution t
 Run the following command to maximise performance and set the fan speed:
 
 ```bash
-sudo /usr/bin/jetson_clocks --fan
+sudo nvpmodel -m 0
+sudo jetson_clocks
 ```
 
 ### Running the Power Measurement
