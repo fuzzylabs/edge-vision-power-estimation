@@ -9,7 +9,7 @@ Example command:
 import argparse
 from pathlib import Path
 
-from data_preparation.data_preprocess import DataPreprocessing
+from data_preparation.data_preprocess import DataPreprocessor
 from data_preparation.io_utils import get_idle_power_log_file, parse_model_dir
 
 
@@ -22,7 +22,7 @@ def main(args: argparse.Namespace) -> None:
     idle_power_log_path = get_idle_power_log_file(args.raw_data_dir)
     print(f"Idle power log file: {idle_power_log_path}")
 
-    preprocessor = DataPreprocessing(
+    preprocessor = DataPreprocessor(
         idle_power_log_path=idle_power_log_path, result_dir=args.result_dir
     )
 

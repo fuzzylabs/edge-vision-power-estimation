@@ -47,7 +47,7 @@ def parse_timestamp(timestamp: str) -> datetime:
     return datetime.strptime(timestamp, "%Y%m%d-%H:%M:%S.%f")
 
 
-class DataPreprocessing:
+class DataPreprocessor:
     """Data preprocessing class.
 
     For each model, there are 3 files
