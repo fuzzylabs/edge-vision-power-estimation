@@ -27,32 +27,33 @@ def main(args: argparse.Namespace) -> None:
     )
 
     raw_data_path = Path(args.raw_data_dir)
-    model_count = sum(1 for model_dir in raw_data_path.iterdir() if model_dir.is_dir())
-    print(f"Found {model_count} models in raw data.")
+    model_dirs = [
+        model_dir for model_dir in raw_data_path.iterdir() if model_dir.is_dir()
+    ]
+    print(f"Found {len(model_dirs)} models in raw data.")
 
     # Convert and save each model directory raw data to preprocessed data
-    for model_dir in raw_data_path.iterdir():
-        if model_dir.is_dir():
-            model_name = model_dir.name
-            print(f"Preprocessing {model_name} model")
-            try:
-                power_log_file, trt_layer_latency_file, trt_engine_info_file = (
-                    parse_model_dir(model_dir)
-                )
-                metrics_by_cycle = preprocessor.compute_layer_metrics_by_cycle(
-                    power_log_path=power_log_file,
-                    trt_layer_latency_path=trt_layer_latency_file,
-                    trt_engine_info_path=trt_engine_info_file,
-                )
-                preprocessor.save_result_to_csv(
-                    metrics_by_cycle=metrics_by_cycle, model_name=model_name
-                )
-                preprocessor.copy_trt_engine_to_target_dir(
-                    model_name=model_name, trt_engine_info_path=trt_engine_info_file
-                )
+    for model_dir in model_dirs:
+        model_name = model_dir.name
+        print(f"Preprocessing {model_name} model")
+        try:
+            power_log_file, trt_layer_latency_file, trt_engine_info_file = (
+                parse_model_dir(model_dir)
+            )
+            metrics_by_cycle = preprocessor.compute_layer_metrics_by_cycle(
+                power_log_path=power_log_file,
+                trt_layer_latency_path=trt_layer_latency_file,
+                trt_engine_info_path=trt_engine_info_file,
+            )
+            preprocessor.save_result_to_csv(
+                metrics_by_cycle=metrics_by_cycle, model_name=model_name
+            )
+            preprocessor.copy_trt_engine_to_target_dir(
+                model_name=model_name, trt_engine_info_path=trt_engine_info_file
+            )
 
-            except ValueError as e:
-                print(f"Skipping {model_dir.name} due to error: {e}")
+        except ValueError as e:
+            print(f"Skipping {model_dir.name} due to error: {e}")
 
 
 if __name__ == "__main__":
