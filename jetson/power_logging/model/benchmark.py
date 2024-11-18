@@ -9,7 +9,6 @@ To run benchmark script:
 
 """
 
-from rich import print
 from tqdm import tqdm
 from typing import Any
 from datetime import datetime
@@ -23,7 +22,7 @@ import argparse
 import json
 from pydantic import BaseModel
 from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
-
+from model.lenet import LeNet
 
 cudnn.benchmark = True
 
@@ -52,6 +51,10 @@ def load_model(model_name: str) -> Any:
     Returns:
         PyTorch model
     """
+    if model_name == "lenet":
+        return LeNet()
+    if model_name == "fcn_resnet50":
+        return torch.hub.load("pytorch/vision", model_name, pretrained=True)
     try:
         return torch.hub.load("pytorch/vision", model_name, weights="IMAGENET1K_V1")
     except:
@@ -83,7 +86,7 @@ def benchmark(args: argparse.Namespace) -> None:
     if args.dtype == "float16":
         dtype = torch.float16
     if args.dtype == "bfloat16":
-        dtype = torch.float16
+        dtype = torch.bfloat16
 
     input_data = input_data.to(dtype)
     model = model.to(dtype)
@@ -97,6 +100,8 @@ def benchmark(args: argparse.Namespace) -> None:
         optimization_level=args.optimization_level,
         enabled_precisions={dtype},
         # Set to True for verbose output
+        # NOTE: Performance Regression when rich library is available
+        # https://github.com/pytorch/TensorRT/issues/3215
         debug=True,
         # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
         use_python_runtime=True,

@@ -105,6 +105,8 @@ def benchmark(args: argparse.Namespace) -> None:
             optimization_level=args.optimization_level,
             enabled_precisions={dtype},
             # Set to True for verbose output
+            # NOTE: Performance Regression when rich library is available
+            # https://github.com/pytorch/TensorRT/issues/3215
             debug=True,
             # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
             use_python_runtime=True,
