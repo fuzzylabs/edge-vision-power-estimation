@@ -3,7 +3,7 @@
 Example command:
     python map_power_to_layers.py \
         --raw-dir raw_data \
-        --result-dir results
+        --result-dir preprocessed_data
 """
 
 import argparse
