@@ -1,8 +1,9 @@
 from pathlib import Path
 
 import pandas as pd
-from data_preparation.tensorrt_utils import TensorRTLayer
 from tqdm import tqdm
+
+from data_preparation.tensorrt_utils import TensorRTLayer
 
 
 def get_convolutional_features(layer_info: TensorRTLayer) -> dict[str, int]:

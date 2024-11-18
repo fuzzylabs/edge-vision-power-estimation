@@ -8,19 +8,28 @@ from data_preparation.measurement_utils import preprocess_measurement_data
 from data_preparation.tensorrt_utils import read_layers_info
 
 
-def main(save_path: Path, measurements_path: Path, engine_info_path: Path) -> None:
+def main(args: argparse.Namespace) -> None:
     """Convert measurements taken on an edge device into training data.
 
     Args:
-        save_path: Path to save training data
-        measurements_path: Path to read power and runtime csv
-        engine_info_path: Path to read TensorRT model engine info
+        args: Arguments passed to CLI.
     """
-    layers_info = read_layers_info(engine_info_path)
-    measurements = preprocess_measurement_data(measurements_path)
+    data_dir = Path(args.preprocessed_data_dir)
+    model_dirs = list(data_dir.iterdir())
+    print(f"Found {len(model_dirs)} models in preprocessed data folder.")
 
-    convert_measurements_to_training_data(save_path, layers_info, measurements)
-    print(f"Saved to {save_path}!")
+    # Convert and save each model directory preprocessed data to training data
+    for model_dir in model_dirs:
+        model_name = model_dir.name
+        print(f"Preprocessing {model_name} model")
+        engine_info_path = f"{model_dir}/trt_engine_info.json"
+        measurements_path = f"{model_dir}/power_runtime_mapping_layerwise.csv"
+        save_path = Path(f"{args.result_dir}/{model_name}")
+
+        layers_info = read_layers_info(engine_info_path)
+        measurements = preprocess_measurement_data(measurements_path)
+        convert_measurements_to_training_data(save_path, layers_info, measurements)
+        print(f"Saved to {save_path}!")
 
 
 if __name__ == "__main__":
@@ -28,16 +37,17 @@ if __name__ == "__main__":
         "Convert measurements taken on an edge device into training data."
     )
     parser.add_argument(
-        "save_path", type=Path, help="Path to save the resulting training data."
+        "--preprocessed-data-dir",
+        type=str,
+        default="preprocessed_data",
+        help="Path to preprocessed data directory.",
     )
     parser.add_argument(
-        "measurements_path", type=Path, help="Path to the measurements file."
-    )
-    parser.add_argument(
-        "engine_info_path",
-        type=Path,
-        help="Path to TensorRT engine info generated file.",
+        "--result-dir",
+        type=str,
+        default="training_data",
+        help="The directory to save training data",
     )
     args = parser.parse_args()
 
-    main(args.save_path, args.measurements_path, args.engine_info_path)
+    main(args)
