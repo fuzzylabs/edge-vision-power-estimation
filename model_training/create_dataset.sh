@@ -11,8 +11,6 @@ RAW_DATA_DIR="raw_data"
 # Remote Directory to pull raw data
 REMOTE_RAW_DATA_DIR="raw_data"
 
-COMMIT_MESSAGE="Add raw data"
-
 echo "Pull benchmark data from DagsHub"
 python data_version.py \
   --owner "$DAGSHUB_OWNER" \
