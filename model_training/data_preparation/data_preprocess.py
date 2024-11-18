@@ -59,12 +59,12 @@ class DataPreprocessor:
     inference_cycle, layer_name, layer_type, ..., power_consumed, runtime_taken
     """
 
-    def __init__(self, idle_power_log_path: str | Path, result_dir: str | Path):
+    def __init__(self, idle_power_log_path: Path, result_dir: Path):
         self.avg_idle_power = self._get_average_idling_power(idle_power_log_path)
         self.result_dir = Path(result_dir)
         self.result_dir.mkdir(parents=True, exist_ok=True)
 
-    def _get_average_idling_power(self, file_path: str | Path) -> float:
+    def _get_average_idling_power(self, file_path: Path) -> float:
         """Get the average idling power measure from log.
 
         Args:
@@ -77,7 +77,7 @@ class DataPreprocessor:
         idling_power_log = read_log_file(file_path)
         return float(re.search(r"[\d.]+", idling_power_log[0]).group())
 
-    def preprocess_power_log(self, file_path: str | Path) -> list[tuple]:
+    def preprocess_power_log(self, file_path: Path) -> list[tuple]:
         """Convert each power log entry to (datetime, power).
 
         Args:
@@ -161,9 +161,9 @@ class DataPreprocessor:
 
     def compute_layer_metrics_by_cycle(
         self,
-        power_log_path: str | Path,
-        trt_layer_latency_path: str | Path,
-        trt_engine_info_path: str | Path,
+        power_log_path: Path,
+        trt_layer_latency_path: Path,
+        trt_engine_info_path: Path,
     ) -> list[dict[str, Any]]:
         """Computes and aggregates power and runtime metrics for each layer within a processing cycle.
 
@@ -246,7 +246,7 @@ class DataPreprocessor:
         print(f"Metric results save to {self.result_dir}/{model_name}/{filename}")
 
     def copy_trt_engine_to_target_dir(
-        self, model_name: str, trt_engine_info_path: str | Path
+        self, model_name: str, trt_engine_info_path: Path
     ) -> None:
         """Copy tensorrt engine info file to target directory.
 

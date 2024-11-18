@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 
-def read_json_file(file_path: str | Path) -> dict:
+def read_json_file(file_path: Path) -> dict:
     """Read json file.
 
     Args:
@@ -17,7 +17,7 @@ def read_json_file(file_path: str | Path) -> dict:
         return json.load(fp)
 
 
-def read_log_file(file_path: str | Path) -> list[str]:
+def read_log_file(file_path: Path) -> list[str]:
     """Read log file and return the contents from the file.
 
     Args:
@@ -30,7 +30,7 @@ def read_log_file(file_path: str | Path) -> list[str]:
         return fp.readlines()
 
 
-def parse_model_dir(model_dir: str | Path) -> tuple[Path, Path, Path]:
+def parse_model_dir(model_dir: Path) -> tuple[Path, Path, Path]:
     """Get path to relevant files from model directory.
 
     Args:
