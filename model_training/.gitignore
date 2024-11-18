@@ -161,3 +161,7 @@ results
 .idea
 
 .vscode
+
+raw_data
+
+preprocessed_data
