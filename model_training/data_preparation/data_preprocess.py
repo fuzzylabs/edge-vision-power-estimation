@@ -11,6 +11,8 @@ import pandas as pd
 from data_preparation.io_utils import read_json_file, read_log_file
 from tqdm import tqdm
 
+AVG_IDLE_POWER_REGEX = r"\b\d+\.\d+\b"
+
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
     """This function produce a mapping of layer type by the name of the layer.
@@ -70,12 +72,20 @@ class DataPreprocessor:
         Args:
             file_path: Path to idle power log file.
 
+        Raises:
+            ValueError: If regex pattern in not found in the log file.
+
         Returns:
             Average idling power (recorded in micro-watt).
         """
         print("Getting average idling power...")
         idling_power_log = read_log_file(file_path)
-        return float(re.search(r"[\d.]+", idling_power_log[0]).group())
+
+        # Extract the first match of the idle power using the regex
+        match = re.search(AVG_IDLE_POWER_REGEX, idling_power_log[0])
+        if not match:
+            raise ValueError(f"No valid idling power value found in {file_path}")
+        return float(match.group())
 
     def preprocess_power_log(self, file_path: Path) -> list[tuple]:
         """Convert each power log entry to (datetime, power).
