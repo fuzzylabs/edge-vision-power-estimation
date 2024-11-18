@@ -10,7 +10,6 @@ import time
 from datetime import datetime
 from pathlib import Path
 import argparse
-from rich import print
 
 
 def power_logging(args: argparse.Namespace) -> list[tuple]:
