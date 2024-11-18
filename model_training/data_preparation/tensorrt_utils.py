@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel, Field, ValidationError, field_validator
 from pydantic_core.core_schema import ValidationInfo
+
 
 class TensorRTInputOutput(BaseModel):
     """TensorRT layer input and output model."""
@@ -56,6 +56,7 @@ class TensorRTLayer(BaseModel):
             return "dense"
         else:
             return self.layer_type
+
 
 class TensorRTEngineInfo(BaseModel):
     """TensorRT engine information model."""
