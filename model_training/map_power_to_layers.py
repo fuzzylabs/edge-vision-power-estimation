@@ -3,7 +3,7 @@
 Example command:
     python map_power_to_layers.py \
         --raw-dir raw_data \
-        --result-dir results
+        --result-dir preprocessed_data
 """
 
 import argparse
@@ -30,7 +30,7 @@ def main(args: argparse.Namespace) -> None:
     model_dirs = [
         model_dir for model_dir in raw_data_path.iterdir() if model_dir.is_dir()
     ]
-    print(f"Found {len(model_dirs)} models in raw data.")
+    print(f"Found {len(model_dirs)} models in raw data folder.")
 
     # Convert and save each model directory raw data to preprocessed data
     for model_dir in model_dirs:
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         "--result-dir",
         type=str,
         default="preprocessed_data",
-        help="The directory to save the csv.",
+        help="The directory to save the preprocessed data.",
     )
     args = parser.parse_args()
 

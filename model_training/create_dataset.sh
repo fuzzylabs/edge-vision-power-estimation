@@ -4,7 +4,6 @@ set -eou pipefail
 
 DAGSHUB_OWNER="fuzzylabs"
 DAGSHUB_REPO_NAME="edge-vision-power-estimation"
-COMMIT_MESSAGE="Add raw data"
 
 # Local Directory to store raw data
 RAW_DATA_DIR="raw_data"
@@ -30,6 +29,7 @@ python map_power_to_layers.py \
     --result-dir "$PREPROCESSED_DATA_DIR"
 
 COMMIT_MESSAGE="Add preprocessed data"
+
 echo "Push preprocessed data to DagsHub"
 python data_version.py \
   --owner "$DAGSHUB_OWNER" \
@@ -39,23 +39,22 @@ python data_version.py \
   --upload
 
 
-# # Local Directory to store preprocessed data
-# TRAIN_DATA_DIR="training_data"
+# Local Directory to store preprocessed data
+TRAIN_DATA_DIR="training_data"
 
+echo "Prepare training data"
+python convert_measurements.py \
+    --preprocessed-data-dir "$PREPROCESSED_DATA_DIR" \
+    --result-dir "$TRAIN_DATA_DIR"
 
-# echo "Prepare training data"
-# # python convert_measurements.py \
-# #     "$TRAIN_DATA_DIR" \
-# #     "$PREPROCESSED_DATA_DIR"
+COMMIT_MESSAGE="Add training data"
 
-# COMMIT_MESSAGE="Add training data"
+echo "Push training data to DagsHub"
+python data_version.py \
+  --owner "$DAGSHUB_OWNER" \
+  --name "$DAGSHUB_REPO_NAME" \
+  --local-dir-path "$TRAIN_DATA_DIR" \
+  --commit "$COMMIT_MESSAGE" \
+  --upload
 
-# echo "Push training data to DagsHub"
-# python data_version.py \
-#   --owner "$DAGSHUB_OWNER" \
-#   --name "$DAGSHUB_REPO_NAME" \
-#   --local-dir-path "$TRAIN_DATA_DIR" \
-#   --commit "$COMMIT_MESSAGE" \
-#   --upload
-
-# echo "Experiment completed!"
+echo "Experiment completed!"

@@ -1,14 +1,11 @@
 """Parse measurement data."""
 
 from pathlib import Path
+
 import pandas as pd
 
+SELECT_COLUMNS = ["layer_name", "average_power", "average_run_time"]
 
-SELECT_COLUMNS = [
-    "layer_name",
-    "average_power",
-    "average_run_time",
-]
 RENAME_COLUMNS = {
     "layer_power_excluding_idle_power_micro_watt": "average_power",
     "layer_run_time": "average_run_time",
