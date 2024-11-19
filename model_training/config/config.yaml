@@ -1,0 +1,9 @@
+data:
+  data_dir: "training_data"
+  test_models: ["lenet"]
+
+mlflow:
+  enable_tracking: True
+  mlflow_experiment_name: "first-experiment"
+  dagshub_repo_owner: "fuzzylabs"
+  dagshub_repo_name: "edge-vision-power-estimation"
