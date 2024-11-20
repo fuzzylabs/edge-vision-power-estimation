@@ -4,7 +4,7 @@ data:
   cross_validation: 10
 
 mlflow:
-  enable_tracking: True
+  enable_tracking: False
   mlflow_experiment_name: "lasso-with-scaler-regularization-max-iters"
   dagshub_repo_owner: "fuzzylabs"
   dagshub_repo_name: "edge-vision-power-estimation"
