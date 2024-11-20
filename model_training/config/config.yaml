@@ -1,9 +1,10 @@
 data:
   data_dir: "training_data"
   test_models: ["lenet"]
+  cross_validation: 10
 
 mlflow:
   enable_tracking: True
   mlflow_experiment_name: "first-experiment"
-  dagshub_repo_owner: "fuzzylabs"
-  dagshub_repo_name: "edge-vision-power-estimation"
+  dagshub_repo_owner: "dudeperf3ct"
+  dagshub_repo_name: "test-jetson-data"
