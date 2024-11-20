@@ -1,3 +1,5 @@
+"""Feautures and pipeline parameters for pooling layer."""
+
 POOLING_FEATURES = [
     "batch_size",
     "input_size_0",
