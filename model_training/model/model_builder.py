@@ -4,16 +4,31 @@ import numpy as np
 from sklearn.base import TransformerMixin
 from sklearn.linear_model import LassoCV
 from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.preprocessing import FunctionTransformer, PolynomialFeatures
+from sklearn.preprocessing import (
+    FunctionTransformer,
+    PolynomialFeatures,
+    StandardScaler,
+)
 
 
 class ModelBuilder:
-    def __init__(self, cv: int = 10):
+    def __init__(self, cv: int, max_iter: int = 80000, n_alphas: int = 500):
         self.cv = cv
+        self.max_iter = max_iter
+        self.n_alphas = n_alphas
 
     def _create_pipeline(self, transformer: TransformerMixin) -> Pipeline:
         """Create a neural power pipeline with given transformer."""
-        return Pipeline([("transformer", transformer), ("lasso", LassoCV(cv=self.cv))])
+        return Pipeline(
+            [
+                ("transformer", transformer),
+                ("scaler", StandardScaler()),
+                (
+                    "lasso",
+                    LassoCV(cv=self.cv, max_iter=self.max_iter, n_alphas=self.n_alphas),
+                ),
+            ]
+        )
 
     def create_pipeline(
         self,

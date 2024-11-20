@@ -103,6 +103,13 @@ class Trainer:
         print(f"Training {model_type} model")
         with mlflow.start_run(run_name=f"{layer_type}_{model_type}_model"):
             pipeline.fit(train_features, train_target)
+            print(pipeline)
+            print(
+                pipeline.named_steps["lasso"].alpha_,
+                pipeline.named_steps["lasso"].coef_,
+                pipeline.named_steps["lasso"].intercept_,
+                pipeline.named_steps["lasso"].n_features_in_,
+            )
             predictions = pipeline.predict(test_features)
             test_metrics = self.eval_metrics(actual=test_target, pred=predictions)
             mlflow.log_metrics(test_metrics)

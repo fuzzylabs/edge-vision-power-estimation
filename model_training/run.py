@@ -89,6 +89,7 @@ def main(config: dict) -> None:
 
     # Train power and runtime for convolutional layer
     for model_type in ["power", "runtime"]:
+        print("-" * 80)
         print(f"Training for layer = convolutional and model = {model_type}")
         train_pipeline(
             layer_type="convolutional",
@@ -101,6 +102,7 @@ def main(config: dict) -> None:
 
     # Train power and runtime for pooling layer
     for model_type in ["power", "runtime"]:
+        print("-" * 80)
         print(f"Training for layer = pooling and model = {model_type}")
         train_pipeline(
             layer_type="pooling",
@@ -113,6 +115,7 @@ def main(config: dict) -> None:
 
     # Train power and runtime for pooling layer
     for model_type in ["power", "runtime"]:
+        print("-" * 80)
         print(f"Training for layer = dense and model = {model_type}")
         train_pipeline(
             layer_type="dense",
