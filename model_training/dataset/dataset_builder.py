@@ -8,6 +8,8 @@ MICROWATTS_IN_WATTS = 1e6
 
 @dataclass
 class Dataset:
+    """Base dataset."""
+
     csv_paths: list[Path]
     input_features: pd.DataFrame
     power: pd.Series
@@ -16,6 +18,8 @@ class Dataset:
 
 @dataclass
 class TrainTestDataset:
+    """Train and Test Datasets."""
+
     train: Dataset
     test: Dataset
 
@@ -38,7 +42,8 @@ class DatasetBuilder:
             file_path: Path to CSV file.
 
         Returns:
-            Dataframe
+            Dataframe where power column is converted from
+            microwatts to watts
         """
         df = pd.read_csv(file_path)
         # Convert microwatt to watt

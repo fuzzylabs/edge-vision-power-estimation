@@ -34,12 +34,13 @@ def train_pipeline(
     """Training pipeline.
 
     Args:
-        layer_type: _description_
-        model_type: _description_
-        data_config: _description_
-        features: _description_
-        pipeline_parameters: _description_
-        pattern: _description_
+        layer_type: Type of layer for which training is being performed.
+        model_type: Type of model to be trained.
+            It can be either power or runtime.
+        data_config: Configuration related to data
+        features: List of columns to be used as features.
+        pipeline_parameters: Paramters used to construct a sklearn pipeline
+        pattern: Pattern used by rglob to find relevant CSV files.
     """
     params = pipeline_parameters[model_type]
     trainer = Trainer(data_config=data_config, features=features)
