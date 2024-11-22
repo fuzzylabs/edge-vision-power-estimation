@@ -52,11 +52,24 @@ def get_pooling_features(layer_info: TensorRTLayer) -> dict[str, int]:
 
 
 def get_dense_features(layer_info: TensorRTLayer) -> dict[str, int]:
-    """Get features for a dense layer."""
+    """Get features for a dense layer.
+
+    We also consider conv 1x1 as a dense layer.
+    """
     return {
         "batch_size": layer_info.inputs[0].dimensions[0],
-        "input_size": layer_info.inputs[0].dimensions[1],  # We skip batch size
-        "output_size": layer_info.outputs[0].dimensions[1],  # We skip batch size
+        "input_size": (
+            layer_info.inputs[0].dimensions[0]
+            * layer_info.inputs[0].dimensions[1]
+            * layer_info.inputs[0].dimensions[2]
+            * layer_info.inputs[0].dimensions[3]
+        ),
+        "output_size": (
+            layer_info.outputs[0].dimensions[0]
+            * layer_info.outputs[0].dimensions[1]
+            * layer_info.outputs[0].dimensions[2]
+            * layer_info.outputs[0].dimensions[3]
+        ),
     }
 
 

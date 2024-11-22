@@ -47,7 +47,7 @@ python convert_measurements.py \
     --preprocessed-data-dir "$PREPROCESSED_DATA_DIR" \
     --result-dir "$TRAIN_DATA_DIR"
 
-COMMIT_MESSAGE="Add training data"
+COMMIT_MESSAGE="Modify training data to include conv_1x1 as dense layers"
 
 echo "Push training data to DagsHub"
 python data_version.py \
