@@ -142,6 +142,15 @@ class Trainer:
                 )
 
     def rmspe_metric(self, actual, pred) -> float:
+        """Calculate root mean squared percentage error metric.
+
+        Args:
+            actual: Actual values
+            pred: Predicted values
+
+        Returns:
+            RMSPE metric.
+        """
         EPSILON = 1e-10
         rmspe = np.sqrt(np.mean(np.square((actual - pred) / (actual + EPSILON)))) * 100
         return rmspe
