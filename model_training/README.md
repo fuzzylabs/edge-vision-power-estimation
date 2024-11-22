@@ -77,7 +77,38 @@ Next, we will perform data preprocessing to prepare training dataset.
 
 The final preprocessed data for the model is present in [data/model-name](data) folder.
 
-### Training
+### Training Script
+
+#### Configuration
+
+There are 4 configuration files under [config](./config/) folder
+
+```bash
+.
+├── config.yaml        # Configuration for training pipelines
+├── convolutional_features.py  # Configuration related to convolutional layer
+├── dense_features.py  # Configuration related to dense layer
+├── pooling_features.py # Configuration related to pooling layer
+```
+
+`config.yaml` contains data and mlflow related configuration.
+
+Each individual `*_features.py` contains features and pipeline configuration.
+
+#### Running the script
+
+[run.py](./run.py) script trains power and runtime models for each layer (`convolutional`, `pooling` and `dense`).
+
+It also logs the experiment to DagsHub MLflow server.
+
+> [!NOTE]  
+> MLFLOW UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
+
+```python
+python run.py
+```
+
+### Training Notebook
 
 [train.ipynb](./train.ipynb) shows how the pipelines can be trained and used.
 

@@ -48,11 +48,11 @@ class TensorRTLayer(BaseModel):
         Returns:
             str: Name of the layer
         """
-        if self.parameter_type == "Pooling":
+        if self.layer_type == "CaskPooling":
             return "pooling"
-        elif self.parameter_type == "Convolution":
+        elif self.layer_type == "CaskConvolution":
             return "convolutional"
-        elif self.layer_type == "gemm":
+        elif self.layer_type == "CaskGemmConvolution":
             return "dense"
         else:
             return self.layer_type

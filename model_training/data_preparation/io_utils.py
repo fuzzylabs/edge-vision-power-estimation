@@ -2,6 +2,23 @@
 
 import json
 from pathlib import Path
+from typing import Any
+
+import yaml
+
+
+def read_yaml_file(file_path: Path) -> Any:
+    """Read yaml file.
+
+    Args:
+        file_path (Path): The filepath to load from.
+
+    Returns:
+        Any: Configuration
+    """
+    with open(file_path) as fp:
+        config = yaml.safe_load(fp)
+    return config
 
 
 def read_json_file(file_path: Path) -> dict:
