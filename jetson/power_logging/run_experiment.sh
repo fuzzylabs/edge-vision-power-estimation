@@ -22,8 +22,7 @@ sleep 120
 # Section 3.3 covers various CNN architectures used for the experiment 
 # NOTE : fcn_resnet50 is a object detection model and does not work with TorchTensorRT library
 # TODO: Revisit fcn_resnet50 once this issue is addressed: https://github.com/pytorch/TensorRT/issues/3295
-models=("alexnet" "vgg16" "vgg19" "googlenet" "mobilenet_v2" "resnet18" "lenet")
-
+models=("alexnet" "vgg11" "vgg13" "vgg16" "vgg19" "mobilenet_v2" "mobilenet_v3_small" "mobilenet_v3_large" "resnet18" "resnet34" "resnet50" "resnet101" "resnet152" "lenet" "resnext50_32x4d" "resnext101_32x8d" "resnext101_64x4d" "convnext_tiny" "convnext_small" "convnext_base")
 # Number of inference cycles
 RUNS=30000
 
@@ -50,7 +49,7 @@ done
 
 DAGSHUB_OWNER="fuzzylabs"
 DAGSHUB_REPO_NAME="edge-vision-power-estimation"
-COMMIT_MESSAGE="Add raw data"
+COMMIT_MESSAGE="Add 20 models to raw data"
 
 echo "Using DagsHub and DVC for benchmark data"
 python data_version.py \
