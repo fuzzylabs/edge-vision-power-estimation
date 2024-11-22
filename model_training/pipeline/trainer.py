@@ -5,6 +5,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
+from dataset.dataset_builder import DatasetBuilder, TrainTestDataset
+from model.model_builder import ModelBuilder
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -13,9 +15,6 @@ from sklearn.metrics import (
     root_mean_squared_error,
 )
 from sklearn.pipeline import Pipeline
-
-from dataset.dataset_builder import DatasetBuilder, TrainTestDataset
-from model.model_builder import ModelBuilder
 
 
 class Trainer:
@@ -102,6 +101,7 @@ class Trainer:
 
         print(f"Training {model_type} model")
         with mlflow.start_run(run_name=f"{layer_type}_{model_type}_model"):
+            # Train model
             pipeline.fit(train_features, train_target)
             print(pipeline)
             print(
@@ -110,6 +110,13 @@ class Trainer:
                 pipeline.named_steps["lasso"].intercept_,
                 pipeline.named_steps["lasso"].n_features_in_,
             )
+            train_pred = pipeline.predict(train_features)
+            train_rmspe = self.rmspe_metric(actual=train_target, pred=train_pred)
+            mlflow.log_metrics(
+                {"training_root_mean_squared_percentage_error": train_rmspe}
+            )
+
+            # Evaluation
             predictions = pipeline.predict(test_features)
             test_metrics = self.eval_metrics(actual=test_target, pred=predictions)
             mlflow.log_metrics(test_metrics)
@@ -120,6 +127,7 @@ class Trainer:
                 }
             )
 
+            # Plot and log prediction on mlflow
             test_paths = dataset.test.csv_paths
             for test_file_path in test_paths:
                 model_name = test_file_path.parent.stem
@@ -133,6 +141,11 @@ class Trainer:
                     fig, f"{model_name}_{layer_type}_{model_type}_prediction.png"
                 )
 
+    def rmspe_metric(self, actual, pred) -> float:
+        EPSILON = 1e-10
+        rmspe = np.sqrt(np.mean(np.square((actual - pred) / (actual + EPSILON)))) * 100
+        return rmspe
+
     def eval_metrics(self, actual, pred, prefix: str = "testing_") -> dict[str, float]:
         """Calculate evaluation metrics.
 
@@ -144,8 +157,7 @@ class Trainer:
         Returns:
             Dictionary mapping metric name to it's score.
         """
-        EPSILON = 1e-10
-        rmspe = np.sqrt(np.mean(np.square((actual - pred) / (actual + EPSILON)))) * 100
+        rmspe = self.rmspe_metric(actual=actual, pred=pred)
         rmse = root_mean_squared_error(actual, pred)
         mse = mean_squared_error(actual, pred)
         r2 = r2_score(actual, pred)

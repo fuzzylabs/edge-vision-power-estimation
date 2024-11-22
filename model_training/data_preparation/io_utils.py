@@ -63,41 +63,24 @@ def parse_model_dir(model_dir: Path) -> tuple[Path, Path, Path]:
         and tensorrt engine info inside trt_engine_info.json file.
     """
     model_dir_path = Path(model_dir)
-    log_files = list(model_dir_path.glob("*.log"))
-
-    if len(log_files) != 1:
-        raise ValueError(
-            f"Expected exactly 1 *.log file inside {model_dir_path}, found {len(log_files)}"
-        )
-
+    model_name = model_dir_path.stem
     return (
-        log_files[0],  # Power log file
+        model_dir_path / f"{model_name}_power_log.log",
         model_dir_path / "trt_profiling/trt_layer_latency.json",
         model_dir_path / "trt_profiling/trt_engine_info.json",
     )
 
 
-def get_idle_power_log_file(raw_data_dir: str) -> Path:
+def get_idle_power_log_file(raw_data_dir: Path) -> Path:
     """Get path to the power log file inside raw data directory.
 
-    It is of format "{n}_seconds_idling_power_log_{timestamp}.log".
+    The name of json file inside raw data directory
+    is `idling_power.json`.
 
     Args:
         raw_data_dir: Path to raw dataset directory.
 
-    Raises:
-        ValueError: If there are zero or more than 1 log files inside
-            raw data directory.
-
     Returns:
         Path to the power log file for idle state.
     """
-    raw_data_path = Path(raw_data_dir)
-    log_files = list(raw_data_path.glob("*.log"))
-
-    if len(log_files) != 1:
-        raise ValueError(
-            f"Expected exactly 1 *.log file inside {raw_data_path}, found {len(log_files)}"
-        )
-
-    return log_files[0]
+    return f"{raw_data_dir}/idling_power.json"

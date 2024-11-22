@@ -19,18 +19,19 @@ def main(args: argparse.Namespace) -> None:
     Args:
         args: CLI arguments
     """
-    idle_power_log_path = get_idle_power_log_file(args.raw_data_dir)
+    raw_data_path = Path(args.raw_data_dir)
+
+    idle_power_log_path = get_idle_power_log_file(raw_data_dir=raw_data_path)
     print(f"Idle power log file: {idle_power_log_path}")
 
-    preprocessor = DataPreprocessor(
-        idle_power_log_path=idle_power_log_path, result_dir=args.result_dir
-    )
-
-    raw_data_path = Path(args.raw_data_dir)
     model_dirs = [
         model_dir for model_dir in raw_data_path.iterdir() if model_dir.is_dir()
     ]
     print(f"Found {len(model_dirs)} models in raw data folder.")
+
+    preprocessor = DataPreprocessor(
+        idle_power_log_path=idle_power_log_path, result_dir=args.result_dir
+    )
 
     # Convert and save each model directory raw data to preprocessed data
     for model_dir in model_dirs:

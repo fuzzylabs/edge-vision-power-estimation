@@ -1,10 +1,10 @@
 data:
   data_dir: "training_data"
-  test_models: ["lenet"]
+  test_models: ["lenet", "resnet18", "vgg16"]
   cross_validation: 10
 
 mlflow:
-  enable_tracking: False
-  mlflow_experiment_name: "lasso-with-scaler-regularization-max-iters"
+  enable_tracking: True
+  mlflow_experiment_name: "second-data-version-exp"
   dagshub_repo_owner: "fuzzylabs"
   dagshub_repo_name: "edge-vision-power-estimation"
