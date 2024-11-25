@@ -5,8 +5,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
-from dataset.dataset_builder import DatasetBuilder, TrainTestDataset
-from model.model_builder import ModelBuilder
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -16,13 +14,19 @@ from sklearn.metrics import (
 )
 from sklearn.pipeline import Pipeline
 
+from dataset.dataset_builder import DatasetBuilder, TrainTestDataset
+from model.model_builder import ModelBuilder
+
 
 class Trainer:
-    def __init__(self, data_config: dict, features: list[str]) -> None:
+    def __init__(
+        self, data_config: dict, model_config: dict, features: list[str]
+    ) -> None:
         self.data_config = data_config
+        self.model_config = model_config
         self.features = features
         self.dataset_builder = DatasetBuilder(features=features)
-        self.model_builder = ModelBuilder(cv=self.data_config["cross_validation"])
+        self.model_builder = ModelBuilder(cv=self.model_config["cross_validation"])
 
     def get_dataset(self, pattern: str) -> TrainTestDataset:
         """Get train and test dataset.
