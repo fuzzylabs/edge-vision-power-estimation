@@ -1,14 +1,15 @@
 """Script for collecting power usage during the inference cycle of a given CNN model.."""
 
-from multiprocessing import Process, Event
-from multiprocessing.synchronize import Event as EventClass
 import argparse
-from pathlib import Path
-from datetime import datetime
-from model.benchmark import benchmark
 import multiprocessing
+from datetime import datetime
+from multiprocessing import Event, Process
+from multiprocessing.synchronize import Event as EventClass
+from pathlib import Path
 
-multiprocessing.set_start_method('spawn', force=True)
+from model.benchmark import benchmark
+
+multiprocessing.set_start_method("spawn", force=True)
 
 
 def power_logging(event: EventClass, args: argparse.Namespace) -> None:
@@ -19,28 +20,31 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
         event: An object that manages a flag for communication among processes.
         args: Arguments from CLI.
     """
-    Path(args.result_dir).mkdir(exist_ok=True, parents=True)
+    model_dir = f"{args.result_dir}/{args.model}"
+    Path(model_dir).mkdir(exist_ok=True, parents=True)
 
     logs = []
 
     while not event.is_set():
-        with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r") as voltage:
+        with open(
+            "/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r"
+        ) as voltage:
             mV = float(voltage.read())
-        with open("/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/curr1_input", "r") as current:
+        with open(
+            "/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/curr1_input", "r"
+        ) as current:
             mC = float(current.read())
 
-        current_time = datetime.now().strftime("%Y%m%d-%H:%M:%S.%f")  # Time with seconds and microseconds
-        logs.append(f"{current_time},{mV},{mC}\n")  # Log the time, voltage and current.
+        # Time with seconds and microseconds
+        timestamp = datetime.now().strftime("%Y%m%d-%H:%M:%S.%f")
+        # Log the time, voltage and current.
+        logs.append(f"{timestamp},{mV},{mC}\n")
 
-    current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
-    with open(f"{args.result_dir}/{args.model}/{args.runs}_cycles_power_log_{current_dt}.log", "w") as f:
+    with open(f"{model_dir}/{args.model}_power_log.log", "w") as f:
         f.writelines(logs)
 
 
-def inference(
-    event: EventClass,
-    args: argparse.Namespace,
-) -> None:
+def inference(event: EventClass, args: argparse.Namespace) -> None:
     """
     Call the benchmark function to start inferencing cycles.
 
@@ -57,7 +61,7 @@ def inference(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="Power Logging for CNN Inference Cycle",
-        description="Collect power usage data during inference cycles for ImageNet pretrained CNN models."
+        description="Collect power usage data during inference cycles for ImageNet pretrained CNN models.",
     )
     parser.add_argument(
         "--model",
@@ -91,10 +95,7 @@ if __name__ == "__main__":
         help="Number of iterations to perform warmup before benchmarking",
     )
     parser.add_argument(
-        "--runs",
-        type=int,
-        default=30000,
-        help="Number of inference cycle to run"
+        "--runs", type=int, default=30000, help="Number of inference cycle to run"
     )
     parser.add_argument(
         "--optimization-level",
@@ -113,7 +114,7 @@ if __name__ == "__main__":
         "--result-dir",
         type=str,
         default="results",
-        help="The directory to save the log result."
+        help="The directory to save the log result.",
     )
     args = parser.parse_args()
 

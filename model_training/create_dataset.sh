@@ -4,6 +4,8 @@ set -eou pipefail
 
 DAGSHUB_OWNER="fuzzylabs"
 DAGSHUB_REPO_NAME="edge-vision-power-estimation"
+# or we can pass SHA commit as well to download state at that particular commit 
+BRANCH_NAME="main" 
 
 # Local Directory to store raw data
 RAW_DATA_DIR="raw_data"
@@ -17,6 +19,7 @@ python data_version.py \
   --name "$DAGSHUB_REPO_NAME" \
   --local-dir-path "$RAW_DATA_DIR" \
   --remote-dir-path "$REMOTE_RAW_DATA_DIR" \
+  --branch "$BRANCH_NAME" \
   --download
 
 
@@ -28,7 +31,7 @@ python map_power_to_layers.py \
     --raw-data-dir "$RAW_DATA_DIR" \
     --result-dir "$PREPROCESSED_DATA_DIR"
 
-COMMIT_MESSAGE="Add preprocessed data"
+COMMIT_MESSAGE="Add second version of preprocessed data"
 
 echo "Push preprocessed data to DagsHub"
 python data_version.py \
@@ -47,7 +50,7 @@ python convert_measurements.py \
     --preprocessed-data-dir "$PREPROCESSED_DATA_DIR" \
     --result-dir "$TRAIN_DATA_DIR"
 
-COMMIT_MESSAGE="Modify training data to include conv_1x1 as dense layers"
+COMMIT_MESSAGE="Add second version of training data"
 
 echo "Push training data to DagsHub"
 python data_version.py \

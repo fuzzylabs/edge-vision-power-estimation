@@ -1,28 +1,21 @@
-"""Script to collect layer-wise latency for CNN models.
+"""Benchmark TensorRT models."""
 
-To run benchmark script:
-    python benchmark.py \
-        --backend <backend> \
-        --model <pytorch_hub_model_name> \
-        --dtype <dtype> \
-        --save-result
-
-"""
-
-from tqdm import tqdm
-from typing import Any
-from datetime import datetime
-import torch
-import time
-from pathlib import Path
-import torch.backends.cudnn as cudnn
-import torch_tensorrt
-import numpy as np
 import argparse
 import json
+import time
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import torch
+import torch.backends.cudnn as cudnn
+import torch_tensorrt
 from pydantic import BaseModel
-from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
+from tqdm import tqdm
+
 from model.lenet import LeNet
+from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
 
 cudnn.benchmark = True
 
@@ -77,7 +70,7 @@ def benchmark(args: argparse.Namespace) -> None:
     end = torch.cuda.Event(enable_timing=True)
     start.record()
 
-    current_dt = datetime.now().strftime("%Y%m%d-%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
     model.eval().to(DEVICE)
@@ -114,7 +107,7 @@ def benchmark(args: argparse.Namespace) -> None:
             _ = model(input_data)
     print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
 
-    print(f"Start timing using tensorrt backend ...")
+    print("Start timing using tensorrt backend ...")
     torch.cuda.synchronize()
     # Recorded in milliseconds
     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
@@ -153,15 +146,15 @@ def benchmark(args: argparse.Namespace) -> None:
     results = BenchmarkMetrics(
         config=vars(args),
         total_time=total_exp_time,  # in seconds
-        timestamp=current_dt,
+        timestamp=timestamp,
         latencies=timings,  # in seconds
         avg_throughput=avg_throughput,
         avg_latency=np.mean(timings),  # in seconds
     )
 
-    save_dir = f"{args.result_dir}/{args.model}"
-    Path(save_dir).mkdir(exist_ok=True, parents=True)
-    file_name = f"{args.model}_tensorrt_{current_dt}.json"
-    file_path = f"{save_dir}/{file_name}"
+    model_dir = f"{args.result_dir}/{args.model}"
+    Path(model_dir).mkdir(exist_ok=True, parents=True)
+    file_name = f"{args.model}_tensorrt.json"
+    file_path = f"{model_dir}/{file_name}"
     with open(file_path, "w", encoding="utf-8") as outfile:
         json.dump(results.model_dump(), outfile, indent=4)
