@@ -26,7 +26,7 @@ def get_config(config_path: Path = Path("config/config.yaml")) -> Any:
 def train_pipeline(
     layer_type: str,
     model_type: str,
-    data_config: dict,
+    config: dict,
     features: list[str],
     pipeline_parameters: dict[str, Any],
     pattern: str,
@@ -37,13 +37,18 @@ def train_pipeline(
         layer_type: Type of layer for which training is being performed.
         model_type: Type of model to be trained.
             It can be either power or runtime.
-        data_config: Configuration related to data
+        config: Configuration related to data
         features: List of columns to be used as features.
         pipeline_parameters: Paramters used to construct a sklearn pipeline
         pattern: Pattern used by rglob to find relevant CSV files.
     """
+    data_config = config["data"]
+    model_config = config["model"]
+
     params = pipeline_parameters[model_type]
-    trainer = Trainer(data_config=data_config, features=features)
+    trainer = Trainer(
+        data_config=data_config, model_config=model_config, features=features
+    )
 
     dataset = trainer.get_dataset(pattern=pattern)
     if dataset is None:
@@ -70,7 +75,6 @@ def main(config: dict) -> None:
     Args:
         config: Configuration dict.
     """
-    data_config = config["data"]
     mlflow_config = config["mlflow"]
 
     # Optionally enable mlflow tracking
@@ -94,7 +98,7 @@ def main(config: dict) -> None:
         train_pipeline(
             layer_type="convolutional",
             model_type=model_type,
-            data_config=data_config,
+            config=config,
             features=CONV_FEATURES,
             pipeline_parameters=CONVOLUTION_PIPELINE,
             pattern="**/convolutional.csv",
@@ -107,7 +111,7 @@ def main(config: dict) -> None:
         train_pipeline(
             layer_type="pooling",
             model_type=model_type,
-            data_config=data_config,
+            config=config,
             features=POOLING_FEATURES,
             pipeline_parameters=POOLING_PIPELINE,
             pattern="**/pooling.csv",
@@ -120,7 +124,7 @@ def main(config: dict) -> None:
         train_pipeline(
             layer_type="dense",
             model_type=model_type,
-            data_config=data_config,
+            config=config,
             features=DENSE_FEATURES,
             pipeline_parameters=DENSE_PIPELINE,
             pattern="**/dense.csv",

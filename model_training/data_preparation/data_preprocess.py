@@ -1,6 +1,5 @@
 """Data preprocessing module."""
 
-import re
 import shutil
 from collections import defaultdict
 from datetime import datetime, timedelta
@@ -10,8 +9,6 @@ from typing import Any
 import pandas as pd
 from data_preparation.io_utils import read_json_file, read_log_file
 from tqdm import tqdm
-
-AVG_IDLE_POWER_REGEX = r"\b\d+\.\d+\b"
 
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
@@ -67,25 +64,17 @@ class DataPreprocessor:
         self.result_dir.mkdir(parents=True, exist_ok=True)
 
     def _get_average_idling_power(self, file_path: Path) -> float:
-        """Get the average idling power measure from log.
+        """Get the average idling power measure from json file.
 
         Args:
             file_path: Path to idle power log file.
-
-        Raises:
-            ValueError: If regex pattern in not found in the log file.
 
         Returns:
             Average idling power (recorded in micro-watt).
         """
         print("Getting average idling power...")
-        idling_power_log = read_log_file(file_path)
-
-        # Extract the first match of the idle power using the regex
-        match = re.search(AVG_IDLE_POWER_REGEX, idling_power_log[0])
-        if not match:
-            raise ValueError(f"No valid idling power value found in {file_path}")
-        return float(match.group())
+        idling_power_log = read_json_file(file_path)
+        return float(idling_power_log["avg_idle_power"])
 
     def preprocess_power_log(self, file_path: Path) -> list[tuple]:
         """Convert each power log entry to (datetime, power).

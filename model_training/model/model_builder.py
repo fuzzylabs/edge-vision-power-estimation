@@ -12,7 +12,7 @@ from sklearn.preprocessing import (
 
 
 class ModelBuilder:
-    def __init__(self, cv: int, max_iter: int = 80000, n_alphas: int = 500):
+    def __init__(self, cv: int, max_iter: int = 8000, n_alphas: int = 500):
         self.cv = cv
         self.max_iter = max_iter
         self.n_alphas = n_alphas
