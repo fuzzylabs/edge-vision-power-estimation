@@ -37,7 +37,7 @@ def train_pipeline(
         layer_type: Type of layer for which training is being performed.
         model_type: Type of model to be trained.
             It can be either power or runtime.
-        config: Configuration related to data
+        config: Configuration related to data and model parameters
         features: List of columns to be used as features.
         pipeline_parameters: Paramters used to construct a sklearn pipeline
         pattern: Pattern used by rglob to find relevant CSV files.
@@ -60,6 +60,8 @@ def train_pipeline(
         polynomial_degree=params["degree"],
         is_log=params.get("is_log", False),
         special_terms_list=params.get("special_terms_list", None),
+        scaler=params["scaler"],
+        lasso_params=params["lasso_params"],
     )
     trainer.train_and_eval_pipeline(
         dataset=dataset,

@@ -1,6 +1,8 @@
 """Trainer class."""
 
 from pathlib import Path
+from pprint import pprint
+from typing import Any
 
 import matplotlib.pyplot as plt
 import mlflow
@@ -48,16 +50,20 @@ class Trainer:
         self,
         features_mapping: dict[str, int],
         polynomial_degree: int,
+        scaler: str,
         is_log: bool = False,
         special_terms_list: list[list[str]] | None = None,
+        lasso_params: dict[str, Any] = {},
     ) -> Pipeline:
         """Get model to be trained.
 
         Args:
-            features_mapping (dict[str, int]): Mapping of feature names to indices.
-            polynomial_degree (int): Polynomial degree of regular polynomial terms.
-            is_log (bool): Whether to log1p input features.
-            special_terms_list (list[list[str]]): Definitions of special polynomial terms.
+            features_mapping: Mapping of feature names to indices.
+            polynomial_degree: Polynomial degree of regular polynomial terms.
+            scaler: Name of sklearn preprocessing scaler
+            is_log: Whether to log1p input features.
+            special_terms_list: Definitions of special polynomial terms.
+            lasso_params: Parameters added to LassoCV sklearn model
 
         Returns:
             Sklearn pipeline
@@ -67,6 +73,8 @@ class Trainer:
             polynomial_degree=polynomial_degree,
             is_log=is_log,
             special_terms_list=special_terms_list,
+            scaler=scaler,
+            lasso_params=lasso_params,
         )
 
     def train_and_eval_pipeline(
@@ -84,7 +92,7 @@ class Trainer:
         Args:
             dataset: Train and test dataset
             pipeline: Sklearn pipeline to be trained.
-            layer_type: T
+            layer_type: Type of layer
             model_type: Type of model to be trained.
                 It can be either runtime or power.
         """
@@ -115,14 +123,16 @@ class Trainer:
                 pipeline.named_steps["lasso"].n_features_in_,
             )
             train_pred = pipeline.predict(train_features)
-            train_rmspe = self.rmspe_metric(actual=train_target, pred=train_pred)
+            train_rmspe = Trainer.rmspe_metric(actual=train_target, pred=train_pred)
+            print(f"Training RMSPE: {train_rmspe}")
             mlflow.log_metrics(
                 {"training_root_mean_squared_percentage_error": train_rmspe}
             )
 
             # Evaluation
             predictions = pipeline.predict(test_features)
-            test_metrics = self.eval_metrics(actual=test_target, pred=predictions)
+            test_metrics = Trainer.eval_metrics(actual=test_target, pred=predictions)
+            pprint(test_metrics)
             mlflow.log_metrics(test_metrics)
             mlflow.log_params(
                 {
@@ -145,7 +155,8 @@ class Trainer:
                     fig, f"{model_name}_{layer_type}_{model_type}_prediction.png"
                 )
 
-    def rmspe_metric(self, actual, pred) -> float:
+    @staticmethod
+    def rmspe_metric(actual, pred) -> float:
         """Calculate root mean squared percentage error metric.
 
         Args:
@@ -159,7 +170,8 @@ class Trainer:
         rmspe = np.sqrt(np.mean(np.square((actual - pred) / (actual + EPSILON)))) * 100
         return rmspe
 
-    def eval_metrics(self, actual, pred, prefix: str = "testing_") -> dict[str, float]:
+    @staticmethod
+    def eval_metrics(actual, pred, prefix: str = "testing_") -> dict[str, float]:
         """Calculate evaluation metrics.
 
         Args:
@@ -170,7 +182,7 @@ class Trainer:
         Returns:
             Dictionary mapping metric name to it's score.
         """
-        rmspe = self.rmspe_metric(actual=actual, pred=pred)
+        rmspe = Trainer.rmspe_metric(actual=actual, pred=pred)
         rmse = root_mean_squared_error(actual, pred)
         mse = mean_squared_error(actual, pred)
         r2 = r2_score(actual, pred)

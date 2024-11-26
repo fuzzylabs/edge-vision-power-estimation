@@ -47,6 +47,13 @@ POOLING_PIPELINE = {
             TOTAL_POOLING_OUTPUT_FEATURES,
             TOTAL_POOLING_NO_OPS,
         ],
+        "scaler": "robust",
+        "lasso_params": {
+            "max_iter": 10000,
+            "n_alphas": 500,
+            "fit_intercept": True,
+            "positive": True,
+        },
     },
     "runtime": {
         "is_log": False,
@@ -56,5 +63,12 @@ POOLING_PIPELINE = {
             TOTAL_POOLING_OUTPUT_FEATURES,
             TOTAL_POOLING_NO_OPS,
         ],
+        "scaler": "standard",
+        "lasso_params": {
+            "max_iter": 10000,
+            "n_alphas": 500,
+            "fit_intercept": True,
+            "positive": False,
+        },
     },
 }
