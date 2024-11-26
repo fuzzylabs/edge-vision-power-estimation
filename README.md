@@ -1,8 +1,34 @@
-# Power Consumption Prediction
 
-This project contains script to measure and estimate power consumption of ML models on Jetson device.
+<p align="center">
+<img src="./assets/intro.jpg" alt="readme-ai-banner-logo" width="80%">>
+</p>
 
-## Structure
+<p align="center">
+  <a href="https://opensource.org/licenses/Apache-2.0">
+    <img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="license">
+  </a>
+</p>
+
+---
+
+## 🔗 Quick Links
+
+1. [Overview](#-overview)
+2. [Getting Started](#-getting-started)
+3. [Contributing](#-contributing)
+4. [License](#-license)
+
+---
+
+## 🔮 Overview
+
+## 🚀 Getting Started
+
+### System and Hardware Requirements
+
+---
+
+## 📂 Repository Structure
 
 ```bash
 .
@@ -10,22 +36,21 @@ This project contains script to measure and estimate power consumption of ML mod
 ├── jetson          # Power and runtime measurement benchmarking script for jetson
 ├── model_training  # Power consumption modelling package
 └── README.md
-
-3 directories, 1 file
 ```
 
-## Workflow
+---
 
-1. Run the benchmark using [jetson/power_logging](./jetson/power_logging/) scripts.
-2. The benchmark data will be versioned (TODO).
-3. Get the versioned data into [model_training](./model_training/) folder.
-4. Run pre-processing scripts [map_power_to_layers.py](./model_training/map_power_to_layers.py) and [convert_measurements.py](./model_training/convert_measurements.py) to prepare training dataset.
-5. Use the training dataset to train a model.
+## 🔰 Contributing
 
-## Modelling Power Consumption
+Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.mds) to get started.
 
-We use a method adapted from the [NeuralPower](https://arxiv.org/abs/1710.05420) paper.
+- **💡 [Contributing Guide](./CONTRIBUTING.md): Learn about our contribution process and coding standards.
+- **🐛 [Report an Issue](https://github.com/fuzzylabs/edge-vision-power-estimation/issues): Found a bug? Let us know!
+- **💬 [Start a Discussion](https://github.com/fuzzylabs/edge-vision-power-estimation/discussions): Have ideas or suggestions? We'd love to hear from you.
 
-### Training Data
+---
 
-To model power consumption using the NeuralPower method, we need training data that captures energy usage per layer. For this, we follow the approach outlined in the paper [Profiling Energy Consumption of Deep Neural Networks on NVIDIA Jetson Nano](https://publik.tuwien.ac.at/files/publik_293778.pdf).
+## 📄 License
+
+Copyright © 2024 [Fuzzy Labs](./README.md). <br />
+Released under the [Apache 2.0](./LICENSE)
