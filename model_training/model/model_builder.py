@@ -14,6 +14,9 @@ from sklearn.preprocessing import (
     StandardScaler,
 )
 
+RANDOM_STATE = 42
+"""Random state for LassoCV model."""
+
 
 class ModelBuilder:
     def __init__(self, cv: int = 10):
@@ -29,7 +32,7 @@ class ModelBuilder:
                 ("scaler", self.get_scaler(scaler)),
                 (
                     "lasso",
-                    LassoCV(cv=self.cv, **lasso_params),
+                    LassoCV(cv=self.cv, random_state=RANDOM_STATE, **lasso_params),
                 ),
             ]
         )

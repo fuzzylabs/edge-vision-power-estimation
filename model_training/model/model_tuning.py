@@ -1,6 +1,7 @@
 """Tune model parameters using Optuna."""
 
 import numpy as np
+from pipeline.trainer import Trainer
 from sklearn.linear_model import LassoCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import (
@@ -12,7 +13,9 @@ from sklearn.preprocessing import (
 )
 
 from model.model_builder import ModelBuilder
-from pipeline.trainer import Trainer
+
+RANDOM_STATE = 42
+"""Random state for LassoCV model."""
 
 
 class OptunaOptimizer:
@@ -96,6 +99,7 @@ class OptunaOptimizer:
             n_alphas=n_alphas,
             positive=positive,
             fit_intercept=fit_intercept,
+            random_state=RANDOM_STATE,
         )
 
     def objective(
