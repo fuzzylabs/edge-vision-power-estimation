@@ -17,7 +17,8 @@
 2. [Repository Structure](#-repository-structure)
 3. [Getting Started](#-getting-started)
 4. [Contributing](#-contributing)
-5. [License](#-license)
+5. [Acknowledgments](#-acknowledgments)
+6. [License](#-license)
 
 ---
 
@@ -38,12 +39,12 @@ TL;DR: NeuralPower paper introduces a process to predict power and runtime consu
 .
 ├── assets
 ├── CONTRIBUTING.md
-├── desktop                       # Runtime benchmarking script for desktop
+├── desktop                  # Runtime benchmarking script for desktop
 ├── docs                      
 ├── jetson
-│   └── power_logging             # Power and runtime measurement benchmarking script for jetson
+│   └── power_logging        # Power and runtime measurement benchmarking script for jetson
 ├── LICENSE
-├── model_training                # Power and runtime prediction modelling package
+├── model_training           # Power and runtime prediction modelling package
 └── README.md
 ```
 
@@ -69,6 +70,8 @@ For rest of the project following tools are used,
 - [uv](https://docs.astral.sh/uv/) : It is used as default for running this project locally.
 
 - (Optional) [Docker](https://docs.docker.com/get-started/) : It is used for running the experiments under [desktop](./desktop/) folders. `Docker` is as an alternative to `uv` run the different approaches to convert and benchmark PyTorch models to TensorRT models.
+
+---
 
 ### 📍 Workflow
 
@@ -96,6 +99,8 @@ This part of the project creates a MLOps pipeline. It is a two-step process
 2. Train machine learning models for power and runtime prediction
 3. Refer to the comprehensive guide in [model_training](./model_training/README.md)
 
+---
+
 ### 💾 Dataset
 
 [DagsHub and DVC integration](https://dagshub.com/docs/integration_guide/dvc/) is used for data versioning. The datasets are managed and versioned using DVC, enabling seamless tracking of changes and reproducibility across different stages of the project.
@@ -115,7 +120,9 @@ Each version of the dataset consists of 3 folders
 - `preprocessed_data` : Raw dataset is preprocessed to transformed and formatted to ensure consistency and usability.
 - `training_data` : This folder contains the final dataset prepared for training machine learning models.
 
-### 📊 Experiment Tracker
+---
+
+### 📊 Experiments
 
 [DagsHub and MLflow integration](https://dagshub.com/docs/integration_guide/mlflow_tracking/) is used as experiment tracker.
 
@@ -133,6 +140,14 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 - **💡 [Contributing Guide](./CONTRIBUTING.md)** : Learn about our contribution process and coding standards.
 - **🐛 [Report an Issue](https://github.com/fuzzylabs/edge-vision-power-estimation/issues)** : Found a bug? Let us know!
 - **💬 [Start a Discussion](https://github.com/fuzzylabs/edge-vision-power-estimation/discussions)** : Have ideas or suggestions? We'd love to hear from you.
+
+---
+
+## 🙌 Acknowledgments
+
+- [NeuralPower paper](https://arxiv.org/pdf/1710.05420) authors
+- [Profiling Energy Consumption of Deep Neural Networks on NVIDIA Jetson Nano](https://publik.tuwien.ac.at/files/publik_293778.pdf) authors
+- [readme-ai](https://github.com/eli64s/readme-ai) for Readme inspiration
 
 ---
 
