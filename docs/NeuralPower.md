@@ -46,6 +46,8 @@ Since the experiment is performed on Nvidia GeForce Titan X GPU, the authors use
 
 The dataset consists of layer-level runtime and power consumption for each layer of all the models. The authors focuses on data related to 3 types of layers, particularly, convolution layer, pooling layer and dense or fully-connected layer. A power model and runtime model is trained for these 3 layers, a total of 6 models being trained.
 
+---
+
 ### Training Model
 
 Once dataset is collected for all the models of interest, a polynomial-based regression is trained. The authors outline 3 reasons for this choice:
@@ -74,7 +76,7 @@ floating point operations for each layer.
 
 Same methodology of using  Lasso and cross-validation is used to find optimal polynomial degree.
 
-### Results
+## Results
 
 The figure below shows the performance of NeuralPower runtime model.
 
@@ -84,7 +86,7 @@ The figure below shows the performance of NeuralPower power model.
 
 ![power](../assets/power_neuralpower.png)
 
-RMSPE in the figure refers to Root-Mean-Square-Percentage-Error.
+RMSPE in the figure refers to Root Mean Square Percentage Error and RMSE is Root Mean Squared Error.
 
 ## Extra
 
