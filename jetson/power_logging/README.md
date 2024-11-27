@@ -57,7 +57,7 @@ Finally, we upload the collection of power and runtime data for each model to Da
 
 ### ⚙️ System and Hardware Requirements
 
-- [Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on Jetson board for collecting power and runtime measurements for a CNN model.
+[Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on Jetson board for collecting power and runtime measurements for a CNN model.
 
 Following is the configuration of software and tools on the Jetson device used for testing:
 
@@ -109,6 +109,13 @@ sudo docker logs -f <container-name>
 ## ❓ How it works?
 
 ### Power logging and measurement
+
+Jetson Orion Development Kit comes with three-channel INA3221 power monitor. The values of these modules can be read using `sysfs` nodes. The sys-file provide power, voltage and current measurement for the sensor under `i2c` folder.
+
+> [!NOTE]  
+> We read the power, voltage and current measurement for the sensor from the sys-file at this path `/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input` for Jetson Orion Development Kit.
+
+These measurement values are saved in a separate file along with the timestamp when these values were read.
 
 ---
 
