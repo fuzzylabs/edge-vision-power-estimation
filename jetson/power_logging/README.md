@@ -85,9 +85,9 @@ OS - Ubuntu 22.04-based root file system
     sudo docker build -t edge-vision-benchmark -f Dockerfile.jetson .
     ```
 
-    > [!IMPORTANT]  
-    > Use this exact Docker image to ensure compatibility with `tensorrt==10.1.0` and `torch_tensorrt==2.4.0`.<br>
-    > Base image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` might take some time to download. (approx. 5 GB in size)
+> [!IMPORTANT]  
+> Use this exact Docker image to ensure compatibility with `tensorrt==10.1.0` and `torch_tensorrt==2.4.0`.<br>
+> Base image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` might take some time to download. (approx. 5 GB in size)
 
 3. Run the container
 
@@ -95,8 +95,8 @@ OS - Ubuntu 22.04-based root file system
     sudo docker run -e DAGSHUB_USER_TOKEN=<dagshub-token> --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
     ```
 
-    > [!NOTE]  
-    > You can generate a long lived app DagsHub token with no expiry date from your [User Settings](https://dagshub.com/user/settings/tokens).
+> [!NOTE]  
+> You can generate a long lived app DagsHub token with no expiry date from your [User Settings](https://dagshub.com/user/settings/tokens).
 
 This will start running the [run_experiment.sh](./run_experiment.sh) script by default. You can also override by passing your custom experiment script.
 
