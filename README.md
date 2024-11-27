@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="./assets/intro.jpg" alt="readme-ai-banner-logo" width="80%">>
+<img src="./assets/intro.jpg" alt="readme-ai-banner-logo" width="80%">
 </p>
 
 <p align="center">
@@ -39,6 +39,7 @@ TL;DR: NeuralPower paper introduces a process to predict power and runtime consu
 ├── assets
 ├── CONTRIBUTING.md
 ├── desktop                       # Runtime benchmarking script for desktop
+├── docs                      
 ├── jetson
 │   └── power_logging             # Power and runtime measurement benchmarking script for jetson
 ├── LICENSE
@@ -71,7 +72,7 @@ For rest of the project following tools are used,
 
 ### 📍 Workflow
 
-This project is divided into two stages:  Experimental and Implementation
+This project is divided into two stages: [Experimental](#-experimental-stage) and [Implementation](#-implementation-stage)
 
 #### 🧪 Experimental Stage
 
@@ -92,12 +93,12 @@ This part of the project creates a MLOps pipeline. It is a two-step process
 🤖 Machine Learning Model Development
 
 1. Preprocess collected data from the Jetson device
-2. Generate and train machine learning models
+2. Train machine learning models for power and runtime prediction
 3. Refer to the comprehensive guide in [model_training](./model_training/README.md)
 
 ### 💾 Dataset
 
-[DagsHub and DVC integration](https://dagshub.com/docs/integration_guide/dvc/) is used for data versioning.The datasets are managed and versioned using DVC, enabling seamless tracking of changes and reproducibility across different stages of the project.
+[DagsHub and DVC integration](https://dagshub.com/docs/integration_guide/dvc/) is used for data versioning. The datasets are managed and versioned using DVC, enabling seamless tracking of changes and reproducibility across different stages of the project.
 
 > [!IMPORTANT]  
 > DagsHub repository: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation>
