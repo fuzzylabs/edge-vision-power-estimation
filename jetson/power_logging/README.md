@@ -12,7 +12,7 @@ Measure power consumption and runtime for CNN models on the jetson device.
 
 ## 💡 Approach
 
-To collect the power and runtime values for each layer,
+The following process outlines the approach taken to collect the power and runtime values for each layer.
 
 First, we measure the idle power value of the Jetson. This power value measures how much power is consumed when minimal required processes are running on the Jetson.
 

@@ -86,7 +86,7 @@ This part of the project focused on experimenting with different approaches for 
 
 #### 🚀 Implementation Stage
 
-This part of the project creates a MLOps pipeline. It is a two-step process
+This part of the project creates a MLOps pipeline for training the models. It is a two-step process
 
 📊 Jetson Device Benchmarking
 
@@ -98,6 +98,12 @@ This part of the project creates a MLOps pipeline. It is a two-step process
 1. Preprocess collected data from the Jetson device
 2. Train machine learning models for power and runtime prediction
 3. Refer to the comprehensive guide in [model_training](./model_training/README.md)
+
+> [!TIP]
+> If you don't have access to the Jetson device, our recommendation is to pull raw data from DagsHub and follow the steps outlined in [model_training](./model_training/README.md) readme.
+
+> [!TIP]
+> If you have access to the Jetson device, feel free to follow the step by step guide outlined in [jetson/power_logging](./jetson/power_logging/README.md) readme followed by [model_training](./model_training/README.md) readme to train a prediction model.
 
 ---
 
