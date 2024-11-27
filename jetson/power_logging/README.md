@@ -68,6 +68,8 @@ Docker 27.3.1
 OS - Ubuntu 22.04-based root file system
 ```
 
+[DagsHub account](https://dagshub.com/) and a repository for data versioning.
+
 ### 💨 Run Experiment Script
 
 1. To maximise the Jetson power and fan speed run the following command on Jetson.
@@ -108,7 +110,7 @@ sudo docker logs -f <container-name>
 
 ## ❓ How it works?
 
-### Power logging and measurement
+### Power measurement and logging
 
 Jetson Orion Development Kit comes with three-channel INA3221 power monitor. The values of these modules can be read using `sysfs` nodes. The sys-file provide power, voltage and current measurement for the sensor under `i2c` folder.
 
