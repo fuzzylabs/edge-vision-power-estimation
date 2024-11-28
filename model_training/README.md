@@ -32,6 +32,19 @@ We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linea
 
 ### 🏎💨 Run Training Script
 
+0. (Optional) If you have uploaded the raw dataset of benchmarking experiment from Jetson device, the next step is to get a training dataset.
+
+    To get training dataset from raw dataset, there's a script [create_dataset.sh](./create_dataset.sh) that simplifies this process.
+
+    ```bash
+    ./create_dataset.sh
+    ```
+
+    Running this script creates `preprocessed_data` and `training_data` using `raw_data`. The `raw_data` is downloaded from DagsHub. You can also pass `--push-to-dagshub` flag to the above script, this will push both the `preprocessed_data` and `training_data` to DagsHub repository.
+
+> [!NOTE]
+> Once you have the `training_data`, you can run the step 2 and skip step 1.
+
 1. DagsHub already contains the training dataset that we can use directly. To download the latest training dataset run the following command
 
     ```bash
@@ -45,6 +58,10 @@ We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linea
     ```
 
     This will download data from our [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) and to a `training_data` folder.
+
+> [!NOTE]
+> This step is recommended if you want to get started with training the models using data already present on DagsHub repository. </br>
+> If you have a new raw dataset, follow step 0 to create a training dataset.
 
 2. We are all set to train power and runtime prediction models.
 

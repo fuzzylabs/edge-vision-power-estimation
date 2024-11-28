@@ -21,9 +21,9 @@
 
 ## 🔮 Introduction
 
-In this project, we are interesting in predicting the characteristics of power consumption and runtime for CNN models on Jetson edge device.
+In this project, we are interested in predicting the characteristics of power consumption and runtime for CNN models on Jetson edge device.
 
-This is particularly helpful in the era of large models to design their networks efficiently without loss of accuracy.
+This is particularly helpful in the era of large models to help users design their networks efficiently.
 
 ---
 
