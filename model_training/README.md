@@ -6,8 +6,9 @@ Train power and runtime prediction models.
 
 1. [Approach](#-approach)
 2. [Getting Started](#-getting-started)
-3. [Repository Structure](#-repository-structure)
-4. [Extras](#️-extras)
+3. [How it works?](#-how-it-works)
+4. [Repository Structure](#-repository-structure)
+5. [Extras](#️-extras)
 
 ## 💡 Approach
 
@@ -52,6 +53,15 @@ We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linea
     ```
 
     That's it. We have successfully trained 6 models for 3 layer types (convolutional, pooling and dense).
+
+## ❓ How it works?
+
+### Mapping power to layer runtimes
+
+This is the most tricky part of the pipeline. We are given raw dataset with time-stamped power log as a separate file and time-stamped layer runtime as a separate file. We have to find the power value that is closest to the time when that particular layer completed.
+
+> [!NOTE]  
+> This logic is implemented inside the `compute_layer_metrics_by_cycle` function of the [data_preprocess.py](./data_preparation/data_preprocess.py) python script.
 
 ## 📂 Repository Structure
 
