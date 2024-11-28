@@ -1,49 +1,76 @@
 """Model Builder."""
 
+from typing import Any
+
 import numpy as np
 from sklearn.base import TransformerMixin
 from sklearn.linear_model import LassoCV
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import (
     FunctionTransformer,
+    MinMaxScaler,
     PolynomialFeatures,
+    RobustScaler,
     StandardScaler,
 )
 
+RANDOM_STATE = 42
+"""Random state for LassoCV model."""
+
 
 class ModelBuilder:
-    def __init__(self, cv: int, max_iter: int = 8000, n_alphas: int = 500):
+    def __init__(self, cv: int = 10):
         self.cv = cv
-        self.max_iter = max_iter
-        self.n_alphas = n_alphas
 
-    def _create_pipeline(self, transformer: TransformerMixin) -> Pipeline:
+    def _create_pipeline(
+        self, scaler: str, transformer: TransformerMixin, lasso_params: dict
+    ) -> Pipeline:
         """Create a neural power pipeline with given transformer."""
         return Pipeline(
             [
                 ("transformer", transformer),
-                ("scaler", StandardScaler()),
+                ("scaler", self.get_scaler(scaler)),
                 (
                     "lasso",
-                    LassoCV(cv=self.cv, max_iter=self.max_iter, n_alphas=self.n_alphas),
+                    LassoCV(cv=self.cv, random_state=RANDOM_STATE, **lasso_params),
                 ),
             ]
         )
+
+    def get_scaler(self, scaler: str):
+        """Get a scaler to transform input features.
+
+        Args:
+            scaler: Name of scaler to use.
+
+        Returns:
+            Sklearn preprocessing scaler.
+        """
+        if scaler == "minmax":
+            return MinMaxScaler()
+        elif scaler == "standard":
+            return StandardScaler()
+        elif scaler == "robust":
+            return RobustScaler()
 
     def create_pipeline(
         self,
         features_mapping: dict[str, int],
         polynomial_degree: int,
+        scaler: str,
         is_log: bool = False,
         special_terms_list: list[list[str]] | None = None,
+        lasso_params: dict[str, Any] = {},
     ) -> Pipeline:
         """Create a neural power pipeline.
 
         Args:
-            features_mapping (dict[str, int]): Mapping of feature names to indices.
-            polynomial_degree (int): Polynomial degree of regular polynomial terms.
-            is_log (bool): Whether to log1p input features.
-            special_terms_list (list[list[str]]): Definitions of special polynomial terms.
+            features_mapping: Mapping of feature names to indices.
+            polynomial_degree: Polynomial degree of regular polynomial terms.
+            scaler: Name of sklearn preprocessing scaler
+            is_log: Whether to log1p input features.
+            special_terms_list: Definitions of special polynomial terms.
+            lasso_params: Parameters added to LassoCV sklearn model
 
         Returns:
             Pipeline: neural power pipeline
@@ -65,7 +92,9 @@ class ModelBuilder:
         else:
             transformer = regular_terms_transformer
 
-        return self._create_pipeline(transformer)
+        return self._create_pipeline(
+            transformer=transformer, scaler=scaler, lasso_params=lasso_params
+        )
 
     def multiply_columns(
         self, input_arr: np.ndarray, column_indices: list[int]
