@@ -5,9 +5,9 @@ Measure power consumption and runtime for CNN models on the jetson device.
 ## 🔗 Quick Links
 
 1. [Approach](#-approach)
-2. [Repository Structure](#-repository-structure)
-3. [Getting Started](#-getting-started)
-4. [How it works?](#-how-it-works)
+2. [Getting Started](#-getting-started)
+3. [How it works?](#-how-it-works)
+4. [Repository Structure](#-repository-structure)
 5. [Extras](#️-extras)
 
 ## 💡 Approach
@@ -22,36 +22,6 @@ First, we measure the idle power value of the Jetson. This power value measures 
 Next, we run two separate process on Jetson wherein the first process runs the benchmarking for a CNN model. This process captures the per-layer runtime for the model. In the second process, we launch the power logging script. Two separate processes are used to ensure that the benchmarking and power logging tasks are performed concurrently without interference. This approach prevents the benchmarking process from being slowed down by the additional overhead of logging power measurements.
 
 Finally, we upload the collection of power and runtime data for each model to DagsHub. This is the raw data that we will further preprocess to create training data. This dataset is versioned using DVC.
-
----
-
-## 📂 Repository Structure
-
-```bash
-.
-├── assets
-├── data_version.py
-├── Dockerfile.jetson
-├── docs
-├── measure_idling_power.py
-├── measure_inference_power.py
-├── measure_power.py
-├── model                       # Benchmarking utility functions
-├── pyproject.toml
-├── README.md
-├── run_experiment.sh
-└── uv.lock
-```
-
-- **[data_version.py](./data_version.py)** : This script contains functions to upload and download dataset to/from Dagshub. DagsHub uses DVC underneath to create data versions.
-
-- **[measure_idling_power.py](./measure_idling_power.py)** : This script measures average power usage when there Jetson is idle i.e. no benchmarking is being run.
-
-- **[measure_power.py](./measure_power.py)** : This scripts provides a function to read power values from  INA3221 power monitor sensor on Jetson device.
-
-- **[run_experiment.sh](./run_experiment.sh)** : Experiment script that runs the power and runtime collection process end-to-end.
-
----
 
 ## 🛸 Getting Started
 
@@ -70,7 +40,7 @@ OS - Ubuntu 22.04-based root file system
 
 [DagsHub account](https://dagshub.com/) and a repository for data versioning.
 
-### 💨 Run Experiment Script
+### 🏎💨 Run Experiment Script
 
 1. To maximise the Jetson power and fan speed run the following command on Jetson.
 
@@ -108,8 +78,6 @@ sudo docker logs -f <container-name>
 
 You can find the name of the docker container using the `sudo docker ps` command.
 
----
-
 ## ❓ How it works?
 
 ### Power measurement and logging
@@ -143,13 +111,33 @@ class CustomProfiler(trt.IProfiler):
 
 ```
 
-We attach this profiler using `enable_profiling` method in [benchmark.py](./model/benchmark.py#L126). For each layer, it will record two values:
+We attach this profiler using `enable_profiling` method in [benchmark.py](./model/benchmark.py#L126). For each layer, it will record two values: latency in milliseconds - runtime taken and the timestamp when this value was recorded.
 
-(i) Latency in milliseconds - Runtime
+## 📂 Repository Structure
 
-(ii) The timestamp when this value was recorded.
+```bash
+.
+├── assets
+├── data_version.py
+├── Dockerfile.jetson
+├── docs
+├── measure_idling_power.py
+├── measure_inference_power.py
+├── measure_power.py
+├── model                       # Benchmarking utility functions
+├── pyproject.toml
+├── README.md
+├── run_experiment.sh
+└── uv.lock
+```
 
----
+- **[data_version.py](./data_version.py)** : This script contains functions to upload and download dataset to/from Dagshub. DagsHub uses DVC underneath to create data versions.
+
+- **[measure_idling_power.py](./measure_idling_power.py)** : This script measures average power usage when there Jetson is idle i.e. no benchmarking is being run.
+
+- **[measure_power.py](./measure_power.py)** : This scripts provides a function to read power values from  INA3221 power monitor sensor on Jetson device.
+
+- **[run_experiment.sh](./run_experiment.sh)** : Experiment script that runs the power and runtime collection process end-to-end.
 
 ## 🗣️ Extras
 
@@ -301,3 +289,5 @@ Inside `trt_profiling` folder for each model, we have two files `trt_engine_info
 > The power consumption values are recorded in microwatts.
 
 This raw data will be preprocessed and converted to a training dataset by scripts in [model_training](../../model_training/README.md) folder.
+
+Next, head over to [model_training](../../model_training/README.md) to learn how to train a power and runtime prediction models using this raw dataset.
