@@ -170,3 +170,6 @@ training_data
 
 # mlflow
 mlruns
+
+# Optuna model tuning databases
+*.db

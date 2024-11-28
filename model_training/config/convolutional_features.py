@@ -34,10 +34,24 @@ CONVOLUTION_PIPELINE = {
         "is_log": True,
         "degree": 3,
         "special_terms_list": [TOTAL_CONV_OPS_PER_INPUT, TOTAL_CONV_OPS_PER_BATCH],
+        "scaler": "standard",
+        "lasso_params": {
+            "max_iter": 10000,
+            "n_alphas": 500,
+            "fit_intercept": True,
+            "positive": True,
+        },
     },
     "runtime": {
         "is_log": False,
         "degree": 3,
         "special_terms_list": [TOTAL_CONV_OPS_PER_INPUT, TOTAL_CONV_OPS_PER_BATCH],
+        "scaler": "standard",
+        "lasso_params": {
+            "max_iter": 10000,
+            "n_alphas": 500,
+            "fit_intercept": True,
+            "positive": True,
+        },
     },
 }
