@@ -5,12 +5,15 @@ Train power and runtime prediction models.
 ## 🔗 Quick Links
 
 1. [Approach](#-approach)
-2. [Repository Structure](#-repository-structure)
-3. [Getting Started](#-getting-started)
-4. [How it works?](#-how-it-works)
-5. [Extras](#️-extras)
+2. [Getting Started](#-getting-started)
+3. [Repository Structure](#-repository-structure)
+4. [Extras](#️-extras)
 
 ## 💡 Approach
+
+We use the raw dataset from Jetson to create a preprocessed and training dataset. The train dataset contains power and runtime measurement for 3 layers, convolutional, pooling and dense for the CNN models.
+
+We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LassoCV.html) model from sklearn to train our prediction models. The sklearn pipeline contains input feature preprocessing step such as creating polynomial degree of input features, applying sklearn preprocessing scalers, adding special terms to input features.
 
 ## 🛸 Getting Started
 
@@ -26,7 +29,7 @@ Train power and runtime prediction models.
     uv sync
     ```
 
-### 🏎💨  Run Training Script
+### 🏎💨 Run Training Script
 
 1. DagsHub already contains the training dataset that we can use directly. To download the latest training dataset run the following command
 
@@ -50,10 +53,101 @@ Train power and runtime prediction models.
 
     That's it. We have successfully trained 6 models for 3 layer types (convolutional, pooling and dense).
 
----
-
-## ❓ How it works?
-
 ## 📂 Repository Structure
 
+```bash
+.
+├── assets
+├── config                    # Configuration required for training prediction models
+├── convert_measurements.py   # Script to convert preprocessed data to training data
+├── create_dataset.sh         # Script to convert raw data to train data and upload data to DagsHub 
+├── data_preparation          # Utility functions for parsing preprocessed data
+├── dataset                   # Dataset Builder
+├── data_version.py           # DagsHub client to upload and download data from/to DagsHub
+├── map_power_to_layers.py    # Script to convert raw data to preprocessed data
+├── model                     # Model Builder
+├── notebooks                 # Notebooks containing data exploration and hyperparameter tuning
+├── pipeline                  # Trainer
+├── pyproject.toml
+├── README.md
+├── run.py
+└── uv.lock
+```
+
+- **[run.py](./run.py)**: Entrypoint for training prediction models.
+
+- **[notebooks](./notebooks/)**: Notebooks folder contains jupyter notebooks for exploring data and performing hyperparameter tuning on all 3 layer types.
+
 ## 🗣️ Extras
+
+### Preprocessing and Training Scripts
+
+[create_dataset.sh](./create_dataset.sh) script provides a helpful utility to get preprocessed and training dataset from raw dataset. The script performs the following operations
+
+1. `Lines 5:14`: Setup the configuration required to pull raw dataset from DagsHub repository.
+2. `Lines 28:36`: Pull the raw dataset from DagsHub and store it in `raw_data` folder locally.
+3. `Lines 38:45`: Create preprocessed dataset from raw dataset using the `map_power_to_layers.py` script.
+4. `Lines 47:56`: Optionally upload the preprocessed data to DagsHub if `--push-to-dagshub` flag is passed while running this script.
+5. `Lines 58:65`: Create training dataset from preprocessed dataset using the `convert_measurements.py` script.
+6. `Lines 67:76`: Optionally upload the training data to DagsHub if `--push-to-dagshub` flag is passed while running this script.
+
+If `--push-to-dagshub` flag is passed to the script, both the preprocessed data and training data get uploaded to the DagsHub repo.
+
+```bash
+./create_dataset.sh --push-to-dagshub
+```
+
+If don't want to push any data to DagsHub, we run the script without any flags.
+
+```bash
+./create_dataset.sh
+```
+
+### Hyperparameter Tuning
+
+[Optuna](https://optuna.readthedocs.io/en/stable/) library is used to find optimal hyperparameter for power and runtime models for 3 layer types.
+
+The optimal parameter found in the notebook are used to update the `lasso_params` key for each of 3 layer configuration `*_features.py` inside [config](./config/) folder.
+
+### Preprocessing Dataset Format
+
+A `preprocessed_data` folder is created after running the `map_power_to_layers.py` script. It takes input the raw data folder, maps power and runtime values for each layer and creates a CSV.
+
+Each model in `preprocessed_data` folder contains 2 files: `power_runtime_mapping_layerwise.csv` and `trt_engine_info.json`.
+
+`trt_engine_info.json`: This is same JSON file that is created in the raw data. It contains detailed information such as padding, strides, dilation for a convolutional layer.
+
+`power_runtime_mapping_layerwise.csv`: This CSV file contains per-layer data for each iteration of inference cycle. It includes information about current inference iteration, layer name, layer type, power consumed by the layer, runtime latency for the layer. An example entry of CSV for Alexnet model is shown below.
+
+```csv
+cycle,layer_name,layer_type,layer_power_including_idle_power_micro_watt,layer_power_excluding_idle_power_micro_watt,layer_run_time
+1,Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/feat_conv1/convolution] + [RELU]-[aten_ops.relu.default]-[/feat/relu],Reformat,5437392.769097799,1202832.6137757916,0.10390400141477585
+```
+
+### Training Dataset Format
+
+A `training_data` folder is created after running `convert_measurements.py` script. It takes input the preprocessed data folder and splits the data into 3 CSV according to layer types of interest.
+
+Each model in `training_data` folder contains 3 CSV files: `dense.csv`, `convolutional.csv` and `pooling.csv`.
+
+Each CSV file stores relevant information such as batch_size, input_size, output_size, input_shape, output_shape, strides, padding, dilation, depending on the layer type.
+
+An example of columns in Alexnet dense CSV is shown below
+
+```csv
+batch_size,input_size,output_size,power,runtime,layer_name
+```
+
+An example of columns in Alexnet pooling CSV is shown below
+
+```csv
+batch_size,input_size_0,input_size_1,input_size_2,output_size_0,output_size_1,output_size_2,kernel_0,kernel_1,stride_0,stride_1,power,runtime,layer_name
+```
+
+An example of columns in Alexnet convolutional CSV is shown below
+
+```csv
+batch_size,input_size_0,input_size_1,input_size_2,output_size_0,output_size_1,output_size_2,kernel_0,kernel_1,padding_0,padding_1,stride_0,stride_1,power,runtime,layer_name
+```
+
+Pooling and Convoluion store contains almost the same features except for padding in pooling layers. Dense layers store only input_size, output_size and batch_size information. All the layers in CSV contain values for power and runtime which is used for training the prediction models and evaluating the trained models.

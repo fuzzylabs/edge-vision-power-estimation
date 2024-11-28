@@ -56,8 +56,8 @@ OS - Ubuntu 22.04-based root file system
     ```
 
 > [!IMPORTANT]  
-> Use this exact Docker image to ensure compatibility with `tensorrt==10.1.0` and `torch_tensorrt==2.4.0`.<br>
-> Base image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` might take some time to download. (approx. 5 GB in size)
+> Use this exact Docker image to ensure compatibility with `tensorrt==10.1.0` and `torch_tensorrt==2.4.0`.</br>
+> Base image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` might take some time to download on Jetson. (approx. 5 GB in size)
 
 3. Run the container
 
@@ -145,10 +145,10 @@ We attach this profiler using `enable_profiling` method in [benchmark.py](./mode
 
 The [run_experiment.sh](./run_experiment.sh) script follows the approach outlined to collect power and runtime measurement for set of CNN models.
 
-1. Lines 5-15: Measure idle power consumption for 120 seconds using `measure_idling_power.py` script.
-2. Lines 16-18: Sleep for 120 seconds.
-3. Lines 20-48: Benchmark the CNN models using [measure_inference_power.py](measure_inference_power.py) script.
-4. Lines 50-62: Push the benchmark data to [fuzzylabs/edge-vision-power-estimation](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) DagsHub repo for data version control.
+1. `Lines 5-15`: Measure idle power consumption for 120 seconds using `measure_idling_power.py` script.
+2. `Lines 16-18`: Sleep for 120 seconds.
+3. `Lines 20-48`: Benchmark the CNN models using [measure_inference_power.py](measure_inference_power.py) script.
+4. `Lines 50-62`: Push the benchmark data to [fuzzylabs/edge-vision-power-estimation](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) DagsHub repo for data version control.
 
 ### Raw Dataset Format
 

@@ -21,7 +21,9 @@
 
 ## 🔮 Introduction
 
-In this project, we are interesting in predicting the characteristics of power consumption and runtime for CNN models on Jetson edge device. This is particularly helpful in the era of large models to design their networks efficiently without loss of accuracy.
+In this project, we are interesting in predicting the characteristics of power consumption and runtime for CNN models on Jetson edge device.
+
+This is particularly helpful in the era of large models to design their networks efficiently without loss of accuracy.
 
 ---
 
@@ -53,7 +55,7 @@ Learn more about how to get started to train power and runtime prediction models
 - [Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on Jetson board for collecting power and runtime measurements for a CNN model.
 
 > [!NOTE]  
-> If you do not have access to a Jetson device, you can use uploaded raw data from [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to get started. More information about these datasets can be found in the [Datasets](#-dataset) section.
+> If you do not have access to a Jetson device, you can use uploaded train data following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to get started.
 
 For rest of the project following tools are used,
 
@@ -66,7 +68,7 @@ For rest of the project following tools are used,
 ### 🏎💨 Run Locally
 
 > [!TIP]
-> If you don't have access to the Jetson device, our recommendation is to pull raw data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.
+> If you don't have access to the Jetson device, our recommendation is to pull training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.
 
 > [!TIP]
 > If you have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of `jetson/power_logging` readme followed by the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.
@@ -120,8 +122,6 @@ This part of the project creates a MLOps pipeline for training the models. It is
 
 - **[model_training](./model_training/README.md)**: Model training folder uses the `raw_data` collected on the Jetson device to train power and runtime prediction models using sklearn.
 
----
-
 ## 🔰 Contributing
 
 Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.mds) to get started.
@@ -130,15 +130,11 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 - **🐛 [Report an Issue](https://github.com/fuzzylabs/edge-vision-power-estimation/issues)** : Found a bug? Let us know!
 - **💬 [Start a Discussion](https://github.com/fuzzylabs/edge-vision-power-estimation/discussions)** : Have ideas or suggestions? We'd love to hear from you.
 
----
-
 ## 🙌 Acknowledgements
 
 - [NeuralPower paper](https://arxiv.org/pdf/1710.05420) authors
 - [Profiling Energy Consumption of Deep Neural Networks on NVIDIA Jetson Nano](https://publik.tuwien.ac.at/files/publik_293778.pdf) authors
 - [readme-ai](https://github.com/eli64s/readme-ai) for Readme inspiration
-
----
 
 ## 📄 License
 
