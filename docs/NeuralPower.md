@@ -19,7 +19,7 @@ In our project we are interested in understanding whether these questions can be
 
 ## Overview
 
-NeuralPower trains a polynomial regression model that predicts power consumption of CNNs running on GPU with an average accuracy of 88.34% and another regression model to predict runtime of CNNs that yields an improvement of 68.5% compared to previous state-of-the-art model.
+In the NeuralPower study, the authors train a polynomial regression model and a linear regression model to predict power consumption and inference runtime respectively. The power consumption model achieved an average accuracy of 88.34% while the runtime model yielded an improvement of 68.5% compared to previous state-of-the-art models.
 
 ## Methodology
 
