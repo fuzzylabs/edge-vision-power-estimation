@@ -15,7 +15,7 @@ The [NeuralPower](<https://arxiv.org/abs/1710.05420>) paper starts with the foll
 2. Is it possible to predict this energy consumption before a model is even trained?
 3. If yes, how should machine learners select an energy-efficient CNN for deployment?
 
-These are the 3 questions we are also interested in researching particularly for the edge devices.
+In our project we are interested in understanding whether these questions can be answered for CNN inference on edge devices.
 
 ## Overview
 
