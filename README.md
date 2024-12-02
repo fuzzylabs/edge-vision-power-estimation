@@ -79,7 +79,7 @@ This project is divided into two stages: [Experimental](#-experimental-stage) an
 
 ### 🧪 Experimental Stage
 
-This part of the project focused on experimenting with different approaches for benchmarking various approaches to convert TensorRT models.
+In the experimental stage we experimented with different approaches for benchmarking the conversion of TensorRT models.
 
 > [!TIP]  
 > All code and benchmarking script for 3 experimental approaches can be found under desktop folder: [README](./desktop/README.md)
