@@ -116,7 +116,7 @@ In the implementation stage of the project we created an MLOps pipeline for trai
 └── README.md
 ```
 
-- **[desktop](./desktop/README.md)** : This folder contains initial exploration of various approaches to get a TensorRT model from PyTorch model on a desktop/laptop.
+- **[desktop](./desktop/README.md)** : This folder contains initial exploration of various approaches to convert a PyTorch model to a TensorRT model on a desktop/laptop.
 
 - **[jetson/power_logging](./jetson/power_logging/README.md)** : Jetson folder contains scripts to collect power and runtime measurements, `raw_data` for a Convolutional Neural Network (CNN) model on Jetson devices. For this experiment, we used [Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html).
 
