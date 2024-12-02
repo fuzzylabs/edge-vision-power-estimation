@@ -86,7 +86,7 @@ In the experimental stage we experimented with different approaches for benchmar
 
 ### 🚀 Implementation Stage
 
-This part of the project creates a MLOps pipeline for training the models. It is a two-step process
+In the implementation stage of the project we created an MLOps pipeline for training the power consumption and runtime prediction models. The pipeline consists of the following two step process:
 
 📊 Jetson Device Benchmarking
 
