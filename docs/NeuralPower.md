@@ -1,5 +1,5 @@
 # Neural Power
-
+TL;DR: The NeuralPower paper introduces a process to predict power and runtime consumption of CNN-based models. Their methodology used Caffe models. We use the same process as the paper but for TensorRT models. TensorRT models are optimized model inferencing engine for Nvidia GPUs and Jetson devices.
 Paper: <https://arxiv.org/abs/1710.05420>
 
 ## 🔗 Quick Links
