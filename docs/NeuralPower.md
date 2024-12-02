@@ -9,7 +9,7 @@ Paper: <https://arxiv.org/abs/1710.05420>
 3. [Results](#results)
 4. [Extra](#extra)
 
-NeuralPower paper starts with the following 3 questions as main motivation as part of their research,
+The [NeuralPower](<https://arxiv.org/abs/1710.05420>) paper starts with the following 3 questions the motivation for their research,
 
 1. How much energy is consumed for an inference made by a convolutional neural network (CNN)?
 2. Is it possible to predict this energy consumption before a model is even trained?
