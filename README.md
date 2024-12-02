@@ -36,7 +36,7 @@ The approach we take is similar to that of [NeuralPower paper](https://arxiv.org
 
 ## 🎯 Progress
 
-- We have collected power and runtime measurement on Jetson Orion device for 21 models. The dataset can be viewed on the DagsHub repository.
+- We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
 
 - We have trained power and runtime prediction models for 3 layer types of a CNN model. The experiments can be viewed in the DagsHub MLFlow UI.
 
