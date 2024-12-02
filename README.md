@@ -120,7 +120,7 @@ In the implementation stage of the project we created an MLOps pipeline for trai
 
 - **[jetson/power_logging](./jetson/power_logging/README.md)** : The Jetson folder contains scripts to collect power and runtime measurements. These measurements are then stored in a `raw_data` folder for each Convolutional Neural Network (CNN) model on a Jetson device.
 
-- **[model_training](./model_training/README.md)**: Model training folder uses the `raw_data` collected on the Jetson device to train power and runtime prediction models using sklearn.
+- **[model_training](./model_training/README.md)**: The model training folder uses the `raw_data` collected on the Jetson device to train power and runtime prediction models using [scikit-learn](https://scikit-learn.org/stable/).
 
 ## 🔰 Contributing
 
