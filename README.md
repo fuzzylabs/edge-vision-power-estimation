@@ -29,7 +29,7 @@ This is particularly helpful in the era of large models to help users design the
 
 ### 💡 Approach
 
-The approach we take is similar to that of [NeuralPower paper](https://arxiv.org/abs/1710.05420). We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on the edge devices.
+The approach we take is similar to that of [NeuralPower paper](https://arxiv.org/abs/1710.05420). We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
 
 > [!TIP]  
 > More information on NeuralPower is documented [here](./docs/NeuralPower.md) and TensorRT is documented [here](./desktop/torch_onnx_trt/docs/TensorRT.md).
