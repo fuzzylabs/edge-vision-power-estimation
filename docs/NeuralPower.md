@@ -27,30 +27,36 @@ Before looking into how to train a regression model that predicts power consumpt
 
 ### Data Collection
 
-The authors use a collection of Caffe - a deep learning framework - CNN models for their experiment.
+The authors used a collection of Caffe CNN models for their experiment.
 
 > [!NOTE]
-> We use [PyTorch Hub](https://pytorch.org/hub/) that contains collection of CNN models for our project.
+> We use [PyTorch Hub](https://pytorch.org/hub/) to retrieve pre-trained CNN models for our project.
 
 For each model, power consumed and runtime taken for each layer in the model is recorded.
 
-To measure runtime of each layers, they use Paleo framework, based on research by [Qi et al](https://openreview.net/pdf?id=SyVVJ85lg).
+To measure runtime for each layer, the authors used the Paleo framework, based on research by [Qi et al](https://openreview.net/pdf?id=SyVVJ85lg).
 
 > [!NOTE]
 > We create a custom TensorRT profiler using [IProfiler](https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.IProfiler) TensorRT Python API to measure the runtime for each layer in the TensorRT model on the Jetson device.
 
-Since the experiment is performed on Nvidia GeForce Titan X GPU, the authors use `nvidia-smi` to collect power measurement per 1 ms.
+Since the experiment is performed on a Nvidia GeForce Titan X GPU, the authors used `nvidia-smi` to collect power measurements for model training on a 1 ms interval.
 
 > [!NOTE]
-> The process for power consumption measurement on the Jetson device is detailed in [Power Consumption and Benchmarking documentation](../jetson/power_logging/docs/Power_consumption.md) document.
+> Our process for measuring power consumption on the Jetson device is detailed in [Power Consumption and Benchmarking documentation](../jetson/power_logging/docs/Power_consumption.md) document.
 
-The dataset consists of layer-level runtime and power consumption for each layer of all the models. The authors focuses on data related to 3 types of layers, particularly, convolution layer, pooling layer and dense or fully-connected layer. A power model and runtime model is trained for these 3 layers, a total of 6 models being trained.
+The dataset consists of layer-level runtime and power consumption for all of the CNN models. The authors focused on data related to 3 types of layers:
+
+* Convolutional
+* Pooling
+* Dense
+
+A power consumption and runtime model is trained for these 3 layers, leading to a total of 6 models.
 
 ---
 
 ### Training Model
 
-Once dataset is collected for all the models of interest, a polynomial-based regression is trained. The authors outline 3 reasons for this choice:
+Once the dataset is collected for all the models of interest, a polynomial regression model is trained. The authors outline 3 reasons for this choice:
 
 (i) First, in terms of model accuracy, polynomial models provide more flexibility and low prediction error when modeling both power and runtime.
 
@@ -60,12 +66,30 @@ Once dataset is collected for all the models of interest, a polynomial-based reg
 
 #### Layer-level Power Modelling
 
-A polynomial regression learns the coefficients using the input data. For power modelling, various features for a layer are combined to create a n-th degree polynomial term. For e.g. if input features for dense layers  include the batch size, the input tensor size, and the output tensor size. A 2-degree polynomial will consider pair-wise combination of each feature as it's training data.
+A polynomial regression learns the coefficients using the input data. For power modelling, various features for a layer are combined to create an n-th degree polynomial term. 
 
-For convolution layer, a features vector consists of the batch size, the input tensor size, the kernel size, the stride size, the padding size, and the output tensor size.
+For example, for the following feature for dense layers:
 
-For pooling layer, features include the input tensor size, the stride size, the kernel size, and the output
-tensor size.
+* Batch Size
+* Input Tensor Size
+* Output Tensor Size
+
+then a 2-degree polynomial would consider pair-wise combinations of each feature as it's training data.
+
+For a convolution layer, the features consist of the following:
+
+* Batch Size
+* Input Tensor Size
+* Kernel Size
+* Stride Size
+* Padding Size
+* Output Tensor Size
+
+For the pooling layer, the features include:
+* Input Tensor Size
+* Stride Size
+* Kernel Size
+* Output Tensor Size
 
 A power model is trained for each of the layer type using Lasso and cross-validation to find a polynomial degree that maximises the accuracy using the selected features.
 
@@ -74,15 +98,15 @@ A power model is trained for each of the layer type using Lasso and cross-valida
 In addition to the features included in the power modelling, runtime modelling adds special features to the regression model. The special features include the total number of memory accesses and the total number of
 floating point operations for each layer.
 
-Same methodology of using  Lasso and cross-validation is used to find optimal polynomial degree.
+The same methodology of using  Lasso and cross-validation is used to find optimal polynomial degree.
 
 ## Results
 
-The figure below shows the performance of NeuralPower runtime model.
+The figure below shows the performance of the NeuralPower runtime model.
 
 ![runtime](../assets/runtime_neuralpower.png)
 
-The figure below shows the performance of NeuralPower power model.
+The figure below shows the performance of the NeuralPower power model.
 
 ![power](../assets/power_neuralpower.png)
 
@@ -90,6 +114,6 @@ RMSPE in the figure refers to Root Mean Square Percentage Error and RMSE is Root
 
 ## Extra
 
-The primary author of the paper has also tested NeuralPower approach on Nvidia Jetson TX1 edge device. This research is published in [Power/Performance Modeling and Optimization: Using and Characterizing Machine Learning Applications](https://kilthub.cmu.edu/articles/Power_Performance_Modeling_and_Optimization_Using_and_Characterizing_Machine_Learning_Applications/7212224), Section 6.3.
+The primary author of the paper has also tested the NeuralPower approach on a Nvidia Jetson TX1 edge device. This research is published in [Power/Performance Modeling and Optimization: Using and Characterizing Machine Learning Applications](https://kilthub.cmu.edu/articles/Power_Performance_Modeling_and_Optimization_Using_and_Characterizing_Machine_Learning_Applications/7212224), Section 6.3.
 
 ![Results](../assets/jetson_tx1_neuralpower.png)
