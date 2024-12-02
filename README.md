@@ -57,7 +57,7 @@ Learn more about how to get started to train power and runtime prediction models
 > [!NOTE]  
 > If you do not have access to a Jetson device, you can use our training data following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to get started.
 
-For rest of the project following tools are used,
+For the rest of the project following tools are used,
 
 - [uv](https://docs.astral.sh/uv/) : It is used as default for running this project locally.
 
