@@ -55,7 +55,7 @@ Learn more about how to get started to train power and runtime prediction models
 - [Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on Jetson board for collecting power and runtime measurements for a CNN model.
 
 > [!NOTE]  
-> If you do not have access to a Jetson device, you can use uploaded train data following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to get started.
+> If you do not have access to a Jetson device, you can use our training data following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to get started.
 
 For rest of the project following tools are used,
 
