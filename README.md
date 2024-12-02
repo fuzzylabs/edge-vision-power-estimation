@@ -61,7 +61,7 @@ For the rest of the project following tools are used,
 
 - [uv](https://docs.astral.sh/uv/) : It is used as default for running this project locally.
 
-- (Optional) [Docker](https://docs.docker.com/get-started/) : It is used for running the experiments under [desktop](./desktop/) folders. `Docker` is as an alternative to `uv` run the different approaches to convert and benchmark PyTorch models to TensorRT models.
+- (Optional) [Docker](https://docs.docker.com/get-started/) : `Docker` is as an alternative to `uv`. It is used for running the experiments under [desktop](./desktop/) folders.
 
 ---
 
