@@ -68,6 +68,9 @@ For rest of the project following tools are used,
 ### 🏎💨 Run Locally
 
 > [!TIP]
+> If you want to run an inference using trained models, our recommendation is to follow the steps outlined in the [inference](./model_training/README.md#-inference) section of `model_training` readme to train a prediction model.
+
+> [!TIP]
 > If you don't have access to the Jetson device, our recommendation is to pull training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.
 
 > [!TIP]

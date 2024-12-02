@@ -30,6 +30,18 @@ We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linea
     uv sync
     ```
 
+### 🔋 Inference
+
+Inference script requires path to TensorRT engine information file and a path to save prediction as a CSV file.
+
+```python
+python inference.py \
+    --trt-engine-path sample_data/resnet18_trt_engine_info.json \
+    --result-csv-path results/resnet18_predictions.csv
+```
+
+A prediction CSV is created under `results` folder. The power prediction are saved under column `power_prediction` and runtime predictions are saved under column `runtime_prediction`.
+
 ### 🏎💨 Run Training Script
 
 0. (Optional) If you have uploaded the raw dataset of benchmarking experiment from Jetson device, the next step is to get a training dataset.
