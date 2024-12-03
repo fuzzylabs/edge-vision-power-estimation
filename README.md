@@ -140,7 +140,9 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 - **💬 [Start a Discussion](https://github.com/fuzzylabs/edge-vision-power-estimation/discussions)** : Have ideas or suggestions? We'd love to hear from you.
 
 ## 🙌 Acknowledgements
+
 The following resources have served as an inspiration for this project:
+
 - [NeuralPower paper](https://arxiv.org/pdf/1710.05420) authors
 - [Profiling Energy Consumption of Deep Neural Networks on NVIDIA Jetson Nano](https://publik.tuwien.ac.at/files/publik_293778.pdf) authors
 - [readme-ai](https://github.com/eli64s/readme-ai) for Readme inspiration
