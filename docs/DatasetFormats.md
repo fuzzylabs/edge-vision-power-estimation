@@ -148,11 +148,11 @@ Inside `trt_profiling` folder for each model, we have two files `trt_engine_info
 > The runtime latency values are recorded in **milliseconds**. </br>
 > The power consumption values are recorded in **microwatts**.
 
-This raw data will be preprocessed and converted to a training dataset by scripts in [`model_training`](../model_training/) folder.
+This raw data will be preprocessed and converted to a training dataset using the scripts in [`model_training`](../model_training/) folder.
 
 ## Preprocessing Dataset Format
 
-A `preprocessed_data` folder is created after running the `map_power_to_layers.py` script. It takes input the raw data folder, maps power and runtime values for each layer and creates a CSV.
+A `preprocessed_data` folder is created after running the [`map_power_to_layers.py`](../model_training/map_power_to_layers.py) script. It takes input the raw data folder, maps power and runtime values for each layer and creates a CSV.
 
 Each model in `preprocessed_data` folder contains 2 files: `power_runtime_mapping_layerwise.csv` and `trt_engine_info.json`.
 
@@ -160,35 +160,63 @@ Each model in `preprocessed_data` folder contains 2 files: `power_runtime_mappin
 
 `power_runtime_mapping_layerwise.csv`: This CSV file contains per-layer data for each iteration of inference cycle. It includes information about current inference iteration, layer name, layer type, power consumed by the layer, runtime latency for the layer. An example entry of CSV for Alexnet model is shown below.
 
-```csv
-cycle,layer_name,layer_type,layer_power_including_idle_power_micro_watt,layer_power_excluding_idle_power_micro_watt,layer_run_time
-1,Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/feat_conv1/convolution] + [RELU]-[aten_ops.relu.default]-[/feat/relu],Reformat,5437392.769097799,1202832.6137757916,0.10390400141477585
-```
+| cyle | layer_name                                                                                                                                                       | layer_type | layer_power_including_idle_power_micro_watt | layer_power_excluding_idle_power_micro_watt | layer_run_time      |
+|------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|---------------------------------------------|---------------------------------------------|---------------------|
+| 1    | Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/feat_conv1/convolution] + [RELU]-[aten_ops.relu.default]-[/feat/relu] | Reformat   | 5437392.769097799                           | 1202832.6137757916                          | 0.10390400141477585 |
 
 ## Training Dataset Format
 
-A `training_data` folder is created after running `convert_measurements.py` script. It takes input the preprocessed data folder and splits the data into 3 CSV according to layer types of interest.
+A `training_data` folder is created after running [`convert_measurements.py`](../model_training/convert_measurements.py) script. It takes input the preprocessed data folder and splits the data into 3 CSV according to layer types of interest.
 
-Each model in `training_data` folder contains 3 CSV files: `dense.csv`, `convolutional.csv` and `pooling.csv`.
+Each model in the `training_data` folder contains 3 CSV files: `dense.csv`, `convolutional.csv` and `pooling.csv`.
 
 Each CSV file stores relevant information such as batch_size, input_size, output_size, input_shape, output_shape, strides, padding, dilation, depending on the layer type.
 
-An example of columns in Alexnet dense CSV is shown below
+An example of columns in [Alexnet dense CSV](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/training_data/alexnet/dense.csv) is shown below
 
-```csv
-batch_size,input_size,output_size,power,runtime,layer_name
-```
+- batch_size
+- input_size
+- output_size
+- power
+- runtime
+- layer_name
 
-An example of columns in Alexnet pooling CSV is shown below
+An example of columns in [Alexnet pooling CSV](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/training_data/alexnet/pooling.csv) is shown below
 
-```csv
-batch_size,input_size_0,input_size_1,input_size_2,output_size_0,output_size_1,output_size_2,kernel_0,kernel_1,stride_0,stride_1,power,runtime,layer_name
-```
+- batch_size
+- input_size_0
+- input_size_1
+- input_size_2
+- output_size_0
+- output_size_1
+- output_size_2
+- kernel_0
+- kernel_1
+- stride_0
+- stride_1
+- power
+- runtime
+- layer_name
 
 An example of columns in Alexnet convolutional CSV is shown below
 
-```csv
-batch_size,input_size_0,input_size_1,input_size_2,output_size_0,output_size_1,output_size_2,kernel_0,kernel_1,padding_0,padding_1,stride_0,stride_1,power,runtime,layer_name
-```
+- batch_size
+- input_size_0
+- input_size_1
+- input_size_2
+- output_size_0
+- output_size_1
+- output_size_2
+- kernel_0
+- kernel_1
+- padding_0
+- padding_1
+- stride_0
+- stride_1
+- power
+- runtime
+- layer_name
 
-Pooling and Convoluion store contains almost the same features except for padding in pooling layers. Dense layers store only input_size, output_size and batch_size information. All the layers in CSV contain values for power and runtime which is used for training the prediction models and evaluating the trained models.
+Pooling and Convoluion data contains almost the same features except for padding in pooling layers. Dense layers data contains only input_size, output_size and batch_size information as it's feature.
+
+All the layers in CSV contain values for power and runtime which is used for training the prediction models and evaluating the trained models.
