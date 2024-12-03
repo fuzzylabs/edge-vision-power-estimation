@@ -34,6 +34,10 @@ We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linea
 
 Inference script requires path to TensorRT engine information file and a path to save prediction as a CSV file.
 
+Inference script downloads the trained model from MLFlow registry for the inference. There are two sample data for `resnet18` and `vgg16` Tensorrt engine files under [sample_data](./sample_data/) folder.
+
+Following command runs inference for `resnet18` model,
+
 ```python
 python inference.py \
     --trt-engine-path sample_data/resnet18_trt_engine_info.json \
