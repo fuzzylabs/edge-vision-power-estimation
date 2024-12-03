@@ -107,6 +107,18 @@ python inference.py \
     --result-csv-path results/resnet18_predictions.csv
 ```
 
+The [`sample_data`](model_training/sample_data) directory contains a handful of TRT Engine files for you to try. These files contain the features used to generate predictions for different CNN models.
+
+[DagsHub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/preprocessed_data) contains `trt_engine_info.json` files for 21 popular CNN models which you can run inference over yourself by downloading and passing to the same inference script above with the `--trt-engine-path` flag.
+
+---
+
+**🫵 Inference on Your Custom CNN**
+
+Coming soon...
+
+---
+
 > **Tip:** For more details on running inference see the  [Inference](./model_training/README.md#-inference) section of the [`model_training`](model_training/README.md) README.
 
 </details>
@@ -120,7 +132,9 @@ python inference.py \
   If you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
   
   If you don't have access to a Jetson device yourself, we recommend pulling our training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of the `model_training` README.
-
+  
+  <hr>
+  
   </details>
   
   Once you have access to training data you can train your own model with our training script:
