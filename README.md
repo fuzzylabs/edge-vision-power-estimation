@@ -60,30 +60,32 @@ EdgeProfiler helps you understand and minimise your model's power consumption an
 </details>
 
 <details>
-<summary>📍 How did we get here?</summary>
+  <summary>📍 How did we get here?</summary>
 
   This project is divided into two stages: [Experimental](#-experimental-stage) and [Implementation](#-implementation-stage)
 
-  ### 🧪 Experimental Stage
+  **🧪 Experimental Stage**
 
   In the experimental stage we experimented with different approaches for benchmarking the conversion of TensorRT models.
 
   > **Tip:** All code and benchmarking scripts for the 3 experimental approaches can be found in the desktop folder: [README](./desktop/README.md)
 
-  ### 🚀 Implementation Stage
+  **🚀 Implementation Stage**
 
   In the implementation stage of the project we created an MLOps pipeline for training the power consumption and runtime prediction models. The pipeline consists of the following two step process:
 
   📊 Jetson Device Benchmarking
 
-  1. Collect the power consumption and performance data on the Jetson device
-  2. Follow the detailed process outlined in [jetson/power_logging](./jetson/power_logging/README.md)
+  1. Collect the power consumption and performance data on the Jetson device. 
+  
+  > Follow the detailed process outlined in [jetson/power_logging](./jetson/power_logging/README.md)
 
   🤖 Machine Learning Model Development
 
   1. Preprocess collected data from the Jetson device
-  2. Train machine learning models for power and runtime prediction
-  3. Refer to the comprehensive guide in [model_training](./model_training/README.md)
+  2. Train machine learning models for power and runtime prediction 
+  
+  > Refer to the comprehensive guide in [model_training](./model_training/README.md)
 
 </details>
 
