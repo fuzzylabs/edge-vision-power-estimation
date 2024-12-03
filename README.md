@@ -67,8 +67,17 @@ For the rest of the project following tools are used,
 
 ### 🏎💨 Run Locally
 
+**Run inference using trained model locally**
+
+> [!TIP]
+> If you want to run an inference using trained models, our recommendation is to follow the steps outlined in the [inference](./model_training/README.md#-inference) section of the `model_training` README.
+
+**Train models using train dataset locally**
+
 > [!TIP]
 > If you don't have access to the Jetson device, our recommendation is to pull training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.
+
+**Collect raw data on Jetson and train models locally**
 
 > [!TIP]
 > If you have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of `jetson/power_logging` readme followed by the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.

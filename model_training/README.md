@@ -30,6 +30,39 @@ We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linea
     uv sync
     ```
 
+### 🔋 Inference
+
+Inference script requires path to TensorRT engine information file and a path to save prediction as a CSV file.
+
+Inference script downloads the trained model from MLFlow registry for the inference. There are two sample data for `resnet18` and `vgg16` Tensorrt engine files under [sample_data](./sample_data/) folder.
+
+Following command runs inference for `resnet18` model,
+
+```python
+python inference.py \
+    --trt-engine-path sample_data/resnet18_trt_engine_info.json \
+    --result-csv-path results/resnet18_predictions.csv
+```
+
+A prediction CSV is created in the `results` folder. The power prediction is saved under the column `power_prediction` and runtime predictions are saved under the column `runtime_prediction`.
+
+Trained models are downloaded in `trained_models` folders. This is how the tree for `trained_models` folder looks like with all the models downloaded
+
+```bash
+trained_models
+├── convolutional
+│   ├── power
+│   └── runtime
+├── dense
+│   ├── power
+│   └── runtime
+└── pooling
+    ├── power
+    └── runtime
+```
+
+For each of the layer type, we download a power and runtime model.
+
 ### 🏎💨 Run Training Script
 
 0. (Optional) If you have uploaded the raw dataset from the benchmarking experiment on the Jetson device, the next step is to get a training dataset.
