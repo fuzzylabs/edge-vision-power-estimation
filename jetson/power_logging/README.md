@@ -27,7 +27,7 @@ For insights into how runtime is measured for each layer on Jetson, refer to [th
 
 ## 🛸 Getting Started
 
-### ⚙️ System and Hardware Requirements
+### ⚙️ Requirements
 
 [Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on Jetson board for collecting power and runtime measurements for a CNN model.
 
@@ -41,6 +41,8 @@ OS - Ubuntu 22.04-based root file system
 ```
 
 [DagsHub account](https://dagshub.com/) and a repository for data versioning.
+
+---
 
 ### 🏎💨 Run Experiment Script
 
