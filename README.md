@@ -1,4 +1,7 @@
-# EdgeProfiler
+<h1 align="center">
+EdgeProfiler
+</h1>
+
 <p align="center">
 <img src="./assets/intro.jpg" alt="readme-ai-banner-logo" width="80%">
 </p>
