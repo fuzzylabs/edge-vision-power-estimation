@@ -141,6 +141,7 @@ Inside `trt_profiling` folder for each model, we have two files `trt_engine_info
         [0.10937599837779999, "20241121-05:22:50.159908"],
         ...
     ],
+}
 ```
 
 > [!NOTE]
