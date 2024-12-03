@@ -49,8 +49,8 @@ def infer(
 
     data = defaultdict(list)
     layers_info = read_layers_info(trt_engine_info_path)
-    print(f"Performing inference for {trt_engine_info_path}")
     print(f"Found {len(layers_info)} number of layers")
+    print(f"Performing inference for {trt_engine_info_path}")
 
     for layer_name, layer_info in layers_info.items():
         layer_type = layer_info.get_layer_type()

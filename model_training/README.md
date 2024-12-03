@@ -46,6 +46,23 @@ python inference.py \
 
 A prediction CSV is created in the `results` folder. The power prediction is saved under the column `power_prediction` and runtime predictions are saved under the column `runtime_prediction`.
 
+Trained models are downloaded in `trained_models` folders. This is how the tree for `trained_models` folder looks like with all the models downloaded
+
+```bash
+.
+├── convolutional
+│   ├── power
+│   └── runtime
+├── dense
+│   ├── power
+│   └── runtime
+└── pooling
+    ├── power
+    └── runtime
+```
+
+For each of the layer type, we download a power and runtime model.
+
 ### 🏎💨 Run Training Script
 
 0. (Optional) If you have uploaded the raw dataset of benchmarking experiment from Jetson device, the next step is to get a training dataset.

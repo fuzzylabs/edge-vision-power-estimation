@@ -173,3 +173,6 @@ mlruns
 
 # Optuna model tuning databases
 *.db
+
+# Folder to store trained models
+trained_models
