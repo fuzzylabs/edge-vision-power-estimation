@@ -27,7 +27,7 @@ EdgeProfiler
 
 **Measure smarter, deploy greener:** A tool for inferring and optimising the power consumption of Convolutional Neural Networks (CNN's) on edge devices.
 
-EdgeProfiler helps you understand and minimise your power consumption and runtime without having to leave your development machine. This allows you to gauge your deployment environmental impact during or even before the training process to help you to make smarter training decisions. 
+EdgeProfiler helps you understand and minimise your model's power consumption and runtime without having to leave your development machine. This allows you to gauge your deployment environmental impact during or even before the training process to help you to make smarter training decisions. 
 
 ---
 
