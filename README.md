@@ -26,6 +26,8 @@
 
 EdgeProfiler helps you understand and minimise your power consumption and runtime without having to leave your development machine. This allows you to gauge your deployment environmental impact during or even before the training process to help you to make smarter training decisions. 
 
+---
+
 **What's inside:**
 - **Inference:** Determine power consumption and runtime for different layers in a CNN model on an Nvidia Jetson edge device.
 - **Training:** Build your own power consumption and runtime models using Scikit-Learn and MLFlow for experiment tracking.
@@ -33,19 +35,21 @@ EdgeProfiler helps you understand and minimise your power consumption and runtim
 
 <details>
 	<summary>💡 Why this approach?</summary>
-	The approach we take is similar to that of the <a href="https://arxiv.org/abs/1710.05420">NeuralPower paper</a>. We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
 
-  > [!TIP]
-  > More information on NeuralPower is documented [here](./docs/NeuralPower.md) and TensorRT is documented [here](./desktop/torch_onnx_trt/docs/TensorRT.md).
+  The approach we take is similar to that of the <a href="https://arxiv.org/abs/1710.05420">NeuralPower paper</a>. We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
+
+  > **Tip:** More information on NeuralPower is documented [here](./docs/NeuralPower.md) and TensorRT is documented [here](./desktop/torch_onnx_trt/docs/TensorRT.md).
 </details>
 
 <details>
   <summary>🎯 What have we done?</summary>
+
 - We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
 
 - We have trained power and runtime prediction models for 3 different layer types of CNN models. The experiments can be viewed in the DagsHub MLFlow UI.
 
-> [!IMPORTANT]
+> 📌 **Important**
+> 
 > DagsHub repository: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation> </br> </br>
 > MLFlow UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
 
@@ -61,8 +65,7 @@ This project is divided into two stages: [Experimental](#-experimental-stage) an
 
 In the experimental stage we experimented with different approaches for benchmarking the conversion of TensorRT models.
 
-> [!TIP]
-> All code and benchmarking scripts for the 3 experimental approaches can be found in the desktop folder: [README](./desktop/README.md)
+> **Tip:** All code and benchmarking scripts for the 3 experimental approaches can be found in the desktop folder: [README](./desktop/README.md)
 
 ### 🚀 Implementation Stage
 
@@ -96,7 +99,7 @@ uv sync
 ```
 
 <details open>
-  <summary>Power Inference</summary>
+  <summary>🧠 Power Inference</summary>
 
 Run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device:
 
@@ -105,13 +108,13 @@ python inference.py \
     --trt-engine-path sample_data/resnet18_trt_engine_info.json \
     --result-csv-path results/resnet18_predictions.csv
 ```
+
+> **Tip:** For more details on running inference see the  [Inference](./model_training/README.md#-inference) section of the [`model_training`](model_training/README.md) README.
+
 </details>
 
-> [!TIP]
-> For more details on running inference see the  [Inference](./model_training/README.md#-inference) section of the [`model_training`](model_training/README.md) README.
-
 <details>
-  <summary>Model Training</summary>
+  <summary>🏋️ Model Training</summary>
 
   <details>
   <summary>Data Collection</summary>
@@ -128,8 +131,7 @@ python inference.py \
 python run.py
 ```
 
-> [!TIP]
-> For more details on training your own model see the  [Run Training Script](./model_training/README.md#-run-training-script) section of the [`model_training`](model_training/README.md) README.
+> **Tip:** For more details on training your own model see the  [Run Training Script](./model_training/README.md#-run-training-script) section of the [`model_training`](model_training/README.md) README.
 
 
 </details>
