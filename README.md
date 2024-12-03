@@ -20,7 +20,7 @@ EdgeProfiler
   * [Training](model_training/run.py)
   * [Data Collection](jetson/power_logging/)
 * [Data Hub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation)
-* [Experiment Tracking](https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/#/experiments/0?searchFilter=&orderByKey=attributes.start_time&orderByAsc=false&startTime=ALL&lifecycleFilter=Active&modelVersionFilter=All+Runs&datasetsFilter=W10%3D)
+* [Experiment Tracking](https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/)
 * [Model Hub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/#/models)
 
 ## 🔮 Introduction
@@ -37,7 +37,7 @@ EdgeProfiler helps you understand and minimise your model's power consumption an
 - **Data Collection:** Record measurements of a model's power consumption and runtime storing all data versions in DagsHub.
 
 <details>
-	<summary>💡 Why this approach?</summary>
+	<summary>💡 How it works?</summary>
 
   The approach we take is similar to that of the <a href="https://arxiv.org/abs/1710.05420">NeuralPower paper</a>. We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
 
@@ -57,36 +57,6 @@ EdgeProfiler helps you understand and minimise your model's power consumption an
   > MLFlow UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
 
   Learn more about how to get started to train power and runtime prediction models in the [Have a go yourself](#-have-a-go-yourself) section.
-</details>
-
-<details>
-  <summary>📍 How did we get here?</summary>
-
-  This project is divided into two stages: [Experimental](#-experimental-stage) and [Implementation](#-implementation-stage)
-
-  **🧪 Experimental Stage**
-
-  In the experimental stage we experimented with different approaches for benchmarking the conversion of TensorRT models.
-
-  > **Tip:** All code and benchmarking scripts for the 3 experimental approaches can be found in the desktop folder: [README](./desktop/README.md)
-
-  **🚀 Implementation Stage**
-
-  In the implementation stage of the project we created an MLOps pipeline for training the power consumption and runtime prediction models. The pipeline consists of the following two step process:
-
-  📊 Jetson Device Benchmarking
-
-  1. Collect the power consumption and performance data on the Jetson device. 
-  
-  > Follow the detailed process outlined in [jetson/power_logging](./jetson/power_logging/README.md)
-
-  🤖 Machine Learning Model Development
-
-  1. Preprocess collected data from the Jetson device
-  2. Train machine learning models for power and runtime prediction 
-  
-  > Refer to the comprehensive guide in [model_training](./model_training/README.md)
-
 </details>
 
 ### 🏎💨 Have A Go Yourself
@@ -129,18 +99,16 @@ Coming soon...
 </details>
 
 <details>
+<summary>🎣 Data Collection</summary>
+
+If you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
+
+If you don't have access to a Jetson device yourself, we recommend pulling our training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of the `model_training` README.
+
+</details>
+
+<details>
   <summary>🏋️ Model Training</summary>
-
-  <details>
-  <summary>Data Collection</summary>
-
-  If you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
-  
-  If you don't have access to a Jetson device yourself, we recommend pulling our training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of the `model_training` README.
-  
-  <hr>
-  
-  </details>
   
   Once you have access to training data you can train your own model with our training script:
 
@@ -149,7 +117,6 @@ python run.py
 ```
 
 > **Tip:** For more details on training your own model see the  [Run Training Script](./model_training/README.md#-run-training-script) section of the [`model_training`](model_training/README.md) README.
-
 
 </details>
 
@@ -172,7 +139,6 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 The following resources have served as an inspiration for this project:
 - [NeuralPower paper](https://arxiv.org/pdf/1710.05420) authors
 - [Profiling Energy Consumption of Deep Neural Networks on NVIDIA Jetson Nano](https://publik.tuwien.ac.at/files/publik_293778.pdf) authors
-- [readme-ai](https://github.com/eli64s/readme-ai) for Readme inspiration
 
 ## 📄 License
 
