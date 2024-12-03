@@ -84,8 +84,6 @@ In the implementation stage of the project we created an MLOps pipeline for trai
 
 </details>
 
----
-
 ### 🏎💨 Have a go yourself
 
 To get started, set up your python environment. We really like using `uv` for package and project management - so if you don't have it go ahead and follow their installation guide from [here](https://docs.astral.sh/uv/getting-started/installation/).
@@ -135,8 +133,6 @@ python run.py
 
 
 </details>
-
----
 
 ## 🔰 Contributing
 
