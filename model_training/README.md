@@ -40,7 +40,7 @@ python inference.py \
     --result-csv-path results/resnet18_predictions.csv
 ```
 
-A prediction CSV is created under `results` folder. The power prediction are saved under column `power_prediction` and runtime predictions are saved under column `runtime_prediction`.
+A prediction CSV is created in the `results` folder. The power prediction is saved under the column `power_prediction` and runtime predictions are saved under the column `runtime_prediction`.
 
 ### 🏎💨 Run Training Script
 
