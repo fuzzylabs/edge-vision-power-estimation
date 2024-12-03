@@ -37,7 +37,7 @@ EdgeProfiler helps you understand and minimise your model's power consumption an
 - **Data Collection:** Record measurements of a model's power consumption and runtime storing all data versions in DagsHub.
 
 <details>
-	<summary>💡 How it works?</summary>
+	<summary>❓ How it works?</summary>
 
   The approach we take is similar to that of the <a href="https://arxiv.org/abs/1710.05420">NeuralPower paper</a>. We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
 
