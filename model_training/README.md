@@ -49,7 +49,7 @@ A prediction CSV is created in the `results` folder. The power prediction is sav
 Trained models are downloaded in `trained_models` folders. This is how the tree for `trained_models` folder looks like with all the models downloaded
 
 ```bash
-.
+trained_models
 ├── convolutional
 │   ├── power
 │   └── runtime
