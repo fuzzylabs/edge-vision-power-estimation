@@ -109,7 +109,7 @@ python inference.py \
 
 The [`sample_data`](model_training/sample_data) directory contains a handful of TRT Engine files for you to try. These files contain the features used to generate predictions for different CNN models.
 
-[DagsHub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/preprocessed_data) contains `trt_engine_info.json` files for 21 popular CNN models which you can run inference over yourself by downloading and passing to the same inference script above with the `--trt-engine-path` flag.
+[DagsHub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/preprocessed_data) contains `trt_engine_info.json` files for 21 popular CNN models which you can run inference over yourself by downloading and passing the path to the same inference script above with the `--trt-engine-path` flag.
 
 ---
 
@@ -147,6 +147,13 @@ python run.py
 
 
 </details>
+
+## Roadmap
+
+- [] Model Improvements
+- [] Improvements to data versioning and storage process
+- [] MLOps Pipeline Tool
+- [] Allow for ingestion of custom model
 
 ## 🔰 Contributing
 
