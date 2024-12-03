@@ -44,47 +44,47 @@ EdgeProfiler helps you understand and minimise your power consumption and runtim
 <details>
   <summary>🎯 What have we done?</summary>
 
-- We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
+  - We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
 
-- We have trained power and runtime prediction models for 3 different layer types of CNN models. The experiments can be viewed in the DagsHub MLFlow UI.
+  - We have trained power and runtime prediction models for 3 different layer types of CNN models. The experiments can be viewed in the DagsHub MLFlow UI.
 
-> 📌 **Important**
-> 
-> DagsHub repository: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation> </br> </br>
-> MLFlow UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
+  > 📌 **Important**
+  > 
+  > DagsHub repository: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation> </br> </br>
+  > MLFlow UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
 
-Learn more about how to get started to train power and runtime prediction models in [Run Locally](#-run-locally) section.
+  Learn more about how to get started to train power and runtime prediction models in the [Have a go yourself](#-have-a-go-yourself) section.
 </details>
 
 <details>
 <summary>📍 How did we get here?</summary>
 
-This project is divided into two stages: [Experimental](#-experimental-stage) and [Implementation](#-implementation-stage)
+  This project is divided into two stages: [Experimental](#-experimental-stage) and [Implementation](#-implementation-stage)
 
-### 🧪 Experimental Stage
+  ### 🧪 Experimental Stage
 
-In the experimental stage we experimented with different approaches for benchmarking the conversion of TensorRT models.
+  In the experimental stage we experimented with different approaches for benchmarking the conversion of TensorRT models.
 
-> **Tip:** All code and benchmarking scripts for the 3 experimental approaches can be found in the desktop folder: [README](./desktop/README.md)
+  > **Tip:** All code and benchmarking scripts for the 3 experimental approaches can be found in the desktop folder: [README](./desktop/README.md)
 
-### 🚀 Implementation Stage
+  ### 🚀 Implementation Stage
 
-In the implementation stage of the project we created an MLOps pipeline for training the power consumption and runtime prediction models. The pipeline consists of the following two step process:
+  In the implementation stage of the project we created an MLOps pipeline for training the power consumption and runtime prediction models. The pipeline consists of the following two step process:
 
-📊 Jetson Device Benchmarking
+  📊 Jetson Device Benchmarking
 
-1. Collect the power consumption and performance data on the Jetson device
-2. Follow the detailed process outlined in [jetson/power_logging](./jetson/power_logging/README.md)
+  1. Collect the power consumption and performance data on the Jetson device
+  2. Follow the detailed process outlined in [jetson/power_logging](./jetson/power_logging/README.md)
 
-🤖 Machine Learning Model Development
+  🤖 Machine Learning Model Development
 
-1. Preprocess collected data from the Jetson device
-2. Train machine learning models for power and runtime prediction
-3. Refer to the comprehensive guide in [model_training](./model_training/README.md)
+  1. Preprocess collected data from the Jetson device
+  2. Train machine learning models for power and runtime prediction
+  3. Refer to the comprehensive guide in [model_training](./model_training/README.md)
 
 </details>
 
-### 🏎💨 Have a go yourself
+### 🏎💨 Have A Go Yourself
 
 To get started, set up your python environment. We really like using `uv` for package and project management - so if you don't have it go ahead and follow their installation guide from [here](https://docs.astral.sh/uv/getting-started/installation/).
 
