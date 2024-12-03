@@ -148,12 +148,12 @@ python run.py
 
 </details>
 
-## Roadmap
+## 🛣️ Roadmap
 
-- [] Model Improvements
-- [] Improvements to data versioning and storage process
-- [] MLOps Pipeline Tool
-- [] Allow for ingestion of custom model
+- [ ] Model Improvements
+- [ ] Improvements to data versioning and storage process
+- [ ] MLOps Pipeline Tool
+- [ ] Allow for ingestion of custom model
 
 ## 🔰 Contributing
 
