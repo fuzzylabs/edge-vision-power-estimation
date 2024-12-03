@@ -33,8 +33,8 @@ EdgeProfiler helps you understand and minimise your model's power consumption an
 
 **What's inside:**
 - **Inference:** Determine power consumption and runtime for different layers in a CNN model on an Nvidia Jetson edge device.
-- **Training:** Build your own power consumption and runtime models using Scikit-Learn and MLFlow for experiment tracking.
-- **Collection:** Record measurements of a model's power consumption and runtime during inference, storing all data versions in DagsHub.
+- **Training:** Build your own power consumption and runtime models using DagsHub for data versioning, Scikit-Learn for model training and MLFlow for experiment tracking.
+- **Data Collection:** Record measurements of a model's power consumption and runtime storing all data versions in DagsHub.
 
 <details>
 	<summary>💡 Why this approach?</summary>
@@ -102,7 +102,7 @@ uv sync
 ```
 
 <details open>
-  <summary>🧠 Power Inference</summary>
+  <summary>🧠 Power and Runtime Inference</summary>
 
 Run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device:
 
