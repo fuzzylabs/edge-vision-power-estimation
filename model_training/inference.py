@@ -7,6 +7,7 @@ python inference.py \
 """
 
 import argparse
+from collections import defaultdict
 from pathlib import Path
 
 import dagshub
@@ -42,11 +43,11 @@ def infer(
         mlflow=True,
     )
 
-    conv_models = InferenceModel(model_version=1, model_layer_type="convolutional")
-    pooling_models = InferenceModel(model_version=1, model_layer_type="pooling")
-    dense_models = InferenceModel(model_version=1, model_layer_type="dense")
+    conv_models = InferenceModel(model_version=1, layer_type="convolutional")
+    pooling_models = InferenceModel(model_version=1, layer_type="pooling")
+    dense_models = InferenceModel(model_version=1, layer_type="dense")
 
-    power_pred, runtime_pred, layer_names, layer_types = [], [], [], []
+    data = defaultdict(list)
     layers_info = read_layers_info(trt_engine_info_path)
     print(f"Performing inference for {trt_engine_info_path}")
     print(f"Found {len(layers_info)} number of layers")
@@ -63,21 +64,18 @@ def infer(
             continue
 
         features = model.get_features(layer_info)
-        power_pred.append(model.power_model.predict(features.values).tolist()[0])
-        runtime_pred.append(model.runtime_model.predict(features.values).tolist()[0])
-        layer_names.append(layer_name)
-        layer_types.append(layer_info.layer_type)
-
-    data = {
-        "layer_type": layer_types,
-        "layer_name": layer_names,
-        "power_prediction": power_pred,
-        "runtime_prediction": runtime_pred,
-    }
+        data["power_predicition"].append(
+            model.power_model.predict(features.values).tolist()[0]
+        )
+        data["runtime_prediction"].append(
+            model.runtime_model.predict(features.values).tolist()[0]
+        )
+        data["layer_name"].append(layer_name)
+        data["layer_type"].append(layer_info.layer_type)
 
     df = pd.DataFrame.from_dict(data)
     result_csv_path.parent.mkdir(parents=True, exist_ok=True)
-    if not (result_csv_path.suffix == ".csv"):
+    if result_csv_path.suffix != ".csv":
         raise ValueError(f"{result_csv_path} path to csv must end with .csv")
     df.to_csv(result_csv_path, index=False)
 
@@ -107,6 +105,11 @@ if __name__ == "__main__":
         help="Path to save prediction results as a CSV.",
     )
     args = parser.parse_args()
+
+    if not args.trt_engine_path or not args.result_csv_path:
+        raise ValueError(
+            "Both the flags (--trt-engine-path and --result-csv-path) should be provided"
+        )
 
     infer(
         dagshub_repo_name=args.name,
