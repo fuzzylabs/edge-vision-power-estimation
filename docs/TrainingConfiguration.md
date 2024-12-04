@@ -41,22 +41,21 @@ The configuration is present for our DagsHub repo. You can also modify it to run
 
 [`convolutional_features.py`](../model_training/config/convolutional_features.py) consists of following
 
-- The features to be used as input
-- Special features derived using input features
-- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model.
+- The features to be used as input (`CONV_FEATURES`)
+- Special features derived using input features (`TOTAL_CONV_OPS_PER_INPUT`, `TOTAL_CONV_OPS_PER_BATCH`)
+- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model. (`CONVOLUTION_PIPELINE`)
 
 ## Dense Layer Configuration
 
 [`dense_features.py`](../model_training/config/dense_features.py) consists of following
 
-- The features to be used as input
-- Special features derived using input features
-- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model.
+- The features to be used as input (`DENSE_FEATURES`)
+- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model. (`DENSE_PIPELINE`)
 
 ## Pooling Layer Configuration
 
 [`pooling_features.py`](../model_training/config/pooling_features.py) consists of following
 
-- The features to be used as input
-- Special features derived using input features
-- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model.
+- The features to be used as input (`POOLING_FEATURES`)
+- Special features derived using input features (`TOTAL_POOLING_INPUT_FEATURES`, `TOTAL_POOLING_NO_OPS`, `TOTAL_POOLING_OUTPUT_FEATURES`)
+- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model. (`POOLING_PIPELINE`)
