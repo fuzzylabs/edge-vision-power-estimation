@@ -27,12 +27,12 @@ EdgeProfiler
 
 **Measure smarter, deploy greener:** A tool for inferring and optimising the power consumption of Convolutional Neural Networks (CNN's) on edge devices.
 
-EdgeProfiler helps you understand and minimise your model's power consumption and runtime without having to leave your development machine. This allows you to gauge your deployment environmental impact during or even before the training process to help you to make smarter training decisions. 
+EdgeProfiler helps you to understand and minimise your model's power consumption and runtime, allowing you to gauge your deployment's environmental impact during the training process to help you to make smarter training decisions. 
 
 ---
 
 **What's inside:**
-- **Inference:** Determine power consumption and runtime for different layers in a CNN model on an Nvidia Jetson edge device.
+- **Inference:** Determine power consumption and runtime for different layers in a CNN model on an Nvidia Jetson edge device using our custom models.
 - **Training:** Build your own power consumption and runtime models using DagsHub for data versioning, Scikit-Learn for model training and MLFlow for experiment tracking.
 - **Data Collection:** Record measurements of a model's power consumption and runtime storing all data versions in DagsHub.
 
@@ -42,11 +42,9 @@ EdgeProfiler helps you understand and minimise your model's power consumption an
   The approach we take is similar to that of the <a href="https://arxiv.org/abs/1710.05420">NeuralPower paper</a>. We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
 
   > **Tip:** More information on NeuralPower is documented [here](./docs/NeuralPower.md) and TensorRT is documented [here](./desktop/torch_onnx_trt/docs/TensorRT.md).
-</details>
-
-<details>
-  <summary>🎯 What have we done?</summary>
-
+  
+  **Our Methodology**
+  
   - We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
 
   - We have trained power and runtime prediction models for 3 different layer types of CNN models. The experiments can be viewed in the DagsHub MLFlow UI.
@@ -56,10 +54,11 @@ EdgeProfiler helps you understand and minimise your model's power consumption an
   > DagsHub repository: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation> </br> </br>
   > MLFlow UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
 
-  Learn more about how to get started to train power and runtime prediction models in the [Have a go yourself](#-have-a-go-yourself) section.
+  Learn more about how to get started to train power and runtime prediction models in the [Model Training](#-model-training) section.
 </details>
 
-### 🏎💨 Have A Go Yourself
+
+## 💪 Getting Started
 
 To get started, set up your python environment. We really like using `uv` for package and project management - so if you don't have it go ahead and follow their installation guide from [here](https://docs.astral.sh/uv/getting-started/installation/).
 
@@ -71,10 +70,9 @@ source .venv/bin/activate
 uv sync
 ```
 
-<details open>
-  <summary>🧠 Power and Runtime Inference</summary>
+## 🧠 Power and Runtime Inference
 
-Run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device:
+Run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device using our custom model:
 
 ```commandline
 python inference.py \
@@ -84,33 +82,29 @@ python inference.py \
 
 The [`sample_data`](model_training/sample_data) directory contains a handful of TRT Engine files for you to try. These files contain the features used to generate predictions for different CNN models.
 
-[DagsHub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/preprocessed_data) contains `trt_engine_info.json` files for 21 popular CNN models which you can run inference over yourself by downloading and passing the path to the same inference script above with the `--trt-engine-path` flag.
+The FuzzyLabs [DagsHub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/preprocessed_data) contains `trt_engine_info.json` files for 21 popular CNN models. You can run inference over these files yourself by downloading and passing the path to the same inference script above with the `--trt-engine-path` flag.
 
----
-
-**🫵 Inference on Your Custom CNN**
+### 🫵 Inference on Your Custom CNN
 
 Coming soon...
 
----
-
 > **Tip:** For more details on running inference see the  [Inference](./model_training/README.md#-inference) section of the [`model_training`](model_training/README.md) README.
 
-</details>
+## 🏋️ Model Training
 
-<details>
-<summary>🎣 Data Collection</summary>
+If you don't have access to a Jetson device, we recommend pulling our training data from DagsHub by running the following command in the `model_training` directory:
 
-If you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
+```commandline
+python data_version.py \
+    --owner fuzzylabs \
+    --name edge-vision-power-estimation \
+    --local-dir-path training_data \
+    --remote-dir-path training_data \
+    --branch main \
+    --download
+```
 
-If you don't have access to a Jetson device yourself, we recommend pulling our training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of the `model_training` README.
-
-</details>
-
-<details>
-  <summary>🏋️ Model Training</summary>
-  
-  Once you have access to training data you can train your own model with our training script:
+Once you have access to training data you can train your own model with our training script:
 
 ```commandline
 python run.py
@@ -118,14 +112,9 @@ python run.py
 
 > **Tip:** For more details on training your own model see the  [Run Training Script](./model_training/README.md#-run-training-script) section of the [`model_training`](model_training/README.md) README.
 
-</details>
+## 🎣 Data Collection
 
-## 🛣️ Roadmap
-
-- [ ] Model Improvements
-- [ ] Improvements to data versioning and storage process
-- [ ] MLOps Pipeline Tool
-- [ ] Allow for ingestion of custom model
+If you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
 
 ## 🔰 Contributing
 
