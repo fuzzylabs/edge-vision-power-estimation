@@ -16,8 +16,8 @@ We use the raw dataset from Jetson to create a preprocessed and training dataset
 The raw dataset that we have collected from the Jetson lives in DagsHub - running the [`create_dataset.sh`](create_dataset.sh) script orchestrates the following data pipeline:
 
 1. Pulls the raw dataset to local file storage ([`data_version.py`](data_version.py)).
-2. Creating the pre-processed dataset by mapping power readings to individual layers in the CNN ([`map_power_to_layers.py`](map_power_to_layers.py)).
-3. Reformatting into a sklearn compatible training dataset ([`convert_measurements`](convert_measurements.py))
+2. Build the pre-processed dataset by mapping power readings to individual layers in the CNN ([`map_power_to_layers.py`](map_power_to_layers.py)).
+3. Reformats the pre-processed dataset into a sklearn compatible training dataset ([`convert_measurements`](convert_measurements.py))
 
 ![data_pipeline](assets/data_pipeline.png)
 
