@@ -11,9 +11,26 @@ Train power and runtime prediction models.
 
 ## 💡 Approach
 
-We use the raw dataset from Jetson to create a preprocessed and training dataset. The train dataset contains power and runtime measurement for 3 layers, convolutional, pooling and dense for the CNN models.
+We use the raw dataset from Jetson to create a preprocessed and training dataset. The train dataset contains power and runtime measurements for 3 layers, convolutional, pooling and dense for the CNN models.
+
+The raw dataset that we have collected from the Jetson lives in DagsHub - running the [`create_dataset.sh`](create_dataset.sh) script orchestrates the following data pipeline:
+
+1. Pulls the raw dataset to local file storage ([`data_version.py`](data_version.py)).
+2. Creating the pre-processed dataset by mapping power readings to individual layers in the CNN ([`map_power_to_layers.py`](map_power_to_layers.py)).
+3. Reformatting into a sklearn compatible training dataset ([`convert_measurements`](convert_measurements.py))
+
+![data_pipeline](assets/data_pipeline.png)
 
 We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LassoCV.html) model from sklearn to train our prediction models. The sklearn training pipeline contains an input feature preprocessing step for creating the polynomial degree of input features, applying sklearn preprocessing scalers and special terms to input features.
+
+The [`run.py`](run.py) script orchestrates the following training pipeline:
+
+1. Pulls the training dataset from DagsHub.
+2. Initiates the training of 3 power consumption and 3 runtime prediction models.
+3. Logs metrics and artifacts to MLFlow's experiment tracker.
+4. Saves the final model to the MLFlow model server.
+
+![training_process](assets/training_process.png)
 
 ## 🛸 Getting Started
 
