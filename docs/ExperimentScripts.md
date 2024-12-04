@@ -14,6 +14,8 @@ The [`run_experiment.sh`](../jetson/power_logging/run_experiment.sh) is responsi
 3. `Lines 20-48`: Benchmark the CNN models using [measure_inference_power.py](measure_inference_power.py) script.
 4. `Lines 50-62`: Push the benchmark data to [fuzzylabs/edge-vision-power-estimation](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) DagsHub repo for data version control.
 
+You can replace `DAGSHUB_OWNER` and `DAGSHUB_REPO_NAME` with the name of your DagsHub repo and username if you want to push the raw data to a different repository.
+
 ## Data Preprocessing script
 
 [`create_dataset.sh`](../model_training/create_dataset.sh) script provides a helpful utility to get preprocessed and training dataset from raw dataset. The script performs the following operations

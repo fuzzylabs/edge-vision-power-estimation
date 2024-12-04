@@ -116,6 +116,8 @@ python run.py
 
 🎉 That's it. We have successfully trained 6 models for 3 layer types (convolutional, pooling and dense).
 
+To learn more about various configuration offered as part of training script, refer [configuration](../docs/TrainingConfiguration.md) document.
+
 ## 📂 Repository Structure
 
 ```bash
