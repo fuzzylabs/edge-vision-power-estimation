@@ -7,6 +7,7 @@ Measure power consumption and runtime for CNN models on the jetson device.
 1. [Approach](#-approach)
 2. [Getting Started](#-getting-started)
 3. [Repository Structure](#-repository-structure)
+4. [Documentation](#-documentation)
 
 ## 💡 Approach
 
@@ -17,7 +18,9 @@ First, we measure the idle power value of the Jetson. This power value measures 
 > [!CAUTION]
 > The recommendation is to disable any GUI operations and use command line interface on Jetson  to reduce the number of background processes for getting the idle power.
 
-Next, we run two separate process on Jetson wherein the first process runs the benchmarking for a CNN model. This process captures the per-layer runtime for the model. In the second process, we launch the power logging script. Two separate processes are used to ensure that the benchmarking and power logging tasks are performed concurrently without interference. This approach prevents the benchmarking process from being slowed down by the additional overhead of logging power measurements.
+Next, we run two separate process on Jetson wherein the first process runs the benchmarking for a CNN model. This process captures the per-layer runtime for the model. It converts a PyTorch model to a TensorRT model using [TorchTensorRT](https://github.com/pytorch/TensorRT/) library.
+
+In the second process, we launch the power logging script. Two separate processes are used to ensure that the benchmarking and power logging tasks are performed concurrently without interference. This approach prevents the benchmarking process from being slowed down by the additional overhead of logging power measurements.
 
 Finally, we upload the collection of power and runtime data for each model to DagsHub. This is the raw data that we will further preprocess to create training data. This dataset is versioned using DVC.
 
@@ -110,3 +113,14 @@ You can find the name of the docker container using the `sudo docker ps` command
 - **[measure_power.py](./measure_power.py)** : This scripts provides a function to read power values from  INA3221 power monitor sensor on Jetson device.
 
 - **[run_experiment.sh](./run_experiment.sh)** : Experiment script that runs the power and runtime collection process end-to-end.
+
+## 📚 Documentation
+
+Here are few links to the relevant documentation for further readings.
+
+- [Raw dataset format](../../docs/DatasetFormats.md#raw-dataset-format)
+- [Experiment script](../../docs/ExperimentScripts.md#data-collection-script-on-jetson)
+- [Power measurement on Jetson](../../docs/JetsonPowerMeasurement.md)
+- [Power logging on Jetson](../../docs/DeepDive.md#power-measurement-and-logging)
+- [Runtime profiling on Jetson](../../docs/DeepDive.md#tensorrt-runtime-profiling)
+- [TorchTensorRT](../../docs/TorchTensorRT.md)

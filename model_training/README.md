@@ -7,6 +7,7 @@ Train power and runtime prediction models.
 1. [Approach](#-approach)
 2. [Getting Started](#-getting-started)
 3. [Repository Structure](#-repository-structure)
+4. [Documentation](#-documentation)
 
 ## 💡 Approach
 
@@ -142,3 +143,14 @@ To learn more about various configuration offered as part of training script, re
 - **[run.py](./run.py)**: Entrypoint for training prediction models.
 
 - **[notebooks](./notebooks/)**: Notebooks folder contains jupyter notebooks for exploring data and performing hyperparameter tuning using `optuna` library.
+
+## 📚 Documentation
+
+Here are few links to the relevant documentation for further readings.
+
+- [Training Configuration](../docs/TrainingConfiguration.md)
+- [Preprocessed dataset format](../docs/DatasetFormats.md#preprocessing-dataset-format)
+- [Training dataset format](../docs/DatasetFormats.md#training-dataset-format)
+- [Data preprocessing script](../docs/ExperimentScripts.md#data-preprocessing-script)
+- [HyperParameter Tuning](../docs/HyperparameterTuning.md)
+- [Mapping power to runtime per-layer](../docs/DeepDive.md#mapping-power-to-layer-runtimes)
