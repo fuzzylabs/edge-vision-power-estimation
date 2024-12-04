@@ -1,12 +1,12 @@
 # Behind the scenes
 
-In this document, we shed some light on behind the scenes 
+In this document, we shed some light on our process behind the scenes 
 
 ## Jetson
 
 ### Power measurement and logging
 
-Jetson Orion Development Kit comes with three-channel INA3221 power monitor. The values of these modules can be read using `sysfs` nodes. The sys-file provides power, voltage and current measurements for the sensor under `i2c` folder.
+The Jetson Orion Development Kit comes with a three-channel INA3221 power monitor. The values of these modules can be read using `sysfs` nodes. The sys-file provides power, voltage and current measurements for the sensor under the `i2c` folder.
 
 > [!NOTE]  
 > We read the power, voltage and current measurement for the sensor from the sys-file at this path `/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input` for Jetson Orion Development Kit.
@@ -41,7 +41,7 @@ We attach this profiler using `enable_profiling` method in [benchmark.py](./mode
 
 ### Mapping power to layer runtimes
 
-This is the most tricky part of the pipeline. We are given raw dataset with time-stamped power log as a separate file and time-stamped layer runtime as a separate file. We have to find the power value that is closest to the time when that particular layer completed.
+This is the most tricky part of the pipeline. We receive a raw dataset with time-stamped power logs and time-stamped layer runtimes as separate files. To obtain our training data, we have to find the power value that is closest to the time when that particular layer completed.
 
 > [!NOTE]  
 > This logic is implemented inside the `compute_layer_metrics_by_cycle` function of the [data_preprocess.py](./data_preparation/data_preprocess.py) python script.

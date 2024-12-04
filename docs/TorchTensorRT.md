@@ -1,6 +1,6 @@
 # Torch-TensorRT
 
-Torch-TensorRT library provides easy interface to create and run inference using TensorRT engine for PyTorch models.
+The Torch-TensorRT library provides an easy interface to create and run inference using the TensorRT engine for PyTorch models.
 
 ## Background
 
@@ -40,7 +40,7 @@ TorchScript is an intermediate representation of PyTorch code that allows them t
 
 The TorchScript frontend was the original default frontend for Torch-TensorRT and targets models in the TorchScript format. The graph provided will be partitioned into supported and unsupported blocks. Supported blocks will be lowered to TensorRT and unsupported blocks will remain to run with LibTorch.
 
-> Note: TorchScript frontend (`torch_tensorrt.ts.compile`) approach is legacy feature of Torch-TensorRT library.
+> Note: TorchScript frontend (`torch_tensorrt.ts.compile`) approach is a legacy feature of the Torch-TensorRT library.
 
 ### FX Graph Modules
 

@@ -24,7 +24,7 @@ In the second process, we launch the power logging script. Two separate processe
 
 Finally, we upload the collection of power and runtime data for each model to DagsHub. This is the raw data that we will further preprocess to create training data. This dataset is versioned using DVC.
 
-For extra insights into how power is collected on Jetson, refer to [this](../../docs/JetsonPowerMeasurement.md) and [this](../../docs/DeepDive.md#power-measurement-and-logging) document.
+For more insights into how power is collected on Jetson, refer to the [Power Consumption and Benchmarking on Jetson](../../docs/JetsonPowerMeasurement.md) and the [Behind the Scenes](../../docs/DeepDive.md#power-measurement-and-logging) documentation.
 
 For insights into how runtime is measured for each layer on Jetson, refer to [this](../../docs/DeepDive.md#tensorrt-runtime-profiling) document.
 
@@ -32,7 +32,7 @@ For insights into how runtime is measured for each layer on Jetson, refer to [th
 
 ### ⚙️ Requirements
 
-[Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on Jetson board for collecting power and runtime measurements for a CNN model.
+[Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on a Jetson device for collecting power and runtime measurements for a CNN model.
 
 Following is the configuration of software and tools on the Jetson device used for testing:
 
