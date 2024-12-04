@@ -43,7 +43,7 @@ EdgeProfiler helps you to understand and minimise your model's power consumption
 
   > **Tip:** More information on NeuralPower is documented [here](./docs/NeuralPower.md) and TensorRT is documented [here](./desktop/torch_onnx_trt/docs/TensorRT.md).
   
-  **Our Methodology**
+  **What we have done until now:**
   
   - We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
 
@@ -62,7 +62,13 @@ EdgeProfiler helps you to understand and minimise your model's power consumption
 
 To get started, set up your python environment. We really like using `uv` for package and project management - so if you don't have it go ahead and follow their installation guide from [here](https://docs.astral.sh/uv/getting-started/installation/).
 
-Once you have it installed run the following commands from inside the [`model_training`](/model_training) directory.
+Once you have it installed move into the `model_training` directory:
+
+```commandline
+cd model_training
+```
+
+Then run the following to activate the environment and sync dependencies with the environment:
 
 ```bash
 uv venv --python 3.12
@@ -72,7 +78,13 @@ uv sync
 
 ## 🧠 Power and Runtime Inference
 
-Run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device using our custom model:
+Performing inference can be done with a single command - if you are not already in the `model_training` directory then move into it:
+
+```commandline
+cd model_training
+```
+
+Then run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device using our custom model:
 
 ```commandline
 python inference.py \
@@ -92,7 +104,15 @@ Coming soon...
 
 ## 🏋️ Model Training
 
-If you don't have access to a Jetson device, we recommend pulling our training data from DagsHub by running the following command in the `model_training` directory:
+If you don't have access to a Jetson device, we recommend pulling our training data from DagsHub. 
+
+If you are not already in the `model_training` directory then move into it:
+
+```commandline
+cd model_training
+```
+
+Then run the following command to retrieve the training data:
 
 ```commandline
 python data_version.py \
