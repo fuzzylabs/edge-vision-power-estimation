@@ -63,7 +63,7 @@ trained_models
     └── runtime
 ```
 
-For each of the layer type (convolutional, dense and pooling), we download a power and runtime model from MLFlow Registry to local filesystem.
+For each of the layer types (convolutional, dense and pooling), a power and runtime model is downloaded from the MLFlow Registry to your local filesystem.
 
 ---
 
@@ -73,15 +73,15 @@ For each of the layer type (convolutional, dense and pooling), we download a pow
 
 If you have uploaded the raw dataset from the benchmarking experiment on the Jetson device, the next step is to get a training dataset.
 
-To get training data from the raw dataset, run the [`create_dataset.sh`](./create_dataset.sh) script.
+To process the raw dataset into training data ingestible by a model, run the [`create_dataset.sh`](./create_dataset.sh) script.
 
 ```bash
 ./create_dataset.sh
 ```
 
-To know more about the contents in this script, refer to [Data Preprocessing](../docs/ExperimentScripts.md#data-preprocessing-script) script section.
+To know more about the contents in this script, refer to the [Data Preprocessing](../docs/ExperimentScripts.md#data-preprocessing-script) script section.
 
-You can also pass `--push-to-dagshub` flag to the above script, this will push both the `preprocessed_data` and `training_data` to DagsHub repository.
+You can also pass the `--push-to-dagshub` flag to the above command, this will enable pushing the `preprocessed_data` and `training_data` to the DagsHub repository.
 
 > [!NOTE]
 > If you already have your own `training_data`, then you can skip step 1 and head straight to step 2.
@@ -102,7 +102,7 @@ python data_version.py \
 --download
 ```
 
-This will download data from our [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to the `training_data` folder on local filesystem.
+This will download data from the FuzzyLabs [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to the `training_data` folder on your local filesystem.
 
 > [!NOTE]
 > This step is recommended if you want to get started with training the models using data already present on DagsHub repository. </br>

@@ -1,17 +1,17 @@
 # Configuration
 
-To run model training, following configuration are supported
+To run model training, the following configurations are supported:
 
 - [Training Configuration](#training-configuration)
 - [Convolutional Layer Configuration](#convolutional-layer-configuration)
 - [Dense Layer Configuration](#dense-layer-configuration)
 - [Pooling Layer Configuration](#pooling-layer-configuration)
 
-All configuration are stored under [`config`](../model_training/config/) folder for the model training. The individual layer type configuration is stored under `<layer_type>_feature.py`.
+All configurations are stored under the [`config`](../model_training/config/) folder for the model training. The individual layer type configuration is stored under `<layer_type>_feature.py`.
 
 ## Training Configuration
 
-The configuration file in [`config.yaml`](../model_training/config/config.yaml) consists of following content
+The configuration file in [`config.yaml`](../model_training/config/config.yaml) consists of the following content:
 
 ```yaml
 data:
@@ -29,11 +29,11 @@ mlflow:
 
 ```
 
-- `data`: The data configuration provides a way to configure location of training data on local filesystem and CNN models to be used as test dataset.
+- `data`: The data configuration provides a way to configure the location of training data on local filesystem and CNN models to be used as test dataset.
 
-- `model`: The model configuration contains number of cross validation to perform
+- `model`: The model configuration contains the number of cross validations to perform
 
-- `mlflow`: The mlflow configuration provides parameter to either enable or disable mlflow tracking. Additionally, if tracking is enabled it provides configuration for storing and tracking the experiments. By default, we use DagsHub MLflow server.
+- `mlflow`: The mlflow configuration provides parameters to either enable or disable MLFlow tracking. Additionally, if tracking is enabled it provides configuration for storing and tracking the experiments. By default, we use DagsHub MLflow server.
 
 The configuration is present for our DagsHub repo. You can also modify it to run and store experiments on your DagsHub repo.
 

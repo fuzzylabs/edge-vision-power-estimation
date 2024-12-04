@@ -14,7 +14,7 @@ For given input model (usually ONNX model)
 
 ### Build phase
 
-This phase is responsible for building and producing an optimizing TensorRT engine.
+This phase is responsible for building and producing an optimized TensorRT engine.
 
 Building a TensorRT engine consists of following steps
 
@@ -44,11 +44,11 @@ Building a TensorRT engine consists of following steps
 
     The builder eliminates dead computations, folds constants, and reorders and combines operations to run more efficiently on the GPU. It can optionally reduce the precision of floating-point computations, either by simply running them in 16-bit floating point, or by quantizing floating point values so that calculations can be performed using 8-bit integers. It also times multiple implementations of each layer with varying data formats, then computes an optimal schedule to execute the model, minimizing the combined cost of kernel executions and format transforms.
 
-    In our code [build_engine.py](../trt/create_engine.py), this is done by `create_engine` function. It creates a TensorRT network definition by parsing input ONNX model. The builder creates the engine in a serialized form called a plan, which can be deserialized immediately or saved to disk for later use.
+    In our code [build_engine.py](../trt/create_engine.py), this is done by the `create_engine` function. It creates a TensorRT network definition by parsing input to the ONNX model. The builder creates the engine in a serialized form called a plan, which can be deserialized immediately or saved to disk for later use.
 
 ### Inference phase
 
-In inference phase, we use the optimized engine to run the inference. The rough steps involved in creating a inference runtime for this process are the following:
+In inference phase, we use the optimized engine to run the inference. The rough steps involved in creating an inference runtime for this process are the following:
 
 * Deserialize a plan to create an engine. (`engine` instance variable)
 * Create an execution context from the engine. (`context` instance variable)
