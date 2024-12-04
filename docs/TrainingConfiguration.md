@@ -2,7 +2,12 @@
 
 To run model training, following configuration are supported
 
-- [Training Configuration]
+- [Training Configuration](#training-configuration)
+- [Convolutional Layer Configuration](#convolutional-layer-configuration)
+- [Dense Layer Configuration](#dense-layer-configuration)
+- [Pooling Layer Configuration](#pooling-layer-configuration)
+
+All configuration are stored under [`config`](../model_training/config/) folder for the model training. The individual layer type configuration is stored under `<layer_type>_feature.py`.
 
 ## Training Configuration
 
@@ -31,3 +36,27 @@ mlflow:
 - `mlflow`: The mlflow configuration provides parameter to either enable or disable mlflow tracking. Additionally, if tracking is enabled it provides configuration for storing and tracking the experiments. By default, we use DagsHub MLflow server.
 
 The configuration is present for our DagsHub repo. You can also modify it to run and store experiments on your DagsHub repo.
+
+## Convolutional Layer Configuration
+
+[`convolutional_features.py`](../model_training/config/convolutional_features.py) consists of following
+
+- The features to be used as input
+- Special features derived using input features
+- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model.
+
+## Dense Layer Configuration
+
+[`dense_features.py`](../model_training/config/dense_features.py) consists of following
+
+- The features to be used as input
+- Special features derived using input features
+- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model.
+
+## Pooling Layer Configuration
+
+[`pooling_features.py`](../model_training/config/pooling_features.py) consists of following
+
+- The features to be used as input
+- Special features derived using input features
+- Model Pipeline configuration such as whether to use log scaling, which scaler to use from sklearn and parameter to be passed to LassoCV model.
