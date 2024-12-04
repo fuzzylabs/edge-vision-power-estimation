@@ -1,3 +1,6 @@
+<h1 align="center">
+EdgeProfiler
+</h1>
 
 <p align="center">
 <img src="./assets/intro.jpg" alt="readme-ai-banner-logo" width="80%">
@@ -11,125 +14,127 @@
 
 ## 🔗 Quick Links
 
-1. [Introduction](#introduction)
-2. [Progress](#-progress)
-3. [Getting Started](#-getting-started)
-4. [Repository Structure](#-repository-structure)
-5. [Contributing](#-contributing)
-6. [Acknowledgements](#-acknowledgements)
-7. [License](#-license)
+* [Documentation](docs)
+* Source Code
+  * [Inference](model_training/inference.py)
+  * [Training](model_training/run.py)
+  * [Data Collection](jetson/power_logging/)
+* [Data Hub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation)
+* [Experiment Tracking](https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/)
+* [Model Hub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/#/models)
 
 ## 🔮 Introduction
 
-In this project, we are interested in predicting the characteristics of power consumption and runtime for CNN models on Jetson edge device.
+**Measure smarter, deploy greener:** A tool for inferring and optimising the power consumption of Convolutional Neural Networks (CNN's) on edge devices.
 
-This is particularly helpful in the era of large models to help users design their networks efficiently.
-
----
-
-### 💡 Approach
-
-The approach we take is similar to that of [NeuralPower paper](https://arxiv.org/abs/1710.05420). We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
-
-> [!TIP]  
-> More information on NeuralPower is documented [here](./docs/NeuralPower.md) and TensorRT is documented [here](./desktop/torch_onnx_trt/docs/TensorRT.md).
-
-## 🎯 Progress
-
-- We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
-
-- We have trained power and runtime prediction models for 3 different layer types of CNN models. The experiments can be viewed in the DagsHub MLFlow UI.
-
-> [!IMPORTANT]  
-> DagsHub repository: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation> </br> </br>
-> MLFlow UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
-
-Learn more about how to get started to train power and runtime prediction models in [Run Locally](#-run-locally) section.
+EdgeProfiler helps you to understand and minimise your model's power consumption and runtime, allowing you to gauge your deployment's environmental impact during the training process to help you to make smarter training decisions. 
 
 ---
 
-## 🛸 Getting Started
+**What's inside:**
+- **Inference:** Determine power consumption and runtime for different layers in a CNN model on an Nvidia Jetson edge device using our custom models.
+- **Training:** Build your own power consumption and runtime models using DagsHub for data versioning, Scikit-Learn for model training and MLFlow for experiment tracking.
+- **Data Collection:** Record measurements of a model's power consumption and runtime storing all data versions in DagsHub.
 
-### ⚙️ System and Hardware Requirements
+<details>
+	<summary>❓ How it works?</summary>
 
-- [Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on Jetson board for collecting power and runtime measurements for a CNN model.
+  The approach we take is similar to that of the <a href="https://arxiv.org/abs/1710.05420">NeuralPower paper</a>. We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
 
-> [!NOTE]  
-> If you do not have access to a Jetson device, you can use our training data following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to get started.
+  > **Tip:** More information on NeuralPower is documented [here](./docs/NeuralPower.md) and TensorRT is documented [here](./desktop/torch_onnx_trt/docs/TensorRT.md).
+  
+  **What we have done until now:**
+  
+  - We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
 
-For the rest of the project following tools are used,
+  - We have trained power and runtime prediction models for 3 different layer types of CNN models. The experiments can be viewed in the DagsHub MLFlow UI.
 
-- [uv](https://docs.astral.sh/uv/) : It is used as default for running this project locally.
+  > 📌 **Important**
+  > 
+  > DagsHub repository: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation> </br> </br>
+  > MLFlow UI: <https://dagshub.com/fuzzylabs/edge-vision-power-estimation.mlflow/>
 
-- (Optional) [Docker](https://docs.docker.com/get-started/) : `Docker` is as an alternative to `uv`. It is used for running the experiments under [desktop](./desktop/) folders.
+  Learn more about how to get started to train power and runtime prediction models in the [Model Training](#-model-training) section.
+</details>
 
----
 
-### 🏎💨 Run Locally
+## 💪 Getting Started
 
-**Run inference using trained model locally**
+To get started, set up your python environment. We really like using `uv` for package and project management - so if you don't have it go ahead and follow their installation guide from [here](https://docs.astral.sh/uv/getting-started/installation/).
 
-> [!TIP]
-> If you want to run an inference using trained models, our recommendation is to follow the steps outlined in the [inference](./model_training/README.md#-inference) section of the `model_training` README.
+Once you have it installed move into the `model_training` directory:
 
-**Train models using train dataset locally**
-
-> [!TIP]
-> If you don't have access to the Jetson device, our recommendation is to pull training data from DagsHub by following the step by step guide outlined in the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.
-
-**Collect raw data on Jetson and train models locally**
-
-> [!TIP]
-> If you have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of `jetson/power_logging` readme followed by the [getting started](./model_training/README.md#-getting-started) section of `model_training` readme to train a prediction model.
-
-## 📍 Workflow
-
-This project is divided into two stages: [Experimental](#-experimental-stage) and [Implementation](#-implementation-stage)
-
-### 🧪 Experimental Stage
-
-In the experimental stage we experimented with different approaches for benchmarking the conversion of TensorRT models.
-
-> [!TIP]  
-> All code and benchmarking scripts for the 3 experimental approaches can be found in the desktop folder: [README](./desktop/README.md)
-
-### 🚀 Implementation Stage
-
-In the implementation stage of the project we created an MLOps pipeline for training the power consumption and runtime prediction models. The pipeline consists of the following two step process:
-
-📊 Jetson Device Benchmarking
-
-1. Collect the power consumption and performance data on the Jetson device
-2. Follow the detailed process outlined in [jetson/power_logging](./jetson/power_logging/README.md)
-
-🤖 Machine Learning Model Development
-
-1. Preprocess collected data from the Jetson device
-2. Train machine learning models for power and runtime prediction
-3. Refer to the comprehensive guide in [model_training](./model_training/README.md)
-
----
-
-## 📂 Repository Structure
-
-```bash
-.
-├── assets
-├── CONTRIBUTING.md
-├── desktop                  # Runtime benchmarking script for desktop
-├── docs                      
-├── jetson
-│   └── power_logging        # Power and runtime measurement benchmarking script for jetson
-├── LICENSE
-├── model_training           # Power and runtime prediction modelling package
-└── README.md
+```commandline
+cd model_training
 ```
 
-- **[desktop](./desktop/README.md)** : This folder contains initial exploration of various approaches to convert a PyTorch model to a TensorRT model on a desktop/laptop.
+Then run the following to activate the environment and sync dependencies with the environment:
 
-- **[jetson/power_logging](./jetson/power_logging/README.md)** : The Jetson folder contains scripts to collect power and runtime measurements. These measurements are then stored in a `raw_data` folder for each Convolutional Neural Network (CNN) model on a Jetson device.
+```bash
+uv venv --python 3.12
+source .venv/bin/activate
+uv sync
+```
 
-- **[model_training](./model_training/README.md)**: The model training folder uses the `raw_data` collected on the Jetson device to train power and runtime prediction models using [scikit-learn](https://scikit-learn.org/stable/).
+## 🧠 Power and Runtime Inference
+
+Performing inference can be done with a single command - if you are not already in the `model_training` directory then move into it:
+
+```commandline
+cd model_training
+```
+
+Then run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device using our custom model:
+
+```commandline
+python inference.py \
+    --trt-engine-path sample_data/resnet18_trt_engine_info.json \
+    --result-csv-path results/resnet18_predictions.csv
+```
+
+The [`sample_data`](model_training/sample_data) directory contains a handful of TRT Engine files for you to try. These files contain the features used to generate predictions for different CNN models.
+
+The FuzzyLabs [DagsHub](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/preprocessed_data) contains `trt_engine_info.json` files for 21 popular CNN models. You can run inference over these files yourself by downloading and passing the path to the same inference script above with the `--trt-engine-path` flag.
+
+### 🫵 Inference on Your Custom CNN
+
+Coming soon...
+
+> **Tip:** For more details on running inference see the  [Inference](./model_training/README.md#-inference) section of the [`model_training`](model_training/README.md) README.
+
+## 🏋️ Model Training
+
+If you don't have access to a Jetson device, we recommend pulling our training data from DagsHub. 
+
+If you are not already in the `model_training` directory then move into it:
+
+```commandline
+cd model_training
+```
+
+Then run the following command to retrieve the training data:
+
+```commandline
+python data_version.py \
+    --owner fuzzylabs \
+    --name edge-vision-power-estimation \
+    --local-dir-path training_data \
+    --remote-dir-path training_data \
+    --branch main \
+    --download
+```
+
+Once you have access to training data you can train your own model with our training script:
+
+```commandline
+python run.py
+```
+
+> **Tip:** For more details on training your own model see the  [Run Training Script](./model_training/README.md#-run-training-script) section of the [`model_training`](model_training/README.md) README.
+
+## 🎣 Data Collection
+
+If you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
 
 ## 🔰 Contributing
 
@@ -143,7 +148,6 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 The following resources have served as an inspiration for this project:
 - [NeuralPower paper](https://arxiv.org/pdf/1710.05420) authors
 - [Profiling Energy Consumption of Deep Neural Networks on NVIDIA Jetson Nano](https://publik.tuwien.ac.at/files/publik_293778.pdf) authors
-- [readme-ai](https://github.com/eli64s/readme-ai) for Readme inspiration
 
 ## 📄 License
 
