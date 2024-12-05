@@ -85,6 +85,9 @@ source .venv/bin/activate
 uv sync
 ```
 
+> [!NOTE] 
+> The commands to perform inference and training require communicating with the FuzzyLabs DagsHub repository to pull data and models. To be able to do this you will be prompted to create an account or log in if your computer is not authenticated.
+
 ## 🧠 Power and Runtime Inference
 
 Performing inference can be done with a single command - if you are not already in the `model_training` directory then move into it:
