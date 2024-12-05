@@ -93,7 +93,7 @@ Performing inference can be done with a single command - if you are not already 
 cd model_training
 ```
 
-Then run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Nano device using our custom model:
+Then run the following inference script to predict the power consumption and runtime for  a `resnet18` model on a Jetson Orin device using our custom model:
 
 ```commandline
 python inference.py \
