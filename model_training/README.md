@@ -121,7 +121,7 @@ The raw dataset that we have collected from the Jetson lives in DagsHub - runnin
 
 1. Pulls the raw dataset to local file storage ([`data_version.py`](data_version.py)).
 2. Builds the pre-processed dataset by mapping power readings to individual layers in the CNN ([`map_power_to_layers.py`](map_power_to_layers.py)).
-3. Reformats the pre-processed dataset into a sklearn compatible training dataset ([`convert_measurements`](convert_measurements.py))
+3. Reformats the pre-processed dataset into a sklearn compatible training dataset ([`convert_measurements.py`](convert_measurements.py))
 
 ![data_pipeline](assets/data_pipeline.png)
 
