@@ -197,8 +197,6 @@ class DataPreprocessor:
             execution_duration,
             layer_name,
         ) in tqdm(latency_data, desc="Mapping power to layer"):
-            if cycle == 0:
-                print(layer_name, start_timestamp, end_timestamp, execution_duration)
             layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
             layer_power_measurements = []
 
