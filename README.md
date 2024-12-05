@@ -37,7 +37,7 @@ EdgeProfiler helps you to understand and minimise your model's power consumption
 - **Data Collection:** Record measurements of a model's power consumption and runtime storing all data versions in DagsHub.
 
 <details>
-	<summary>❓ How it works?</summary>
+	<summary>❓ How it works</summary>
 
   The approach we take is similar to that of the <a href="https://arxiv.org/abs/1710.05420">NeuralPower paper</a>. We use the same methodology focusing on data collection, model training, and power prediction for TensorRT models on edge devices.
 
@@ -45,9 +45,18 @@ EdgeProfiler helps you to understand and minimise your model's power consumption
   
   **What we have done until now:**
   
-  - We have collected power and runtime measurements on a Jetson Orion device for 21 models. The dataset can be found on the DagsHub repository.
+  - We have collected power and runtime measurements on a Jetson Orin device for 21 models. The dataset can be found on the DagsHub repository.
 
   - We have trained power and runtime prediction models for 3 different layer types of CNN models. The experiments can be viewed in the DagsHub MLFlow UI.
+  
+  **High-level workflow:**
+
+  1. Collect power and runtime measurements from a Jetson Orin using the [`measure_idling_power.py`](jetson/power_logging/measure_idling_power.py) and [`measure_inference_power.py`](jetson/power_logging/measure_inference_power.py) scripts and then upload to DagsHub with the [`data_version.py`](model_training/data_version.py) script.
+  2. Pull the raw dataset from DagsHub onto your development machine using the [`data_version.py`](model_training/data_version.py) script.
+  3. Run the data pipeline to create the training dataset using the [`create_dataset.sh`](model_training/create_dataset.sh) script.
+  4. Run the [`run.py`](model_training/run.py) model training script storing logs and models with MLFlow. 
+
+  ![overview](docs/assets/high_level_overview.png)
 
   > 📌 **Important**
   > 
@@ -104,7 +113,7 @@ Coming soon...
 
 ## 🏋️ Model Training
 
-If you don't have access to a Jetson device, we recommend pulling our training data from DagsHub. 
+You can reproduce our power consumption and runtime models with a few simple steps. First you need to pull our training data from DagsHub and then run the training script.
 
 If you are not already in the `model_training` directory then move into it:
 
@@ -112,7 +121,7 @@ If you are not already in the `model_training` directory then move into it:
 cd model_training
 ```
 
-Then run the following command to retrieve the training data:
+Then run the following command to retrieve the training dataset from DagsHub:
 
 ```commandline
 python data_version.py \
@@ -124,7 +133,7 @@ python data_version.py \
     --download
 ```
 
-Once you have access to training data you can train your own model with our training script:
+Once you have access to the training dataset you can train your own model with our training script:
 
 ```commandline
 python run.py
@@ -134,7 +143,15 @@ python run.py
 
 ## 🎣 Data Collection
 
-If you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
+In the [Model Training](#-model-training) section above we showed you how you can train your own model with our training dataset. 
+
+However, if you do have access to the Jetson device, feel free to follow the step by step guide outlined in the [getting started](./jetson/power_logging/README.md#-getting-started) section of the [`jetson/power_logging`](jetson/power_logging/README.md) README to collect your own measurements.
+
+## 🛣️ Roadmap
+
+For more details on the background of the project please refer to the project's Notion site:
+
+- [Background](https://www.notion.so/fuzzylabs/Energy-efficiency-for-computer-vision-on-the-edge-138b6e71390f80c89e1bd69d02e13192?pvs=4)
 
 ## 🔰 Contributing
 
