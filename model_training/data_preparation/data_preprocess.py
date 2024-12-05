@@ -7,8 +7,9 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
-from data_preparation.io_utils import read_json_file, read_log_file
 from tqdm import tqdm
+
+from data_preparation.io_utils import read_json_file, read_log_file
 
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
@@ -50,7 +51,7 @@ class DataPreprocessor:
     """Data preprocessing class.
 
     For each model, there are 3 files
-    1. Power measurement (*_cycles_power*.join)
+    1. Power measurement (*_power_log.json)
     2. Runtime measurement (trt_layer_latency.json)
     3. TensorRT engine information and other.
 
@@ -97,50 +98,49 @@ class DataPreprocessor:
 
         return processed_log
 
-    def preprocess_latency_data(
-        self,
-        trt_layer_latency: dict[str, list[list[float, str]]],
+    def compute_latency_start_end_times(
+        self, trt_layer_latency: dict[str, list[list[float, str]]]
     ) -> list[tuple]:
-        """Preprocess latency data by adjusting and sorting layers based on their start times.
+        """Calculate start and end time for each layer.
 
-        Start Time Adjustment:
-        For each layer (except the first in each cycle), adjust the start time
-        to the later of its own recorded start time or the end time of the preceding layer.
+        We use the start and end time for each layer to
+        get the power values between the start and end time of layer inference.
 
         Example:
-            Suppose layer 1 finishes at 00:10 and takes 5 seconds to execute, giving it an end time of 00:15.
-            If layer 2 has a recorded start time of 00:13 (which is before layer 1 ends),
-            adjust layer 2's start time to 00:15 to maintain the sequential flow,
-            as only one layer can run at a time.
+            Suppose we have a following trt latency data
+            {
+            layer_1 : [[5, 00:10]],
+            layer_2 : [[2, 00:14]]
+            }
 
-        Note:
-            This discrepancy in start times is mostly likely an artifact from the layer profiler.
+            This function will calculate start time using end time and latency.
+            layer_1
+            start_time: 00:05
+            end_time: 00:10
+            execution_duration: 5
+
+            layer_2
+            start_time: 00:12
+            end_time: 00:14
+            execution_duration: 2
 
         Args:
             trt_layer_latency: Dictionary containing latency data for each layer.
 
         Returns:
-            List of tuples (cycle, start_time, end_time, duration, layer_name), sorted by start time.
+            List of tuples (cycle, start_time, end_time, duration, layer_name).
         """
         latency_data = defaultdict(list)
 
         for layer_name, layer_times in tqdm(
             trt_layer_latency.items(), desc="Preprocessing latency data"
         ):
-            for cycle, (execution_duration, execution_start_time) in enumerate(
+            for cycle, (execution_duration, execution_end_time) in enumerate(
                 layer_times
             ):
-                start_timestamp = parse_timestamp(execution_start_time)
+                end_timestamp = parse_timestamp(execution_end_time)
                 duration = timedelta(milliseconds=execution_duration)
-
-                # If not first layer.
-                if latency_data[cycle]:
-                    previous_layer_end_time = latency_data[cycle][-1][2]
-                    # Adjust start time if needed
-                    start_timestamp = max(previous_layer_end_time, start_timestamp)
-
-                # Calculate end time based on adjusted start time
-                end_timestamp = start_timestamp + duration
+                start_timestamp = end_timestamp - duration
                 latency_data[cycle].append(
                     (
                         cycle,
@@ -151,12 +151,11 @@ class DataPreprocessor:
                     )
                 )
 
-        sorted_latency_data = [
+        latency_data = [
             entry for cycle_data in latency_data.values() for entry in cycle_data
         ]
-        sorted_latency_data.sort(key=lambda x: x[1])
 
-        return sorted_latency_data
+        return latency_data
 
     def compute_layer_metrics_by_cycle(
         self,
@@ -165,6 +164,12 @@ class DataPreprocessor:
         trt_engine_info_path: Path,
     ) -> list[dict[str, Any]]:
         """Computes and aggregates power and runtime metrics for each layer within a processing cycle.
+
+        For each iteration cycle and for each layer,
+        we get the corresponding power values in the start and
+        end time of layer inference for that layer.
+        The average power value is considered as the power
+        consumed for that iteration and that layer.
 
         Args:
             power_log_path: Path to model power log file
@@ -178,22 +183,29 @@ class DataPreprocessor:
 
         # Preprocess and sort latency data by start time
         trt_layer_latency = read_json_file(trt_layer_latency_path)
-        sorted_latency_data = self.preprocess_latency_data(trt_layer_latency)
+        latency_data = self.compute_latency_start_end_times(trt_layer_latency)
         trt_engine_info = read_json_file(trt_engine_info_path)
         layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
 
         metrics_by_cycle = []
         power_index = 0
 
-        for cycle, _, end_timestamp, execution_duration, layer_name in tqdm(
-            sorted_latency_data, desc="Mapping power to layer"
-        ):
+        for (
+            cycle,
+            start_timestamp,
+            end_timestamp,
+            execution_duration,
+            layer_name,
+        ) in tqdm(latency_data, desc="Mapping power to layer"):
+            if cycle == 0:
+                print(layer_name, start_timestamp, end_timestamp, execution_duration)
             layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
             layer_power_measurements = []
 
             # Collect power measurements within start and end timestamp
             while (
                 power_index < len(power_logs)
+                and power_logs[power_index][0] >= start_timestamp
                 and power_logs[power_index][0] <= end_timestamp
             ):
                 layer_power_measurements.append(power_logs[power_index][1])
