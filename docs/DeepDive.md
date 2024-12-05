@@ -41,12 +41,12 @@ We attach this profiler using `enable_profiling` method in [benchmark.py](./mode
 
 ### Mapping power to layer runtimes
 
-The [raw dataset](./DatasetFormats.md#raw-dataset-format) contains time-stamped power logs and time-stamped layer runtimes as separate files. To obtain our training data, we have to find the power consumed and runtime taken for a particular layer.
+The [raw dataset](./DatasetFormats.md#raw-dataset-format) contains time-stamped power logs and time-stamped layer runtimes as separate files. To obtain the training data, we have to find the power consumed and runtime taken for a particular layer.
 
 > [!NOTE]  
 > This logic is implemented inside the `compute_layer_metrics_by_cycle` and `compute_latency_start_end_times` functions of the [data_preprocess.py](../model_training/data_preparation/data_preprocess.py) python script.
 
-First we get the start time when the layer started it's execution using [`compute_latency_start_end_times`](../model_training/data_preparation/data_preprocess.py#L101) function. Here is the latency data corresponding to the first layer of Alexnet raw data in [`trt_layer_latency.json`](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/raw_data/alexnet/trt_profiling/trt_layer_latency.json) file.
+First we get the execution start time for the layer using the [`compute_latency_start_end_times`](../model_training/data_preparation/data_preprocess.py#L101) function. Here is am example of the latency data corresponding to the first layer of Alexnet raw data in [`trt_layer_latency.json`](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/raw_data/alexnet/trt_profiling/trt_layer_latency.json) file.
 
 ```json
 {
@@ -58,11 +58,11 @@ First we get the start time when the layer started it's execution using [`comput
 }
 ```
 
-The start time of first iteration cycle containing a list of `[latency_in_ms, layer_executed_timestamp]` values as `[0.03030399978160858, "20241121-05:22:50.156286"]` is calculated as `layer_executed_timestamp-latency_in_ms`. This operation gives the start time for the first iteration for the first layer as `2024-11-21 05:22:50.156256`.
+The start time of the first iteration cycle containing a list of `[latency_in_ms, layer_executed_timestamp]` values as `[0.03030399978160858, "20241121-05:22:50.156286"]` is calculated as `layer_executed_timestamp-latency_in_ms`. This operation gives the start time for the first iteration for the first layer as `2024-11-21 05:22:50.156256`.
 
 Once we have `(start_timestamp, end_timestamp, execution_duration)` for every layer for all the iteration cycles, we get the power consumed by the layer during the inference.
 
-To get the power values, we use the power logs file.  [`alexnet_power_log.log`](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/raw_data/alexnet/alexnet_power_log.log) file. This file contains a 3 values on each row : timestamp, voltage, current. These values are recorded while the benchmarking experiment is being run.
+To get the power values, we use the power logs file.  [`alexnet_power_log.log`](https://dagshub.com/fuzzylabs/edge-vision-power-estimation/src/main/raw_data/alexnet/alexnet_power_log.log) file. This file contains 3 values on each row : timestamp, voltage, and current. These values are recorded while the benchmarking experiment is being run.
 
 ```txt
 20241121-05:20:04.261448,5000.0,1096.0
