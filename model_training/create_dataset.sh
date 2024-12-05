@@ -13,6 +13,18 @@ RAW_DATA_DIR="raw_data"
 # Remote Directory to pull raw data
 REMOTE_RAW_DATA_DIR="raw_data"
 
+# Default values for flags
+PUSH_TO_DAGSHUB=false
+
+# Parse flags whether to push data to DagsHub
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    --push-to-dagshub) PUSH_TO_DAGSHUB=true ;;
+    *) echo "Unknown parameter passed: $1"; exit 1 ;;
+  esac
+  shift
+done
+
 echo "Pull benchmark data from DagsHub"
 python data_version.py \
   --owner "$DAGSHUB_OWNER" \
@@ -31,18 +43,19 @@ python map_power_to_layers.py \
     --raw-data-dir "$RAW_DATA_DIR" \
     --result-dir "$PREPROCESSED_DATA_DIR"
 
-COMMIT_MESSAGE="Add second version of preprocessed data"
 
-echo "Push preprocessed data to DagsHub"
-python data_version.py \
-  --owner "$DAGSHUB_OWNER" \
-  --name "$DAGSHUB_REPO_NAME" \
-  --local-dir-path "$PREPROCESSED_DATA_DIR" \
-  --commit "$COMMIT_MESSAGE" \
-  --upload
+if [[ "$PUSH_TO_DAGSHUB" == true ]]; then
+  COMMIT_MESSAGE="Add second version of preprocessed data"
+  echo "Push preprocessed data to DagsHub"
+  python data_version.py \
+    --owner "$DAGSHUB_OWNER" \
+    --name "$DAGSHUB_REPO_NAME" \
+    --local-dir-path "$PREPROCESSED_DATA_DIR" \
+    --commit "$COMMIT_MESSAGE" \
+    --upload
+fi
 
-
-# Local Directory to store preprocessed data
+# Local Directory to store training data
 TRAIN_DATA_DIR="training_data"
 
 echo "Prepare training data"
@@ -50,14 +63,16 @@ python convert_measurements.py \
     --preprocessed-data-dir "$PREPROCESSED_DATA_DIR" \
     --result-dir "$TRAIN_DATA_DIR"
 
-COMMIT_MESSAGE="Add second version of training data"
 
-echo "Push training data to DagsHub"
-python data_version.py \
-  --owner "$DAGSHUB_OWNER" \
-  --name "$DAGSHUB_REPO_NAME" \
-  --local-dir-path "$TRAIN_DATA_DIR" \
-  --commit "$COMMIT_MESSAGE" \
-  --upload
+if [[ "$PUSH_TO_DAGSHUB" == true ]]; then
+  COMMIT_MESSAGE="Add second version of training data"
+  echo "Push training data to DagsHub"
+  python data_version.py \
+    --owner "$DAGSHUB_OWNER" \
+    --name "$DAGSHUB_REPO_NAME" \
+    --local-dir-path "$TRAIN_DATA_DIR" \
+    --commit "$COMMIT_MESSAGE" \
+    --upload
+fi
 
 echo "Experiment completed!"

@@ -1,13 +1,21 @@
-# Measuring Power
+# Jetson
 
-To measure power consumption during an inference cycle, two processes are used similar to the profiling energy paper:
+Measure power consumption and runtime for CNN models on the jetson device.
 
-1. **Power Logging Process**: Captures power data.
-2. **Inference Process**: Runs inference to measure power used by each layer.
+## 🔗 Quick Links
 
-The goal is to produce power consumption by layer which will be used as the training data.
+1. [Getting Started](#-getting-started)
+2. [Approach](#-approach)
+3. [Repository Structure](#-repository-structure)
+4. [Documentation](#-documentation)
 
-The power measurement and inference process have been tested on the Jetson Orion Nano Development Kit with the following configuration:
+## 🛸 Getting Started
+
+### ⚙️ Requirements
+
+[Jetson Nano Orion Development Kit](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/index.html) - To run benchmarking experiments on a Jetson device for collecting power and runtime measurements for a CNN model.
+
+Following is the configuration of software and tools on the Jetson device used for testing:
 
 ```txt
 JetPack 6.1
@@ -16,45 +24,39 @@ Docker 27.3.1
 OS - Ubuntu 22.04-based root file system
 ```
 
-Check [Running the Power Measurement](#running-the-power-measurement) section for the Docker image used for running the experiment. The **EXACT** image must be used.
+[DagsHub account](https://dagshub.com/) and a repository for data versioning.
 
-## Approach
+---
 
-We will implement two processes:
+### 🏎💨 Run Experiment Script
 
-1. A power logging process that continuously records power consumption with timestamps.
+1. To maximise the Jetson power and fan speed run the following command on Jetson.
 
-2. An inference process that timestamps and logs execution times for each layer.
+    ```bash
+    sudo nvpmodel -m 0
+    sudo jetson_clocks
+    ```
 
-By aligning these timestamps, we can map power usage to each layer's execution time, enabling precise measurement of power consumed per layer. To refine accuracy, we will repeat this process n times, calculating the average power consumption per layer. This approach is inspired by the profiling paper.
+2. Build the docker image
 
-## Getting Started
+    ```bash
+    sudo docker build -t edge-vision-benchmark -f Dockerfile.jetson .
+    ```
 
-### Maximise Jetson Orin Performance and Set Fan Speed
+> [!IMPORTANT]  
+> Use this exact Docker image to ensure compatibility with `tensorrt==10.1.0` and `torch_tensorrt==2.4.0`.</br>
+> Base image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` might take some time to download on Jetson. (approx. 5 GB in size)
 
-Run the following command to maximise performance and set the fan speed:
+3. Run the container
 
-```bash
-sudo nvpmodel -m 0
-sudo jetson_clocks
-```
-
-### Running the Power Measurement
-
-To use our power measurement script, run it inside this Docker image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` (approx. 5 GB in size).
-> **Important**: Use this exact Docker image to ensure compatibility with tensorrt==10.1.0 and torch_tensorrt==2.4.0.
-
-Start the container with:
-
-```bash
-sudo docker build -t edge-vision-benchmark -f Dockerfile.jetson .
-sudo docker run -e DAGSHUB_USER_TOKEN=<dagshub-token> --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
-```
+    ```bash
+    sudo docker run -e DAGSHUB_USER_TOKEN=<dagshub-token> --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
+    ```
 
 > [!NOTE]  
 > You can generate a long lived app DagsHub token with no expiry date from your [User Settings](https://dagshub.com/user/settings/tokens).
 
-This will start running the [run_experiment.sh](./run_experiment.sh) script by default. You can also override by passing your custom experiment script.
+This will start running the [`run_experiment.sh`](./run_experiment.sh) script by default. You can also override by passing your custom experiment script. More information on the `run_experiment.sh` can be found in the [data collection on Jetson](../../docs/ExperimentScripts.md#data-collection-script-on-jetson) section.
 
 To follow the logs of the experiment, you can run the following command
 
@@ -62,104 +64,67 @@ To follow the logs of the experiment, you can run the following command
 sudo docker logs -f <container-name>
 ```
 
-### Experiment Script
+You can find the name of the docker container using the `sudo docker ps` command.
 
-The [run_experiment.sh](./run_experiment.sh) script performs following action
+> [!NOTE]  
+> Learn more about the format of dataset collected in the [raw dataset](../../docs/DatasetFormats.md#raw-dataset-format) section.
 
-1. Measure idle power consumption for 120 seconds using [measure_idling_power.py](measure_idling_power.py) script.
-2. Sleep for 120 seconds.
-3. Benchmark 7 CNN vision models using [measure_inference_power.py](measure_inference_power.py) script.
-4. Push the benchmark data to [fuzzylabs/edge-vision-power-estimation](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) DagsHub repo for data version control.
+## 💡 Approach
 
-### Running Power Measurement Scripts
+The following process outlines the approach taken to collect the power and runtime values for each layer.
 
-You’ll need to run two scripts for measuring power:
+First, we measure the idle power value of the Jetson. This power value measures how much power is consumed when minimal required processes are running on the Jetson.
 
-1. **[measure_idling_power.py](measure_idling_power.py)** - Measures the idling power of the Jetson Orin Nano. Ensure the performance settings are applied before running this. This script outputs an `idling_power_log_{timestamp}.log` file with idling power data.
+> [!CAUTION]
+> The recommendation is to disable any GUI operations and use command line interface on Jetson  to reduce the number of background processes for getting the idle power.
 
-To run the this script:
+Next, we run two separate process on Jetson wherein the first process runs the benchmarking for a CNN model. This process captures the per-layer runtime for the model. It converts a PyTorch model to a TensorRT model using [TorchTensorRT](https://github.com/pytorch/TensorRT/) library.
 
-```bash
-python measure_idling_power.py
-```
+In the second process, we launch the power logging script. Two separate processes are used to ensure that the benchmarking and power logging tasks are performed concurrently without interference. This approach prevents the benchmarking process from being slowed down by the additional overhead of logging power measurements.
 
-Alternatively, we can specify the idling duration such as 120 seconds:
+Finally, we upload the collection of power and runtime data for each model to DagsHub. This is the raw data that we will further preprocess to create training data. This dataset is versioned using DVC.
 
-```bash
-python measure_idling_power.py \
-    --idle-duration 120
-```
+See the diagram below for a visual explanation:
 
-2. **[measure_inference_power.py](measure_inference_power.py)** - Measures instantaneous power consumption and timestamps for each inference cycle. You can specify the number of inference cycles with the `--runs` argument, 30000 cycles will run by default.
+![jetson-power-logging](assets/jetson_workflow.png)
 
-To run the this script with default settings:
+For more insights into how power is collected on Jetson, refer to the [Power Consumption and Benchmarking on Jetson](../../docs/JetsonPowerMeasurement.md) and the [Behind the Scenes](../../docs/DeepDive.md#power-measurement-and-logging) documentation.
+
+For insights into how runtime is measured for each layer on Jetson, refer to [this](../../docs/DeepDive.md#tensorrt-runtime-profiling) document.
+
+## 📂 Repository Structure
 
 ```bash
-python measure_inference_power.py
+.
+├── assets
+├── data_version.py
+├── Dockerfile.jetson
+├── docs
+├── measure_idling_power.py
+├── measure_inference_power.py
+├── measure_power.py
+├── model                       # Benchmarking utility functions
+├── pyproject.toml
+├── README.md
+├── run_experiment.sh
+└── uv.lock
 ```
 
-Alternatively, we can run the power measuring script with various models, specify the number of inference cycles, or save results to different directories, use the following command:
+- **[data_version.py](./data_version.py)** : This script contains functions to upload and download dataset to/from Dagshub. DagsHub uses DVC underneath to create data versions.
 
-```bash
-python measure_inference_power.py \
-    --model <pytorch_hub_model_name> \
-    --runs RUNS \
-    --result-dir RESULT_DIR
-```
+- **[measure_idling_power.py](./measure_idling_power.py)** : This script measures average power usage when there Jetson is idle i.e. no benchmarking is being run.
 
-This script generates multiple log and trace files. The two primary files of interest are:
+- **[measure_power.py](./measure_power.py)** : This scripts provides a function to read power values from  INA3221 power monitor sensor on Jetson device.
 
-1. `{n}_cycles_power_log_{timestamp}.log`: Logs power measurements during inference.
-2. `trt_layer_latency.json`: Contains layer execution time with the corresponding timestamp.
+- **[run_experiment.sh](./run_experiment.sh)** : Experiment script that runs the power and runtime collection process end-to-end.
 
-By default, all results are saved in the `RESULT_DIR` folder.
+## 📚 Documentation
 
-### Data Versioning
+Here are few links to the relevant documentation for further readings.
 
-We use DagsHub and DVC to data version control
-
-There are two operations that we can perform for a data versioning.
-
-1. Upload the local data to be version control into DagsHub
-2. Download the version control dataset from DagsHub locally
-
-Upload dataset from `raw_data` folder to DagsHub.
-
-```bash
-python data_version.py \
-    --owner DAGSHUB_USERNAME \
-    --name DAGSHUB_REPONAME \
-    --local-dir-path raw_data \
-    --commit "Add raw data" \
-    --upload
-```
-
-Download dataset from `raw_data` folder from DagsHub locally.
-
-```bash
-python data_version.py \
-    --owner DAGSHUB_USERNAME \
-    --name DAGSHUB_REPONAME \
-    --local-dir-path raw_data \
-    --remote-dir-path raw_data \
-    --download
-```
-
-### Mapping Power Consumption By Layer
-
-To map the individual layer power output for each cycle and produce a CSV file, you’ll need to have your benchmark data from running the two power measurement scripts above which should be in the results folder. This data includes:
-
-1. {n}_cycles_power_log_{timestamp}.log
-2. {n}_seconds_idling_power_log_{timestamp}.log
-3. trt_layer_latency.json
-4. trt_engine_info.json
-
-Once you have these files ready, you can proceed with the mapping process.
-
-> Note: The resulting CSV file can't be included in the repository due to its size exceeding GitHub's limits.
-
-### Visualisation of how the mapping algorithm works
-
-![step0](./assets/step0.png)
-![step1](./assets/step1.png)
-![step2](./assets/step2.png)
+- [Raw dataset format](../../docs/DatasetFormats.md#raw-dataset-format)
+- [Experiment script](../../docs/ExperimentScripts.md#data-collection-script-on-jetson)
+- [Power measurement on Jetson](../../docs/JetsonPowerMeasurement.md)
+- [Power logging on Jetson](../../docs/DeepDive.md#power-measurement-and-logging)
+- [Runtime profiling on Jetson](../../docs/DeepDive.md#tensorrt-runtime-profiling)
+- [TorchTensorRT](../../docs/TorchTensorRT.md)
