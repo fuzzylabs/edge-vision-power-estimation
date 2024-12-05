@@ -4,8 +4,8 @@ Train power and runtime prediction models.
 
 ## 🔗 Quick Links
 
-1. [Approach](#-approach)
-2. [Getting Started](#-getting-started)
+1. [Getting Started](#-getting-started)
+2. [Approach](#-approach)
 3. [Repository Structure](#-repository-structure)
 4. [Documentation](#-documentation)
 
