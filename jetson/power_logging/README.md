@@ -4,29 +4,10 @@ Measure power consumption and runtime for CNN models on the jetson device.
 
 ## 🔗 Quick Links
 
-1. [Approach](#-approach)
-2. [Getting Started](#-getting-started)
+1. [Getting Started](#-getting-started)
+2. [Approach](#-approach)
 3. [Repository Structure](#-repository-structure)
 4. [Documentation](#-documentation)
-
-## 💡 Approach
-
-The following process outlines the approach taken to collect the power and runtime values for each layer.
-
-First, we measure the idle power value of the Jetson. This power value measures how much power is consumed when minimal required processes are running on the Jetson.
-
-> [!CAUTION]
-> The recommendation is to disable any GUI operations and use command line interface on Jetson  to reduce the number of background processes for getting the idle power.
-
-Next, we run two separate process on Jetson wherein the first process runs the benchmarking for a CNN model. This process captures the per-layer runtime for the model. It converts a PyTorch model to a TensorRT model using [TorchTensorRT](https://github.com/pytorch/TensorRT/) library.
-
-In the second process, we launch the power logging script. Two separate processes are used to ensure that the benchmarking and power logging tasks are performed concurrently without interference. This approach prevents the benchmarking process from being slowed down by the additional overhead of logging power measurements.
-
-Finally, we upload the collection of power and runtime data for each model to DagsHub. This is the raw data that we will further preprocess to create training data. This dataset is versioned using DVC.
-
-For more insights into how power is collected on Jetson, refer to the [Power Consumption and Benchmarking on Jetson](../../docs/JetsonPowerMeasurement.md) and the [Behind the Scenes](../../docs/DeepDive.md#power-measurement-and-logging) documentation.
-
-For insights into how runtime is measured for each layer on Jetson, refer to [this](../../docs/DeepDive.md#tensorrt-runtime-profiling) document.
 
 ## 🛸 Getting Started
 
@@ -87,6 +68,29 @@ You can find the name of the docker container using the `sudo docker ps` command
 
 > [!NOTE]  
 > Learn more about the format of dataset collected in the [raw dataset](../../docs/DatasetFormats.md#raw-dataset-format) section.
+
+## 💡 Approach
+
+The following process outlines the approach taken to collect the power and runtime values for each layer.
+
+First, we measure the idle power value of the Jetson. This power value measures how much power is consumed when minimal required processes are running on the Jetson.
+
+> [!CAUTION]
+> The recommendation is to disable any GUI operations and use command line interface on Jetson  to reduce the number of background processes for getting the idle power.
+
+Next, we run two separate process on Jetson wherein the first process runs the benchmarking for a CNN model. This process captures the per-layer runtime for the model. It converts a PyTorch model to a TensorRT model using [TorchTensorRT](https://github.com/pytorch/TensorRT/) library.
+
+In the second process, we launch the power logging script. Two separate processes are used to ensure that the benchmarking and power logging tasks are performed concurrently without interference. This approach prevents the benchmarking process from being slowed down by the additional overhead of logging power measurements.
+
+Finally, we upload the collection of power and runtime data for each model to DagsHub. This is the raw data that we will further preprocess to create training data. This dataset is versioned using DVC.
+
+See the diagram below for a visual explanation:
+
+![jetson-power-logging](assets/jetson_workflow.png)
+
+For more insights into how power is collected on Jetson, refer to the [Power Consumption and Benchmarking on Jetson](../../docs/JetsonPowerMeasurement.md) and the [Behind the Scenes](../../docs/DeepDive.md#power-measurement-and-logging) documentation.
+
+For insights into how runtime is measured for each layer on Jetson, refer to [this](../../docs/DeepDive.md#tensorrt-runtime-profiling) document.
 
 ## 📂 Repository Structure
 
