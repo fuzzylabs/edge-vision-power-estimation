@@ -4,12 +4,23 @@ import shutil
 from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 
 import pandas as pd
 from tqdm import tqdm
 
 from data_preparation.io_utils import read_json_file, read_log_file
+
+
+class MetricsByCycle(TypedDict):
+    """Metrics collected by an inference cycle for a given layer."""
+
+    cycle: int
+    layer_name: str
+    layer_type: str
+    layer_power_including_idle_power_micro_watt: float | None
+    layer_power_excluding_idle_power_micro_watt: float | None
+    layer_run_time: float
 
 
 def map_layer_name_to_type(trt_engine_info: dict) -> dict:
@@ -162,7 +173,7 @@ class DataPreprocessor:
         power_log_path: Path,
         trt_layer_latency_path: Path,
         trt_engine_info_path: Path,
-    ) -> list[dict[str, Any]]:
+    ) -> list[MetricsByCycle]:
         """Computes and aggregates power and runtime metrics for each layer within a processing cycle.
 
         For each iteration cycle and for each layer,
@@ -176,7 +187,7 @@ class DataPreprocessor:
             trt_layer_latency_path: Path to tensorrt layer latency file
             trt_engine_info_path: Path to tensorrt engine info file
         Returns:
-            A list of dictionaries, each representing metrics for a specific layer.
+            list[MetricsByCycle]: A list of dictionaries, each representing metrics for a specific layer.
         """
         print("Computing layer metrics...")
         power_logs = self.preprocess_power_log(power_log_path)
@@ -215,8 +226,10 @@ class DataPreprocessor:
             avg_layer_power = (
                 sum(layer_power_measurements) / len(layer_power_measurements)
                 if layer_power_measurements
-                else 0.0
+                else None
             )
+
+            avg_layer_power_excluding_idle = (avg_layer_power - self.avg_idle_power if avg_layer_power else None)
 
             # Append the results for this layer and cycle
             metrics_by_cycle.append(
@@ -225,8 +238,7 @@ class DataPreprocessor:
                     "layer_name": layer_name,
                     "layer_type": layer_type,
                     "layer_power_including_idle_power_micro_watt": avg_layer_power,
-                    "layer_power_excluding_idle_power_micro_watt": avg_layer_power
-                    - self.avg_idle_power,
+                    "layer_power_excluding_idle_power_micro_watt": avg_layer_power_excluding_idle,
                     "layer_run_time": execution_duration,
                 }
             )
