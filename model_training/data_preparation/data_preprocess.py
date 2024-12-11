@@ -188,7 +188,6 @@ class DataPreprocessor:
         layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
 
         metrics_by_cycle = []
-        power_index = 0
 
         for (
             cycle,
@@ -200,14 +199,17 @@ class DataPreprocessor:
             layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
             layer_power_measurements = []
 
+            power_index = 0
+
             # Collect power measurements within start and end timestamp
             while (
                 power_index < len(power_logs)
                 and power_logs[power_index][0] >= start_timestamp
-                and power_logs[power_index][0] <= end_timestamp
             ):
                 layer_power_measurements.append(power_logs[power_index][1])
                 power_index += 1
+                if power_logs[power_index][0] <= end_timestamp:
+                    break
 
             # Calculate average power if measurements exist
             avg_layer_power = (
