@@ -191,6 +191,7 @@ class DataPreprocessor:
         """
         print("Computing layer metrics...")
         power_logs = self.preprocess_power_log(power_log_path)
+        power_logs_iterator = iter(power_logs)
 
         # Preprocess and sort latency data by start time
         trt_layer_latency = read_json_file(trt_layer_latency_path)
@@ -199,6 +200,29 @@ class DataPreprocessor:
         layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
 
         metrics_by_cycle = []
+
+        power_log = next(power_logs_iterator)
+
+        def calculate_metrics(cycle: int, layer_name: str, layer_type: str, power_measurements: list[float], execution_duration: float) -> MetricsByCycle:
+            """Calculate metrics for each cycle."""
+            # Calculate average power if measurements exist
+            avg_layer_power = (
+                sum(power_measurements) / len(power_measurements)
+                if power_measurements
+                else None
+            )
+
+            avg_layer_power_excluding_idle = (avg_layer_power - self.avg_idle_power if avg_layer_power else None)
+
+            return {
+                "cycle": cycle + 1,
+                "layer_name": layer_name,
+                "layer_type": layer_type,
+                "layer_power_including_idle_power_micro_watt": float(avg_layer_power),
+                "layer_power_excluding_idle_power_micro_watt": float(avg_layer_power_excluding_idle),
+                "layer_run_time": execution_duration,
+            }
+
 
         for (
             cycle,
@@ -210,42 +234,32 @@ class DataPreprocessor:
             layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
             layer_power_measurements = []
 
-            power_index = 0
+            try:
+                # "Scroll" to the start time stamp if we are not there yet
+                while (
+                    power_log[0] < start_timestamp
+                ):
+                    power_log = next(power_logs_iterator)
 
-            # Collect power measurements within start and end timestamp
-            while (
-                power_index < len(power_logs)
-                and power_logs[power_index][0] >= start_timestamp
-            ):
-                layer_power_measurements.append(power_logs[power_index][1])
-                power_index += 1
-                if power_logs[power_index][0] <= end_timestamp:
-                    break
+                # Collect power measurements within start and end timestamp
+                while (
+                    power_log[0] <= end_timestamp
+                ):
+                    layer_power_measurements.append(power_log[1])
+                    power_log = next(power_logs_iterator)
 
-            # Calculate average power if measurements exist
-            avg_layer_power = (
-                sum(layer_power_measurements) / len(layer_power_measurements)
-                if layer_power_measurements
-                else None
-            )
+            except StopIteration:
+                break
+            finally:
+                # Append the results for this layer and cycle
+                metrics_by_cycle.append(calculate_metrics(
+                    cycle,
+                    layer_name,
+                    layer_type,
+                    layer_power_measurements,
+                    execution_duration,
+                ))
 
-            avg_layer_power_excluding_idle = (avg_layer_power - self.avg_idle_power if avg_layer_power else None)
-
-            # Append the results for this layer and cycle
-            metrics_by_cycle.append(
-                {
-                    "cycle": cycle + 1,
-                    "layer_name": layer_name,
-                    "layer_type": layer_type,
-                    "layer_power_including_idle_power_micro_watt": avg_layer_power,
-                    "layer_power_excluding_idle_power_micro_watt": avg_layer_power_excluding_idle,
-                    "layer_run_time": execution_duration,
-                }
-            )
-
-            # Adjust `power_log_index` to backtrack by 1 to re-evaluate on the next layer if needed
-            # This is because next layer start time could be equal to prev layer end time.
-            power_index = max(0, power_index - 1)
 
         return metrics_by_cycle
 
