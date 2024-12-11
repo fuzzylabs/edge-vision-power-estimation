@@ -19,11 +19,19 @@ def data_preprocessor(tmp_path: Path) -> DataPreprocessor:
     return DataPreprocessor(idle_power_log_path, tmp_path)
 
 
-def test_compute_layer_metrics_by_cycle(data_preprocessor: DataPreprocessor) -> None:
+@pytest.mark.parametrize(
+    ["model_name"],
+    [
+        ["simple"], # single layer, single reading
+        ["multiple_readings"], # single layer, multiple readings
+        ["multiple_layers"], # multiple layers, gaps between, before and after
+    ]
+)
+def test_compute_layer_metrics_by_cycle(model_name: str, data_preprocessor: DataPreprocessor) -> None:
     """Test compute_layer_metrics_by_cycle."""
 
 
-    model_dir = Path(__file__).parent / "example_data" / "simple"
+    model_dir = Path(__file__).parent / "example_data" / model_name
     power_log_file, trt_layer_latency_file, trt_engine_info_file = (
         parse_model_dir(model_dir)
     )
