@@ -16,6 +16,22 @@ from data_preparation.tensorrt_utils import read_layers_info
 from model.model_inference import InferenceModel
 
 
+def print_metrics(df: pd.DataFrame) -> None:
+    """Print runtime, power and energy metrics.
+
+    Args:
+        df: Input dataframe used to calculate metrics
+    """
+    total_runtime = df["runtime_prediction"].sum()
+    total_power_consumed = df["power_prediction"].sum()
+    avg_power_consumed = df["power_prediction"].mean()
+    total_energy = (df["runtime_prediction"] / 1e3 * df["power_prediction"]).sum()
+    print(f"Total runtime : {total_runtime} milliseconds")
+    print(f"Average power consumed per layer : {avg_power_consumed} watt")
+    print(f"Total power consumed : {total_power_consumed} watt")
+    print(f"Total energy spent: {total_energy} joule")
+
+
 def infer(
     dagshub_repo_owner: str,
     dagshub_repo_name: str,
@@ -64,7 +80,7 @@ def infer(
             continue
 
         features = model.get_features(layer_info)
-        data["power_predicition"].append(
+        data["power_prediction"].append(
             model.power_model.predict(features.values).tolist()[0]
         )
         data["runtime_prediction"].append(
@@ -78,6 +94,7 @@ def infer(
     if result_csv_path.suffix != ".csv":
         raise ValueError(f"{result_csv_path} path to csv must end with .csv")
     df.to_csv(result_csv_path, index=False)
+    print_metrics(df)
 
 
 if __name__ == "__main__":
