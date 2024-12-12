@@ -29,8 +29,6 @@ def data_preprocessor(tmp_path: Path) -> DataPreprocessor:
 )
 def test_compute_layer_metrics_by_cycle(model_name: str, data_preprocessor: DataPreprocessor) -> None:
     """Test compute_layer_metrics_by_cycle."""
-
-
     model_dir = Path(__file__).parent / "example_data" / model_name
     power_log_file, trt_layer_latency_file, trt_engine_info_file = (
         parse_model_dir(model_dir)
