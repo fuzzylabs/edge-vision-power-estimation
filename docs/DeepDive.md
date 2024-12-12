@@ -73,3 +73,6 @@ To get the power values, we use the power logs file.  [`alexnet_power_log.log`](
 ```
 
 We have to find all the power values (voltage*current) in between `start_timestamp` and `end_timestamp` for each iteration cycle for all the layers. The power consumed for a layer is the average of all the power values between the `start_timestamp` and the `end_timestamp`.
+
+> [!NOTE]
+> If there are no power values recorded for a layer between the start and end timestamp we assign a `None` value as it's power value for that layer.
