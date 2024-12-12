@@ -27,9 +27,19 @@ def main(args: argparse.Namespace) -> None:
         save_path = Path(f"{args.result_dir}/{model_name}")
 
         layers_info = read_layers_info(engine_info_path)
-        measurements = preprocess_measurement_data(measurements_path)
-        convert_measurements_to_training_data(save_path, layers_info, measurements)
-        print(f"Saved to {save_path}!")
+        measurements = preprocess_measurement_data(
+            measurements_path, args.per_layer_measurements
+        )
+        # Create training data for a model only if all layers have
+        # sufficient samples of power and runtime measurements
+        if measurements is not None:
+            convert_measurements_to_training_data(save_path, layers_info, measurements)
+            print(f"Saved to {save_path}!")
+        else:
+            print(
+                f"Skipping creating training data for {model_name} model. "
+                f"It does not have sufficient samples {args.per_layer_measurements} for all the layers."
+            )
 
 
 if __name__ == "__main__":
@@ -47,6 +57,12 @@ if __name__ == "__main__":
         type=str,
         default="training_data",
         help="The directory to save training data",
+    )
+    parser.add_argument(
+        "--per-layer-measurements",
+        type=int,
+        default=10,
+        help="Minimum number of measurements for power and runtime in preprocessed data",
     )
     args = parser.parse_args()
 

@@ -1,0 +1,13 @@
+cycle,layer_name,layer_type,layer_power_including_idle_power_micro_watt,layer_power_excluding_idle_power_micro_watt,layer_run_time
+1,Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],Reformat,,,0.03
+1,[CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],CaskConvolution,9,5,0.08
+1,[MAX]-[aten_ops.max_pool2d.default]-[max_pool2d_default],CaskPooling,1,5,0.01
+2,Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],Reformat,,,0.10
+2,[CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],CaskConvolution,,,0.08
+2,[MAX]-[aten_ops.max_pool2d.default]-[max_pool2d_default],CaskPooling,,,0.01
+3,Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],Reformat,,,0.09
+3,[CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],CaskConvolution,8,4,0.08
+3,[MAX]-[aten_ops.max_pool2d.default]-[max_pool2d_default],CaskPooling,,,0.015
+4,Reformatting CopyNode for Input Tensor 0 to [CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],Reformat,6,2,0.08
+4,[CONVOLUTION]-[aten_ops.convolution.default]-[/features/0/convolution] + [RELU]-[aten_ops.relu.default]-[/features/1/relu],CaskConvolution,,,0.08
+4,[MAX]-[aten_ops.max_pool2d.default]-[max_pool2d_default],CaskPooling,,,0.015
