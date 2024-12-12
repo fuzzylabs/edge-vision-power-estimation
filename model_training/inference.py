@@ -23,7 +23,7 @@ def print_metrics(df: pd.DataFrame) -> None:
         df: Input dataframe used to calculate metrics
     """
     # Convert runtime from milliseconds to seconds
-    df["runtime_prediction"] = df["runtime_prediction"] / 1000  # Convert to seconds
+    df["runtime_prediction"] = df["runtime_prediction"] / 1000
 
     # Total predicted runtime
     total_runtime = df["runtime_prediction"].sum()
