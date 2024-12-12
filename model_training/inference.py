@@ -22,14 +22,23 @@ def print_metrics(df: pd.DataFrame) -> None:
     Args:
         df: Input dataframe used to calculate metrics
     """
+    # Convert runtime from milliseconds to seconds
+    df["runtime_prediction"] = df["runtime_prediction"] / 1000  # Convert to seconds
+
+    # Total predicted runtime
     total_runtime = df["runtime_prediction"].sum()
-    total_power_consumed = df["power_prediction"].sum()
-    avg_power_consumed = df["power_prediction"].mean()
-    total_energy = (df["runtime_prediction"] / 1e3 * df["power_prediction"]).sum()
-    print(f"Total runtime : {total_runtime} milliseconds")
-    print(f"Average power consumed per layer : {avg_power_consumed} watt")
-    print(f"Total power consumed : {total_power_consumed} watt")
-    print(f"Total energy spent: {total_energy} joule")
+
+    # Average power
+    avg_power_consumed = (
+        df["power_prediction"] * df["runtime_prediction"]
+    ).sum() / total_runtime
+
+    # Total energy consumption
+    total_energy = (df["power_prediction"] * df["runtime_prediction"]).sum()
+
+    print(f"Total runtime : {total_runtime} seconds")
+    print(f"Average power consumed : {avg_power_consumed} watts")
+    print(f"Total energy spent: {total_energy} joules")
 
 
 def infer(
