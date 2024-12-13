@@ -121,6 +121,5 @@ def test_preprocess_measurement_data_empty_return(
         expected_output: Expected output
     """
     path = Path(f"{BASE_DIR}/{input_path}/power_runtime_mapping_layerwise.csv")
-    print(type(path))
     out = preprocess_measurement_data(path, min_samples)
     assert expected_output == out

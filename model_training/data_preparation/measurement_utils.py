@@ -68,6 +68,7 @@ def verify_per_layer_measurements(
         True if all layers have sufficient samples of power and runtime values.
     """
     count_df = df.groupby(["layer_name"])[col_name].count().reset_index()
+
     less_samples_df = count_df[count_df[col_name] < min_per_layer_measurement]
     if len(less_samples_df):
         logger.debug(
@@ -76,6 +77,7 @@ def verify_per_layer_measurements(
         )
         for _, row in less_samples_df.iterrows():
             logger.debug(f"{row['layer_name']} -> {row[col_name]}")
+
     # Check if power or runtime samples pass sufficient threshold
     if all(count_df[col_name] >= min_per_layer_measurement):
         return True
