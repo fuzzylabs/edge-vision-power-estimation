@@ -3,6 +3,8 @@
 import argparse
 from pathlib import Path
 
+from loguru import logger
+
 from data_preparation.convert import convert_measurements_to_training_data
 from data_preparation.measurement_utils import preprocess_measurement_data
 from data_preparation.tensorrt_utils import read_layers_info
@@ -16,12 +18,12 @@ def main(args: argparse.Namespace) -> None:
     """
     data_dir = Path(args.preprocessed_data_dir)
     model_dirs = list(data_dir.iterdir())
-    print(f"Found {len(model_dirs)} models in preprocessed data folder.")
+    logger.info(f"Found {len(model_dirs)} models in preprocessed data folder.")
 
     # Convert and save each model directory preprocessed data to training data
     for model_dir in model_dirs:
         model_name = model_dir.name
-        print(f"Preprocessing {model_name} model")
+        logger.info(f"Preprocessing {model_name} model")
         engine_info_path = f"{model_dir}/trt_engine_info.json"
         measurements_path = f"{model_dir}/power_runtime_mapping_layerwise.csv"
         save_path = Path(f"{args.result_dir}/{model_name}")
@@ -34,9 +36,9 @@ def main(args: argparse.Namespace) -> None:
         # sufficient samples of power and runtime measurements
         if measurements is not None:
             convert_measurements_to_training_data(save_path, layers_info, measurements)
-            print(f"Saved to {save_path}!")
+            logger.info(f"Saved {model_name} model training data to {save_path}.")
         else:
-            print(
+            logger.warning(
                 f"Skipping creating training data for {model_name} model. "
                 f"It does not have sufficient samples {args.per_layer_measurements} for all the layers."
             )
