@@ -2,37 +2,36 @@ name: Model training tests - CI
 run-name: Run tests defined in `model_training`
 
 on:
-    pull_request:
-        types: [opened, ready_for_review]
-        branches:
-            - main
-            - develop
-    push:
-        branches:
-        - main
-        - develop
+  pull_request:
+    types: [opened, ready_for_review, synchronize, reopened]
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
 
-# Run tests 
 jobs:
-    file-changes:
-        name: Detect changes in the python files in the `model_training` folder.
-        runs-on: ubuntu-latest
+  file-changes:
+    name: Detect changes in Python files in the `model_training` folder
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Check out repository code
-              uses: actions/checkout@v4
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
-            - name: Get all changed python files
-              id: changed-python-files
-              uses: tj-actions/changed-files@v45
-              with:
-                files: |
-                    **.py
-            
-            - name: Run step if any file(s) in the docs folder change
-              if: steps.changed-python-files.outputs.any_changed == 'true'
-              env:
-                  ALL_CHANGED_FILES: ${{ steps.changed-python-files.outputs.all_changed_files }}
-              run: |
-                  echo "One or more files in the `model_training` folder has changed."
-                  echo "List all the files that have changed: $ALL_CHANGED_FILES"
+      - name: Get all changed Python files
+        id: changed-python-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            model_training/**/*.py
+      
+      - name: Run step if any Python file(s) in `model_training` have changed
+        if: ${{ steps.changed-python-files.outputs.any_changed == 'true' }}
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-python-files.outputs.all_changed_files }}
+        run: |
+          echo "One or more Python files in the `model_training` folder have changed."
+          echo "List of all changed files: $ALL_CHANGED_FILES"
