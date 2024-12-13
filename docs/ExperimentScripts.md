@@ -23,11 +23,10 @@ The [`create_dataset.sh`](../model_training/create_dataset.sh) script provides a
 1. `Lines 5:14`: Setup the configuration required to pull raw dataset from DagsHub repository.
 2. `Lines 28:36`: Pull the raw dataset from DagsHub and store it in `raw_data` folder locally.
 3. `Lines 38:45`: Create preprocessed dataset from raw dataset using the `map_power_to_layers.py` script.
-4. `Lines 47:56`: Optionally upload the preprocessed data to DagsHub if `--push-to-dagshub` flag is passed while running this script.
-5. `Lines 58:65`: Create training dataset from preprocessed dataset using the `convert_measurements.py` script.
-6. `Lines 67:76`: Optionally upload the training data to DagsHub if `--push-to-dagshub` flag is passed while running this script.
+5. `Lines 48:53`: Create training dataset from preprocessed dataset using the `convert_measurements.py` script.
+6. `Lines 56:65`: Optionally upload the training data to DagsHub if `--push-to-dagshub` flag is passed while running this script.
 
-If `--push-to-dagshub` flag is passed to the script, both the preprocessed data and training data get uploaded to the DagsHub repo.
+If `--push-to-dagshub` flag is passed to the script, the training data get uploaded to the DagsHub repo.
 
 ```bash
 ./create_dataset.sh --push-to-dagshub

@@ -76,7 +76,7 @@ To process the raw dataset into training data ingestible by a model, run the [`c
 
 To know more about the contents in this script, refer to the [Data Preprocessing](../docs/ExperimentScripts.md#data-preprocessing-script) script section.
 
-You can also pass the `--push-to-dagshub` flag to the above command, this will enable pushing the `preprocessed_data` and `training_data` to the DagsHub repository.
+You can also pass the `--push-to-dagshub` flag to the above command, this will enable pushing the `training_data` to the DagsHub repository.
 
 > [!NOTE]
 > If you already have your own `training_data`, then you can skip step 1 and head straight to step 2.
@@ -101,7 +101,7 @@ This will download data from the FuzzyLabs [DagsHub repository](https://dagshub.
 
 > [!NOTE]
 > This step is recommended if you want to get started with training the models using data already present on DagsHub repository. </br>
-> If you have a new raw dataset, follow step 0 to create a training dataset.
+> If you have a new raw dataset, follow step outlined in raw data collected on Jetson [section](#raw-data-is-collected-on-jetson) to create a training dataset.
 
 **Run Training Script**: We are all set to train power and runtime prediction models.
 
@@ -115,7 +115,7 @@ To learn more about various configuration offered as part of training script, re
 
 ## 💡 Approach
 
-We use the raw dataset from Jetson to create a preprocessed and training dataset. The train dataset contains power and runtime measurements for 3 layers, convolutional, pooling and dense for the CNN models.
+We use the raw dataset from Jetson to create a preprocessed and training dataset. The train dataset contains power and runtime measurements for 3 layer types, convolutional, pooling and dense for the CNN models.
 
 The raw dataset that we have collected from the Jetson lives in DagsHub - running the [`create_dataset.sh`](create_dataset.sh) script orchestrates the following data pipeline:
 
@@ -129,10 +129,9 @@ We use [LassoCV](https://scikit-learn.org/stable/modules/generated/sklearn.linea
 
 The [`run.py`](run.py) script orchestrates the following training pipeline:
 
-1. Pulls the training dataset from DagsHub.
+1. Uses the training dataset found on the local system for training.
 2. Initiates the training of 3 power consumption and 3 runtime prediction models.
 3. Logs metrics and artifacts to MLFlow's experiment tracker.
-4. Saves the final model to the MLFlow model server.
 
 ![training_process](assets/training_process.png)
 
