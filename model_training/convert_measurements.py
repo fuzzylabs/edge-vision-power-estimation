@@ -40,7 +40,8 @@ def main(args: argparse.Namespace) -> None:
         else:
             logger.warning(
                 f"Skipping creating training data for {model_name} model. "
-                f"It does not have sufficient samples {args.per_layer_measurements} for all the layers."
+                f"It does not have sufficient samples {args.per_layer_measurements} "
+                "for convolutional, dense or pooling the layers."
             )
 
 
