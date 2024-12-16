@@ -1,0 +1,35 @@
+{
+    "convolutional": {
+        "batch_size": 1,
+        "input_size_0": 3,
+        "input_size_1": 224,
+        "input_size_2": 224,
+        "output_size_0": 64,
+        "output_size_1": 55,
+        "output_size_2": 55,
+        "kernel_0": 11,
+        "kernel_1": 11,
+        "padding_0": 4,
+        "padding_1": 4,
+        "stride_0": 4,
+        "stride_1": 4
+    },
+    "pooling": {
+        "batch_size": 1,
+        "input_size_0": 64,
+        "input_size_1": 55,
+        "input_size_2": 55,
+        "output_size_0": 64,
+        "output_size_1": 27,
+        "output_size_2": 27,
+        "kernel_0": 55,
+        "kernel_1": 55,
+        "stride_0": 2,
+        "stride_1": 2
+    },
+    "dense": {
+        "batch_size": 1,
+        "input_size": 4096,
+        "output_size": 1000
+    }
+}
