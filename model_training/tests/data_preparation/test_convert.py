@@ -12,7 +12,7 @@ from data_preparation.convert import (
 )
 from data_preparation.tensorrt_utils import read_layers_info
 
-BASE_DIR = Path(__file__).parent / "example_preprocessed_data"
+BASE_DIR = Path(__file__).parent.parent / "test_data/example_preprocessed_data"
 
 
 @pytest.fixture

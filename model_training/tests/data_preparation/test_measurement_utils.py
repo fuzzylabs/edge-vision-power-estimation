@@ -12,7 +12,7 @@ from data_preparation.measurement_utils import (
     verify_per_layer_measurements,
 )
 
-BASE_DIR = Path(__file__).parent / "example_preprocessed_data"
+BASE_DIR = Path(__file__).parent.parent / "test_data/example_preprocessed_data"
 
 EXPECTED_POWER_MODEL1 = [4.5, 5.0]
 EXPECTED_RUNTIME_MODEL1 = [0.08, 0.01]
