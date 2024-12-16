@@ -24,8 +24,8 @@ def main(args: argparse.Namespace) -> None:
     for model_dir in model_dirs:
         model_name = model_dir.name
         logger.info(f"Preprocessing {model_name} model")
-        engine_info_path = f"{model_dir}/trt_engine_info.json"
-        measurements_path = f"{model_dir}/power_runtime_mapping_layerwise.csv"
+        engine_info_path = Path(f"{model_dir}/trt_engine_info.json")
+        measurements_path = Path(f"{model_dir}/power_runtime_mapping_layerwise.csv")
         save_path = Path(f"{args.result_dir}/{model_name}")
 
         layers_info = read_layers_info(engine_info_path)
