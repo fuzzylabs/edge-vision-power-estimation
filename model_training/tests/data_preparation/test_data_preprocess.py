@@ -18,7 +18,7 @@ def data_preprocessor(tmp_path: Path) -> DataPreprocessor:
     See `example_raw_data/idling_power.json` file for the example idling power.
     A temporary is used for the results stored, if any.
     """
-    idle_power_log_path = f"{BASE_DIR}/idling_power.json"
+    idle_power_log_path = BASE_DIR / "idling_power.json"
     return DataPreprocessor(idle_power_log_path, tmp_path)
 
 
@@ -34,12 +34,12 @@ def test_compute_layer_metrics_by_cycle(
     model_name: str, data_preprocessor: DataPreprocessor
 ) -> None:
     """Test compute_layer_metrics_by_cycle."""
-    model_dir = f"{BASE_DIR}/{model_name}"
+    model_dir = BASE_DIR / model_name
     power_log_file, trt_layer_latency_file, trt_engine_info_file = parse_model_dir(
         model_dir
     )
 
-    with open(f"{model_dir}/expected_metrics_by_cycle.json", "r") as file:
+    with open(model_dir / "expected_metrics_by_cycle.json", "r") as file:
         expected_metrics_by_cycle = json.load(file)
 
     metrics_by_cycle = data_preprocessor.compute_layer_metrics_by_cycle(

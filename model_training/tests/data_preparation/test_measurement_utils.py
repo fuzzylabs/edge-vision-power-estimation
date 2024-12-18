@@ -41,7 +41,7 @@ def test_verify_per_layer_power_measurements(input_path, min_samples, expected_o
         min_samples: Min samples for power and runtime
         expected_output: Expected output
     """
-    path = f"{BASE_DIR}/{input_path}/power_runtime_mapping_layerwise.csv"
+    path = BASE_DIR / input_path / "power_runtime_mapping_layerwise.csv"
     df = pd.read_csv(path)
     df.rename(columns=RENAME_COLUMNS, inplace=True)
     df = df[df["layer_type"].isin(LAYER_TYPES)]
@@ -72,7 +72,7 @@ def test_verify_per_layer_runtime_measurements(
         min_samples: Min samples for power and runtime
         expected_output: Expected output
     """
-    path = f"{BASE_DIR}/{input_path}/power_runtime_mapping_layerwise.csv"
+    path = BASE_DIR / input_path / "power_runtime_mapping_layerwise.csv"
     df = pd.read_csv(path)
     df.rename(columns=RENAME_COLUMNS, inplace=True)
     df = df[df["layer_type"].isin(LAYER_TYPES)]
@@ -97,7 +97,8 @@ def test_preprocess_measurement_data(input_path, min_samples, expected_output):
         min_samples: Min samples for power and runtime
         expected_output: Expected output containing tuple of power and runtime output
     """
-    path = Path(f"{BASE_DIR}/{input_path}/power_runtime_mapping_layerwise.csv")
+    path = BASE_DIR / input_path / "power_runtime_mapping_layerwise.csv"
+    path = Path(path)
     out = preprocess_measurement_data(path, min_samples)
     assert expected_output[0] == out.average_power.values.tolist()
     assert expected_output[1] == out.average_run_time.values.tolist()
@@ -120,6 +121,7 @@ def test_preprocess_measurement_data_empty_return(
         min_samples: Min samples for power and runtime
         expected_output: Expected output
     """
-    path = Path(f"{BASE_DIR}/{input_path}/power_runtime_mapping_layerwise.csv")
+    path = BASE_DIR / input_path / "power_runtime_mapping_layerwise.csv"
+    path = Path(path)
     out = preprocess_measurement_data(path, min_samples)
     assert expected_output == out
