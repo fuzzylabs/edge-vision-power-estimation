@@ -79,9 +79,7 @@ def verify_per_layer_measurements(
             logger.debug(f"{row['layer_name']} -> {row[col_name]}")
 
     # Check if power or runtime samples pass sufficient threshold
-    if all(count_df[col_name] >= min_per_layer_measurement):
-        return True
-    return False
+    return all(count_df[col_name] >= min_per_layer_measurement)
 
 
 def get_average_measurement_data(path: Path, df: pd.DataFrame) -> pd.DataFrame:
