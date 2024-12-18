@@ -1,0 +1,3 @@
+layer_name,count,mean,std,min,25%,50%,75%,max
+conv_relu_layer,4.0,0.08,0.0,0.08,0.08,0.08,0.08,0.08
+maxpool_layer,4.0,0.01,0.0,0.01,0.01,0.01,0.01,0.01

@@ -56,7 +56,7 @@ EdgeProfiler helps you to understand and minimise your model's power consumption
   3. Run the data pipeline to create the training dataset using the [`create_dataset.sh`](model_training/create_dataset.sh) script.
   4. Run the [`run.py`](model_training/run.py) model training script storing logs and models with MLFlow. 
 
-  ![overview](docs/assets/high_level_overview.png)
+  ![overview](assets/high_level_overview.png)
 
   > 📌 **Important**
   > 
