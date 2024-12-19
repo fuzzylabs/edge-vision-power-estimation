@@ -12,7 +12,6 @@ from tqdm import tqdm
 from data_preparation.io_utils import read_json_file, read_log_file
 
 
-# Test 
 class MetricsByCycle(TypedDict):
     """Metrics collected by an inference cycle for a given layer."""
 
