@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+from loguru import logger
 from tqdm import tqdm
 
 from data_preparation.tensorrt_utils import TensorRTLayer
@@ -94,7 +95,7 @@ def convert_measurements_to_training_data(
     for _, row in tqdm(measurements.iterrows(), total=measurements.shape[0]):
         layer_name = row.layer_name
         if layer_name not in layers_info:
-            print(f"Layer {layer_name} is not found!")
+            logger.warning(f"Layer {layer_name} is not found!")
             continue
 
         layer_info = layers_info[layer_name]
@@ -120,7 +121,7 @@ def convert_measurements_to_training_data(
         else:
             layers_ignored.add(layer_type)
 
-    print(f"Layer types ignored: {layers_ignored}")
+    logger.warning(f"Layer types ignored: {layers_ignored}")
 
     save_path.mkdir(parents=True, exist_ok=True)
 
@@ -130,4 +131,4 @@ def convert_measurements_to_training_data(
             df = pd.DataFrame(results[layer_type])
             df.to_csv(filepath, index=False)
         else:
-            print(f"Skipping {layer_type} as it is empty")
+            logger.info(f"Skipping {layer_type} as it is empty")
