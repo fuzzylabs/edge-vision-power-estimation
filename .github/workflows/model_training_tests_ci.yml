@@ -14,6 +14,10 @@ on:
       - develop
     paths: 'model_training/**/*.py'
 
+defaults:
+  run:
+    working-directory: model_training
+
 jobs:
   model-training-tests:
     name: Run tests for `model_training`
