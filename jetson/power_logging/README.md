@@ -97,7 +97,6 @@ For insights into how runtime is measured for each layer on Jetson, refer to [th
 ```bash
 .
 ├── assets
-├── data_version.py
 ├── Dockerfile.jetson
 ├── docs
 ├── measure_idling_power.py
@@ -109,8 +108,6 @@ For insights into how runtime is measured for each layer on Jetson, refer to [th
 ├── run_experiment.sh
 └── uv.lock
 ```
-
-- **[data_version.py](./data_version.py)** : This script contains functions to upload and download dataset to/from Dagshub. DagsHub uses DVC underneath to create data versions.
 
 - **[measure_idling_power.py](./measure_idling_power.py)** : This script measures average power usage when there Jetson is idle i.e. no benchmarking is being run.
 
