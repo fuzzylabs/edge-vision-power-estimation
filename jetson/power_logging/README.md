@@ -94,8 +94,8 @@ OS - Ubuntu 22.04-based root file system
     Push both the data and new git branch to the remote
 
     ```bash
-    dvc push
-    git push
+    dvc push -r origin
+    git push origin raw_data_v1
     ```
 
 > [!NOTE]  
