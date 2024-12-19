@@ -47,24 +47,56 @@ OS - Ubuntu 22.04-based root file system
 > Use this exact Docker image to ensure compatibility with `tensorrt==10.1.0` and `torch_tensorrt==2.4.0`.</br>
 > Base image `nvcr.io/nvidia/pytorch:24.06-py3-igpu` might take some time to download on Jetson. (approx. 5 GB in size)
 
-3. Run the container
+3. Run the container to collect power and runtime measurements for the CNN models
 
     ```bash
-    sudo docker run -e DAGSHUB_USER_TOKEN=<dagshub-token> --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
+    sudo docker run --runtime=nvidia --ipc=host -v $(pwd):/app -d edge-vision-benchmark
     ```
 
-> [!NOTE]  
-> You can generate a long lived app DagsHub token with no expiry date from your [User Settings](https://dagshub.com/user/settings/tokens).
+    This will start running the [`run_experiment.sh`](./run_experiment.sh) script by default. You can also override by passing your custom experiment script.
 
-This will start running the [`run_experiment.sh`](./run_experiment.sh) script by default. You can also override by passing your custom experiment script. More information on the `run_experiment.sh` can be found in the [data collection on Jetson](../../docs/ExperimentScripts.md#data-collection-script-on-jetson) section.
+    More information on the `run_experiment.sh` can be found in the [data collection on Jetson](../../docs/ExperimentScripts.md#data-collection-script-on-jetson) section.
 
-To follow the logs of the experiment, you can run the following command
+    To follow the logs of the experiment, you can run the following command
 
-```bash
-sudo docker logs -f <container-name>
-```
+    ```bash
+    sudo docker logs -f <container-name>
+    ```
 
-You can find the name of the docker container using the `sudo docker ps` command.
+    You can find the name of the docker container using the `sudo docker ps` command.
+
+4. Add DVC credentials to the Jetson as shown in the video below. Run the commands corresponding to the `Add a DagsHub DVC remote` and `Setup credentials` sections on the Jetson.
+
+    <a href="DVC Remote"><img src="./assets/dvc-remote.gif" align="center" height="500" width="500" ></a>
+
+5. Upload benchmark data to DagsHub from Jetson.
+
+    If you are using DVC for **only the first time**, run the following command in the current working directory on the Jetson.
+
+    ```bash
+    dvc init
+    ```
+
+    Track `raw_data` folder using `dvc add` command
+
+    ```bash
+    dvc add raw_data
+    ```
+
+    Next, run the following commands to track changes in Git. We create a new branch `raw_data_v1` and add a commit message `Add raw data version 1`. Please make sure to add a new branch and a good commit message for clarity.
+
+    ```bash
+    git checkout -b raw_data_v1
+    git add raw_data.dvc .gitignore
+    git commit -m "Add raw data version 1"
+    ```
+
+    Push both the data and new git branch to the remote
+
+    ```bash
+    dvc push
+    git push
+    ```
 
 > [!NOTE]  
 > Learn more about the format of dataset collected in the [raw dataset](../../docs/DatasetFormats.md#raw-dataset-format) section.
