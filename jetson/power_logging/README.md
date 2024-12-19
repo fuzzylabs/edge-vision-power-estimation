@@ -83,7 +83,7 @@ OS - Ubuntu 22.04-based root file system
     dvc add raw_data
     ```
 
-    Next, run the following commands to track changes in Git. We create a new branch `raw_data_v1` and add a commit message `Add raw data version 1`. Please make sure to add a new branch and a good commit message for clarity.
+    Next, run the following commands to track changes in Git. For example, we create a new branch `raw_data_v1` and add a commit message `Add raw data version 1`. Please make sure to add a new branch and a good commit message for clarity.
 
     ```bash
     git checkout -b raw_data_v1
