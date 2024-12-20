@@ -71,7 +71,7 @@ If you have uploaded the raw dataset from the benchmarking experiment on the Jet
 If not you can pull the raw data from DagsHub using following command,
 
 ```bash
-dvc pull
+dvc pull -r origin
 ```
 
 This will create a `raw_data` folder under [`jetson/power_logging`](../jetson/power_logging/) folder containing data from our benchmarking experiment.
@@ -88,7 +88,7 @@ To know more about the contents in this script, refer to the [Data Preprocessing
 
 To push the training data to DagsHub using DVC, follow the steps outlined below
 
-1. Add DVC credentials to the Jetson as shown in the video below. Run the commands at the root of the project corresponding to the `Add a DagsHub DVC remote` and `Setup credentials` sections on the Jetson.
+1. Add DVC credentials locally as shown in the video below. Run the commands at the root of the project corresponding to the `Add a DagsHub DVC remote` and `Setup credentials` sections.
 
     ```bash
     $ pwd
@@ -111,11 +111,11 @@ To push the training data to DagsHub using DVC, follow the steps outlined below
     dvc add model_training/training_data
     ```
 
-    Next, run the following commands to track changes in Git. For example, we add a commit message `Add training data`. Please make sure to add a good commit message for clarity.
+    Next, run the following commands to track changes in Git. For example, we add a commit message `Add training data version 1`. Please make sure to add a good commit message for clarity.
 
     ```bash
-    git add .dvc model_training/training_data.dvc
-    git commit -m "Add training data"
+    git add model_training/training_data.dvc
+    git commit -m "Add training data version 1"
     ```
 
     Push both the data and new git branch to the remote
@@ -182,11 +182,11 @@ The [`run.py`](run.py) script orchestrates the following training pipeline:
 ├── convert_measurements.py   # Script to convert preprocessed data to training data
 ├── create_dataset.sh         # Script to convert raw data to train data
 ├── data_preparation          # Utility functions for parsing preprocessed data
-├── dataset                   # Dataset Builder
+├── dataset_builder           # Dataset Builder
 ├── map_power_to_layers.py    # Script to convert raw data to preprocessed data
-├── model                     # Model Builder
+├── model_builder             # Model Builder
 ├── notebooks                 # Notebooks containing data exploration and hyperparameter tuning
-├── pipeline                  # Trainer
+├── trainer                   # Trainer
 ├── pyproject.toml
 ├── README.md
 ├── run.py
