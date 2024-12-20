@@ -47,16 +47,4 @@ do
     $INPUT_SHAPE
 done
 
-DAGSHUB_OWNER="fuzzylabs"
-DAGSHUB_REPO_NAME="edge-vision-power-estimation"
-COMMIT_MESSAGE="Add 20 models to raw data"
-
-echo "Using DagsHub and DVC for benchmark data"
-python data_version.py \
-  --owner "$DAGSHUB_OWNER" \
-  --name "$DAGSHUB_REPO_NAME" \
-  --local-dir-path "$RESULT_DIR" \
-  --commit "$COMMIT_MESSAGE" \
-  --upload
-
 echo "Experiment completed!"
