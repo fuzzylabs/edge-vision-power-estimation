@@ -7,6 +7,8 @@ from typing import Any
 import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
+from dataset_builder.dataset_builder import DatasetBuilder, TrainTestDataset
+from model_builder.model_builder import ModelBuilder
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -15,9 +17,6 @@ from sklearn.metrics import (
     root_mean_squared_error,
 )
 from sklearn.pipeline import Pipeline
-
-from dataset.dataset_builder import DatasetBuilder, TrainTestDataset
-from model.model_builder import ModelBuilder
 
 
 class Trainer:

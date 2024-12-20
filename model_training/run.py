@@ -7,7 +7,7 @@ from config.convolutional_features import CONV_FEATURES, CONVOLUTION_PIPELINE
 from config.dense_features import DENSE_FEATURES, DENSE_PIPELINE
 from config.pooling_features import POOLING_FEATURES, POOLING_PIPELINE
 from data_preparation.io_utils import read_yaml_file
-from pipeline.trainer import Trainer
+from trainer.trainer import Trainer
 
 
 def get_config(config_path: Path = Path("config/config.yaml")) -> Any:
