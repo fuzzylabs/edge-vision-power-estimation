@@ -65,19 +65,23 @@ OS - Ubuntu 22.04-based root file system
 
     You can find the name of the docker container using the `sudo docker ps` command.
 
-4. Add DVC credentials to the Jetson as shown in the video below. Run the commands corresponding to the `Add a DagsHub DVC remote` and `Setup credentials` sections on the Jetson.
-
-    If you are uploading the data to DagsHub for **the first time**, run the following command in the current working directory on the Jetson.
-
-    Following command is **needed only when DVC repo is cleared**.
+4. Add DVC credentials to the Jetson as shown in the video below. Run the commands at the root of the project corresponding to the `Add a DagsHub DVC remote` and `Setup credentials` sections on the Jetson.
 
     ```bash
-    dvc init --subdir
+    $ pwd
+    /home/username/edge-vision-power-estimation
     ```
 
     <a href="DVC Remote"><img src="./assets/dvc-remote.gif" align="center" height="500" width="500" ></a>
 
-5. Upload benchmark data to DagsHub from Jetson.
+5. Upload benchmark data to DagsHub from Jetson from the current working directory.
+
+    Make sure you are under [`jetson/power_logging`](./README.md) folder for running the following commands
+
+    ```bash
+    $ pwd
+    /home/username/edge-vision-power-estimation/jetson/power_logging
+    ```
 
     We create a new branch `raw_data_v1`. Please make sure to add a new branch for clarity.
 
@@ -91,11 +95,12 @@ OS - Ubuntu 22.04-based root file system
     dvc add raw_data
     ```
 
-    Next, run the following commands to track changes in Git. For example, we add a commit message `Add raw data version 1`. Please make sure to add a good commit message for clarity.
+    Next, run the following commands to track changes in Git. For example, we add a commit message `Add raw data`. Please make sure to add a good commit message for clarity.
 
     ```bash
-    git add raw_data.dvc .dvc
-    git commit -m "Add raw data version 1"
+    cd ../../
+    git add .dvc jetson/power_loggin/raw_data.dvc
+    git commit -m "Add raw data"
     ```
 
     Push both the data and new git branch to the remote
