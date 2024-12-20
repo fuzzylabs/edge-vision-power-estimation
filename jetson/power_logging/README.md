@@ -67,14 +67,20 @@ OS - Ubuntu 22.04-based root file system
 
 4. Add DVC credentials to the Jetson as shown in the video below. Run the commands corresponding to the `Add a DagsHub DVC remote` and `Setup credentials` sections on the Jetson.
 
+    If you are uploading the data to DagsHub for **the first time**, run the following command in the current working directory on the Jetson.
+
+    ```bash
+    dvc init --subdir
+    ```
+
     <a href="DVC Remote"><img src="./assets/dvc-remote.gif" align="center" height="500" width="500" ></a>
 
 5. Upload benchmark data to DagsHub from Jetson.
 
-    If you are using DVC for **only the first time**, run the following command in the current working directory on the Jetson.
+    We create a new branch `raw_data_v1`. Please make sure to add a new branch for clarity.
 
     ```bash
-    dvc init
+    git checkout -b raw_data_v1
     ```
 
     Track `raw_data` folder using `dvc add` command
@@ -83,12 +89,12 @@ OS - Ubuntu 22.04-based root file system
     dvc add raw_data
     ```
 
-    Next, run the following commands to track changes in Git. For example, we create a new branch `raw_data_v1` and add a commit message `Add raw data version 1`. Please make sure to add a new branch and a good commit message for clarity.
+    Next, run the following commands to track changes in Git and DVC. For example, we add a commit message `Add raw data version 1`. Please make sure to add a good commit message for clarity.
 
     ```bash
-    git checkout -b raw_data_v1
-    git add raw_data.dvc .gitignore
+    git add raw_data.dvc .dvc
     git commit -m "Add raw data version 1"
+    dvc commit
     ```
 
     Push both the data and new git branch to the remote
