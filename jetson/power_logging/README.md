@@ -69,7 +69,7 @@ OS - Ubuntu 22.04-based root file system
 
     If you are uploading the data to DagsHub for **the first time**, run the following command in the current working directory on the Jetson.
 
-    Following command is **only needed when DVC repo is cleared**.
+    Following command is **needed only when DVC repo is cleared**.
 
     ```bash
     dvc init --subdir
