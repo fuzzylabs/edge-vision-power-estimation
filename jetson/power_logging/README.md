@@ -89,12 +89,11 @@ OS - Ubuntu 22.04-based root file system
     dvc add raw_data
     ```
 
-    Next, run the following commands to track changes in Git and DVC. For example, we add a commit message `Add raw data version 1`. Please make sure to add a good commit message for clarity.
+    Next, run the following commands to track changes in Git. For example, we add a commit message `Add raw data version 1`. Please make sure to add a good commit message for clarity.
 
     ```bash
     git add raw_data.dvc .dvc
     git commit -m "Add raw data version 1"
-    dvc commit
     ```
 
     Push both the data and new git branch to the remote
