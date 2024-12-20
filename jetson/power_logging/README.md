@@ -72,18 +72,11 @@ OS - Ubuntu 22.04-based root file system
     /home/username/edge-vision-power-estimation
     ```
 
-    <a href="DVC Remote"><img src="./assets/dvc-remote.gif" align="center" height="500" width="500" ></a>
+    <a href="DVC Remote"><img src="../../docs/dvc-remote.gif" align="center" height="500" width="500" ></a>
 
-5. Upload benchmark data to DagsHub from Jetson from the current working directory.
+5. Upload benchmark data to DagsHub collected on Jetson from the root directory of the project.
 
-    Make sure you are under [`jetson/power_logging`](./README.md) folder for running the following commands
-
-    ```bash
-    $ pwd
-    /home/username/edge-vision-power-estimation/jetson/power_logging
-    ```
-
-    We create a new branch `raw_data_v1`. Please make sure to add a new branch for clarity.
+    First, We create a new branch `raw_data_v1`. Please make sure to add a new branch for clarity.
 
     ```bash
     git checkout -b raw_data_v1
@@ -92,14 +85,13 @@ OS - Ubuntu 22.04-based root file system
     Track `raw_data` folder using `dvc add` command
 
     ```bash
-    dvc add raw_data
+    dvc add jetson/power_logging/raw_data
     ```
 
     Next, run the following commands to track changes in Git. For example, we add a commit message `Add raw data`. Please make sure to add a good commit message for clarity.
 
     ```bash
-    cd ../../
-    git add .dvc jetson/power_loggin/raw_data.dvc
+    git add .dvc jetson/power_logging/raw_data.dvc
     git commit -m "Add raw data"
     ```
 

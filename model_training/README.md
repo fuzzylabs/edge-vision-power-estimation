@@ -68,7 +68,15 @@ For each of the layer types (convolutional, dense and pooling), a power and runt
 
 If you have uploaded the raw dataset from the benchmarking experiment on the Jetson device, the next step is to get a training dataset.
 
-To process the raw dataset into training data ingestible by a model, run the [`create_dataset.sh`](./create_dataset.sh) script.
+If not you can pull the raw data from DagsHub using following command,
+
+```bash
+dvc pull
+```
+
+This will create a `raw_data` folder under [`jetson/power_logging`](../jetson/power_logging/) folder containing data from our benchmarking experiment.
+
+To process this raw dataset into training data ingestible by a model, run the [`create_dataset.sh`](./create_dataset.sh) script.
 
 ```bash
 ./create_dataset.sh
@@ -76,10 +84,46 @@ To process the raw dataset into training data ingestible by a model, run the [`c
 
 To know more about the contents in this script, refer to the [Data Preprocessing](../docs/ExperimentScripts.md#data-preprocessing-script) script section.
 
-You can also pass the `--push-to-dagshub` flag to the above command, this will enable pushing the `training_data` to the DagsHub repository.
+#### Push training dataset to DagsHub
 
-> [!NOTE]
-> If you already have your own `training_data`, then you can skip step 1 and head straight to step 2.
+To push the training data to DagsHub using DVC, follow the steps outlined below
+
+1. Add DVC credentials to the Jetson as shown in the video below. Run the commands at the root of the project corresponding to the `Add a DagsHub DVC remote` and `Setup credentials` sections on the Jetson.
+
+    ```bash
+    $ pwd
+    /home/username/edge-vision-power-estimation
+    ```
+
+    <a href="DVC Remote"><img src="../../docs/dvc-remote.gif" align="center" height="500" width="500" ></a>
+
+2. Upload training data to DagsHub from the root directory of the project.
+
+    We create a new branch `train_data_v1`. Please make sure to add a new branch for clarity.
+
+    ```bash
+    git checkout -b train_data_v1
+    ```
+
+    Track `training_data` folder using `dvc add` command
+
+    ```bash
+    dvc add model_training/training_data
+    ```
+
+    Next, run the following commands to track changes in Git. For example, we add a commit message `Add training data`. Please make sure to add a good commit message for clarity.
+
+    ```bash
+    git add .dvc model_training/training_data.dvc
+    git commit -m "Add training data"
+    ```
+
+    Push both the data and new git branch to the remote
+
+    ```bash
+    dvc push -r origin
+    git push origin train_data_v1
+    ```
 
 ---
 
@@ -88,16 +132,10 @@ You can also pass the `--push-to-dagshub` flag to the above command, this will e
 **Download Training Data**: DagsHub already contains the training dataset that we can use directly. To download the latest training dataset run the following command
 
 ```bash
-python data_version.py \
---owner fuzzylabs \
---name edge-vision-power-estimation \
---local-dir-path training_data \
---remote-dir-path training_data \
---branch main \
---download
+dvc pull training_data
 ```
 
-This will download data from the FuzzyLabs [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to the `training_data` folder on your local filesystem.
+This will download training data from the FuzzyLabs [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to the `training_data` folder on your local filesystem.
 
 > [!NOTE]
 > This step is recommended if you want to get started with training the models using data already present on DagsHub repository. </br>
@@ -142,10 +180,9 @@ The [`run.py`](run.py) script orchestrates the following training pipeline:
 ├── assets
 ├── config                    # Configuration required for training prediction models
 ├── convert_measurements.py   # Script to convert preprocessed data to training data
-├── create_dataset.sh         # Script to convert raw data to train data and upload data to DagsHub 
+├── create_dataset.sh         # Script to convert raw data to train data
 ├── data_preparation          # Utility functions for parsing preprocessed data
 ├── dataset                   # Dataset Builder
-├── data_version.py           # DagsHub client to upload and download data from/to DagsHub
 ├── map_power_to_layers.py    # Script to convert raw data to preprocessed data
 ├── model                     # Model Builder
 ├── notebooks                 # Notebooks containing data exploration and hyperparameter tuning
