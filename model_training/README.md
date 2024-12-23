@@ -132,14 +132,14 @@ To push the training data to DagsHub using DVC, follow the steps outlined below
 **Download Training Data**: DagsHub already contains the training dataset that we can use directly. To download the latest training dataset run the following command
 
 ```bash
-dvc pull training_data
+dvc pull training_data -r origin
 ```
 
 This will download training data from the FuzzyLabs [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to the `training_data` folder on your local filesystem.
 
 > [!NOTE]
 > This step is recommended if you want to get started with training the models using data already present on DagsHub repository. </br>
-> If you have a new raw dataset, follow step outlined in raw data collected on Jetson [section](#raw-data-is-collected-on-jetson) to create a training dataset.
+> If you have a new raw dataset, follow the steps outlined in raw data collected on Jetson [section](#raw-data-is-collected-on-jetson) to create a training dataset.
 
 **Run Training Script**: We are all set to train power and runtime prediction models.
 
@@ -157,9 +157,8 @@ We use the raw dataset from Jetson to create a preprocessed and training dataset
 
 The raw dataset that we have collected from the Jetson lives in DagsHub - running the [`create_dataset.sh`](create_dataset.sh) script orchestrates the following data pipeline:
 
-1. Pulls the raw dataset to local file storage ([`data_version.py`](data_version.py)).
-2. Builds the pre-processed dataset by mapping power readings to individual layers in the CNN ([`map_power_to_layers.py`](map_power_to_layers.py)).
-3. Reformats the pre-processed dataset into a sklearn compatible training dataset ([`convert_measurements.py`](convert_measurements.py))
+1. Builds the pre-processed dataset by mapping power readings to individual layers in the CNN ([`map_power_to_layers.py`](map_power_to_layers.py)).
+2. Reformats the pre-processed dataset into a sklearn compatible training dataset ([`convert_measurements.py`](convert_measurements.py))
 
 ![data_pipeline](assets/data_pipeline.png)
 
