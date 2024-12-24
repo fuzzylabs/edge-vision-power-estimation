@@ -17,5 +17,5 @@ The [`run_experiment.sh`](../jetson/power_logging/run_experiment.sh) script is r
 
 The [`create_dataset.sh`](../model_training/create_dataset.sh) script provides a helpful utility to get preprocessed and training datasets from a raw dataset. The script performs the following operations:
 
-3. `Lines 12:15`: Create preprocessed dataset from raw dataset using the `map_power_to_layers.py` script.
-5. `Lines 20:23`: Create training dataset from preprocessed dataset using the `convert_measurements.py` script.
+1. `Lines 12:15`: Create preprocessed dataset from raw dataset using the `map_power_to_layers.py` script.
+2. `Lines 20:23`: Create training dataset from preprocessed dataset using the `convert_measurements.py` script.
