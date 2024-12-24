@@ -95,7 +95,7 @@ To push the training data to DagsHub using DVC, follow the steps outlined below
     /home/username/edge-vision-power-estimation
     ```
 
-    <a href="DVC Remote"><img src="../../docs/dvc-remote.gif" align="center" height="500" width="500" ></a>
+    <a href="DVC Remote"><img src="../assets/dvc-remote.gif" align="center" height="500" width="500" ></a>
 
 2. Upload training data to DagsHub from the root directory of the project.
 
