@@ -48,11 +48,11 @@ Trained models are downloaded in thee `trained_models` folders. This is how the 
 ```bash
 trained_models
 ├── convolutional
-│   ├── power
-│   └── runtime
+│   ├── power
+│   └── runtime
 ├── dense
-│   ├── power
-│   └── runtime
+│   ├── power
+│   └── runtime
 └── pooling
     ├── power
     └── runtime
@@ -124,6 +124,8 @@ To push the training data to DagsHub using DVC, follow the steps outlined below
     dvc push -r origin
     git push origin train_data_v1
     ```
+
+After the PR related to train dataset is merged, a tag for that specific version of train dataset should be created. To know more about tagging, refer to [DVC tagging](../docs/DVC.md#tagging) documentation.
 
 ---
 

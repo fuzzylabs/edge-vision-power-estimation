@@ -102,6 +102,8 @@ OS - Ubuntu 22.04-based root file system
     git push origin raw_data_v1
     ```
 
+    After the PR related to raw dataset is merged, a tag for that specific version of raw dataset should be created. To know more about tagging, refer to [DVC tagging](../../docs/DVC.md#tagging) documentation.
+
 > [!NOTE]  
 > Learn more about the format of dataset collected in the [raw dataset](../../docs/DatasetFormats.md#raw-dataset-format) section.
 
