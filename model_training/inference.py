@@ -13,7 +13,7 @@ from pathlib import Path
 import dagshub
 import pandas as pd
 from data_preparation.tensorrt_utils import read_layers_info
-from model.model_inference import InferenceModel
+from model_builder.model_inference import InferenceModel
 
 
 def print_metrics(df: pd.DataFrame) -> None:
