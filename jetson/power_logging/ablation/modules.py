@@ -1,5 +1,6 @@
 """Ablated nn modules definitions."""
 import torch
+import torch.nn.functional as F
 import math
 
 def cast_to_tuple_2d(value: int | tuple[int, int]) -> tuple[int, int]:
@@ -9,7 +10,24 @@ def cast_to_tuple_2d(value: int | tuple[int, int]) -> tuple[int, int]:
         return value
 
 
-class AblatedAbstract2d(torch.nn.Module):
+class AblatedModule(torch.nn.Module):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.reshape(x, self.output_shape(x))
+
+    def reshape(self, x: torch.Tensor, shape) -> torch.Tensor:
+        x = x.flatten()
+        in_size = x.shape[0]
+        out_size = math.prod(shape)
+        if in_size > out_size:
+            return x[:out_size].reshape(shape)
+        else:
+            return F.pad(x, (0, out_size - in_size, )).reshape(shape)
+
+    def output_shape(self, x):
+        raise NotImplementedError()
+
+
+class AblatedAbstract2d(AblatedModule):
     kernel_size: tuple[int, int]
     stride: tuple[int, int]
     padding: tuple[int, int]
@@ -21,9 +39,6 @@ class AblatedAbstract2d(torch.nn.Module):
         self.stride = cast_to_tuple_2d(layer.stride)
         self.padding = cast_to_tuple_2d(layer.padding)
         self.dilation = cast_to_tuple_2d(layer.dilation)
-
-    def forward(self, x):
-        return torch.ones(self.output_shape(x))
 
     def output_shape(self, x) -> tuple[int, int, int, int]:
         x_shape = x.shape
@@ -44,7 +59,7 @@ class AblatedAbstract2d(torch.nn.Module):
 
 
 class AblatedConv2d(AblatedAbstract2d):
-    out_channels: int
+    out_channels: tuple[int]
 
     def __init__(self, layer: torch.nn.Conv2d) -> None:
         super().__init__(layer)
@@ -63,33 +78,36 @@ class AblatedConv2d(AblatedAbstract2d):
         return f"out_channels={self.out_channels}, {super().extra_repr()}"
 
 
+Pool2d = torch.nn.MaxPool2d
+
+
 class AblatedPool2d(AblatedAbstract2d):
     pass
 
 
-class AblatedAdaptivePool2d(torch.nn.Module):
+class AblatedAdaptivePool2d(AblatedModule):
     def __init__(self, layer: torch.nn.AdaptiveAvgPool2d) -> None:
         super().__init__()
         self.output_size = layer.output_size
 
-    def forward(self, x):
+    def output_shape(self, x):
         shape = x.shape
-        return torch.ones((shape[0], shape[1], self.output_size[0], self.output_size[1]))
+        return shape[0], shape[1], self.output_size[0], self.output_size[1]
 
     def extra_repr(self) -> str:
         return f"output_size={self.output_size}"
 
 
-class AblatedLinear(torch.nn.Module):
+class AblatedLinear(AblatedModule):
     out_features: int
 
     def __init__(self, layer: torch.nn.Linear) -> None:
         super().__init__()
         self.out_features = layer.out_features
 
-    def forward(self, x):
+    def output_shape(self, x):
         shape = x.shape
-        return torch.ones((shape[0], self.out_features))
+        return shape[0], self.out_features
 
     def extra_repr(self) -> str:
         return f"out_features={self.out_features}"
