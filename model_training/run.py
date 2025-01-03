@@ -84,7 +84,9 @@ def train_pipeline(
 
     dataset = trainer.get_dataset(pattern=pattern)
     if dataset is None:
-        logger.warning("No dataset found for training")
+        logger.critical(
+            f"No dataset found for training model : {model_type} and layer: {layer_type}"
+        )
         return
 
     pipeline = trainer.get_model(
