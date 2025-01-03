@@ -127,7 +127,9 @@ class Trainer:
             test_target = test_dataset.runtime
 
         logger.info(f"Training {model_type} model")
-        with mlflow.start_run(run_name=f"{layer_type}_{model_type}_model"):
+        mlflow.set_experiment(f"test_{layer_type}_{model_type}_model")
+        mlflow.sklearn.autolog()
+        with mlflow.start_run(run_name=self.mlflow_config["mlflow_experiment_name"]):
             # MLflow tags
             repo = f"git@github.com:{self.mlflow_config['dagshub_repo_owner']}/{self.mlflow_config['dagshub_repo_name']}.git"
             mlflow.set_tags(
