@@ -10,8 +10,8 @@ RESULT_DIR="raw_data"
 
 echo "Running idling power measurement..."
 python measure_idling_power.py \
-  --idle-duration $IDLE_DURATION \
-  --result-dir "$RESULT_DIR"
+ --idle-duration $IDLE_DURATION \
+ --result-dir "$RESULT_DIR"
 
 # Wait for 2 minutes
 echo "Sleeping for 2 minutes..."
@@ -40,7 +40,7 @@ do
   fi
 
   # Run the measure_inference_power.py script
-  echo python measure_inference_power.py \
+  python measure_inference_power.py \
     --model "$model" \
     --runs "$RUNS" \
     --result-dir "$RESULT_DIR" \
@@ -50,13 +50,13 @@ do
   layers_for_ablation=( $(python detect_layers_for_ablation.py --model "$model") )
   for layer in "${layers_for_ablation[@]}"
   do
-    echo python measure_inference_power.py \
-    --model "$model" \
-    --runs "$RUNS" \
-    --result-dir "$RESULT_DIR" \
-    --optimization-level 3 \
-    --layer "$layer"
-    $INPUT_SHAPE
+    python measure_inference_power.py \
+      --model "$model" \
+      --runs "$RUNS" \
+      --result-dir "$RESULT_DIR" \
+      --optimization-level 3 \
+      --ablate-layer "$layer" \
+      $INPUT_SHAPE
   done
 done
 
