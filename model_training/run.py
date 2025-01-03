@@ -113,6 +113,7 @@ def main(config: dict) -> None:
         config: Configuration dict.
     """
     data_tag = get_train_data_version(root_git_dir="..")
+    logger.info(f"Found training data tag: {data_tag}")
     if data_tag is None:
         logger.critical("No data tag found for the training data")
         exit(1)
@@ -130,7 +131,6 @@ def main(config: dict) -> None:
         )
 
         mlflow.set_experiment(mlflow_config["mlflow_experiment_name"])
-        logger.info(f"Found training data tag: {data_tag}")
 
         mlflow.sklearn.autolog()
 
