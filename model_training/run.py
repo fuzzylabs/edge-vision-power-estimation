@@ -3,6 +3,9 @@
 from pathlib import Path
 from typing import Any
 
+from git import Repo
+from loguru import logger
+
 from config.convolutional_features import CONV_FEATURES, CONVOLUTION_PIPELINE
 from config.dense_features import DENSE_FEATURES, DENSE_PIPELINE
 from config.pooling_features import POOLING_FEATURES, POOLING_PIPELINE
@@ -23,6 +26,38 @@ def get_config(config_path: Path = Path("config/config.yaml")) -> Any:
     return read_yaml_file(config_path)
 
 
+def get_train_data_version(root_git_dir: str = "..") -> str | None:
+    """Get git tag corresponding to training_data.dvc file.
+
+    Args:
+        root_git_dir: Path to root of the git repo
+
+    Returns:
+        Git tag corresponding to training data
+
+    Raises:
+        Exception is thrown if tag is not found for training_data.dvc file
+    """
+    repo = Repo(root_git_dir)
+    current_commit, _ = repo.blame("HEAD", file="model_training/training_data.dvc")[0]
+    logger.debug(
+        f"Commit corresponding to 'model_training/training_data.dvc' file: {current_commit}"
+    )
+    git_cmd = repo.git
+    try:
+        current_tag = git_cmd.tag(current_commit, contains=True)
+        logger.debug(
+            f"Tag corresponding to 'model_training/training_data.dvc' file: {current_tag}"
+        )
+        return current_tag
+    except Exception as e:
+        logger.warning(
+            "No tag found for current 'model_training/training_data.dvc' file\n"
+            f"Command failed with following error : {e}"
+        )
+        return None
+
+
 def train_pipeline(
     layer_type: str,
     model_type: str,
@@ -30,6 +65,7 @@ def train_pipeline(
     features: list[str],
     pipeline_parameters: dict[str, Any],
     pattern: str,
+    data_tag: str,
 ) -> None:
     """Training pipeline.
 
@@ -41,18 +77,14 @@ def train_pipeline(
         features: List of columns to be used as features.
         pipeline_parameters: Paramters used to construct a sklearn pipeline
         pattern: Pattern used by rglob to find relevant CSV files.
+        data_tag : Name of train data tag used for training.
     """
-    data_config = config["data"]
-    model_config = config["model"]
-
     params = pipeline_parameters[model_type]
-    trainer = Trainer(
-        data_config=data_config, model_config=model_config, features=features
-    )
+    trainer = Trainer(config=config, features=features)
 
     dataset = trainer.get_dataset(pattern=pattern)
     if dataset is None:
-        print("No dataset found for training")
+        logger.warning("No dataset found for training")
         return
 
     pipeline = trainer.get_model(
@@ -68,6 +100,7 @@ def train_pipeline(
         pipeline=pipeline,
         layer_type=layer_type,
         model_type=model_type,
+        train_data_tag=data_tag,
     )
 
 
@@ -77,8 +110,12 @@ def main(config: dict) -> None:
     Args:
         config: Configuration dict.
     """
-    mlflow_config = config["mlflow"]
+    data_tag = get_train_data_version(root_git_dir="..")
+    if data_tag is None:
+        logger.critical("No data tag found for the training data")
+        exit(1)
 
+    mlflow_config = config["mlflow"]
     # Optionally enable mlflow tracking
     if mlflow_config["enable_tracking"]:
         import dagshub
@@ -91,12 +128,14 @@ def main(config: dict) -> None:
         )
 
         mlflow.set_experiment(mlflow_config["mlflow_experiment_name"])
+        logger.info(f"Found training data tag: {data_tag}")
+
         mlflow.sklearn.autolog()
 
     # Train power and runtime for convolutional layer
     for model_type in ["power", "runtime"]:
-        print("-" * 80)
-        print(f"Training for layer = convolutional and model = {model_type}")
+        logger.info("-" * 80)
+        logger.info(f"Training for layer = convolutional and model = {model_type}")
         train_pipeline(
             layer_type="convolutional",
             model_type=model_type,
@@ -104,12 +143,13 @@ def main(config: dict) -> None:
             features=CONV_FEATURES,
             pipeline_parameters=CONVOLUTION_PIPELINE,
             pattern="**/convolutional.csv",
+            data_tag=data_tag,
         )
 
     # Train power and runtime for pooling layer
     for model_type in ["power", "runtime"]:
-        print("-" * 80)
-        print(f"Training for layer = pooling and model = {model_type}")
+        logger.info("-" * 80)
+        logger.info(f"Training for layer = pooling and model = {model_type}")
         train_pipeline(
             layer_type="pooling",
             model_type=model_type,
@@ -117,12 +157,13 @@ def main(config: dict) -> None:
             features=POOLING_FEATURES,
             pipeline_parameters=POOLING_PIPELINE,
             pattern="**/pooling.csv",
+            data_tag=data_tag,
         )
 
     # Train power and runtime for pooling layer
     for model_type in ["power", "runtime"]:
-        print("-" * 80)
-        print(f"Training for layer = dense and model = {model_type}")
+        logger.info("-" * 80)
+        logger.info(f"Training for layer = dense and model = {model_type}")
         train_pipeline(
             layer_type="dense",
             model_type=model_type,
@@ -130,6 +171,7 @@ def main(config: dict) -> None:
             features=DENSE_FEATURES,
             pipeline_parameters=DENSE_PIPELINE,
             pattern="**/dense.csv",
+            data_tag=data_tag,
         )
 
 

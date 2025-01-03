@@ -1,14 +1,13 @@
 """Trainer class."""
 
+import subprocess
 from pathlib import Path
-from pprint import pprint
 from typing import Any
 
 import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
-from dataset_builder.dataset_builder import DatasetBuilder, TrainTestDataset
-from model_builder.model_builder import ModelBuilder
+from loguru import logger
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -18,13 +17,26 @@ from sklearn.metrics import (
 )
 from sklearn.pipeline import Pipeline
 
+from dataset_builder.dataset_builder import DatasetBuilder, TrainTestDataset
+from model_builder.model_builder import ModelBuilder
+
+
+def get_git_branch():
+    """
+    Get current branch.
+    """
+    return (
+        subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+        .decode("utf-8")
+        .replace("\n", "")
+    )
+
 
 class Trainer:
-    def __init__(
-        self, data_config: dict, model_config: dict, features: list[str]
-    ) -> None:
-        self.data_config = data_config
-        self.model_config = model_config
+    def __init__(self, config: dict, features: list[str]) -> None:
+        self.data_config = config["data"]
+        self.model_config = config["model"]
+        self.mlflow_config = config["mlflow"]
         self.features = features
         self.dataset_builder = DatasetBuilder(features=features)
         self.model_builder = ModelBuilder(cv=self.model_config["cross_validation"])
@@ -82,6 +94,7 @@ class Trainer:
         pipeline: Pipeline,
         layer_type: str,
         model_type: str,
+        train_data_tag: str,
     ) -> None:
         """Train and evaluation sklearn pipeline.
 
@@ -94,12 +107,17 @@ class Trainer:
             layer_type: Type of layer
             model_type: Type of model to be trained.
                 It can be either runtime or power.
+            train_data_tag : Name of train data tag used for training.
         """
         train_dataset, test_dataset = dataset.train, dataset.test
-        print(f"Number of CNN models used for training: {len(dataset.train.csv_paths)}")
-        print(f"Number of CNN models used for testing: {len(dataset.test.csv_paths)}")
-        print(f"Training samples: {len(train_dataset.input_features)}")
-        print(f"Testing samples: {len(test_dataset.input_features)}")
+        logger.info(
+            f"Number of CNN models used for training: {len(dataset.train.csv_paths)}"
+        )
+        logger.info(
+            f"Number of CNN models used for testing: {len(dataset.test.csv_paths)}"
+        )
+        logger.info(f"Training samples: {len(train_dataset.input_features)}")
+        logger.info(f"Testing samples: {len(test_dataset.input_features)}")
 
         train_features = train_dataset.input_features.values
         test_features = test_dataset.input_features.values
@@ -110,20 +128,32 @@ class Trainer:
             train_target = train_dataset.runtime.values
             test_target = test_dataset.runtime
 
-        print(f"Training {model_type} model")
+        logger.info(f"Training {model_type} model")
         with mlflow.start_run(run_name=f"{layer_type}_{model_type}_model"):
+            repo = f"git@github.com:{self.mlflow_config['dagshub_repo_owner']}/{self.mlflow_config['dagshub_repo_name']}.git"
+            mlflow.set_tags(
+                {
+                    "mlflow.source.git.branch": get_git_branch(),
+                    "mlflow.source.git.repoURL": repo,
+                    "train_data_tag": train_data_tag,
+                }
+            )
+
             # Train model
             pipeline.fit(train_features, train_target)
-            print(pipeline)
-            print(
-                pipeline.named_steps["lasso"].alpha_,
-                pipeline.named_steps["lasso"].coef_,
-                pipeline.named_steps["lasso"].intercept_,
-                pipeline.named_steps["lasso"].n_features_in_,
+
+            logger.info(pipeline)
+            alpha = pipeline.named_steps["lasso"].alpha_
+            coef = pipeline.named_steps["lasso"].coef_
+            intercept = pipeline.named_steps["lasso"].intercept_
+            n_features_in = pipeline.named_steps["lasso"].n_features_in_
+            logger.info(
+                f"Lasso model parameters: alpha={alpha}, coef={coef}, intercept={intercept}, n_features_in={n_features_in}"
             )
+
             train_pred = pipeline.predict(train_features)
             train_rmspe = Trainer.rmspe_metric(actual=train_target, pred=train_pred)
-            print(f"Training RMSPE: {train_rmspe}")
+            logger.info(f"Training RMSPE: {train_rmspe}")
             mlflow.log_metrics(
                 {"training_root_mean_squared_percentage_error": train_rmspe}
             )
@@ -131,7 +161,7 @@ class Trainer:
             # Evaluation
             predictions = pipeline.predict(test_features)
             test_metrics = Trainer.eval_metrics(actual=test_target, pred=predictions)
-            pprint(test_metrics)
+            logger.info(test_metrics)
             mlflow.log_metrics(test_metrics)
             mlflow.log_params(
                 {
@@ -216,8 +246,10 @@ class Trainer:
         pred = pipeline.predict(test_df[self.features].values)
         test_df[f"{model_type}_pred"] = pred
         test_df = test_df[["layer_name", f"{model_type}", f"{model_type}_pred"]]
-        print(f"Predictions for {test_file_path.parent.stem} model using {model_type}")
-        print(test_df)
+        logger.info(
+            f"Predictions for {test_file_path.parent.stem} model using {model_type}"
+        )
+        logger.info(test_df)
         # Get first 15 characters from long TensorRT layer names
         test_df.loc[:, "layer_name"] = test_df.loc[:, "layer_name"].str[:15]
         ax = test_df.plot(rot=90, x="layer_name", kind="bar")
