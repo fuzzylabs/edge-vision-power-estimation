@@ -75,6 +75,7 @@ def benchmark(args: argparse.Namespace) -> None:
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
     if args.ablate_layer is not None:
+        print(f"Ablating layer: {args.ablate_layer}")
         model = ablate_by_key(model, args.ablate_layer)
     model.eval().to(DEVICE)
 
@@ -87,6 +88,8 @@ def benchmark(args: argparse.Namespace) -> None:
     input_data = input_data.to(dtype)
     model = model.to(dtype)
     print(f"Using {DEVICE=} for benchmarking")
+
+    time.sleep(3)
 
     exp_program = torch.export.export(model, tuple([input_data]))
     model = torch_tensorrt.dynamo.compile(
