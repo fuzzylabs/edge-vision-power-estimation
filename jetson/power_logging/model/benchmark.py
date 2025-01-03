@@ -120,7 +120,7 @@ def benchmark(args: argparse.Namespace) -> None:
     end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
 
     if args.ablate_layer is not None:
-        model_dir = f"{args.result_dir}/{args.model}-ablate-{'_'.join(args.ablate_layer)}"
+        model_dir = f"{args.result_dir}/{args.model}/ablate-{'_'.join(args.ablate_layer)}"
     else:
         model_dir = f"{args.result_dir}/{args.model}"
     Path(model_dir).mkdir(exist_ok=True, parents=True)

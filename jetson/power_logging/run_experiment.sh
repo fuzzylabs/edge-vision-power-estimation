@@ -47,7 +47,7 @@ do
     --optimization-level 3 \
     $INPUT_SHAPE
 
-  layers_for_ablation=( $(python ablation/run_detect_layers_for_ablation.py "$model") )
+  layers_for_ablation=( $(python run_detect_layers_for_ablation.py "$model") )
   for layer in "${layers[@]}"
   do
     echo python measure_inference_power.py \
