@@ -22,9 +22,7 @@ from model_builder.model_builder import ModelBuilder
 
 
 def get_git_branch():
-    """
-    Get current branch.
-    """
+    """Get current branch."""
     return (
         subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
         .decode("utf-8")
@@ -130,6 +128,7 @@ class Trainer:
 
         logger.info(f"Training {model_type} model")
         with mlflow.start_run(run_name=f"{layer_type}_{model_type}_model"):
+            # MLflow tags
             repo = f"git@github.com:{self.mlflow_config['dagshub_repo_owner']}/{self.mlflow_config['dagshub_repo_name']}.git"
             mlflow.set_tags(
                 {
