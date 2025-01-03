@@ -147,7 +147,10 @@ class Trainer:
             intercept = pipeline.named_steps["lasso"].intercept_
             n_features_in = pipeline.named_steps["lasso"].n_features_in_
             logger.info(
-                f"Lasso model parameters: alpha={alpha}, coef={coef}, intercept={intercept}, n_features_in={n_features_in}"
+                f"Lasso model parameters:\nalpha={alpha}\n"
+                f"coef={coef}\n"
+                f"intercept={intercept}\n"
+                f"n_features_in={n_features_in}"
             )
 
             train_pred = pipeline.predict(train_features)
@@ -246,9 +249,8 @@ class Trainer:
         test_df[f"{model_type}_pred"] = pred
         test_df = test_df[["layer_name", f"{model_type}", f"{model_type}_pred"]]
         logger.info(
-            f"Predictions for {test_file_path.parent.stem} model using {model_type}"
+            f"Predictions for {test_file_path.parent.stem} model using {model_type}\n:{test_df}"
         )
-        logger.info(test_df)
         # Get first 15 characters from long TensorRT layer names
         test_df.loc[:, "layer_name"] = test_df.loc[:, "layer_name"].str[:15]
         ax = test_df.plot(rot=90, x="layer_name", kind="bar")
