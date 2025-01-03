@@ -14,6 +14,7 @@ import torch_tensorrt
 from pydantic import BaseModel
 from tqdm import tqdm
 
+from ablation.ablate import ablate_by_key
 from model.lenet import LeNet
 from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
 
@@ -73,6 +74,8 @@ def benchmark(args: argparse.Namespace) -> None:
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
+    if args.ablate_layer is not None:
+        model = ablate_by_key(model, args.ablate_layer)
     model.eval().to(DEVICE)
 
     dtype = torch.float32

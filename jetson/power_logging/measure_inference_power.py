@@ -116,6 +116,12 @@ if __name__ == "__main__":
         default="results",
         help="The directory to save the log result.",
     )
+    parser.add_argument(
+        "--ablate-layer",
+        type=lambda x: x.split(","),
+        default=None,
+        help="Optional layer to ablate."
+    )
     args = parser.parse_args()
 
     event = Event()
