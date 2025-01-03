@@ -1,7 +1,7 @@
 import argparse
 
 from model.benchmark import load_model
-from .ablate import get_layers_for_ablation
+from ablation.ablate import get_layers_for_ablation
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Detect layers for ablation.')

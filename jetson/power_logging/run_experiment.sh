@@ -40,12 +40,24 @@ do
   fi
 
   # Run the measure_inference_power.py script
-  python measure_inference_power.py \
+  echo python measure_inference_power.py \
     --model "$model" \
     --runs "$RUNS" \
     --result-dir "$RESULT_DIR" \
     --optimization-level 3 \
     $INPUT_SHAPE
+
+  layers_for_ablation=( $(python ablation/run_detect_layers_for_ablation.py "$model") )
+  for layer in "${layers[@]}"
+  do
+    echo python measure_inference_power.py \
+    --model "$model" \
+    --runs "$RUNS" \
+    --result-dir "$RESULT_DIR" \
+    --optimization-level 3 \
+    --layer "$layer"
+    $INPUT_SHAPE
+  done
 done
 
 echo "Experiment completed!"

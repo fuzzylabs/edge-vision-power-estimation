@@ -119,11 +119,17 @@ def benchmark(args: argparse.Namespace) -> None:
     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
     end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
 
+    if args.ablate_layer is not None:
+        model_dir = f"{args.result_dir}/{args.model}-ablate-{'_'.join(args.ablate_layer)}"
+    else:
+        model_dir = f"{args.result_dir}/{args.model}"
+    Path(model_dir).mkdir(exist_ok=True, parents=True)
+
     with torch.no_grad():
         for i in tqdm(range(args.runs)):
             # Hack for enabling profiling
             # https://github.com/pytorch/TensorRT/issues/1467
-            profiling_dir = f"{args.result_dir}/{args.model}/trt_profiling"
+            profiling_dir = f"{model_dir}/trt_profiling"
             Path(profiling_dir).mkdir(exist_ok=True, parents=True)
 
             # Records traces in milliseconds
@@ -158,11 +164,6 @@ def benchmark(args: argparse.Namespace) -> None:
         avg_latency=np.mean(timings),  # in seconds
     )
 
-    if args.ablate_layer is not None:
-        model_dir = f"{args.result_dir}/{args.model}-ablate-{'_'.join(args.ablate_layer)}"
-    else:
-        model_dir = f"{args.result_dir}/{args.model}"
-    Path(model_dir).mkdir(exist_ok=True, parents=True)
     file_name = f"{args.model}_tensorrt.json"
     file_path = f"{model_dir}/{file_name}"
     with open(file_path, "w", encoding="utf-8") as outfile:
