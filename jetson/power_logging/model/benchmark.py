@@ -158,7 +158,10 @@ def benchmark(args: argparse.Namespace) -> None:
         avg_latency=np.mean(timings),  # in seconds
     )
 
-    model_dir = f"{args.result_dir}/{args.model}"
+    if args.ablate_layer is not None:
+        model_dir = f"{args.result_dir}/{args.model}-ablate-{'_'.join(args.ablate_layer)}"
+    else:
+        model_dir = f"{args.result_dir}/{args.model}"
     Path(model_dir).mkdir(exist_ok=True, parents=True)
     file_name = f"{args.model}_tensorrt.json"
     file_path = f"{model_dir}/{file_name}"

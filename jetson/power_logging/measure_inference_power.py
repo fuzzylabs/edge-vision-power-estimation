@@ -20,7 +20,10 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
         event: An object that manages a flag for communication among processes.
         args: Arguments from CLI.
     """
-    model_dir = f"{args.result_dir}/{args.model}"
+    if args.ablate_layer is not None:
+        model_dir = f"{args.result_dir}/{args.model}-ablate-{'_'.join(args.ablate_layer)}"
+    else:
+        model_dir = f"{args.result_dir}/{args.model}"
     Path(model_dir).mkdir(exist_ok=True, parents=True)
 
     logs = []
