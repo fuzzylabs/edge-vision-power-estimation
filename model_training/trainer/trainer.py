@@ -251,7 +251,7 @@ class Trainer:
         test_df[f"{model_type}_pred"] = pred
         test_df = test_df[["layer_name", f"{model_type}", f"{model_type}_pred"]]
         logger.info(
-            f"Predictions for {test_file_path.parent.stem} model using {model_type}\n:{test_df}"
+            f"Predictions for {test_file_path.parent.stem} model using {model_type}\n{test_df}"
         )
         # Get first 15 characters from long TensorRT layer names
         test_df.loc[:, "layer_name"] = test_df.loc[:, "layer_name"].str[:15]
