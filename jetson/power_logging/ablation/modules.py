@@ -15,7 +15,7 @@ class AblatedModule(torch.nn.Module):
         return self.reshape(x, self.output_shape(x))
 
     def reshape(self, x: torch.Tensor, shape) -> torch.Tensor:
-        return torch.zeros(shape).to(x.device)
+        return torch.zeros(shape).to(x.dtype).cuda()
         # x = x.flatten()
         # in_size = x.shape[0]
         # out_size = math.prod(shape)
