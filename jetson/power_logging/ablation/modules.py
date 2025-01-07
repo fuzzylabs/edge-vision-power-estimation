@@ -15,14 +15,14 @@ class AblatedModule(torch.nn.Module):
         return self.reshape(x, self.output_shape(x))
 
     def reshape(self, x: torch.Tensor, shape) -> torch.Tensor:
-        return torch.zeros(shape).to(x.dtype).cuda()
-        # x = x.flatten()
-        # in_size = x.shape[0]
-        # out_size = math.prod(shape)
-        # if in_size > out_size:
-        #     return x[:out_size].reshape(shape)
-        # else:
-        #     return F.pad(x, (0, out_size - in_size, )).reshape(shape)
+        # return torch.zeros(shape).to(x.dtype).cuda()
+        x = x.flatten()
+        in_size = x.shape[0]
+        out_size = math.prod(shape)
+        if in_size > out_size:
+            return x[:out_size].reshape(shape)
+        else:
+            return F.pad(x, (0, out_size - in_size, )).reshape(shape)
 
     def output_shape(self, x):
         raise NotImplementedError()
