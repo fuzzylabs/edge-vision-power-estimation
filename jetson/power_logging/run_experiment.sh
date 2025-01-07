@@ -9,13 +9,13 @@ IDLE_DURATION=120
 RESULT_DIR="raw_data"
 
 echo "Running idling power measurement..."
-python measure_idling_power.py \
- --idle-duration $IDLE_DURATION \
- --result-dir "$RESULT_DIR"
+#python measure_idling_power.py \
+# --idle-duration $IDLE_DURATION \
+# --result-dir "$RESULT_DIR"
 
 # Wait for 2 minutes
 echo "Sleeping for 2 minutes..."
-sleep 120
+#sleep 120
 
 # Models to benchmark
 # Using models mentioned in Neural Power
@@ -25,7 +25,7 @@ sleep 120
 models=("resnet34")
 #models=("alexnet" "vgg11" "vgg13" "vgg16" "vgg19" "mobilenet_v2" "mobilenet_v3_small" "mobilenet_v3_large" "resnet18" "resnet34" "resnet50" "resnet101" "resnet152" "lenet" "resnext50_32x4d" "resnext101_32x8d" "resnext101_64x4d" "convnext_tiny" "convnext_small" "convnext_base")
 # Number of inference cycles
-RUNS=30000
+RUNS=300
 
 # Iterate through models and run measure_inference_power.py script
 for model in "${models[@]}"
