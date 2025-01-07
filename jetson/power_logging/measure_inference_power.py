@@ -127,7 +127,9 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if args.ablate_layer in [
+    print(args.ablate_layer)
+
+    if args.ablate_layer is None or "_".join(args.ablate_layer) in [
         "conv1",
         "layer1_0_conv1", "layer1_0_conv2",
         "layer1_1_conv1", "layer1_1_conv2",
@@ -135,7 +137,7 @@ if __name__ == "__main__":
         "layer1_0_conv1", "layer1_0_conv2",
         "layer2_0_conv1", "layer2_0_conv2", "layer2_0_downsample_0",
         "layer2_1_conv1",
-    ] or args.ablate_layer is None:
+    ]:
         print("Skip ablate", args.ablate_layer)
         exit(0)
 
