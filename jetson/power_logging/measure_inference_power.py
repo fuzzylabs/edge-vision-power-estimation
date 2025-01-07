@@ -137,6 +137,7 @@ if __name__ == "__main__":
         "layer2_1_conv1",
     ] or args.ablate_layer is None:
         print("Skip ablate", args.ablate_layer)
+        exit(0)
 
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))
