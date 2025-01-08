@@ -127,19 +127,19 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    print(args.ablate_layer)
-
-    if args.ablate_layer is None or "_".join(args.ablate_layer) in [
-        "conv1",
-        "layer1_0_conv1", "layer1_0_conv2",
-        "layer1_1_conv1", "layer1_1_conv2",
-        "layer1_2_conv1", "layer1_2_conv2",
-        "layer1_0_conv1", "layer1_0_conv2",
-        "layer2_0_conv1", "layer2_0_conv2", "layer2_0_downsample_0",
-        "layer2_1_conv1",
-    ]:
-        print("Skip ablate", args.ablate_layer)
-        exit(0)
+    # print(args.ablate_layer)
+    #
+    # if args.ablate_layer is None or "_".join(args.ablate_layer) in [
+    #     "conv1",
+    #     "layer1_0_conv1", "layer1_0_conv2",
+    #     "layer1_1_conv1", "layer1_1_conv2",
+    #     "layer1_2_conv1", "layer1_2_conv2",
+    #     "layer1_0_conv1", "layer1_0_conv2",
+    #     "layer2_0_conv1", "layer2_0_conv2", "layer2_0_downsample_0",
+    #     "layer2_1_conv1",
+    # ]:
+    #     print("Skip ablate", args.ablate_layer)
+    #     exit(0)
 
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))
