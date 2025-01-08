@@ -72,6 +72,7 @@ def benchmark(args: argparse.Namespace) -> None:
     start.record()
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    torch.manual_seed(42)
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
     if args.ablate_layer is not None:
