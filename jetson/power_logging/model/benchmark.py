@@ -147,9 +147,9 @@ def benchmark(args: argparse.Namespace) -> None:
             # Records traces in milliseconds
             # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
             mods = list(model.named_children())
-            for mod in mods:
-                if isinstance(mod[1], torch_tensorrt.dynamo.runtime.PythonTorchTensorRTModule):
-                    mod[1].enable_profiling(profiler=CustomProfiler())
+            for _, mod in mods:
+                if isinstance(mod, torch_tensorrt.dynamo.runtime.PythonTorchTensorRTModule):
+                    mod.enable_profiling(profiler=CustomProfiler())
 
             start_events[i].record()
             _ = model(input_data)
