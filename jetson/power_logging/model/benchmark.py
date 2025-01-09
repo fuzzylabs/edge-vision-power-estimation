@@ -14,6 +14,8 @@ import torch_tensorrt
 from pydantic import BaseModel
 from tqdm import tqdm
 
+import torch.fx.graph
+
 from ablation.ablate import ablate_by_key
 from model.lenet import LeNet
 from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling

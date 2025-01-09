@@ -21,18 +21,18 @@ class AblatedModule(torch.nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.zero_tensor
 
-    def reshape(self, x: torch.Tensor, shape) -> torch.Tensor:
-        # return torch.zeros(shape, dtype=x.dtype, device=x.device)
-        x = x.flatten()
-        in_size = x.shape[0]
-        out_size = math.prod(shape)
-        if in_size > out_size:
-            return x[:out_size].reshape(shape)
-        else:
-            return F.pad(x, (0, out_size - in_size, )).reshape(shape)
-
-    def output_shape(self, x):
-        raise NotImplementedError()
+    # def reshape(self, x: torch.Tensor, shape) -> torch.Tensor:
+    #     # return torch.zeros(shape, dtype=x.dtype, device=x.device)
+    #     x = x.flatten()
+    #     in_size = x.shape[0]
+    #     out_size = math.prod(shape)
+    #     if in_size > out_size:
+    #         return x[:out_size].reshape(shape)
+    #     else:
+    #         return F.pad(x, (0, out_size - in_size, )).reshape(shape)
+    #
+    # def output_shape(self, x):
+    #     raise NotImplementedError()
 
 
 class AblatedAbstract2d(AblatedModule):

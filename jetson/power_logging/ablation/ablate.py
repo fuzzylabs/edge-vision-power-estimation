@@ -3,7 +3,7 @@ from types import MethodType
 
 import torch
 
-from ablation.modules import AblatedConv2d, AblatedPool2d, AblatedLinear, AblatedAdaptivePool2d
+from ablation.modules import AblatedConv2d, AblatedPool2d, AblatedLinear, AblatedAdaptivePool2d, AblatedModule
 
 layer_types_for_ablation = [
     "Linear",
@@ -56,14 +56,16 @@ def ablate_by_key(model: torch.nn.Module, key: list[str], x: torch.Tensor) -> to
     while len(key) > 1:
         module = module._modules[key[0]]
         key = key[1:]
-    module = module._modules[key[0]]
+    module._modules[key[0]] = AblatedModule()
 
-    # Probe
-    real_forward = module.forward
-    module.forward = MethodType(get_probe(real_forward), module)
-    _ = model(x)
+    # # Probe
+    # real_forward = module.forward
+    # module.forward = MethodType(get_probe(real_forward), module)
+    # _ = model(x)
+    #
+    # # Ablate
+    # module.forward = MethodType(ablated_forward, module)
 
-    # Ablate
-    module.forward = MethodType(ablated_forward, module)
+
 
     return model
