@@ -1,4 +1,6 @@
 """Functions for performning ablation on neural networks."""
+from types import MethodType
+
 import torch
 
 from ablation.modules import AblatedConv2d, AblatedPool2d, AblatedLinear, AblatedAdaptivePool2d
@@ -27,6 +29,15 @@ def get_layers_for_ablation(model: torch.nn.Module) -> list[list[str]]:
                 results.append([key] + submodule)
     return results
 
+def get_probe(method):
+    def probe(self, input_tensor: torch.Tensor) -> torch.Tensor:
+        output_tensor = method(input_tensor)
+        self._zero_tensor = torch.zeros(output_tensor.shape, dtype=output_tensor.dtype, device=output_tensor.device)
+        return output_tensor
+    return probe
+
+def ablated_forward(self, x: torch.Tensor) -> torch.Tensor:
+    return self._zero_tensor
 
 def ablate(layer: torch.nn.Module) -> torch.nn.Module:
     layer_name = layer._get_name()
@@ -40,10 +51,19 @@ def ablate(layer: torch.nn.Module) -> torch.nn.Module:
         return AblatedAdaptivePool2d(layer)
 
 
-def ablate_by_key(model: torch.nn.Module, key: list[str]) -> torch.nn.Module:
-    if len(key) == 1:
-        model._modules[key[0]] = ablate(model._modules[key[0]])
-    else:
-        model._modules[key[0]] = ablate_by_key(model._modules[key[0]], key[1:])
+def ablate_by_key(model: torch.nn.Module, key: list[str], x: torch.Tensor) -> torch.nn.Module:
+    module = model
+    while len(key) > 1:
+        module = module._modules[key[0]]
+        key = key[1:]
+    module = module._modules[key[0]]
+
+    # Probe
+    real_forward = module.forward
+    module.forward = MethodType(get_probe(real_forward), module)
+    _ = model(x)
+
+    # Ablate
+    module.forward = MethodType(ablated_forward, module)
 
     return model
