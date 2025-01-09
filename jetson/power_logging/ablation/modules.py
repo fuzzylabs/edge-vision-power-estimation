@@ -11,7 +11,9 @@ def cast_to_tuple_2d(value: int | tuple[int, int]) -> tuple[int, int]:
 
 
 class AblatedModule(torch.nn.Module):
-    zero_tensor: torch.Tensor
+    shape: torch.Size
+    dtype: torch.dtype
+    device: torch.device
 
     def  __init__(self, probe_output: torch.Tensor) -> None:
         super().__init__()
@@ -22,3 +24,6 @@ class AblatedModule(torch.nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return torch.rand(self.shape, device=self.device, dtype=self.dtype)
+
+    def extra_repr(self) -> str:
+        return f"shape={self.shape}, dtype={self.dtype}, device={self.device}"
