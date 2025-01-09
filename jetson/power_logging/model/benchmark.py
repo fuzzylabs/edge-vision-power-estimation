@@ -127,6 +127,8 @@ def benchmark(args: argparse.Namespace) -> None:
     Path(model_dir).mkdir(exist_ok=True, parents=True)
 
     with torch.no_grad():
+        print(model)
+        raise NotImplementedError
         for i in tqdm(range(args.runs)):
             # Hack for enabling profiling
             # https://github.com/pytorch/TensorRT/issues/1467
