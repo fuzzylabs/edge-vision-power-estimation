@@ -136,6 +136,7 @@ def benchmark(args: argparse.Namespace) -> None:
             # Records traces in milliseconds
             # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
             mod = list(model.named_children())[0][1]
+            print(mod)
             mod.enable_profiling(profiler=CustomProfiler())
 
             start_events[i].record()
