@@ -3,7 +3,7 @@ from types import MethodType
 
 import torch
 
-from ablation.modules import AblatedConv2d, AblatedPool2d, AblatedLinear, AblatedAdaptivePool2d, AblatedModule
+from ablation.modules import AblatedModule
 
 layer_types_for_ablation = [
     "Linear",
@@ -32,40 +32,25 @@ def get_layers_for_ablation(model: torch.nn.Module) -> list[list[str]]:
 def get_probe(method):
     def probe(self, input_tensor: torch.Tensor) -> torch.Tensor:
         output_tensor = method(input_tensor)
-        self._zero_tensor = torch.zeros(output_tensor.shape, dtype=output_tensor.dtype, device=output_tensor.device)
+        self._probe_output = output_tensor
         return output_tensor
     return probe
 
 def ablated_forward(self, x: torch.Tensor) -> torch.Tensor:
     return self._zero_tensor
 
-def ablate(layer: torch.nn.Module) -> torch.nn.Module:
-    layer_name = layer._get_name()
-    if layer_name in ["Conv2d"]:
-        return AblatedConv2d(layer)
-    elif layer_name in ["MaxPool2d"]:
-        return AblatedPool2d(layer)
-    elif layer_name in ["Linear"]:
-        return AblatedLinear(layer)
-    elif layer_name in ["AdaptiveAvgPool2d"]:
-        return AblatedAdaptivePool2d(layer)
-
-
 def ablate_by_key(model: torch.nn.Module, key: list[str], x: torch.Tensor) -> torch.nn.Module:
     module = model
     while len(key) > 1:
         module = module._modules[key[0]]
         key = key[1:]
-    module._modules[key[0]] = AblatedModule()
 
-    # # Probe
-    # real_forward = module.forward
-    # module.forward = MethodType(get_probe(real_forward), module)
-    # _ = model(x)
-    #
-    # # Ablate
-    # module.forward = MethodType(ablated_forward, module)
+    # Probe
+    real_forward = module.forward
+    module.forward = MethodType(get_probe(real_forward), module)
+    _ = model(x)
 
-
+    # Ablate
+    module._modules[key[0]] = AblatedModule(module._probe_output)
 
     return model
