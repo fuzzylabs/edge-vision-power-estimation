@@ -1,0 +1,6 @@
+outs:
+- md5: 4d4818dffb6ff1d052f3832da18f61df.dir
+  size: 73111423
+  nfiles: 4
+  hash: md5
+  path: test_raw_data
