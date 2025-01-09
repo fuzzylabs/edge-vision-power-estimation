@@ -3,7 +3,7 @@
 set -eou pipefail
 
 # Local Directory to store raw data
-RAW_DATA_DIR="../jetson/power_logging/raw_data"
+RAW_DATA_DIR="../jetson/power_logging/raw_data/prebuilt_models"
 
 # Local Directory to store preprocessed data
 PREPROCESSED_DATA_DIR="preprocessed_data"
