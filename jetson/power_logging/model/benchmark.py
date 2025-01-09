@@ -94,6 +94,8 @@ def benchmark(args: argparse.Namespace) -> None:
 
     print(f"Using {DEVICE=} for benchmarking")
 
+    print(model)
+
     print(model(input_data))
 
 

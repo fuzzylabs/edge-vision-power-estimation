@@ -36,9 +36,6 @@ def get_probe(method):
         return output_tensor
     return probe
 
-def ablated_forward(self, x: torch.Tensor) -> torch.Tensor:
-    return self._zero_tensor
-
 def ablate_by_key(model: torch.nn.Module, key: list[str], x: torch.Tensor) -> torch.nn.Module:
     module = model
     while len(key) > 1:
