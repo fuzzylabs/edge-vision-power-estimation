@@ -15,7 +15,7 @@ class AblatedModule(torch.nn.Module):
 
     def  __init__(self,) -> None:
         super().__init__()
-        self.zero_tensor = torch.Parameter(torch.zeros((1, 64, 112, 112)).to(torch.float16).to(torch.device('cuda:0')))
+        self.zero_tensor = torch.nn.Parameter(torch.zeros((1, 64, 112, 112)).to(torch.float16).to(torch.device('cuda:0')))
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
