@@ -90,6 +90,9 @@ def benchmark(args: argparse.Namespace) -> None:
     model = model.to(dtype)
     print(f"Using {DEVICE=} for benchmarking")
 
+    print(model(input_data))
+
+
     time.sleep(3)
 
     exp_program = torch.export.export(model, tuple([input_data]))
