@@ -155,5 +155,3 @@ cython_debug/
 
 # Mac
 *.DS_Store
-
-raw_data
