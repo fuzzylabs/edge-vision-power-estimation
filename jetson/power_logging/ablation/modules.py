@@ -15,11 +15,13 @@ class AblatedModule(torch.nn.Module):
 
     def  __init__(self,) -> None:
         super().__init__()
-        self.zero_tensor = torch.nn.Parameter(torch.rand((1, 64, 112, 112)).to(torch.float16).to(torch.device('cuda:0')))
+        self.shape = torch.Size((1, 64, 112, 112))
+        self.dtype = torch.float16
+        self.device = torch.device('cuda:0')
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.zero_tensor
+        return torch.rand(self.shape).to(self.device).to(self.dtype)
 
     # def reshape(self, x: torch.Tensor, shape) -> torch.Tensor:
     #     # return torch.zeros(shape, dtype=x.dtype, device=x.device)
