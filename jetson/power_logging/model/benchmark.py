@@ -94,13 +94,6 @@ def benchmark(args: argparse.Namespace) -> None:
 
     print(f"Using {DEVICE=} for benchmarking")
 
-    print(model)
-
-    print(model(input_data))
-
-
-    time.sleep(3)
-
     exp_program = torch.export.export(model, tuple([input_data]))
     model = torch_tensorrt.dynamo.compile(
         exported_program=exp_program,
@@ -136,8 +129,6 @@ def benchmark(args: argparse.Namespace) -> None:
     Path(model_dir).mkdir(exist_ok=True, parents=True)
 
     with torch.no_grad():
-        print("Model", model)
-        print("Named Children", list(model.named_children()))
         for i in tqdm(range(args.runs)):
             # Hack for enabling profiling
             # https://github.com/pytorch/TensorRT/issues/1467
