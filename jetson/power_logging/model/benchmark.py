@@ -75,9 +75,6 @@ def benchmark(args: argparse.Namespace) -> None:
     torch.manual_seed(42)
     input_data = torch.randn(args.input_shape, device=DEVICE)
     model = load_model(args.model)
-    if args.ablate_layer is not None:
-        print(f"Ablating layer: {args.ablate_layer}")
-        model = ablate_by_key(model, args.ablate_layer)
     model.eval().to(DEVICE)
 
     dtype = torch.float32
@@ -88,6 +85,11 @@ def benchmark(args: argparse.Namespace) -> None:
 
     input_data = input_data.to(dtype)
     model = model.to(dtype)
+
+    if args.ablate_layer is not None:
+        print(f"Ablating layer: {args.ablate_layer}")
+        model = ablate_by_key(model, args.ablate_layer, input_data)
+
     print(f"Using {DEVICE=} for benchmarking")
 
     print(model(input_data))
