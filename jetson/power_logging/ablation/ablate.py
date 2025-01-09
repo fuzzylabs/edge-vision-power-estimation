@@ -38,16 +38,22 @@ def get_probe(method):
 
 def ablate_by_key(model: torch.nn.Module, key: list[str], x: torch.Tensor) -> torch.nn.Module:
     module = model
+    print(module, key)
     while len(key) > 1:
         module = module._modules[key[0]]
         key = key[1:]
+        print(module, key)
+
+    ablated_module = module._modules[key[0]]
+    print("Found", ablated_module, key)
+
 
     # Probe
-    real_forward = module.forward
-    module.forward = MethodType(get_probe(real_forward), module)
+    real_forward = ablated_module.forward
+    ablated_module.forward = MethodType(get_probe(real_forward), ablated_module)
     _ = model(x)
 
     # Ablate
-    module._modules[key[0]] = AblatedModule(module._probe_output)
+    module._modules[key[0]] = AblatedModule(ablated_module._probe_output)
 
     return model
