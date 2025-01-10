@@ -23,7 +23,7 @@ class AblatedModule(torch.nn.Module):
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return torch.rand(self.shape, device=self.device, dtype=self.dtype)
+        return torch.rand(self.shape, device=self.device, dtype=self.dtype) + x.flatten()[0]
 
     def extra_repr(self) -> str:
         return f"shape={self.shape}, dtype={self.dtype}, device={self.device}"
