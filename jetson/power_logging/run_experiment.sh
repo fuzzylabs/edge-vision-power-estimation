@@ -9,13 +9,13 @@ IDLE_DURATION=120
 RESULT_DIR="raw_data"
 
 echo "Running idling power measurement..."
-#python measure_idling_power.py \
-# --idle-duration $IDLE_DURATION \
-# --result-dir "$RESULT_DIR"
+python measure_idling_power.py \
+ --idle-duration $IDLE_DURATION \
+ --result-dir "$RESULT_DIR"
 
 # Wait for 2 minutes
 echo "Sleeping for 2 minutes..."
-#sleep 120
+sleep 120
 
 # Models to benchmark
 # Using models mentioned in Neural Power
