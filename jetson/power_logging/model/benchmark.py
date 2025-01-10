@@ -129,18 +129,18 @@ def benchmark(args: argparse.Namespace) -> None:
     Path(model_dir).mkdir(exist_ok=True, parents=True)
 
     with torch.no_grad():
+        # Records traces in milliseconds
+        # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
+        mods = list(model.named_children())
+        for _, mod in mods:
+            if isinstance(mod, torch_tensorrt.dynamo.runtime.PythonTorchTensorRTModule):
+                mod.enable_profiling(profiler=CustomProfiler())
+                break  # we assume there's only one tensorrt module
         for i in tqdm(range(args.runs)):
             # Hack for enabling profiling
             # https://github.com/pytorch/TensorRT/issues/1467
             profiling_dir = f"{model_dir}/trt_profiling"
             Path(profiling_dir).mkdir(exist_ok=True, parents=True)
-
-            # Records traces in milliseconds
-            # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
-            mods = list(model.named_children())
-            for _, mod in mods:
-                if isinstance(mod, torch_tensorrt.dynamo.runtime.PythonTorchTensorRTModule):
-                    mod.enable_profiling(profiler=CustomProfiler())
 
             start_events[i].record()
             _ = model(input_data)
