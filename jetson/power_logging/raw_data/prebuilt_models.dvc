@@ -3,4 +3,4 @@ outs:
   size: 156509163
   nfiles: 97
   hash: md5
-  path: raw_data
+  path: prebuilt_models
