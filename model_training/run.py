@@ -122,17 +122,12 @@ def main(config: dict) -> None:
     # Optionally enable mlflow tracking
     if mlflow_config["enable_tracking"]:
         import dagshub
-        import mlflow
 
         dagshub.init(
             repo_name=mlflow_config["dagshub_repo_name"],
             repo_owner=mlflow_config["dagshub_repo_owner"],
             mlflow=True,
         )
-
-        mlflow.set_experiment(mlflow_config["mlflow_experiment_name"])
-
-        mlflow.sklearn.autolog()
 
     # Train power and runtime for convolutional layer
     for model_type in ["power", "runtime"]:
