@@ -3,13 +3,12 @@
 from pathlib import Path
 from typing import Any
 
-from git import Repo
-from loguru import logger
-
 from config.convolutional_features import CONV_FEATURES, CONVOLUTION_PIPELINE
 from config.dense_features import DENSE_FEATURES, DENSE_PIPELINE
 from config.pooling_features import POOLING_FEATURES, POOLING_PIPELINE
 from data_preparation.io_utils import read_yaml_file
+from git import Repo
+from loguru import logger
 from trainer.trainer import Trainer
 
 
@@ -53,9 +52,9 @@ def get_train_data_version(root_git_dir: str = "..") -> str | None:
     except Exception as e:
         logger.warning(
             "No tag found for current 'model_training/training_data.dvc' file\n"
-            f"Command failed with following error : {e}"
+            f"Using commit as tag : {current_commit}"
         )
-        return None
+        return current_commit
 
 
 def train_pipeline(
@@ -114,9 +113,6 @@ def main(config: dict) -> None:
     """
     data_tag = get_train_data_version(root_git_dir="..")
     logger.info(f"Found training data tag: {data_tag}")
-    if data_tag is None:
-        logger.critical("No data tag found for the training data")
-        exit(1)
 
     mlflow_config = config["mlflow"]
     # Optionally enable mlflow tracking
