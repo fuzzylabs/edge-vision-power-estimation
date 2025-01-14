@@ -7,6 +7,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
+import pandas as pd
 from loguru import logger
 from sklearn.metrics import (
     mean_absolute_error,
@@ -117,18 +118,27 @@ class Trainer:
         logger.info(f"Training samples: {len(train_dataset.input_features)}")
         logger.info(f"Testing samples: {len(test_dataset.input_features)}")
 
-        train_features = train_dataset.input_features.values
-        test_features = test_dataset.input_features.values
+        train_features = train_dataset.input_features
+        test_features = test_dataset.input_features
+
         if model_type == "power":
-            train_target = train_dataset.power.values
+            train_target = train_dataset.power
             test_target = test_dataset.power
+
         if model_type == "runtime":
-            train_target = train_dataset.runtime.values
+            train_target = train_dataset.runtime
             test_target = test_dataset.runtime
+
+        # Create mlflow dataset for logging
+        train_df = pd.concat([train_features, train_target], axis=1)
+        train_mlflow_data = mlflow.data.from_pandas(train_df, targets=model_type)
+
+        test_df = pd.concat([test_features, test_target], axis=1)
+        test_mlflow_data = mlflow.data.from_pandas(test_df, targets=model_type)
 
         logger.info(f"Training {model_type} model")
         mlflow.set_experiment(f"test_{layer_type}_{model_type}_model")
-        mlflow.sklearn.autolog()
+        mlflow.sklearn.autolog(log_datasets=False)
         with mlflow.start_run(run_name=self.mlflow_config["mlflow_experiment_name"]):
             # MLflow tags
             repo = f"git@github.com:{self.mlflow_config['dagshub_repo_owner']}/{self.mlflow_config['dagshub_repo_name']}.git"
@@ -140,8 +150,12 @@ class Trainer:
                 }
             )
 
+            # Log datasets
+            mlflow.log_input(train_mlflow_data, context="Train")
+            mlflow.log_input(test_mlflow_data, context="Eval")
+
             # Train model
-            pipeline.fit(train_features, train_target)
+            pipeline.fit(train_features.values, train_target.values)
 
             logger.info(pipeline)
             alpha = pipeline.named_steps["lasso"].alpha_
@@ -155,15 +169,17 @@ class Trainer:
                 f"n_features_in={n_features_in}"
             )
 
-            train_pred = pipeline.predict(train_features)
-            train_rmspe = Trainer.rmspe_metric(actual=train_target, pred=train_pred)
+            train_pred = pipeline.predict(train_features.values)
+            train_rmspe = Trainer.rmspe_metric(
+                actual=train_target.values, pred=train_pred
+            )
             logger.info(f"Training RMSPE: {train_rmspe}")
             mlflow.log_metrics(
                 {"training_root_mean_squared_percentage_error": train_rmspe}
             )
 
             # Evaluation
-            predictions = pipeline.predict(test_features)
+            predictions = pipeline.predict(test_features.values)
             test_metrics = Trainer.eval_metrics(actual=test_target, pred=predictions)
             logger.info(test_metrics)
             mlflow.log_metrics(test_metrics)
