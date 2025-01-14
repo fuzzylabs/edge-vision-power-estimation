@@ -137,7 +137,14 @@ After the PR related to train dataset is merged, a tag for that specific version
 dvc pull training_data -r origin
 ```
 
-This will download training data from the FuzzyLabs [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to the `training_data` folder on your local filesystem.
+This will download the latest training data from the FuzzyLabs [DagsHub repository](https://dagshub.com/fuzzylabs/edge-vision-power-estimation) to the `training_data` folder on your local filesystem.
+
+Alternatively, you can also choose to download any of the older training data using git tags. For example, following command will pull training data corresponding to `train/v1` git tag.
+
+```bash
+git checkout train/v1 -- training_data.dvc
+dvc checkout training_data.dvc
+```
 
 > [!NOTE]
 > This step is recommended if you want to get started with training the models using data already present on DagsHub repository. </br>
