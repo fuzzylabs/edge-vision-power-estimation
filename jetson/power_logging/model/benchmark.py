@@ -1,4 +1,8 @@
-"""Benchmark TensorRT models."""
+"""
+Benchmark PyTorch models.
+
+Script uses PyTorch to benchmark models and will support CUDA if it is available on the system
+"""
 
 import argparse
 import json
@@ -10,12 +14,40 @@ from typing import Any
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-# import torch_tensorrt
 from pydantic import BaseModel
 from tqdm import tqdm
 
 from model.lenet import LeNet
-# from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
+
+"""
+Wrapper class for Torch.cuda.event for non-CUDA supported devices
+
+Methods:
+    - record(): Records an event if CUDA is available
+    - elapsed_time(): Calculates elapsed time between events
+    - synchronize(): synchronizes events in instance of CUDA
+"""
+class CudaEvent:
+    def __init__(self, enable_timing = True):
+        if torch.cuda.is_available():
+            self.event = torch.cuda.Event(enable_timing=enable_timing)
+        else:
+            print("Warning: CUDA not available. Instance outimed.")
+            self.event = None 
+
+    def record(self):
+        if self.event:
+            self.event.record()
+
+    def elapsed_time(self, n_event):
+        if self.event and n_event.event:
+            return self.event.elapsed_time(n_event.event)
+        return 0
+    
+    def synchronize(self):
+        if self.event:
+            self.event.synchronize()
+
 
 cudnn.benchmark = True
 
@@ -66,9 +98,9 @@ def benchmark(args: argparse.Namespace) -> None:
     Args:
         args: Arguments from CLI.
     """
-    # start = torch.cuda.Event(enable_timing=True)
-    # end = torch.cuda.Event(enable_timing=True)
-    # start.record()
+    start = CudaEvent(enable_timing=True)
+    end = CudaEvent(enable_timing=True)
+    start.record()
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = torch.randn(args.input_shape, device=DEVICE)
@@ -85,21 +117,6 @@ def benchmark(args: argparse.Namespace) -> None:
     model = model.to(dtype)
     print(f"Using {DEVICE=} for benchmarking")
 
-    # exp_program = torch.export.export(model, tuple([input_data]))
-    # model = torch_tensorrt.dynamo.compile(
-    #     exported_program=exp_program,
-    #     inputs=[input_data],
-    #     min_block_size=args.min_block_size,
-    #     optimization_level=args.optimization_level,
-    #     enabled_precisions={dtype},
-    #     # Set to True for verbose output
-    #     # NOTE: Performance Regression when rich library is available
-    #     # https://github.com/pytorch/TensorRT/issues/3215
-    #     debug=True,
-    #     # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
-    #     use_python_runtime=True,
-    # )
-
     st = time.perf_counter()
     print("Warm up ...")
     with torch.no_grad():
@@ -108,40 +125,17 @@ def benchmark(args: argparse.Namespace) -> None:
     print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
 
     print("Start timing using tensorrt backend ...")
-    # torch.cuda.synchronize()
-    # Recorded in milliseconds
-    # start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
-    # end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
-
+    
     with torch.no_grad():
         for i in tqdm(range(args.runs)):
             # Hack for enabling profiling
             # https://github.com/pytorch/TensorRT/issues/1467
             profiling_dir = f"{args.result_dir}/{args.model}/trt_profiling"
             Path(profiling_dir).mkdir(exist_ok=True, parents=True)
-
-            # Records traces in milliseconds
-            # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
-            # mod = list(model.named_children())[0][1]
-            # mod.enable_profiling(profiler=CustomProfiler())
-
-            # start_events[i].record()
             _ = model(input_data)
-            # end_events[i].record()
 
-        # end.record()
-        # torch.cuda.synchronize()
-
-    # save_layer_wise_profiling(mod, profiling_dir)
-    # save_engine_info(mod, profiling_dir)
-
-    # Convert milliseconds to seconds
-    # timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
-    # avg_throughput = args.input_shape[0] / np.mean(timings)
     print("Benchmarking complete ...")
-    # Convert milliseconds to seconds
-    # total_exp_time = start.elapsed_time(end) * 1.0e-3
-    # print(f"Total time for experiment: {total_exp_time} sec")
+
 
     results = BenchmarkMetrics(
         config=vars(args),

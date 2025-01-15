@@ -122,14 +122,28 @@ if __name__ == "__main__":
         default="results",
         help="The directory to save the log result.",
     )
+    # Power measurement disabled argument, will stop the measurement when running inference code
+    parser.add_argument(
+        "--disable-power-measurement",
+        action="store_true",
+        help="Disable power measurement during benchmark execution.",
+    )
     args = parser.parse_args()
 
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))
     # power_logging_process.start()
 
+    if not args.disable_power_measurement:
+        power_logging_process.start()
+    # This is just checking if the cmd line hasnt passed the --disable-power-measurement
+
+
     inference_process = Process(target=inference, args=(event, args))
     inference_process.start()
 
-    # power_logging_process.join()
+    if not args.disable_power_measurement:
+        power_logging_process.join()
+    # Will start and join it when it gets passed into the terminal
+
     inference_process.join()
