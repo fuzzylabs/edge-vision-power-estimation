@@ -117,5 +117,3 @@ def get_layer_execution_time(model_name, input_shape, num_inference_cycles) -> N
 
     with open(f"{datetime.datetime.now().strftime('%Y_%m_%d_%H:%M:%S')}_{model_name}_inference_trace_{num_inference_cycles}_cycles.json", "w") as f:
         json.dump(all_cycle_measurements, f)
-
-get_layer_execution_time("resnet18", ((1,3,224,224)), 2)
