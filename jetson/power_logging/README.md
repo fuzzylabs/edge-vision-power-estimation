@@ -126,7 +126,8 @@ This setup should allow you to execute measurement scripts for local development
 ```
 python measure_inference_power.py \
 --model "resnet18" \
---runs "3" \
+--model-repo "pytorch/vision:v0.10.0" \
+--warmup "1" --runs "3" \
 --result-dir "raw_data/prebuilt_models/" \
 --optimization-level 3 \
 --input-shape 1 3 224 224

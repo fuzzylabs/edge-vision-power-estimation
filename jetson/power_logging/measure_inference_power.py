@@ -72,6 +72,12 @@ if __name__ == "__main__":
         "https://pytorch.org/hub/research-models",
     )
     parser.add_argument(
+        "--model-repo",
+        type=str,
+        default="pytorch/vision",
+        help="Specify path and version to model repository from PyTorch Hub.",
+    )
+    parser.add_argument(
         "--dtype",
         type=str,
         default="float16",
@@ -120,10 +126,10 @@ if __name__ == "__main__":
 
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))
-    power_logging_process.start()
+    # power_logging_process.start()
 
     inference_process = Process(target=inference, args=(event, args))
     inference_process.start()
 
-    power_logging_process.join()
+    # power_logging_process.join()
     inference_process.join()

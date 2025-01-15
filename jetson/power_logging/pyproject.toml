@@ -12,5 +12,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "numpy<2",
+    "pillow>=11.1.0",
     "torch==2.2.2", # last version available on intel macs, should be enough for dev work
 ]

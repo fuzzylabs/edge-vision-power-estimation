@@ -10,12 +10,12 @@ from typing import Any
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-import torch_tensorrt
+# import torch_tensorrt
 from pydantic import BaseModel
 from tqdm import tqdm
 
 from model.lenet import LeNet
-from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
+# from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
 
 cudnn.benchmark = True
 
@@ -31,7 +31,7 @@ class BenchmarkMetrics(BaseModel):
     avg_throughput: float
 
 
-def load_model(model_name: str) -> Any:
+def load_model(model_name: str, model_repo: str) -> Any:
     """Load model from Pytorch Hub.
 
     Args:
@@ -47,9 +47,9 @@ def load_model(model_name: str) -> Any:
     if model_name == "lenet":
         return LeNet()
     if model_name == "fcn_resnet50":
-        return torch.hub.load("pytorch/vision", model_name, pretrained=True)
+        return torch.hub.load(model_repo, model_name, pretrained=True)
     try:
-        return torch.hub.load("pytorch/vision", model_name, weights="IMAGENET1K_V1")
+        return torch.hub.load(model_repo, model_name)
     except:
         raise ValueError(
             f"Model name: {model_name} is most likely incorrect. "
@@ -66,13 +66,13 @@ def benchmark(args: argparse.Namespace) -> None:
     Args:
         args: Arguments from CLI.
     """
-    start = torch.cuda.Event(enable_timing=True)
-    end = torch.cuda.Event(enable_timing=True)
-    start.record()
+    # start = torch.cuda.Event(enable_timing=True)
+    # end = torch.cuda.Event(enable_timing=True)
+    # start.record()
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = torch.randn(args.input_shape, device=DEVICE)
-    model = load_model(args.model)
+    model = load_model(args.model, args.model_repo)
     model.eval().to(DEVICE)
 
     dtype = torch.float32
@@ -85,20 +85,20 @@ def benchmark(args: argparse.Namespace) -> None:
     model = model.to(dtype)
     print(f"Using {DEVICE=} for benchmarking")
 
-    exp_program = torch.export.export(model, tuple([input_data]))
-    model = torch_tensorrt.dynamo.compile(
-        exported_program=exp_program,
-        inputs=[input_data],
-        min_block_size=args.min_block_size,
-        optimization_level=args.optimization_level,
-        enabled_precisions={dtype},
-        # Set to True for verbose output
-        # NOTE: Performance Regression when rich library is available
-        # https://github.com/pytorch/TensorRT/issues/3215
-        debug=True,
-        # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
-        use_python_runtime=True,
-    )
+    # exp_program = torch.export.export(model, tuple([input_data]))
+    # model = torch_tensorrt.dynamo.compile(
+    #     exported_program=exp_program,
+    #     inputs=[input_data],
+    #     min_block_size=args.min_block_size,
+    #     optimization_level=args.optimization_level,
+    #     enabled_precisions={dtype},
+    #     # Set to True for verbose output
+    #     # NOTE: Performance Regression when rich library is available
+    #     # https://github.com/pytorch/TensorRT/issues/3215
+    #     debug=True,
+    #     # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
+    #     use_python_runtime=True,
+    # )
 
     st = time.perf_counter()
     print("Warm up ...")
@@ -108,10 +108,10 @@ def benchmark(args: argparse.Namespace) -> None:
     print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
 
     print("Start timing using tensorrt backend ...")
-    torch.cuda.synchronize()
+    # torch.cuda.synchronize()
     # Recorded in milliseconds
-    start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
-    end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
+    # start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
+    # end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
 
     with torch.no_grad():
         for i in tqdm(range(args.runs)):
@@ -122,34 +122,34 @@ def benchmark(args: argparse.Namespace) -> None:
 
             # Records traces in milliseconds
             # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
-            mod = list(model.named_children())[0][1]
-            mod.enable_profiling(profiler=CustomProfiler())
+            # mod = list(model.named_children())[0][1]
+            # mod.enable_profiling(profiler=CustomProfiler())
 
-            start_events[i].record()
+            # start_events[i].record()
             _ = model(input_data)
-            end_events[i].record()
+            # end_events[i].record()
 
-        end.record()
-        torch.cuda.synchronize()
+        # end.record()
+        # torch.cuda.synchronize()
 
-    save_layer_wise_profiling(mod, profiling_dir)
-    save_engine_info(mod, profiling_dir)
+    # save_layer_wise_profiling(mod, profiling_dir)
+    # save_engine_info(mod, profiling_dir)
 
     # Convert milliseconds to seconds
-    timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
-    avg_throughput = args.input_shape[0] / np.mean(timings)
+    # timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
+    # avg_throughput = args.input_shape[0] / np.mean(timings)
     print("Benchmarking complete ...")
     # Convert milliseconds to seconds
-    total_exp_time = start.elapsed_time(end) * 1.0e-3
-    print(f"Total time for experiment: {total_exp_time} sec")
+    # total_exp_time = start.elapsed_time(end) * 1.0e-3
+    # print(f"Total time for experiment: {total_exp_time} sec")
 
     results = BenchmarkMetrics(
         config=vars(args),
-        total_time=total_exp_time,  # in seconds
+        total_time=0, #total_exp_time,  # in seconds
         timestamp=timestamp,
-        latencies=timings,  # in seconds
-        avg_throughput=avg_throughput,
-        avg_latency=np.mean(timings),  # in seconds
+        latencies=[], #timings,  # in seconds
+        avg_throughput=0, #avg_throughput,
+        avg_latency=0, #np.mean(timings),  # in seconds
     )
 
     model_dir = f"{args.result_dir}/{args.model}"
