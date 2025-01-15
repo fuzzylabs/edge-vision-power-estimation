@@ -32,7 +32,7 @@ class CudaEvent:
         if torch.cuda.is_available():
             self.event = torch.cuda.Event(enable_timing=enable_timing)
         else:
-            print("Warning: CUDA not available. Instance outimed.")
+            print("Warning: CUDA not available.")
             self.event = None 
 
     def record(self):
@@ -92,63 +92,75 @@ def load_model(model_name: str, model_repo: str) -> Any:
 def benchmark(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
-    Additionally for tensorrt backend, we calculate layer-wise
-    latency.
-
     Args:
         args: Arguments from CLI.
     """
-    start = CudaEvent(enable_timing=True)
-    end = CudaEvent(enable_timing=True)
-    start.record()
-
+    print("Starting the benchmarking process...")
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    input_data = torch.randn(args.input_shape, device=DEVICE)
-    model = load_model(args.model, args.model_repo)
-    model.eval().to(DEVICE)
 
-    dtype = torch.float32
-    if args.dtype == "float16":
-        dtype = torch.float16
-    if args.dtype == "bfloat16":
-        dtype = torch.bfloat16
+    try:
+        input_data = torch.randn(args.input_shape, device=DEVICE)
+        model = load_model(args.model, args.model_repo)
+        model.eval().to(DEVICE)
 
-    input_data = input_data.to(dtype)
-    model = model.to(dtype)
-    print(f"Using {DEVICE=} for benchmarking")
+        dtype = torch.float32
+        if args.dtype == "float16":
+            dtype = torch.float16
+        if args.dtype == "bfloat16":
+            dtype = torch.bfloat16
 
-    st = time.perf_counter()
-    print("Warm up ...")
-    with torch.no_grad():
-        for _ in range(args.warmup):
-            _ = model(input_data)
-    print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
+        input_data = input_data.to(dtype)
+        model = model.to(dtype)
+        print(f"Using {DEVICE=} for benchmarking")
+        if DEVICE == "cpu":
+            print("WARNING: Running on CPU. Timing may vary")
 
-    print("Start timing using tensorrt backend ...")
-    
-    with torch.no_grad():
-        for i in tqdm(range(args.runs)):
-            # Hack for enabling profiling
-            # https://github.com/pytorch/TensorRT/issues/1467
-            profiling_dir = f"{args.result_dir}/{args.model}/trt_profiling"
-            Path(profiling_dir).mkdir(exist_ok=True, parents=True)
-            _ = model(input_data)
+        print("Warm up ...")
+        st = time.perf_counter()
+        with torch.no_grad():
+            for _ in range(args.warmup):
+                _ = model(input_data)
+        print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
 
-    print("Benchmarking complete ...")
+        print("Start timing using pytorch backend ...")
+        latencies = []
+        start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
+        end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
+
+        with torch.no_grad():
+            for i in tqdm(range(args.runs)):
+                start_events[i].record()
+                _ = model(input_data)
+                end_events[i].record()
+
+                if torch.cuda.is_available():
+                    torch.cuda.synchronize()
+
+                latency = start_events[i].elapsed_time(end_events[i])
+                latencies.append(latency * 1.0e-3)
+
+        print("Benchmarking complete ...")
+
+        total_time = sum(latencies) # Total time for all executions
+        avg_latency = total_time / len(latencies) # Average latency per execution
+        avg_throughput = args.input_shape[0] / avg_latency # Throughput in samples/sec
 
 
-    results = BenchmarkMetrics(
-        config=vars(args),
-        total_time=0, #total_exp_time,  # in seconds
-        timestamp=timestamp,
-        latencies=[], #timings,  # in seconds
-        avg_throughput=0, #avg_throughput,
-        avg_latency=0, #np.mean(timings),  # in seconds
-    )
+        results = BenchmarkMetrics(
+            config=vars(args),
+            total_time=total_time,  # in seconds
+            timestamp=timestamp,
+            latencies=latencies,  # in seconds
+            avg_throughput=avg_throughput,
+            avg_latency=avg_latency,  # in seconds
+        )
 
-    model_dir = f"{args.result_dir}/{args.model}"
-    Path(model_dir).mkdir(exist_ok=True, parents=True)
-    file_name = f"{args.model}_tensorrt.json"
-    file_path = f"{model_dir}/{file_name}"
-    with open(file_path, "w", encoding="utf-8") as outfile:
-        json.dump(results.model_dump(), outfile, indent=4)
+        model_dir = f"{args.result_dir}/{args.model}"
+        Path(model_dir).mkdir(exist_ok=True, parents=True)
+        file_name = f"{args.model}_pytorch.json"
+        file_path = f"{model_dir}/{file_name}"
+        with open(file_path, "w", encoding="utf-8") as outfile:
+            json.dump(results.model_dump(), outfile, indent=4)
+    except Exception as e:
+        print(f"An error occured during benchmarking: {e}")
+        return
