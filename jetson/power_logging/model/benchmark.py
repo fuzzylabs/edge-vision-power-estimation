@@ -129,8 +129,8 @@ def benchmark(args: argparse.Namespace) -> None:
             _ = model(input_data)
             end_events[i].record()
 
-            print("Sleeping for 5 seconds...")
-            time.sleep(5)
+            print("Sleeping for 1 seconds...")
+            time.sleep(1)
 
         end.record()
         torch.cuda.synchronize()
