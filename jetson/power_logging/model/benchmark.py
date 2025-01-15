@@ -105,7 +105,7 @@ def benchmark(args: argparse.Namespace) -> None:
     with torch.no_grad():
         for _ in range(args.warmup):
             _ = model(input_data)
-    print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
+    print(f"Warm complete in {time.perf_counter() - st:.2f} sec ...")
 
     print("Start timing using tensorrt backend ...")
     torch.cuda.synchronize()
@@ -128,6 +128,9 @@ def benchmark(args: argparse.Namespace) -> None:
             start_events[i].record()
             _ = model(input_data)
             end_events[i].record()
+
+            print("Sleeping for 5 seconds...")
+            time.sleep(5)
 
         end.record()
         torch.cuda.synchronize()
