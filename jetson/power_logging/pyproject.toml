@@ -8,3 +8,9 @@ dependencies = [
     "dvc-s3>=3.2.0",
     "pandas>=2.2.3",
 ]
+
+[dependency-groups]
+dev = [
+    "numpy<2",
+    "torch==2.2.2", # last version available on intel macs, should be enough for dev work
+]
