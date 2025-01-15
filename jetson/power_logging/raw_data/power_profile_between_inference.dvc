@@ -1,0 +1,6 @@
+outs:
+- md5: a2fe7b8498988e2538e0c52223d5fd7d.dir
+  size: 201333607
+  nfiles: 9
+  hash: md5
+  path: power_profile_between_inference
