@@ -4,7 +4,7 @@ import torch
 from typing import Any
 import time
 from functools import partial
-import datetime
+from datetime import datetime
 import json
 
 
@@ -78,7 +78,7 @@ def layer_time_pre_hook(layer_time_dict, layer_name, module, input) -> None:
         module: the module to register hook.
         input: tuple containing the input arguments to module's forward method.
     """
-    layer_time_dict[layer_name] = (time.time(), datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    layer_time_dict[layer_name] = (time.time(), datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
 
 def layer_time_hook(layer_time_dict, layer_name, module, input, output) -> None:
     """
@@ -115,5 +115,6 @@ def get_layer_execution_time(model_name, input_shape, num_inference_cycles) -> N
         model(x)
         all_cycle_measurements[f"cycle_{i}"] = layer_time_dict
 
-    with open(f"{datetime.datetime.now().strftime('%Y_%m_%d_%H:%M:%S')}_{model_name}_inference_trace_{num_inference_cycles}_cycles.json", "w") as f:
+    with open(f"{datetime.now().strftime('%Y_%m_%d_%H:%M:%S')}_{model_name}_inference_trace_{num_inference_cycles}_cycles.json", "w") as f:
         json.dump(all_cycle_measurements, f)
+
