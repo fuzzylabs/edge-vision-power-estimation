@@ -115,6 +115,6 @@ def get_layer_execution_time(model_name, input_shape, num_inference_cycles) -> N
         model(x)
         all_cycle_measurements[f"cycle_{i}"] = layer_time_dict
 
-    with open(f"{datetime.now().strftime('%Y_%m_%d_%H:%M:%S')}_{model_name}_inference_trace_{num_inference_cycles}_cycles.json", "w") as f:
+    with open(f"{model_name}_layerwise_latency.json", "w") as f:
         json.dump(all_cycle_measurements, f)
 
