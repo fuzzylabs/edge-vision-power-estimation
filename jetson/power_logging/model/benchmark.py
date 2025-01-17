@@ -130,7 +130,7 @@ def benchmark(args: argparse.Namespace) -> None:
                 _ = model(input_data)
                 end_events[i].record()
 
-                if torch.cuda.is_available:
+                if torch.cuda.is_available():
                     torch.cuda.synchronize()
 
                 latency = start_events[i].elapsed_time(end_events[i])
