@@ -107,6 +107,32 @@ OS - Ubuntu 22.04-based root file system
 > [!NOTE]  
 > Learn more about the format of dataset collected in the [raw dataset](../../docs/DatasetFormats.md#raw-dataset-format) section.
 
+### Local development
+
+To do local development (i.e. on your machine rather than Jetson) you need to set up development environment.
+
+[uv](https://docs.astral.sh/uv/) : It is used as default for running this project locally.
+
+Create virtual environment using `uv` and install dependencies required for the project.
+
+```bash
+uv venv 
+source .venv/bin/activate
+uv sync
+```
+
+This setup should allow you to execute measurement scripts for local development purposes, e.g.:
+
+```
+python measure_inference_power.py \
+--model "resnet18" \
+--model-repo "pytorch/vision:v0.10.0" \
+--warmup "1" --runs "3" \
+--result-dir "raw_data/prebuilt_models/" \
+--optimization-level 3 \
+--input-shape 1 3 224 224
+```
+
 ## 💡 Approach
 
 The following process outlines the approach taken to collect the power and runtime values for each layer.

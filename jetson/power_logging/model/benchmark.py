@@ -1,4 +1,8 @@
-"""Benchmark TensorRT models."""
+"""
+Benchmark PyTorch models.
+
+Script uses PyTorch to benchmark models and will support CUDA if it is available on the system
+"""
 
 import argparse
 import json
@@ -10,12 +14,36 @@ from typing import Any
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-import torch_tensorrt
 from pydantic import BaseModel
 from tqdm import tqdm
 
 from model.lenet import LeNet
-from model.trt_utils import CustomProfiler, save_engine_info, save_layer_wise_profiling
+
+"""
+Wrapper class for Torch.cuda.event for non-CUDA supported devices
+
+Methods:
+    - record(): Records an event if CUDA is available
+    - elapsed_time(): Calculates elapsed time between events
+"""
+class CudaEvent:
+    def __init__(self, enable_timing = True):
+        if torch.cuda.is_available():
+            self.event = torch.cuda.Event(enable_timing=enable_timing)
+        else:
+            print("Warning: CUDA not available.")
+            self.event = None 
+
+    def record(self):
+        if self.event:
+            self.event.record()
+
+    def elapsed_time(self, n_event):
+        if self.event and n_event.event:
+            return self.event.elapsed_time(n_event.event)
+        return 0
+    
+
 
 cudnn.benchmark = True
 
@@ -31,7 +59,7 @@ class BenchmarkMetrics(BaseModel):
     avg_throughput: float
 
 
-def load_model(model_name: str) -> Any:
+def load_model(model_name: str, model_repo: str) -> Any:
     """Load model from Pytorch Hub.
 
     Args:
@@ -47,9 +75,9 @@ def load_model(model_name: str) -> Any:
     if model_name == "lenet":
         return LeNet()
     if model_name == "fcn_resnet50":
-        return torch.hub.load("pytorch/vision", model_name, pretrained=True)
+        return torch.hub.load(model_repo, model_name, pretrained=True)
     try:
-        return torch.hub.load("pytorch/vision", model_name, weights="IMAGENET1K_V1")
+        return torch.hub.load(model_repo, model_name)
     except:
         raise ValueError(
             f"Model name: {model_name} is most likely incorrect. "
@@ -60,101 +88,76 @@ def load_model(model_name: str) -> Any:
 def benchmark(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
-    Additionally for tensorrt backend, we calculate layer-wise
-    latency.
-
     Args:
         args: Arguments from CLI.
     """
-    start = torch.cuda.Event(enable_timing=True)
-    end = torch.cuda.Event(enable_timing=True)
-    start.record()
+    print("Starting benchmark...")
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    input_data = torch.randn(args.input_shape, device=DEVICE)
-    model = load_model(args.model)
-    model.eval().to(DEVICE)
 
-    dtype = torch.float32
-    if args.dtype == "float16":
-        dtype = torch.float16
-    if args.dtype == "bfloat16":
-        dtype = torch.bfloat16
+    try:
+        input_data = torch.randn(args.input_shape, device=DEVICE)
+        model = load_model(args.model, args.model_repo)
+        model.eval().to(DEVICE)
 
-    input_data = input_data.to(dtype)
-    model = model.to(dtype)
-    print(f"Using {DEVICE=} for benchmarking")
+        dtype = torch.float32
+        if args.dtype == "float16":
+            dtype = torch.float16
+        if args.dtype == "bfloat16":
+            dtype = torch.bfloat16
 
-    exp_program = torch.export.export(model, tuple([input_data]))
-    model = torch_tensorrt.dynamo.compile(
-        exported_program=exp_program,
-        inputs=[input_data],
-        min_block_size=args.min_block_size,
-        optimization_level=args.optimization_level,
-        enabled_precisions={dtype},
-        # Set to True for verbose output
-        # NOTE: Performance Regression when rich library is available
-        # https://github.com/pytorch/TensorRT/issues/3215
-        debug=True,
-        # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
-        use_python_runtime=True,
-    )
+        input_data = input_data.to(dtype)
+        model = model.to(dtype)
+        print(f"Using {DEVICE=} for benchmarking")
+        if DEVICE == "cpu":
+            print("Warning: Running on CPU.")
 
-    st = time.perf_counter()
-    print("Warm up ...")
-    with torch.no_grad():
-        for _ in range(args.warmup):
-            _ = model(input_data)
-    print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
+        st = time.perf_counter()
+        print("Warm up ...")
+        with torch.no_grad():
+            for _ in range(args.warmup):
+                _ = model(input_data)
+        print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
 
-    print("Start timing using tensorrt backend ...")
-    torch.cuda.synchronize()
-    # Recorded in milliseconds
-    start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
-    end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
+        print("Starting timing inference ...")
+        latencies = []
+        start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
+        end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
+        
+        with torch.no_grad():
+            for i in tqdm(range(args.runs)):
+                start_events[i].record()
+                _ = model(input_data)
+                end_events[i].record()
 
-    with torch.no_grad():
-        for i in tqdm(range(args.runs)):
-            # Hack for enabling profiling
-            # https://github.com/pytorch/TensorRT/issues/1467
-            profiling_dir = f"{args.result_dir}/{args.model}/trt_profiling"
-            Path(profiling_dir).mkdir(exist_ok=True, parents=True)
+                if torch.cuda.is_available():
+                    torch.cuda.synchronize()
 
-            # Records traces in milliseconds
-            # https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/Profiler.html#tensorrt.Profiler
-            mod = list(model.named_children())[0][1]
-            mod.enable_profiling(profiler=CustomProfiler())
+                latency = start_events[i].elapsed_time(end_events[i])
+                latencies.append(latency * 1.0e-3)
 
-            start_events[i].record()
-            _ = model(input_data)
-            end_events[i].record()
+        print("Benchmarking complete ...")
 
-        end.record()
-        torch.cuda.synchronize()
+        total_time = sum(latencies)
+        avg_latency = total_time / len(latencies)
+        avg_throughput = args.input_shape[0] / avg_latency
 
-    save_layer_wise_profiling(mod, profiling_dir)
-    save_engine_info(mod, profiling_dir)
 
-    # Convert milliseconds to seconds
-    timings = [s.elapsed_time(e) * 1.0e-3 for s, e in zip(start_events, end_events)]
-    avg_throughput = args.input_shape[0] / np.mean(timings)
-    print("Benchmarking complete ...")
-    # Convert milliseconds to seconds
-    total_exp_time = start.elapsed_time(end) * 1.0e-3
-    print(f"Total time for experiment: {total_exp_time} sec")
+        results = BenchmarkMetrics(
+            config=vars(args),
+            total_time=total_time,  # in seconds
+            timestamp=timestamp,
+            latencies=latencies,  # in seconds
+            avg_throughput=avg_throughput,
+            avg_latency=avg_latency,  # in seconds
+        )
 
-    results = BenchmarkMetrics(
-        config=vars(args),
-        total_time=total_exp_time,  # in seconds
-        timestamp=timestamp,
-        latencies=timings,  # in seconds
-        avg_throughput=avg_throughput,
-        avg_latency=np.mean(timings),  # in seconds
-    )
-
-    model_dir = f"{args.result_dir}/{args.model}"
-    Path(model_dir).mkdir(exist_ok=True, parents=True)
-    file_name = f"{args.model}_tensorrt.json"
-    file_path = f"{model_dir}/{file_name}"
-    with open(file_path, "w", encoding="utf-8") as outfile:
-        json.dump(results.model_dump(), outfile, indent=4)
+        model_dir = f"{args.result_dir}/{args.model}"
+        Path(model_dir).mkdir(exist_ok=True, parents=True)
+        file_name = f"{args.model}_tensorrt.json"
+        file_path = f"{model_dir}/{file_name}"
+        with open(file_path, "w", encoding="utf-8") as outfile:
+            json.dump(results.model_dump(), outfile, indent=4)
+    except Exception as e:
+        print(f"An error has occurred during benchmarking: {e}")
+        return

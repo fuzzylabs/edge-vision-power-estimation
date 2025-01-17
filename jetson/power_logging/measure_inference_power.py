@@ -72,6 +72,12 @@ if __name__ == "__main__":
         "https://pytorch.org/hub/research-models",
     )
     parser.add_argument(
+        "--model-repo",
+        type=str,
+        default="pytorch/vision",
+        help="Specify path and version to model repository from PyTorch Hub.",
+    )
+    parser.add_argument(
         "--dtype",
         type=str,
         default="float16",
@@ -116,14 +122,23 @@ if __name__ == "__main__":
         default="results",
         help="The directory to save the log result.",
     )
+    parser.add_argument(
+        "--disable-power-measurement",
+        action="store_true",
+        help="Disable power measurement during benchmark execution.",
+    )
     args = parser.parse_args()
 
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))
-    power_logging_process.start()
+
+    if not args.disable_power_measurement:
+        power_logging_process.start()
 
     inference_process = Process(target=inference, args=(event, args))
     inference_process.start()
 
-    power_logging_process.join()
+    if not args.disable_power_measurement:
+        power_logging_process.join()
+
     inference_process.join()
