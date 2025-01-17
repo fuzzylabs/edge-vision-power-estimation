@@ -25,7 +25,6 @@ Wrapper class for Torch.cuda.event for non-CUDA supported devices
 Methods:
     - record(): Records an event if CUDA is available
     - elapsed_time(): Calculates elapsed time between events
-    - synchronize(): synchronizes events in instance of CUDA
 """
 class CudaEvent:
     def __init__(self, enable_timing = True):
@@ -44,9 +43,6 @@ class CudaEvent:
             return self.event.elapsed_time(n_event.event)
         return 0
     
-    def synchronize(self):
-        if self.event:
-            self.event.synchronize()
 
 
 cudnn.benchmark = True
@@ -95,7 +91,12 @@ def benchmark(args: argparse.Namespace) -> None:
     Args:
         args: Arguments from CLI.
     """
+<<<<<<< HEAD
     print("Starting the benchmarking process...")
+=======
+    print("Starting benchmark...")
+
+>>>>>>> SD-118-pytorch-inference-script
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 
     try:
@@ -113,27 +114,46 @@ def benchmark(args: argparse.Namespace) -> None:
         model = model.to(dtype)
         print(f"Using {DEVICE=} for benchmarking")
         if DEVICE == "cpu":
+<<<<<<< HEAD
             print("WARNING: Running on CPU. Timing may vary")
 
         print("Warm up ...")
         st = time.perf_counter()
+=======
+            print("Warning: Running on CPU.")
+
+        st = time.perf_counter()
+        print("Warm up ...")
+>>>>>>> SD-118-pytorch-inference-script
         with torch.no_grad():
             for _ in range(args.warmup):
                 _ = model(input_data)
         print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
 
+<<<<<<< HEAD
         print("Start timing using pytorch backend ...")
         latencies = []
         start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
         end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
 
+=======
+        print("Starting timing inference ...")
+        latencies = []
+        start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
+        end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
+        
+>>>>>>> SD-118-pytorch-inference-script
         with torch.no_grad():
             for i in tqdm(range(args.runs)):
                 start_events[i].record()
                 _ = model(input_data)
                 end_events[i].record()
 
+<<<<<<< HEAD
                 if torch.cuda.is_available():
+=======
+                if torch.cuda.is_available:
+>>>>>>> SD-118-pytorch-inference-script
                     torch.cuda.synchronize()
 
                 latency = start_events[i].elapsed_time(end_events[i])
@@ -141,9 +161,15 @@ def benchmark(args: argparse.Namespace) -> None:
 
         print("Benchmarking complete ...")
 
+<<<<<<< HEAD
         total_time = sum(latencies) # Total time for all executions
         avg_latency = total_time / len(latencies) # Average latency per execution
         avg_throughput = args.input_shape[0] / avg_latency # Throughput in samples/sec
+=======
+        total_time = sum(latencies)
+        avg_latency = total_time / len(latencies)
+        avg_throughput = args.input_shape[0] / avg_latency
+>>>>>>> SD-118-pytorch-inference-script
 
 
         results = BenchmarkMetrics(
@@ -157,10 +183,19 @@ def benchmark(args: argparse.Namespace) -> None:
 
         model_dir = f"{args.result_dir}/{args.model}"
         Path(model_dir).mkdir(exist_ok=True, parents=True)
+<<<<<<< HEAD
         file_name = f"{args.model}_pytorch.json"
+=======
+        file_name = f"{args.model}_tensorrt.json"
+>>>>>>> SD-118-pytorch-inference-script
         file_path = f"{model_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
     except Exception as e:
+<<<<<<< HEAD
         print(f"An error occured during benchmarking: {e}")
         return
+=======
+        print(f"An error has occurred during benchmarking: {e}")
+        return
+>>>>>>> SD-118-pytorch-inference-script
