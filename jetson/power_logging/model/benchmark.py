@@ -13,11 +13,11 @@ from typing import Any
 
 import numpy as np
 import torch
-import torch.backends.cudnn as cudnn
 from pydantic import BaseModel
 from tqdm import tqdm
 
 from model.lenet import LeNet
+from functools import partial
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -43,9 +43,6 @@ class CudaEvent:
             return self.event.elapsed_time(n_event.event)
         return 0
     
-
-
-cudnn.benchmark = True
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -83,8 +80,98 @@ def load_model(model_name: str, model_repo: str) -> Any:
             f"Model name: {model_name} is most likely incorrect. "
             "Please refer https://pytorch.org/hub/ to get model name."
         )
+    
+
+def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, torch.nn.Module]]:
+    """
+    Recursively get all layers in a pytorch model.
+
+    Args:
+        model: the pytorch model to look for layers.
+        name_prefix: Use to identify the parents layer. Defaults to "".
+
+    Returns:
+        a list of tuple containing the layer name and the layer.
+    """
+    children = list(model.named_children())
+
+    if len(children) == 0: # No child
+        result = [(name_prefix, model)]
+    else:
+        # If have children, iterate over each child.
+        result = []
+        for child_name, child in children:
+            # Recursively call get_layers on the child, appending the current
+            # child's name to the name_prefix.
+            layers = get_layers(child, name_prefix + "_" + child_name)
+            result.extend(layers)
+    
+    return result
 
 
+def define_and_register_hooks(model, device) -> dict:
+    """
+        Define and register hooks with CUDA or CPU timing.
+
+    Args:
+        model: model we are registering hooks to its layers.
+        device: CPU or GPU.
+
+    Returns:
+        Dictionary containing the result.
+    """
+    layer_time_dict = {}
+
+    for layer_name, layer in get_layers(model):
+        start_event = CudaEvent() if device == "cuda" else None
+        end_event = CudaEvent() if device == "cuda" else None
+        layer.register_forward_pre_hook(partial(layer_time_pre_hook, layer_time_dict, layer_name, start_event))
+        layer.register_forward_hook(partial(layer_time_hook, layer_time_dict, layer_name, start_event, end_event))
+    
+    return layer_time_dict
+
+
+def layer_time_pre_hook(layer_time_dict, layer_name, start_event: CudaEvent, module, input) -> None:
+    """
+    Pre-hook to record start time.
+
+    Args:
+        layer_time_dict: dictionary to save hook function output.
+        layer_name: the layer to register hook.
+        start_event: an instance of the CudaEvent object use for marking the start time of before an layer execution.
+        module: the module to register hook.
+        input: tuple containing the input arguments to module's forward method.
+    """
+    if start_event:
+        start_event.record()
+        layer_time_dict[layer_name] = {"start_event": start_event}
+    else:
+        layer_time_dict[layer_name] = {"start_time": time.time()}
+
+
+def layer_time_hook(layer_time_dict, layer_name, start_event, end_event, module, input, output) -> None:
+    """
+    Hook to record end time and calculate duration.
+
+    Args:
+        layer_time_dict: dictionary to save hook function output.
+        layer_name: the layer to register hook.
+        start_event: the same instance of the CudaEvent object used in pre hook.
+        end_event: start_event: an instance of the CudaEvent object use for marking the end time of a layer execution.
+        module: the module to register hook.
+        input: tuple containing the input arguments to module's forward method.
+        output: the output tensor from the forward method.
+    """
+    if start_event:
+        end_event.record()
+        elapsed = start_event.elapsed_time(end_event)
+        layer_time_dict[layer_name]["elapsed_time"] = elapsed
+    else:
+        elapsed = time.time() - layer_time_dict[layer_name]["start_time"]
+        layer_time_dict[layer_name]["elapsed_time"] = elapsed
+
+
+# TODO: Below function needs to be updated.
 def benchmark(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
