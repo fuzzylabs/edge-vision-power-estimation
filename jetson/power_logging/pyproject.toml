@@ -9,6 +9,8 @@ dependencies = [
     "pandas>=2.2.3",
     "pillow>=11.1.0",
     "torch==2.2.2",
+    "torchinfo>=1.8.0",
+    "torchsummary>=1.5.1",
 ]
 
 [dependency-groups]
