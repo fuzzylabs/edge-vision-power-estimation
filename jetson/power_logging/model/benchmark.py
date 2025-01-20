@@ -129,7 +129,7 @@ def benchmark(args: argparse.Namespace) -> None:
             _ = model(input_data)
             end_events[i].record()
 
-            print("Sleeping for 1 seconds...")
+            print("Sleeping for 1 second(s)...")
             time.sleep(1)
 
         end.record()
