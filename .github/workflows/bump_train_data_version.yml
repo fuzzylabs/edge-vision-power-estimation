@@ -4,7 +4,7 @@ on:
     types:
       - closed
     branches:
-      - master
+      - main
       - develop
     paths:
       - 'model_training/training_data.dvc'

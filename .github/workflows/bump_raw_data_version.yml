@@ -4,7 +4,7 @@ on:
     types:
       - closed
     branches:
-      - master
+      - main
       - develop
     paths:
       - 'jetson/power_logging/raw_data/**.dvc'
