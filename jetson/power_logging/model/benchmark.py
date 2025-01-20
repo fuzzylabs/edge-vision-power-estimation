@@ -29,6 +29,8 @@ class BenchmarkMetrics(BaseModel):
     latencies: list[float]  # in seconds
     avg_latency: float  # in seconds
     avg_throughput: float
+    warmup: tuple[str, str]
+    model_load: tuple[str, str]
 
 
 def load_model(model_name: str) -> Any:
@@ -100,12 +102,26 @@ def benchmark(args: argparse.Namespace) -> None:
         use_python_runtime=True,
     )
 
+    # Since this is a lazy compile
+    # TensorRT model does not get built until we run example inference
+    st = time.perf_counter()
+    model_load_start = datetime.now().strftime("%Y%m%d-%H%M%S")
+    with torch.no_grad():
+        _ = model(input_data)
+    model_load_end = datetime.now().strftime("%Y%m%d-%H%M%S")
+    print(f"Model compile complete in {time.perf_counter() - st:.2f} sec ...")
+
     st = time.perf_counter()
     print("Warm up ...")
+    warmup_start = datetime.now().strftime("%Y%m%d-%H%M%S")
     with torch.no_grad():
         for _ in range(args.warmup):
             _ = model(input_data)
+    warmup_end = datetime.now().strftime("%Y%m%d-%H%M%S")
     print(f"Warm complete in {time.perf_counter() - st:.2f} sec ...")
+
+    print("Sleeping for 10 seconds...")
+    time.sleep(10)
 
     print("Start timing using tensorrt backend ...")
     torch.cuda.synchronize()
@@ -113,6 +129,7 @@ def benchmark(args: argparse.Namespace) -> None:
     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
     end_events = [torch.cuda.Event(enable_timing=True) for _ in range(args.runs)]
 
+    print("Starting inference...")
     with torch.no_grad():
         for i in tqdm(range(args.runs)):
             # Hack for enabling profiling
@@ -129,7 +146,7 @@ def benchmark(args: argparse.Namespace) -> None:
             _ = model(input_data)
             end_events[i].record()
 
-            print("Sleeping for 1 second(s)...")
+            # print("Sleeping for 1 second(s)...")
             time.sleep(1)
 
         end.record()
@@ -153,6 +170,8 @@ def benchmark(args: argparse.Namespace) -> None:
         latencies=timings,  # in seconds
         avg_throughput=avg_throughput,
         avg_latency=np.mean(timings),  # in seconds
+        warmup=(warmup_start, warmup_end),
+        model_load=(model_load_start, model_load_end),
     )
 
     model_dir = f"{args.result_dir}/{args.model}"
