@@ -151,6 +151,7 @@ def layer_time_pre_hook(layer_time_dict, layer_name, start_event: CudaEvent, mod
         module: the module to register hook.
         input: tuple containing the input arguments to module's forward method.
     """
+    layer_time_dict[layer_name] = {}
     start_event.record()
 
 
