@@ -27,6 +27,8 @@ Methods:
     - elapsed_time(): Calculates elapsed time between events
 """
 class CudaEvent:
+    time_stamp: time
+
     def __init__(self, enable_timing = True):
         if torch.cuda.is_available():
             self.event = torch.cuda.Event(enable_timing=enable_timing)
@@ -35,13 +37,20 @@ class CudaEvent:
             self.event = None 
 
     def record(self):
+        self.time_stamp = time.time()
+        
         if self.event:
             self.event.record()
+
 
     def elapsed_time(self, n_event):
         if self.event and n_event.event:
             return self.event.elapsed_time(n_event.event)
-        return 0
+        else:
+            return n_event.time_stamp - self.time_stamp
+        
+    def get_time_stamp(self):
+        return self.time_stamp
     
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -123,8 +132,8 @@ def define_and_register_hooks(model, device) -> dict:
     layer_time_dict = {}
 
     for layer_name, layer in get_layers(model):
-        start_event = CudaEvent() if device == "cuda" else None
-        end_event = CudaEvent() if device == "cuda" else None
+        start_event = CudaEvent(enable_timing=True)
+        end_event = CudaEvent(enable_timing=True)
         layer.register_forward_pre_hook(partial(layer_time_pre_hook, layer_time_dict, layer_name, start_event))
         layer.register_forward_hook(partial(layer_time_hook, layer_time_dict, layer_name, start_event, end_event))
     
@@ -142,11 +151,7 @@ def layer_time_pre_hook(layer_time_dict, layer_name, start_event: CudaEvent, mod
         module: the module to register hook.
         input: tuple containing the input arguments to module's forward method.
     """
-    if start_event:
-        start_event.record()
-        layer_time_dict[layer_name] = {"start_event": start_event}
-    else:
-        layer_time_dict[layer_name] = {"start_time": time.time()}
+    start_event.record()
 
 
 def layer_time_hook(layer_time_dict, layer_name, start_event, end_event, module, input, output) -> None:
@@ -162,16 +167,14 @@ def layer_time_hook(layer_time_dict, layer_name, start_event, end_event, module,
         input: tuple containing the input arguments to module's forward method.
         output: the output tensor from the forward method.
     """
-    if start_event:
-        end_event.record()
-        elapsed = start_event.elapsed_time(end_event)
-        layer_time_dict[layer_name]["elapsed_time"] = elapsed
-    else:
-        elapsed = time.time() - layer_time_dict[layer_name]["start_time"]
-        layer_time_dict[layer_name]["elapsed_time"] = elapsed
+    end_event.record()
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+    elapsed = start_event.elapsed_time(end_event)
+    layer_time_dict[layer_name]["elapsed_time"] = elapsed
+    layer_time_dict[layer_name]["start_time"] = start_event.get_time_stamp()
 
 
-# TODO: Below function needs to be updated.
 def benchmark(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
@@ -206,6 +209,9 @@ def benchmark(args: argparse.Namespace) -> None:
                 _ = model(input_data)
         print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
 
+        layer_profiles = []
+        layer_profile = define_and_register_hooks(model, DEVICE)
+
         print("Starting timing inference ...")
         latencies = []
         start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
@@ -222,6 +228,7 @@ def benchmark(args: argparse.Namespace) -> None:
 
                 latency = start_events[i].elapsed_time(end_events[i])
                 latencies.append(latency * 1.0e-3)
+                layer_profiles.append(layer_profile.copy())
 
         print("Benchmarking complete ...")
 
@@ -241,10 +248,12 @@ def benchmark(args: argparse.Namespace) -> None:
 
         model_dir = f"{args.result_dir}/{args.model}"
         Path(model_dir).mkdir(exist_ok=True, parents=True)
-        file_name = f"{args.model}_tensorrt.json"
+        file_name = f"{args.model}_pytorch.json"
         file_path = f"{model_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
+        with open(f"{model_dir}/{args.model}_layerwise_latency.json", "w") as layer_profiles_file:
+            json.dump(layer_profiles, layer_profiles_file)
     except Exception as e:
         print(f"An error has occurred during benchmarking: {e}")
         return
