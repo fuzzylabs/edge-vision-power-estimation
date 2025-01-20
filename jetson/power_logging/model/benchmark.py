@@ -27,7 +27,9 @@ Methods:
     - elapsed_time(): Calculates elapsed time between events
 """
 class CudaEvent:
-    time_stamp: time
+    start_time: float
+    time_stamp: float
+    event: torch.cuda.Event | None
 
     def __init__(self, enable_timing = True):
         if torch.cuda.is_available():
@@ -37,7 +39,8 @@ class CudaEvent:
             self.event = None 
 
     def record(self):
-        self.time_stamp = time.time()
+        self.start_time = time.time()
+        self.time_stamp = time.perf_counter()
         
         if self.event:
             self.event.record()
@@ -50,7 +53,7 @@ class CudaEvent:
             return n_event.time_stamp - self.time_stamp
         
     def get_time_stamp(self):
-        return self.time_stamp
+        return self.start_time
     
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
