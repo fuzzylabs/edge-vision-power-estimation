@@ -32,7 +32,7 @@ class CudaEvent:
     event: torch.cuda.Event | None
 
     def __init__(self, enable_timing = True):
-        if torch.cuda.is_available():
+        if IS_GPU:
             self.event = torch.cuda.Event(enable_timing=enable_timing)
         else:
             print("Warning: CUDA not available.")
@@ -56,7 +56,8 @@ class CudaEvent:
         return self.start_time
     
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+IS_GPU = torch.cuda.is_available()
+DEVICE = "cuda" if IS_GPU else "cpu"
 
 
 class BenchmarkMetrics(BaseModel):
@@ -172,7 +173,7 @@ def layer_time_hook(layer_time_dict, layer_name, start_event, end_event, module,
         output: the output tensor from the forward method.
     """
     end_event.record()
-    if torch.cuda.is_available():
+    if IS_GPU:
         torch.cuda.synchronize()
     elapsed = start_event.elapsed_time(end_event)
     layer_time_dict[layer_name]["elapsed_time"] = elapsed
@@ -227,7 +228,7 @@ def benchmark(args: argparse.Namespace) -> None:
                 _ = model(input_data)
                 end_events[i].record()
 
-                if torch.cuda.is_available():
+                if IS_GPU:
                     torch.cuda.synchronize()
 
                 latency = start_events[i].elapsed_time(end_events[i])
