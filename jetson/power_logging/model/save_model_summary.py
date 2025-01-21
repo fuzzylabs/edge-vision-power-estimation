@@ -1,10 +1,6 @@
 import torch
 import json
 from typing import Any 
-# from torchsummary import summary
-from torchinfo import summary
-# from model.lenet import LeNet
-
 
 def load_model(model_name: str, model_repo: str) -> Any:
     """Load model from Pytorch Hub.
@@ -19,10 +15,6 @@ def load_model(model_name: str, model_repo: str) -> Any:
     Returns:
         PyTorch model
     """
-    # if model_name == "lenet":
-    #     return LeNet()
-    # if model_name == "fcn_resnet50":
-    #     return torch.hub.load(model_repo, model_name, pretrained=True)
     try:
         return torch.hub.load(model_repo, model_name, pretrained=True)
     except:
@@ -45,20 +37,27 @@ def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, t
     """
     children = list(model.named_children())
 
-    if len(children) == 0: # No child
+    if len(children) == 0:
         result = [(name_prefix, model)]
     else:
-        # If have children, iterate over each child.
         result = []
         for child_name, child in children:
-            # Recursively call get_layers on the child, appending the current
-            # child's name to the name_prefix.
             layers = get_layers(child, name_prefix + "_" + child_name)
             result.extend(layers)
     
     return result
 
 def get_layer_info(model, input_shape):
+    """
+    Get key information of all layers within a model.
+
+    Args:
+        model: The pytorch model
+        input_shape: input size of the model
+
+    Returns:
+        information about the model
+    """
     model_info = {}
     test = torch.randn(*input_shape)
     hooks = []
@@ -72,10 +71,6 @@ def get_layer_info(model, input_shape):
                 "stride": getattr(module, "stride", None),
                 "padding": getattr(module, "padding", None),
                 "type": module.__class__.__name__,
-                # "kernal_size": layer.kernel_size if hasattr(layer, "kernel_size") else None,
-                # "stride": layer.stride if hasattr(layer, "stride") else None,
-                # "padding": layer.padding if hasattr(layer, "padding") else None,
-                # "type": type(layer)
             }
         return hook
 
@@ -94,9 +89,9 @@ def get_layer_info(model, input_shape):
 
 model = load_model("resnet18", "pytorch/vision:v0.10.0")
 layer_info = get_layer_info(model, (1, 3, 224, 224))
-# print(len(layer_info))
 
-print(json.dumps(layer_info, indent=4, separators=(",", ": "), ensure_ascii=False, default=str))
+print(json.dumps(layer_info, indent=4, separators=(",", ": "), ensure_ascii=False))
 
-
-# save to json later
+output = "model_summary.json"
+with open(output, "w") as file:
+    json.dump(layer_info, file, indent=4, separators=(",", ": "), ensure_ascii=False)
