@@ -1,0 +1,12 @@
+[
+  {
+    "[CONVOLUTION]-[conv0]": {
+      "start_time": 1732147201.1,
+      "elapsed_time": 400.0
+    },
+    "[MATRIX_MULTIPLY]-[fc0]": {
+      "start_time": 1732147201.9,
+      "elapsed_time": 800.0
+    }
+  }
+]

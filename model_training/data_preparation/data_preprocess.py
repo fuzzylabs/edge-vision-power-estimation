@@ -12,6 +12,19 @@ from tqdm import tqdm
 from data_preparation.io_utils import read_json_file, read_log_file
 
 
+class PytorchLayerLatency(TypedDict):
+    """Measured layer latencies in Pytorch for a single inference cycle.
+
+    Keyed by the layer name.
+    """
+
+    start_time: float
+    """Layer execution UNIX timestamp in seconds."""
+
+    elapsed_time: float
+    """Layer execution elapsed time in milliseconds."""
+
+
 class MetricsByCycle(TypedDict):
     """Metrics collected by an inference cycle for a given layer."""
 
@@ -110,7 +123,7 @@ class DataPreprocessor:
         return processed_log
 
     def compute_latency_start_end_times(
-        self, trt_layer_latency: dict[str, list[list[float, str]]]
+        self, pytorch_layer_latency: list[dict[str, PytorchLayerLatency]]
     ) -> list[tuple]:
         """Calculate start and end time for each layer.
 
@@ -118,46 +131,50 @@ class DataPreprocessor:
         get the power values between the start and end time of layer inference.
 
         Example:
-            Suppose we have a following trt latency data
+            Suppose we have a following pytorch latency data
+            [
             {
-            layer_1 : [[5, 00:10]],
-            layer_2 : [[2, 00:14]]
+            layer1: {'start_time': .., 'elapsed_time': ...} #run1
+            ...
+            },
+            {
+            layer1: {'start_time': .., 'elapsed_time': ...} #run2
+            ...
             }
+            ]
 
             This function will calculate start time using end time and latency.
+            cycle: 1
             layer_1
             start_time: 00:05
             end_time: 00:10
             execution_duration: 5
-
-            layer_2
+            ...
+            cycle: 2
+            layer_1
             start_time: 00:12
             end_time: 00:14
             execution_duration: 2
 
         Args:
-            trt_layer_latency: Dictionary containing latency data for each layer.
+            pytorch_layer_latency: Dictionary containing latency data for each layer.
 
         Returns:
             List of tuples (cycle, start_time, end_time, duration, layer_name).
         """
         latency_data = defaultdict(list)
 
-        for layer_name, layer_times in tqdm(
-            trt_layer_latency.items(), desc="Preprocessing latency data"
-        ):
-            for cycle, (execution_duration, execution_end_time) in enumerate(
-                layer_times
-            ):
-                end_timestamp = parse_timestamp(execution_end_time)
-                duration = timedelta(milliseconds=execution_duration)
-                start_timestamp = end_timestamp - duration
+        for cycle, cycle_layer_latency in enumerate(pytorch_layer_latency):
+            for layer_name, layer_latency in cycle_layer_latency.items():
+                start_timestamp = datetime.fromtimestamp(layer_latency["start_time"])
+                duration = timedelta(milliseconds=layer_latency["elapsed_time"])
+                end_timestamp = start_timestamp + duration
                 latency_data[cycle].append(
                     (
                         cycle,
                         start_timestamp,
                         end_timestamp,
-                        execution_duration,
+                        layer_latency["elapsed_time"],
                         layer_name,
                     )
                 )
@@ -171,7 +188,7 @@ class DataPreprocessor:
     def compute_layer_metrics_by_cycle(
         self,
         power_log_path: Path,
-        trt_layer_latency_path: Path,
+        pytorch_layer_latency_path: Path,
         trt_engine_info_path: Path,
     ) -> list[MetricsByCycle]:
         """Computes and aggregates power and runtime metrics for each layer within a processing cycle.
@@ -184,7 +201,7 @@ class DataPreprocessor:
 
         Args:
             power_log_path: Path to model power log file
-            trt_layer_latency_path: Path to tensorrt layer latency file
+            pytorch_layer_latency_path: Path to pytorch layer latency file
             trt_engine_info_path: Path to tensorrt engine info file
         Returns:
             list[MetricsByCycle]: A list of dictionaries, each representing metrics for a specific layer.
@@ -194,8 +211,8 @@ class DataPreprocessor:
         power_logs_iterator = iter(power_logs)
 
         # Preprocess and sort latency data by start time
-        trt_layer_latency = read_json_file(trt_layer_latency_path)
-        latency_data = self.compute_latency_start_end_times(trt_layer_latency)
+        pytorch_layer_latency = read_json_file(pytorch_layer_latency_path)
+        latency_data = self.compute_latency_start_end_times(pytorch_layer_latency)
         trt_engine_info = read_json_file(trt_engine_info_path)
         layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
 
