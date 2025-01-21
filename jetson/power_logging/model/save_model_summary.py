@@ -1,51 +1,8 @@
 import torch
 import json
+import argparse
 from typing import Any 
-
-def load_model(model_name: str, model_repo: str) -> Any:
-    """Load model from Pytorch Hub.
-
-    Args:
-        model_name: Name of model.
-            It should be same as that in Pytorch Hub.
-
-    Raises:
-        ValueError: If loading model fails from PyTorch Hub
-
-    Returns:
-        PyTorch model
-    """
-    try:
-        return torch.hub.load(model_repo, model_name, pretrained=True)
-    except:
-        raise ValueError(
-            f"Model name: {model_name} is most likely incorrect. "
-            "Please refer https://pytorch.org/hub/ to get model name."
-        )
-    
-
-def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, torch.nn.Module]]:
-    """
-    Recursively get all layers in a pytorch model.
-
-    Args:
-        model: the pytorch model to look for layers.
-        name_prefix: Use to identify the parents layer. Defaults to "".
-
-    Returns:
-        a list of tuple containing the layer name and the layer.
-    """
-    children = list(model.named_children())
-
-    if len(children) == 0:
-        result = [(name_prefix, model)]
-    else:
-        result = []
-        for child_name, child in children:
-            layers = get_layers(child, name_prefix + "_" + child_name)
-            result.extend(layers)
-    
-    return result
+from model_utils import load_model, get_layers
 
 def get_layer_info(model, input_shape):
     """
@@ -87,11 +44,42 @@ def get_layer_info(model, input_shape):
     return model_info
 
 
-model = load_model("resnet18", "pytorch/vision:v0.10.0")
-layer_info = get_layer_info(model, (1, 3, 224, 224))
+def run(args):
+    model = load_model(args.model, args.model_repo)
+    layer_info = get_layer_info(model, args.input_shape)
 
-print(json.dumps(layer_info, indent=4, separators=(",", ": "), ensure_ascii=False))
+    print(json.dumps(layer_info, indent=4, separators=(",", ": "), ensure_ascii=False))
 
-output = "model_summary.json"
-with open(output, "w") as file:
-    json.dump(layer_info, file, indent=4, separators=(",", ": "), ensure_ascii=False)
+    output = "model_summary.json"
+    with open(output, "w") as file:
+        json.dump(layer_info, file, indent=4, separators=(",", ": "), ensure_ascii=False)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        prog="Save Model Summary",
+        description="Save a summary of the model after benchmarking.",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="resnet18",
+        help="Specify name of pretrained CNN mode from PyTorch Hub."
+        "For more information on PyTorch Hub visit: "
+        "https://pytorch.org/hub/research-models",
+    )
+    parser.add_argument(
+        "--model-repo",
+        type=str,
+        default="pytorch/vision:v0.10.0",
+        help="Specify path and version to model repository from PyTorch Hub."
+    )
+    parser.add_argument(
+        "--input-shape",
+        type=int,
+        nargs="+",
+        default=[1, 3, 224, 224],
+        help="Input shape BCHW",
+    )
+
+    args = parser.parse_args()
+    run(args)
