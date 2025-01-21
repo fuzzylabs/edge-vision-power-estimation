@@ -87,6 +87,7 @@ def benchmark(args: argparse.Namespace) -> None:
     model = model.to(dtype)
     print(f"Using {DEVICE=} for benchmarking")
 
+    model_load_start = datetime.now().strftime("%Y%m%d-%H%M%S")
     exp_program = torch.export.export(model, tuple([input_data]))
     model = torch_tensorrt.dynamo.compile(
         exported_program=exp_program,
@@ -101,15 +102,10 @@ def benchmark(args: argparse.Namespace) -> None:
         # Setting it to True returns PythonTorchTensorRTModule which has different profiling approach
         use_python_runtime=True,
     )
-
-    # Since this is a lazy compile
-    # TensorRT model does not get built until we run example inference
-    st = time.perf_counter()
-    model_load_start = datetime.now().strftime("%Y%m%d-%H%M%S")
-    with torch.no_grad():
-        _ = model(input_data)
     model_load_end = datetime.now().strftime("%Y%m%d-%H%M%S")
-    print(f"Model compile complete in {time.perf_counter() - st:.2f} sec ...")
+
+    print("Sleeping for 10 seconds...")
+    time.sleep(10)
 
     st = time.perf_counter()
     print("Warm up ...")
