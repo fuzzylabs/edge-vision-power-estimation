@@ -78,10 +78,9 @@ def get_layer_info(model, input_shape):
                 # "type": type(layer)
             }
         return hook
-    
-    for name, layer in model.named_modules():
-        if isinstance(layer, torch.nn.Module):
-            hooks.append(layer.register_forward_hook(register_hook(name)))
+
+    for layer_name, layer in get_layers(model):
+        hooks.append(layer.register_forward_hook(register_hook(layer_name)))
     
     model.eval()
     with torch.no_grad():
@@ -95,6 +94,7 @@ def get_layer_info(model, input_shape):
 
 model = load_model("resnet18", "pytorch/vision:v0.10.0")
 layer_info = get_layer_info(model, (1, 3, 224, 224))
+# print(len(layer_info))
 
 print(json.dumps(layer_info, indent=4, separators=(",", ": "), ensure_ascii=False, default=str))
 
