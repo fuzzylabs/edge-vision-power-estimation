@@ -1,4 +1,5 @@
 import torch
+import json
 from typing import Any 
 # from torchsummary import summary
 from torchinfo import summary
@@ -20,10 +21,10 @@ def load_model(model_name: str, model_repo: str) -> Any:
     """
     # if model_name == "lenet":
     #     return LeNet()
-    if model_name == "fcn_resnet50":
-        return torch.hub.load(model_repo, model_name, pretrained=True)
+    # if model_name == "fcn_resnet50":
+    #     return torch.hub.load(model_repo, model_name, pretrained=True)
     try:
-        return torch.hub.load(model_repo, model_name)
+        return torch.hub.load(model_repo, model_name, pretrained=True)
     except:
         raise ValueError(
             f"Model name: {model_name} is most likely incorrect. "
@@ -57,14 +58,45 @@ def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, t
     
     return result
 
-def get_layer_info(model):
+def get_layer_info(model, input_shape):
     model_info = {}
-    for layer_name, layer in get_layers(model):
-        model_info[layer_name] = {
-            "kernal_size": layer.kernel_size if hasattr(layer, "kernel_size") else None,
-            "stride": layer.stride if hasattr(layer, "stride") else None,
-            "padding": layer.padding if hasattr(layer, "padding") else None,
-            "type": type(layer)
-        }
+    test = torch.randn(*input_shape)
+    hooks = []
 
+    def register_hook(layer_name):
+        def hook(module, input, output):
+            model_info[layer_name] = {
+                "input_shape": tuple(input[0].size()) if input else None,
+                "output_shape": tuple(output.size()) if output is not None else None,
+                "kernel_size": getattr(module, "kernel_size", None),
+                "stride": getattr(module, "stride", None),
+                "padding": getattr(module, "padding", None),
+                "type": module.__class__.__name__,
+                # "kernal_size": layer.kernel_size if hasattr(layer, "kernel_size") else None,
+                # "stride": layer.stride if hasattr(layer, "stride") else None,
+                # "padding": layer.padding if hasattr(layer, "padding") else None,
+                # "type": type(layer)
+            }
+        return hook
+    
+    for name, layer in model.named_modules():
+        if isinstance(layer, torch.nn.Module):
+            hooks.append(layer.register_forward_hook(register_hook(name)))
+    
+    model.eval()
+    with torch.no_grad():
+        _ = model(test)
+
+    for hook in hooks:
+        hook.remove()
+            
     return model_info
+
+
+model = load_model("resnet18", "pytorch/vision:v0.10.0")
+layer_info = get_layer_info(model, (1, 3, 224, 224))
+
+print(json.dumps(layer_info, indent=4, separators=(",", ": "), ensure_ascii=False, default=str))
+
+
+# save to json later
