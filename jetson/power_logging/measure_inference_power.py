@@ -74,7 +74,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model-repo",
         type=str,
-        default="pytorch/vision",
+        default="pytorch/vision:v0.10.0",
         help="Specify path and version to model repository from PyTorch Hub.",
     )
     parser.add_argument(

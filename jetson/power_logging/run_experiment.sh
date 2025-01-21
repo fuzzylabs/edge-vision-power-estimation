@@ -41,7 +41,6 @@ do
   # Run the measure_inference_power.py script
   python measure_inference_power.py \
     --model "$model" \
-    --model-repo "pytorch/vision:v0.10.0" \
     --runs "$RUNS" \
     --result-dir "$RESULT_DIR" \
     --optimization-level 3 \
