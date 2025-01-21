@@ -1,1 +1,1 @@
-"""Init for model benchmarking."""
+"""Init for power research."""
