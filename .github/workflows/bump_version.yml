@@ -1,0 +1,33 @@
+name: Bump version
+on:
+  workflow_call:
+    inputs:
+      tag_namespace:
+        required: true
+        type: string
+
+jobs:
+  bump:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Calculate version
+        id: calculate_version
+        run: |
+          NEW_VERSION=$(git tag --sort=committerdate | grep ${{ inputs.tag_namespace }}/v | tail -1 | sed -e "s/^${{ inputs.tag_namespace }}\/v/1 + /" | bc)
+          echo "new_version=${{ inputs.tag_namespace }}/v$NEW_VERSION" >> $GITHUB_OUTPUT
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.calculate_version.outputs.new_version }}',
+              sha: context.sha
+            })
