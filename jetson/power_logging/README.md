@@ -85,13 +85,13 @@ OS - Ubuntu 22.04-based root file system
     Track `raw_data` folder using `dvc add` command
 
     ```bash
-    dvc add jetson/power_logging/raw_data
+    dvc add jetson/power_logging/raw_data/prebuilt_models
     ```
 
     Next, run the following commands to track changes in Git. For example, we add a commit message `Add raw data`. Please make sure to add a good commit message for clarity.
 
     ```bash
-    git add .dvc jetson/power_logging/raw_data.dvc
+    git add .dvc jetson/power_logging/raw_data/prebuilt_models.dvc
     git commit -m "Add raw data"
     ```
 
