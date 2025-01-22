@@ -32,8 +32,10 @@ class PytorchLayer(BaseModel):
     @field_validator("kernel_size", "padding", "stride")
     def ensure_2d(cls, val: list[int], _: ValidationInfo) -> list[int]:
         """Check dimensions of input/output tensor."""
-        if len(val) not in [2, 4]:
-            raise ValidationError("Tensor must have 2 or 4 dimensions")
+        if val is None:
+            return None
+        if len(val) not in [2]:
+            raise ValidationError("Tensor must have 2 dimensions")
 
         return val
 
@@ -60,6 +62,8 @@ def read_layers_info(path: Path) -> PytorchModelSummary:
     with open(path, "r") as f:
         json_content = json.load(f)
         for layer_name, layer_dict in json_content.items():
+            print("HERE")
+            print(layer_dict)
             layer = PytorchLayer.model_validate(layer_dict)
             model_summary[layer_name] = layer
         return model_summary
