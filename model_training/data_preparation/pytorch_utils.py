@@ -5,20 +5,6 @@ from pydantic import BaseModel, Field, ValidationError, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
 
-class TensorRTInputOutput(BaseModel):
-    """TensorRT layer input and output model."""
-
-    dimensions: list[int] = Field(validation_alias="Dimensions")
-
-    @field_validator("dimensions")
-    def check_dimensions(cls, dimensions: list[int], _: ValidationInfo) -> list[int]:
-        """Check dimensions of input/output tensor."""
-        if len(dimensions) not in [2, 4]:
-            raise ValidationError("Tensor must have 2 or 4 dimensions")
-
-        return dimensions
-
-
 class PytorchLayer(BaseModel):
     """Pytorch layer definition."""
 
@@ -48,7 +34,9 @@ class PytorchLayer(BaseModel):
         if self.layer_type == "MaxPool2d":
             return "pooling"
         elif self.layer_type == "Conv2d":
-            return "convolutional"
+            return "convolutional2d"
+        elif self.layer_type == "Conv1d":
+            return "convolutional1d"
         elif self.layer_type == "Linear":
             return "dense"
         else:
@@ -62,8 +50,6 @@ def read_layers_info(path: Path) -> PytorchModelSummary:
     with open(path, "r") as f:
         json_content = json.load(f)
         for layer_name, layer_dict in json_content.items():
-            print("HERE")
-            print(layer_dict)
             layer = PytorchLayer.model_validate(layer_dict)
             model_summary[layer_name] = layer
         return model_summary

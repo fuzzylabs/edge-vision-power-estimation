@@ -41,11 +41,14 @@ def test_get_convolutional_features(layer, layers_info, expected_features):
     layer_info = layers_info[layer]
     layer_type = layer_info.get_layer_type()
 
-    assert layer_type == "convolutional"
+    if layers_info["conv_layer"].layer_type == "Conv2d":
+        assert layer_type == "convolutional2d"
+    else:
+        assert layer_type == "convolutional1d"
 
-    if layer_type == "convolutional":
-        features = get_convolutional_features(layer_info)
-        assert expected_features["convolutional"] == features
+    features = get_convolutional_features(layer_info)
+    # Assert either convolutional2d or convolutional1d
+    assert expected_features[layer_type] == features
 
 
 @pytest.mark.parametrize(

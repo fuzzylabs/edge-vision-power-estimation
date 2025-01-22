@@ -37,9 +37,7 @@ def get_pooling_features(layer_info: PytorchLayer) -> dict[str, int]:
         kernel_size = layer_info.kernel_size
 
     if layer_info.stride is None: # Assume this is global pooling
-        stride = [
-            1, 1
-        ]
+        stride = [1, 1]
     else:
         stride = layer_info.stride
 
@@ -96,12 +94,18 @@ def convert_measurements_to_training_data(
 
         layer_info = layers_info[layer_name]
         layer_type = layer_info.get_layer_type()
-        if layer_type == "convolutional":
+        if layer_type == "convolutional1d":
             features = get_convolutional_features(layer_info)
             features["power"] = row.average_power
             features["runtime"] = row.average_run_time
             features["layer_name"] = layer_name
-            results["convolutional"].append(features)
+            results["convolutional1d"].append(features)
+        elif layer_type == "convolutional2d":
+            features = get_convolutional_features(layer_info)
+            features["power"] = row.average_power
+            features["runtime"] = row.average_run_time
+            features["layer_name"] = layer_name
+            results["convolutional2d"].append(features)
         elif layer_type == "pooling":
             features = get_pooling_features(layer_info)
             features["power"] = row.average_power
