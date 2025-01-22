@@ -31,8 +31,8 @@ class BenchmarkMetrics(BaseModel):
     avg_throughput: float
     warmup: tuple[str, str]
     model_load: tuple[str, str]
-    pt_model_load_end: float
-    pt_model_infer_start: float
+    pt_model_load_end: str
+    pt_model_infer_start: str
 
 
 def load_model(model_name: str) -> Any:
