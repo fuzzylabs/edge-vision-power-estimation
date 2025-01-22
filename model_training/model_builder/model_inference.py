@@ -10,7 +10,7 @@ from data_preparation.convert import (
     get_dense_features,
     get_pooling_features,
 )
-from data_preparation.tensorrt_utils import TensorRTLayer
+from data_preparation.pytorch_utils import TensorRTLayer
 
 ALLOWED_LAYER_TYPES = Literal["convolutional", "pooling", "dense"]
 
