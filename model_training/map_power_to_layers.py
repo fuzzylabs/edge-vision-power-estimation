@@ -38,12 +38,12 @@ def main(args: argparse.Namespace) -> None:
         model_name = model_dir.name
         print(f"Preprocessing {model_name} model")
         try:
-            power_log_file, trt_layer_latency_file, trt_engine_info_file = (
+            power_log_file, pytorch_layer_latency_file, trt_engine_info_file = (
                 parse_model_dir(model_dir)
             )
             metrics_by_cycle = preprocessor.compute_layer_metrics_by_cycle(
                 power_log_path=power_log_file,
-                trt_layer_latency_path=trt_layer_latency_file,
+                pytorch_layer_latency_path=pytorch_layer_latency_file,
                 trt_engine_info_path=trt_engine_info_file,
             )
             preprocessor.save_result_to_csv(
