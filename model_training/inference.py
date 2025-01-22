@@ -12,7 +12,7 @@ from pathlib import Path
 
 import dagshub
 import pandas as pd
-from data_preparation.tensorrt_utils import read_layers_info
+from data_preparation.pytorch_utils import read_layers_info
 from model_builder.model_inference import InferenceModel
 
 

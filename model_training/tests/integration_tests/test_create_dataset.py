@@ -63,7 +63,7 @@ def verify_preprocessed_dataset(shared_temp_dir):
         assert len(files) == 2
 
         assert sorted(files) == sorted(
-            ["power_runtime_mapping_layerwise.csv", "trt_engine_info.json"]
+            ["power_runtime_mapping_layerwise.csv", "model_summary.json"]
         )
 
         output_preprocessed_csv = os.path.join(

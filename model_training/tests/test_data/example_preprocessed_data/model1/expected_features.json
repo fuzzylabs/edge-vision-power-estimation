@@ -22,8 +22,8 @@
         "output_size_0": 64,
         "output_size_1": 27,
         "output_size_2": 27,
-        "kernel_0": 55,
-        "kernel_1": 55,
+        "kernel_0": 3,
+        "kernel_1": 3,
         "stride_0": 2,
         "stride_1": 2
     },
