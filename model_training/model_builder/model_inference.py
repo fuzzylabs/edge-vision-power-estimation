@@ -52,11 +52,11 @@ class InferenceModel:
         print(f"Loading the {model_type} trained model from {dst_path} folder")
         return mlflow.pyfunc.load_model(dst_path)
 
-    def get_features(self, layer_info: TensorRTLayer) -> pd.DataFrame:
+    def get_features(self, layer_info: PytorchLayer) -> pd.DataFrame:
         """Get features for the model to run prediction.
 
         Each layer type creates input features required by
-        power and runtime models using Tensorrt engine info file.
+        power and runtime models using Pytorch model summary file.
 
         Args:
             layer_info: Pydantic class containing all layer information.
