@@ -2,7 +2,7 @@ import torch
 import json
 import argparse
 from typing import Any 
-from model_utils import load_model, get_layers
+from model.model_utils import load_model, get_layers
 
 def get_layer_info(model, input_shape):
     """
@@ -46,12 +46,15 @@ def get_layer_info(model, input_shape):
 
 def run(args):
     model = load_model(args.model, args.model_repo)
+    if model is None:
+        print(f"Model skipped '{args.model}' could not be loaded.")
+        return
+    
     layer_info = get_layer_info(model, args.input_shape)
 
     print(json.dumps(layer_info, indent=4, separators=(",", ": "), ensure_ascii=False))
 
-    output = "model_summary.json"
-    with open(output, "w") as file:
+    with open(args.output_file, "w") as file:
         json.dump(layer_info, file, indent=4, separators=(",", ": "), ensure_ascii=False)
 
 if __name__ == "__main__":
@@ -79,6 +82,11 @@ if __name__ == "__main__":
         nargs="+",
         default=[1, 3, 224, 224],
         help="Input shape BCHW",
+    )
+    parser.add_argument(
+        "--output-file",
+        type=str,
+        help="Path to save model summary JSON file."
     )
 
     args = parser.parse_args()

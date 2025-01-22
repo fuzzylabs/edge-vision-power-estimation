@@ -20,7 +20,7 @@ def load_model(model_name: str, model_repo: str) -> Any:
     if model_name == "fcn_resnet50":
         return torch.hub.load(model_repo, model_name, pretrained=True)
     try:
-        return torch.hub.load(model_repo, model_name)
+        return torch.hub.load(model_repo, model_name, pretrained=True)
     except:
         raise ValueError(
             f"Model name: {model_name} is most likely incorrect. "
