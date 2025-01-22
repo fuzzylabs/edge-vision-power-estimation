@@ -164,7 +164,7 @@ class DataPreprocessor:
         """
         latency_data = defaultdict(list)
 
-        for cycle, cycle_layer_latency in enumerate(pytorch_layer_latency):
+        for cycle, cycle_layer_latency in tqdm(enumerate(pytorch_layer_latency), desc="Computing layer execution times"):
             for layer_name, layer_latency in cycle_layer_latency.items():
                 start_timestamp = datetime.fromtimestamp(layer_latency["start_time"])
                 duration = timedelta(milliseconds=layer_latency["elapsed_time"])
