@@ -4,6 +4,12 @@ from pathlib import Path
 from pydantic import BaseModel, Field, ValidationError, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
+POOLING_LAYER_NAMES = [
+    "AvgPool2d",
+    "MaxPool2d",
+    "AdaptiveAvgPool2d",
+    "AdaptiveMaxPool2d",
+]
 
 class TensorRTInputOutput(BaseModel):
     """TensorRT layer input and output model."""
@@ -45,7 +51,7 @@ class PytorchLayer(BaseModel):
         Returns:
             str: Name of the layer
         """
-        if self.layer_type == "MaxPool2d":
+        if self.layer_type in POOLING_LAYER_NAMES:
             return "pooling"
         elif self.layer_type == "Conv2d":
             return "convolutional"
