@@ -27,7 +27,7 @@ def data_preprocessor(tmp_path: Path) -> DataPreprocessor:
     [
         ["simple"],  # single layer, single reading
         ["multiple_readings"],  # single layer, multiple readings
-        # ["multiple_layers"],  # multiple layers, gaps between, before and after
+        ["multiple_layers"],  # multiple layers, gaps between, before and after
     ],
 )
 def test_compute_layer_metrics_by_cycle(
