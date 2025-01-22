@@ -36,27 +36,6 @@ class MetricsByCycle(TypedDict):
     layer_run_time: float
 
 
-def map_layer_name_to_type(trt_engine_info: dict) -> dict:
-    """This function produce a mapping of layer type by the name of the layer.
-
-    This is to help us identify which layer we are interested in
-    in the `trt_layer_latency.json` since there is only layer name
-    and not type in there.
-
-    Args:
-        trt_engine_info: the `trt_engine_info.json` file
-
-    Returns:
-        Dictionary of layer name to layer type.
-    """
-    return {
-        layer["Name"]: layer["LayerType"]
-        for layer in tqdm(
-            trt_engine_info["Layers"], desc="Mapping layer name to layer type"
-        )
-    }
-
-
 def parse_timestamp(timestamp: str) -> datetime:
     """Parse str to a datetime object.
 
@@ -122,6 +101,7 @@ class DataPreprocessor:
 
         return processed_log
 
+
     def compute_latency_start_end_times(
         self, pytorch_layer_latency: list[dict[str, PytorchLayerLatency]]
     ) -> list[tuple]:
@@ -185,11 +165,12 @@ class DataPreprocessor:
 
         return latency_data
 
+
     def compute_layer_metrics_by_cycle(
         self,
         power_log_path: Path,
         pytorch_layer_latency_path: Path,
-        trt_engine_info_path: Path,
+        pytorch_model_summary_path: Path,
     ) -> list[MetricsByCycle]:
         """Computes and aggregates power and runtime metrics for each layer within a processing cycle.
 
@@ -202,7 +183,7 @@ class DataPreprocessor:
         Args:
             power_log_path: Path to model power log file
             pytorch_layer_latency_path: Path to pytorch layer latency file
-            trt_engine_info_path: Path to tensorrt engine info file
+            pytorch_model_summary_path: Path to pytorch model summary file
         Returns:
             list[MetricsByCycle]: A list of dictionaries, each representing metrics for a specific layer.
         """
@@ -213,8 +194,7 @@ class DataPreprocessor:
         # Preprocess and sort latency data by start time
         pytorch_layer_latency = read_json_file(pytorch_layer_latency_path)
         latency_data = self.compute_latency_start_end_times(pytorch_layer_latency)
-        trt_engine_info = read_json_file(trt_engine_info_path)
-        layer_name_type_mapping = map_layer_name_to_type(trt_engine_info)
+        pytorch_model_summary = read_json_file(pytorch_model_summary_path)
 
         metrics_by_cycle = []
 
@@ -240,7 +220,6 @@ class DataPreprocessor:
                 "layer_run_time": execution_duration,
             }
 
-
         for (
             cycle,
             start_timestamp,
@@ -248,7 +227,7 @@ class DataPreprocessor:
             execution_duration,
             layer_name,
         ) in tqdm(latency_data, desc="Mapping power to layer"):
-            layer_type = layer_name_type_mapping.get(layer_name, "Unknown")
+            layer_type = pytorch_model_summary.get(layer_name, {}).get("type", "Unknown")
             layer_power_measurements = []
 
             try:
@@ -280,6 +259,7 @@ class DataPreprocessor:
 
         return metrics_by_cycle
 
+
     def save_result_to_csv(
         self, metrics_by_cycle: list[dict[str, Any]], model_name: str
     ) -> None:
@@ -299,16 +279,17 @@ class DataPreprocessor:
         df.to_csv(f"{result_model_dir}/{filename}", index=False)
         print(f"Metric results save to {self.result_dir}/{model_name}/{filename}")
 
-    def copy_trt_engine_to_target_dir(
-        self, model_name: str, trt_engine_info_path: Path
+
+    def copy_pytorch_model_summary_to_target_dir(
+        self, model_name: str, pytorch_model_summary_path: Path
     ) -> None:
-        """Copy tensorrt engine info file to target directory.
+        """Copy pytorch model summary file to target directory.
 
         Args:
             model_name: Name of the model
-            trt_engine_info_path: Path to tensorrt engine info file
+            pytorch_model_summary_path: Path to pytorch model summary file
         """
         result_model_dir = f"{self.result_dir}/{model_name}"
         # Create directory if it does not exist
         Path(result_model_dir).mkdir(exist_ok=True, parents=True)
-        shutil.copy2(src=trt_engine_info_path, dst=result_model_dir)
+        shutil.copy2(src=pytorch_model_summary_path, dst=result_model_dir)
