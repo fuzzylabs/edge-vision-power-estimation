@@ -67,7 +67,7 @@ def parse_model_dir(model_dir: Path) -> tuple[Path, Path, Path]:
     return (
         model_dir_path / f"{model_name}_power_log.log",
         model_dir_path / f"{model_name}_layerwise_latency.json",
-        model_dir_path / "trt_profiling/trt_engine_info.json",
+        model_dir_path / "pytorch_model_summary/pytorch_model_summary.json",
     )
 
 

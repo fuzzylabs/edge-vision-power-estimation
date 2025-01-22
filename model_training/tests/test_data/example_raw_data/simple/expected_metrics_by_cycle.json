@@ -1,7 +1,7 @@
 [
     {
         "cycle": 1,
-        "layer_name": "[CONVOLUTION]-[conv0]",
+        "layer_name": "_conv1",
         "layer_type": "CaskConvolution",
         "layer_power_including_idle_power_micro_watt": 5500000.0,
         "layer_power_excluding_idle_power_micro_watt": 500000.0,
