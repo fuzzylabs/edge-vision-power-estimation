@@ -94,18 +94,12 @@ def convert_measurements_to_training_data(
 
         layer_info = layers_info[layer_name]
         layer_type = layer_info.get_layer_type()
-        if layer_type == "convolutional1d":
+        if layer_type == "convolutional":
             features = get_convolutional_features(layer_info)
             features["power"] = row.average_power
             features["runtime"] = row.average_run_time
             features["layer_name"] = layer_name
-            results["convolutional1d"].append(features)
-        elif layer_type == "convolutional2d":
-            features = get_convolutional_features(layer_info)
-            features["power"] = row.average_power
-            features["runtime"] = row.average_run_time
-            features["layer_name"] = layer_name
-            results["convolutional2d"].append(features)
+            results["convolutional"].append(features)
         elif layer_type == "pooling":
             features = get_pooling_features(layer_info)
             features["power"] = row.average_power

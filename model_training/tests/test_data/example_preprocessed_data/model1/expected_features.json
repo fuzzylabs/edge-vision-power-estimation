@@ -1,5 +1,5 @@
 {
-    "convolutional2d": {
+    "convolutional": {
         "batch_size": 1,
         "input_size_0": 3,
         "input_size_1": 224,

@@ -15,7 +15,7 @@
     "stride": [
       4, 4
     ],
-    "type": "Conv1d"
+    "type": "Conv2d"
   },
   "maxpool_layer": {
     "input_shape": [

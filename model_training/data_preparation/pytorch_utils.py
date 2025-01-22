@@ -40,9 +40,7 @@ class PytorchLayer(BaseModel):
         if self.layer_type in POOLING_LAYER_NAMES:
             return "pooling"
         elif self.layer_type == "Conv2d":
-            return "convolutional2d"
-        elif self.layer_type == "Conv1d":
-            return "convolutional1d"
+            return "convolutional"
         elif self.layer_type == "Linear":
             return "dense"
         else:
