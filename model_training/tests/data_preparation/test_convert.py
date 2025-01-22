@@ -10,7 +10,7 @@ from data_preparation.convert import (
     get_dense_features,
     get_pooling_features,
 )
-from data_preparation.tensorrt_utils import read_layers_info
+from data_preparation.pytorch_utils import read_layers_info
 
 BASE_DIR = Path(__file__).parent.parent / "test_data/example_preprocessed_data"
 
@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).parent.parent / "test_data/example_preprocessed_data"
 @pytest.fixture
 def layers_info(request):
     """Parse TRT engine info file to get layer information."""
-    path = Path(f"{BASE_DIR}/{request.param}/trt_engine_info.json")
+    path = Path(f"{BASE_DIR}/{request.param}/model_summary.json")
     layer_info = read_layers_info(path)
     return layer_info
 
@@ -33,7 +33,7 @@ def expected_features(request):
 
 @pytest.mark.parametrize(
     ("layer", "layers_info", "expected_features"),
-    [("conv_relu_layer", "model1", "model1"), ("conv_relu_layer", "model2", "model2")],
+    [("conv_layer", "model1", "model1"), ("conv_layer", "model2", "model2")],
     indirect=("layers_info", "expected_features"),
 )
 def test_get_convolutional_features(layer, layers_info, expected_features):
