@@ -1,8 +1,8 @@
 [
   {
-    "[CONVOLUTION]-[conv0]": {
-      "start_time": 1732147200.5,
-      "elapsed_time": 1000.0
-    }
+     "_conv1":{
+        "elapsed_time": 1000.0,
+        "start_time": 1732147200.5
+     }
   }
 ]

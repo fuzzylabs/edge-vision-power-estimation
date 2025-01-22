@@ -26,7 +26,7 @@ def data_preprocessor(tmp_path: Path) -> DataPreprocessor:
     ["model_name"],
     [
         ["simple"],  # single layer, single reading
-        # ["multiple_readings"],  # single layer, multiple readings
+        ["multiple_readings"],  # single layer, multiple readings
         # ["multiple_layers"],  # multiple layers, gaps between, before and after
     ],
 )
