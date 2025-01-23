@@ -53,7 +53,7 @@ def run(args):
     layer_info = get_layer_info(model, args.input_shape)
 
     with open(args.output_file, "w") as file:
-        json.dump(layer_info, file, indent=2)
+        json.dump(layer_info, file, indent=4, separators=(",", ": "), ensure_ascii=False)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
