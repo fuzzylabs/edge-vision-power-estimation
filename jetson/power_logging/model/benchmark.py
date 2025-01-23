@@ -32,7 +32,6 @@ class BenchmarkMetrics(BaseModel):
     warmup: tuple[str, str]
     model_load: tuple[str, str]
     pt_model_load_end: str
-    pt_model_infer_start: str
 
 
 def load_model(model_name: str) -> Any:
@@ -86,7 +85,6 @@ def benchmark(args: argparse.Namespace) -> None:
     if args.dtype == "bfloat16":
         dtype = torch.bfloat16
 
-    pt_model_infer_start = datetime.now().strftime("%Y%m%d-%H%M%S")
     input_data = input_data.to(dtype)
     model = model.to(dtype)
     print(f"Using {DEVICE=} for benchmarking")
@@ -172,7 +170,6 @@ def benchmark(args: argparse.Namespace) -> None:
         avg_latency=np.mean(timings),  # in seconds
         warmup=(warmup_start, warmup_end),
         model_load=(model_load_start, model_load_end),
-        pt_model_infer_start=pt_model_infer_start,
         pt_model_load_end=pt_model_load_end,
     )
 

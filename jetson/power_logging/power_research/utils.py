@@ -56,6 +56,15 @@ def parse_latencies(
     return latency_data
 
 
+def get_power_index(power_data, timestamp):
+    index = 0
+    while True:
+        power_timestamp = power_data[index][0]
+        if power_timestamp > timestamp:
+            return index
+        index += 1
+
+
 def plot_inference_cycle_power(
     cycle: int, power_data: list[tuple], latency_data: dict[list[tuple]], delay: int
 ) -> None:
