@@ -27,7 +27,9 @@ def load_model(model_name: str, model_repo: str) -> Any:
             "Please refer https://pytorch.org/hub/ to get model name."
         )
     
-model = load_model("convnext_base", "pytorch/vision", force_reload=True)
+entrypoints = torch.hub.list("pytorch/vision", force_reload=True)
+print(entrypoints)
+model = load_model("convnext_base", "pytorch/vision")
     
 def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, torch.nn.Module]]:
     """
