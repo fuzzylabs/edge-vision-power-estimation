@@ -24,7 +24,7 @@ do
 
     # Adjust input shape for specific models
     if [ "$MODEL" == "lenet" ]; then
-        INPUT_SHAPE="1 1 28 28"
+        INPUT_SHAPE="1 1 32 32"
     fi
 
     # Define the output path for this model
