@@ -29,7 +29,7 @@ You can run the preprocessing and training scripts on your laptop/desktop locall
 
 ### 🔋 Inference
 
-Inference script requires path to TensorRT engine information file and a path to save prediction as a CSV file.
+Inference script requires path to the Pytorch model summary file and a path to save prediction as a CSV file.
 
 Inference script downloads the trained model from MLFlow registry for the inference. There are two sample data for `resnet18` and `vgg16` Pytorch model summary engine files under [sample_data](./sample_data/) folder.
 
