@@ -1,6 +1,6 @@
 import torch
 from typing import Any
-from model.lenet import LeNet
+# from model.lenet import LeNet
 
 def load_model(model_name: str, model_repo: str) -> Any:
     """Load model from Pytorch Hub.
@@ -15,8 +15,8 @@ def load_model(model_name: str, model_repo: str) -> Any:
     Returns:
         PyTorch model
     """
-    if model_name == "lenet":
-        return LeNet()
+    # if model_name == "lenet":
+    #     return LeNet()
     if model_name == "fcn_resnet50":
         return torch.hub.load(model_repo, model_name, pretrained=True)
     try:
@@ -26,6 +26,8 @@ def load_model(model_name: str, model_repo: str) -> Any:
             f"Model name: {model_name} is most likely incorrect. "
             "Please refer https://pytorch.org/hub/ to get model name."
         )
+    
+model = load_model("convnext_base", "pytorch/vision")
     
 def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, torch.nn.Module]]:
     """
