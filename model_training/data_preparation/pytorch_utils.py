@@ -49,7 +49,7 @@ class PytorchLayer(BaseModel):
 PytorchModelSummary = dict[str, PytorchLayer]
 
 def read_layers_info(path: Path) -> PytorchModelSummary:
-    """Read TensorRT engine info from file."""
+    """Read Pytorch model summary from file."""
     model_summary = {}
     with open(path, "r") as f:
         json_content = json.load(f)
