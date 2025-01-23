@@ -11,14 +11,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 import torch
 from pydantic import BaseModel
 from tqdm import tqdm
 
-from model.lenet import LeNet
 from functools import partial
-from model_utils import load_model, get_layers
+from model.model_utils import load_model, get_layers
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
