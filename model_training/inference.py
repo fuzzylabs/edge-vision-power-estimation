@@ -2,7 +2,7 @@
 
 Usage:
 python inference.py \
-    --trt-engine-path sample_data/resnet18_trt_engine_info.json \
+    --model-summary-path sample_data/resnet18_model_summary.json \
     --result-csv-path results/resnet18_predictions.csv
 """
 
@@ -44,7 +44,7 @@ def print_metrics(df: pd.DataFrame) -> None:
 def infer(
     dagshub_repo_owner: str,
     dagshub_repo_name: str,
-    trt_engine_info_path: Path,
+    model_summary_path: Path,
     result_csv_path: Path,
 ) -> None:
     """Perform inference for a given TensorRT engine file.
@@ -56,7 +56,7 @@ def infer(
     Args:
         dagshub_repo_owner: DagsHub repo
         dagshub_repo_name: DagsHub repo owner
-        trt_engine_info_path: Path to tensorrt engine file.
+        model_summary_path: Path to pytorch model summary file.
         result_csv_path: Path to save power and runtime prediction
 
     Raises:
@@ -73,9 +73,9 @@ def infer(
     dense_models = InferenceModel(model_version=1, layer_type="dense")
 
     data = defaultdict(list)
-    layers_info = read_layers_info(trt_engine_info_path)
+    layers_info = read_layers_info(model_summary_path)
     print(f"Found {len(layers_info)} number of layers")
-    print(f"Performing inference for {trt_engine_info_path}")
+    print(f"Performing inference for {model_summary_path}")
 
     for layer_name, layer_info in layers_info.items():
         layer_type = layer_info.get_layer_type()
@@ -121,9 +121,9 @@ if __name__ == "__main__":
         help="The directory to save the log result.",
     )
     parser.add_argument(
-        "--trt-engine-path",
+        "--model-summary-path",
         type=str,
-        help="Path to tensorrt engine information file.",
+        help="Path to pytorch model summary file.",
     )
     parser.add_argument(
         "--result-csv-path",

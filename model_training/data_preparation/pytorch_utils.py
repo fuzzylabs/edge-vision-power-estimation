@@ -17,15 +17,17 @@ class PytorchLayer(BaseModel):
     input_shape: list[int] = Field()
     output_shape: list[int] = Field()
     layer_type: str = Field(validation_alias="type")
-    kernel_size: list[int] | None = Field(default=None)
-    padding: list[int] | None = Field(default=None)
-    stride: list[int] | None = Field(default=None)
+    kernel_size: list[int] | int | None = Field(default=None)
+    padding: list[int] | int | None = Field(default=None)
+    stride: list[int] | int | None = Field(default=None)
 
     @field_validator("kernel_size", "padding", "stride")
     def ensure_2d(cls, val: list[int], _: ValidationInfo) -> list[int]:
         """Check dimensions of input/output tensor."""
         if val is None:
             return None
+        if isinstance(val, int):
+            return [val, val]
         if len(val) not in [2]:
             raise ValidationError("Tensor must have 2 dimensions")
 
@@ -49,7 +51,7 @@ class PytorchLayer(BaseModel):
 PytorchModelSummary = dict[str, PytorchLayer]
 
 def read_layers_info(path: Path) -> PytorchModelSummary:
-    """Read TensorRT engine info from file."""
+    """Read Pytorch model summary from file."""
     model_summary = {}
     with open(path, "r") as f:
         json_content = json.load(f)
