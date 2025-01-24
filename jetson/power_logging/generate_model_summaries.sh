@@ -1,8 +1,6 @@
 #!/bin/bash
 
-set -e
-
-export PYTHONPATH="$(pwd):$PYTHONPATH"
+set -eou pipefail
 
 # Directory to save the outputs
 OUTPUT_DIR="raw_data/prebuilt_models"

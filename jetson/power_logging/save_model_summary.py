@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import torch
 import json
 import argparse
@@ -52,6 +54,7 @@ def run(args):
     
     layer_info = get_layer_info(model, args.input_shape)
 
+    Path(args.output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(args.output_file, "w") as file:
         json.dump(layer_info, file, indent=4, separators=(",", ": "), ensure_ascii=False)
 
