@@ -1,6 +1,6 @@
 outs:
-- md5: 231fccd47cc6bc83a77723fea529bf46.dir
-  size: 5816901659
-  nfiles: 72
+- md5: e8074d175d7bb3f3470dd4e2b91a881a.dir
+  size: 8994382030
+  nfiles: 80
   hash: md5
   path: prebuilt_models
