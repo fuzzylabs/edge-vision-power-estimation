@@ -29,9 +29,6 @@ do
     MODEL_OUTPUT_DIR="${OUTPUT_DIR}/${MODEL}"
     OUTPUT_FILE="${MODEL_OUTPUT_DIR}/model_summary.json"
 
-    # Create the directory if it doesn't exist
-    mkdir -p "$MODEL_OUTPUT_DIR" || { echo "Failed to create directory: $MODEL_OUTPUT_DIR"; exit 1; }
-
     # Run the Python script and save the output
     echo "Generating summary for model: $MODEL with input shape: $INPUT_SHAPE"
     python "$PYTHON_SCRIPT" --model "$MODEL" --input-shape $INPUT_SHAPE --output-file "$OUTPUT_FILE"
