@@ -12,7 +12,7 @@ RENAME_COLUMNS = {
     "layer_run_time": "average_run_time",
 }
 
-LAYER_TYPES = ["CaskPooling", "CaskConvolution", "CaskGemmConvolution"]
+LAYER_TYPES = ["Conv2d", "AvgPool2d","MaxPool2d", "AdaptiveAvgPool2d", "AdaptiveMaxPool2d", "Linear"]
 
 
 def preprocess_measurement_data(
