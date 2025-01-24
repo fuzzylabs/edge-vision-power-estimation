@@ -75,7 +75,7 @@ def convert_measurements_to_training_data(
 
     Args:
         save_path (Path): Directory path to save the training data to.
-        layers_info (dict[str, TensorRTLayer]): Information about the layers.
+        layers_info (dict[str, PytorchModelSummary]): Information about the layers.
         measurements (pd.DataFrame): Runtime and power measurements.
     """
     results = {
