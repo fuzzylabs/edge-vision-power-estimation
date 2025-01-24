@@ -7,7 +7,7 @@ from loguru import logger
 
 from data_preparation.convert import convert_measurements_to_training_data
 from data_preparation.measurement_utils import preprocess_measurement_data
-from data_preparation.tensorrt_utils import read_layers_info
+from data_preparation.pytorch_utils import read_layers_info
 
 
 def main(args: argparse.Namespace) -> None:
@@ -24,11 +24,11 @@ def main(args: argparse.Namespace) -> None:
     for model_dir in model_dirs:
         model_name = model_dir.name
         logger.info(f"Preprocessing {model_name} model")
-        engine_info_path = Path(f"{model_dir}/trt_engine_info.json")
+        model_summary_path = Path(f"{model_dir}/model_summary.json")
         measurements_path = Path(f"{model_dir}/power_runtime_mapping_layerwise.csv")
         save_path = Path(f"{args.result_dir}/{model_name}")
 
-        layers_info = read_layers_info(engine_info_path)
+        layers_info = read_layers_info(model_summary_path)
         measurements = preprocess_measurement_data(
             measurements_path, args.per_layer_measurements
         )

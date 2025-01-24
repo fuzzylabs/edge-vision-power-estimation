@@ -21,7 +21,7 @@ def read_yaml_file(file_path: Path) -> Any:
     return config
 
 
-def read_json_file(file_path: Path) -> dict:
+def read_json_file(file_path: Path) -> dict|list[dict]:
     """Read json file.
 
     Args:
@@ -66,8 +66,8 @@ def parse_model_dir(model_dir: Path) -> tuple[Path, Path, Path]:
     model_name = model_dir_path.stem
     return (
         model_dir_path / f"{model_name}_power_log.log",
-        model_dir_path / "trt_profiling/trt_layer_latency.json",
-        model_dir_path / "trt_profiling/trt_engine_info.json",
+        model_dir_path / f"{model_name}_layerwise_latency.json",
+        model_dir_path / "model_summary.json",
     )
 
 
