@@ -176,4 +176,3 @@ mlruns
 
 # Folder to store trained models
 trained_models
-/test_data.txt
