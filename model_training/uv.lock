@@ -2156,6 +2156,7 @@ name = "model-training"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "boto3" },
     { name = "dagshub" },
     { name = "dvc-s3" },
     { name = "jupyter" },
@@ -2174,6 +2175,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "boto3", specifier = "<1.36" },
     { name = "dagshub", specifier = ">=0.3.42" },
     { name = "dvc-s3", specifier = ">=3.2.0" },
     { name = "jupyter", specifier = ">=1.1.1" },
