@@ -64,7 +64,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--per-layer-measurements",
         type=int,
-        default=10,
+        default=1,
         help="Minimum number of measurements for power and runtime in preprocessed data",
     )
     args = parser.parse_args()

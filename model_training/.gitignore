@@ -167,6 +167,7 @@ raw_data
 preprocessed_data
 
 training_data
+training_data_pruned
 
 # mlflow
 mlruns
