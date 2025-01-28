@@ -10,7 +10,7 @@ def zero_keep_pruning(model, threshold=0.0):
         threshold: Threshold in which models are pruned (default is 0)
 
     Returns:
-        pruned_model: Model with the pruned weights
+        model: Model with the pruned weights
         pruning_masks: Dictionary of binary masks for each layer
     """
     pruning_masks = {}
