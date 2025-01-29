@@ -180,8 +180,15 @@ def benchmark(args: argparse.Namespace) -> None:
         #     amount=0.5,
         # )
         # Thus should load the pruned yolo model
-        model = torch.load("yolov5su.pt")
+        model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
         model.eval().to(DEVICE)
+        parameters_to_prune = get_layers_for_pruning(model)
+        parameters_to_prune = [(layer, "weight") for layer, _ in parameters_to_prune if isinstance(layer, torch.nn.modules.conv.Conv2d) or isinstance(layer, torch.nn.modules.linear.Linear)]
+        prune.global_unstructured(
+            parameters_to_prune,
+            pruning_method=prune.L1Unstructured,
+            amount=0.3,
+        )
 
         dtype = torch.float32
         if args.dtype == "float16":
