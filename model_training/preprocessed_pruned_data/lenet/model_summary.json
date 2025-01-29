@@ -1,98 +1,98 @@
 {
-  "_feat_conv1": {
-    "input_shape": [
-      1,
-      1,
-      32,
-      32
-    ],
-    "output_shape": [
-      1,
-      128,
-      30,
-      30
-    ],
-    "kernel_size": [
-      3,
-      3
-    ],
-    "stride": [
-      1,
-      1
-    ],
-    "padding": [
-      0,
-      0
-    ],
-    "type": "Conv2d"
-  },
-  "_feat_conv2": {
-    "input_shape": [
-      1,
-      128,
-      15,
-      15
-    ],
-    "output_shape": [
-      1,
-      16,
-      13,
-      13
-    ],
-    "kernel_size": [
-      3,
-      3
-    ],
-    "stride": [
-      1,
-      1
-    ],
-    "padding": [
-      0,
-      0
-    ],
-    "type": "Conv2d"
-  },
-  "_classifer_fc1": {
-    "input_shape": [
-      1,
-      576
-    ],
-    "output_shape": [
-      1,
-      120
-    ],
-    "kernel_size": null,
-    "stride": null,
-    "padding": null,
-    "type": "Linear"
-  },
-  "_classifer_fc2": {
-    "input_shape": [
-      1,
-      120
-    ],
-    "output_shape": [
-      1,
-      84
-    ],
-    "kernel_size": null,
-    "stride": null,
-    "padding": null,
-    "type": "Linear"
-  },
-  "_classifer_fc3": {
-    "input_shape": [
-      1,
-      84
-    ],
-    "output_shape": [
-      1,
-      10
-    ],
-    "kernel_size": null,
-    "stride": null,
-    "padding": null,
-    "type": "Linear"
-  }
+    "_feat_conv1": {
+        "input_shape": [
+            1,
+            1,
+            32,
+            32
+        ],
+        "output_shape": [
+            1,
+            128,
+            30,
+            30
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "Conv2d"
+    },
+    "_feat_conv2": {
+        "input_shape": [
+            1,
+            128,
+            15,
+            15
+        ],
+        "output_shape": [
+            1,
+            16,
+            13,
+            13
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "Conv2d"
+    },
+    "_classifer_fc1": {
+        "input_shape": [
+            1,
+            576
+        ],
+        "output_shape": [
+            1,
+            120
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Linear"
+    },
+    "_classifer_fc2": {
+        "input_shape": [
+            1,
+            120
+        ],
+        "output_shape": [
+            1,
+            84
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Linear"
+    },
+    "_classifer_fc3": {
+        "input_shape": [
+            1,
+            84
+        ],
+        "output_shape": [
+            1,
+            10
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Linear"
+    }
 }

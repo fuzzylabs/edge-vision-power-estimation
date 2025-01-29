@@ -126,6 +126,30 @@ def layer_time_hook(layer_time_dict, layer_name, start_event, end_event, module,
     layer_time_dict[layer_name]["start_time"] = start_event.get_time_stamp()
 
 
+def get_layers_for_pruning(model: torch.nn.Module) -> tuple[(torch.nn.Module, str)]:
+    """
+    Recursively get all layers in a pytorch model.
+
+    Args:
+        model: the pytorch model to look for layers.
+        name_prefix: Use to identify the parents layer. Defaults to "".
+
+    Returns:
+        a list of tuple containing the layer name and the layer.
+    """
+    children = list(model.named_children())
+
+    if len(children) == 0:
+        result = [(model, "weight")]
+    else:
+        result = []
+        for _, child in children:
+            layers = get_layers_for_pruning(child)
+            result.extend(layers)
+    
+    return tuple(result)
+
+
 def benchmark(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
@@ -138,24 +162,25 @@ def benchmark(args: argparse.Namespace) -> None:
 
     try:
         input_data = torch.randn(args.input_shape, device=DEVICE)
-        model = load_model(args.model, args.model_repo)
-        model.eval().to(DEVICE)
+        # model = load_model(args.model, args.model_repo)
+        # model.eval().to(DEVICE)
 
-        ## PRUNING CODE FOR LENET ONLY
-        parameters_to_prune = (
-            (model.feat.conv1, 'weight'),
-            (model.feat.conv2, 'weight'),
-            (model.classifer.fc1, 'weight'),
-            (model.classifer.fc2, 'weight'),
-            (model.classifer.fc3, 'weight'),
-        )
+        # ## PRUNING CODE FOR LENET ONLY
+        # parameters_to_prune = (
+        #     (model.feat.conv1, 'weight'),
+        #     (model.feat.conv2, 'weight'),
+        #     (model.classifer.fc1, 'weight'),
+        #     (model.classifer.fc2, 'weight'),
+        #     (model.classifer.fc3, 'weight'),
+        # )
 
-        prune.global_unstructured(
-            parameters_to_prune,
-            pruning_method=prune.L1Unstructured,
-            amount=0.3,
-        )
-
+        # prune.global_unstructured(
+        #     parameters_to_prune,
+        #     pruning_method=prune.L1Unstructured,
+        #     amount=0.5,
+        # )
+        # Thus should load the pruned yolo model
+        model = torch.load("pruned_30_yolov5su.pt")
         model.eval().to(DEVICE)
 
         dtype = torch.float32
