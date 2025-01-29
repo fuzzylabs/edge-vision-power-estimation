@@ -1,7 +1,6 @@
 import argparse
 
 import cv2
-import onnxruntime as ort
 import torch
 from ultralytics.utils.checks import check_requirements
 
@@ -28,6 +27,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--iou-thres", type=float, default=0.5, help="NMS IoU threshold"
     )
+    parser.add_argument(
+        "--with-quant", action="store_true", help="Run inference quantization model"
+    )
     args = parser.parse_args()
 
     # Check the requirements and select the appropriate backend (CPU or GPU)
@@ -35,36 +37,23 @@ if __name__ == "__main__":
         "onnxruntime-gpu" if torch.cuda.is_available() else "onnxruntime"
     )
 
-    # # Create an instance of the YOLOv8 class with the specified arguments
-    # detection = OnnxYOLO(
-    #     f"{args.model}.onnx", args.img, args.conf_thres, args.iou_thres
-    # )
-    # output_image = detection.main()
-    # cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
-    # cv2.imshow("Output", output_image)
-    # cv2.waitKey(0)
+    print("Using original ONNX model for inference")
+    # Create an instance of the YOLOv8 class with the specified arguments
+    detection = OnnxYOLO(
+        f"{args.model}.onnx", args.img, args.conf_thres, args.iou_thres
+    )
+    output_image = detection.main()
+    cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
+    cv2.imshow("Output", output_image)
+    cv2.waitKey(0)
 
-    # # Create an instance of the YOLOv8 class with the specified arguments
-    # detection = OnnxYOLO(
-    #     f"{args.model}.quant.onnx", args.img, args.conf_thres, args.iou_thres
-    # )
-    # output_image = detection.main()
-    # cv2.namedWindow("Output_quant", cv2.WINDOW_NORMAL)
-    # cv2.imshow("Output_quant", output_image)
-    # cv2.waitKey(0)
-
-    import numpy as np
-
-    torch.manual_seed(0)
-
-    for i in range(10):
-        # Check tolerance on random input tensors for quantized and unquantized model
-        x = torch.randn(size=(1, 3, 640, 640))
-        ort_sess = ort.InferenceSession("yolov5su.onnx")
-        outputs = ort_sess.run(None, {"images": x.numpy()})
-
-        ort_sess = ort.InferenceSession("yolov5su.quant.onnx")
-        outputs_quant = ort_sess.run(None, {"images": x.numpy()})
-
-        print(i, outputs, outputs_quant)
-        print(np.isclose(outputs, outputs_quant, atol=1e-2))
+    if args.with_quant:
+        print("Using quantized ONNX model for inference")
+        # Create an instance of the YOLOv8 class with the specified arguments
+        detection = OnnxYOLO(
+            f"{args.model}.quant_max.onnx", args.img, args.conf_thres, args.iou_thres
+        )
+        output_image = detection.main()
+        cv2.namedWindow("Output_quant", cv2.WINDOW_NORMAL)
+        cv2.imshow("Output_quant", output_image)
+        cv2.waitKey(0)

@@ -26,8 +26,14 @@ python -m modelopt.onnx.quantization \
     --output_path=yolov5su.quant.onnx
 ```
 
-Run evaluation if the quantized model and unquantized model have the prediction within some tolerance and also test using a validation image.
+Run evaluation if the quantized model and unquantized model have the prediction using a validation image.
 
 ```bash
 python evaluate.py
+```
+
+To run inference using quantized ONNX model
+
+```bash
+python evaluate.py --with-quant
 ```
