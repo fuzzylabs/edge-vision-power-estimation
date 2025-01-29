@@ -6,16 +6,16 @@ set -eou pipefail
 IDLE_DURATION=120
 
 # Directory to store results
-RESULT_DIR="raw_data_pruned/prebuilt_models"
+# RESULT_DIR="raw_data_pruned/prebuilt_models"
 
-echo "Running idling power measurement..."
-python measure_idling_power.py \
-  --idle-duration $IDLE_DURATION \
-  --result-dir "$RESULT_DIR"
+# echo "Running idling power measurement..."
+# python measure_idling_power.py \
+#   --idle-duration $IDLE_DURATION \
+#   --result-dir "$RESULT_DIR"
 
-# Wait for 2 minutes
-echo "Sleeping for 2 minutes..."
-sleep 120
+# # Wait for 2 minutes
+# echo "Sleeping for 2 minutes..."
+# sleep 120
 
 # Models to benchmark
 # Using models mentioned in Neural Power
