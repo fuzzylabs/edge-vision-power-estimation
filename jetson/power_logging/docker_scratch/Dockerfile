@@ -11,3 +11,5 @@ WORKDIR /app
 COPY --chown=appuser:appuser . ./
 
 RUN apt update && apt install --no-install-recommends -y libgl1-mesa-glx
+
+RUN pip install ultralytics
