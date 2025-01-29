@@ -180,7 +180,7 @@ def benchmark(args: argparse.Namespace) -> None:
         #     amount=0.5,
         # )
         # Thus should load the pruned yolo model
-        model = torch.load("pruned_30_yolov5su.pt")
+        model = torch.load("yolov5su.pt")
         model.eval().to(DEVICE)
 
         dtype = torch.float32

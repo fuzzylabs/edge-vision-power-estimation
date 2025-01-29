@@ -23,7 +23,7 @@ sleep 120
 # NOTE : fcn_resnet50 is a object detection model and does not work with TorchTensorRT library
 # TODO: Revisit fcn_resnet50 once this issue is addressed: https://github.com/pytorch/TensorRT/issues/3295
 #models=("alexnet" "vgg11" "vgg13" "vgg16" "vgg19" "mobilenet_v2" "mobilenet_v3_small" "mobilenet_v3_large" "resnet18" "resnet34" "resnet50" "resnet101" "resnet152" "lenet" "resnext50_32x4d" "resnext101_32x8d" "resnext101_64x4d" "convnext_tiny" "convnext_small" "convnext_base")
-models=("lenet")
+models=("yolov5s")
 # Number of inference cycles
 RUNS=30000
 
@@ -36,7 +36,7 @@ do
   if [ "$model" == "lenet" ]; then
     INPUT_SHAPE='--input-shape 1 1 32 32'
   else
-    INPUT_SHAPE='--input-shape 1 3 224 224'
+    INPUT_SHAPE='--input-shape 1 3 640 640'
   fi
 
   # Run the measure_inference_power.py script
