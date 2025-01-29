@@ -9,6 +9,8 @@ python download_onnx.py
 
 Prepare calibration dataset for INT8 quantization.
 
+> This will download COCO 2017 validation dataset for the first run.
+
 ```bash
 python image_prep.py
 ```
