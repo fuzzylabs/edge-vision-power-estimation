@@ -7,7 +7,7 @@ from multiprocessing import Event, Process
 from multiprocessing.synchronize import Event as EventClass
 from pathlib import Path
 
-from model.benchmark import benchmark
+from model.benchmark_pruned_model import benchmark
 
 multiprocessing.set_start_method("spawn", force=True)
 
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model",
         type=str,
-        default="lenet",
+        default="yolov5s",
         help="Specify name of pretrained CNN model from PyTorch Hub."
         "For more information on PyTorch Hub visit: "
         "https://pytorch.org/hub/research-models",
