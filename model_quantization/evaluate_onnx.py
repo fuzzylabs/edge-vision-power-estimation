@@ -4,7 +4,7 @@ import cv2
 import torch
 from ultralytics.utils.checks import check_requirements
 
-from onnx_utils import OnnxYOLO
+from utils import InferYOLO
 
 if __name__ == "__main__":
     # Create an argument parser to handle command-line arguments
@@ -39,10 +39,10 @@ if __name__ == "__main__":
 
     print("Using original ONNX model for inference")
     # Create an instance of the YOLOv8 class with the specified arguments
-    detection = OnnxYOLO(
+    detection = InferYOLO(
         f"{args.model}.onnx", args.img, args.conf_thres, args.iou_thres
     )
-    output_image = detection.main()
+    output_image = detection.infer_onnx()
     cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
     cv2.imshow("Output", output_image)
     cv2.waitKey(0)
@@ -50,10 +50,10 @@ if __name__ == "__main__":
     if args.with_quant:
         print("Using quantized ONNX model for inference")
         # Create an instance of the YOLOv8 class with the specified arguments
-        detection = OnnxYOLO(
+        detection = InferYOLO(
             f"{args.model}.quant_max.onnx", args.img, args.conf_thres, args.iou_thres
         )
-        output_image = detection.main()
+        output_image = detection.infer_onnx()
         cv2.namedWindow("Output_quant", cv2.WINDOW_NORMAL)
         cv2.imshow("Output_quant", output_image)
         cv2.waitKey(0)

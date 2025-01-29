@@ -1,5 +1,26 @@
+# Model Quantization
 
-# Quantized ONNX model
+## Quantized PyTorch model
+
+The following command creates a PTQ model for a PyTorch model converting it to a INT8 quantized model.
+
+```bash
+python pytorch_quantize.py
+```
+
+To run the evaluation on a custom image, run the following command.
+
+```bash
+python evaluate_pt.py
+```
+
+To run inference using quantized PyTorch model
+
+```bash
+python evaluate_pt.py --with-quant
+```
+
+## Quantized ONNX model
 
 Download the ONNX model.
 
@@ -29,11 +50,11 @@ python -m modelopt.onnx.quantization \
 Run evaluation if the quantized model and unquantized model have the prediction using a validation image.
 
 ```bash
-python evaluate.py
+python evaluate_onnx.py
 ```
 
 To run inference using quantized ONNX model
 
 ```bash
-python evaluate.py --with-quant
+python evaluate_onnx.py --with-quant
 ```

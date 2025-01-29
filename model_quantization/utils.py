@@ -1,31 +1,36 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-import argparse
 
 import cv2
+import modelopt.torch.opt as mto
 import numpy as np
 import onnxruntime as ort
+import torch
+from ultralytics import YOLO
 from ultralytics.utils import yaml_load
 from ultralytics.utils.checks import check_yaml
 
+from pytorch_quantize import quantized_pt_model
 
-class OnnxYOLO:
+
+class InferYOLO:
     """YOLO object detection model class for handling inference and visualization."""
 
-    def __init__(self, onnx_model, input_image, confidence_thres, iou_thres):
+    def __init__(self, model, input_image, confidence_thres, iou_thres):
         """
         Initializes an instance of the YOLO class.
 
         Args:
-            onnx_model: Path to the ONNX model.
+            model: Path to the ONNX or PyTorch model.
             input_image: Path to the input image.
             confidence_thres: Confidence threshold for filtering detections.
             iou_thres: IoU (Intersection over Union) threshold for non-maximum suppression.
         """
-        self.onnx_model = onnx_model
+        self.model = model
         self.input_image = input_image
         self.confidence_thres = confidence_thres
         self.iou_thres = iou_thres
+        self.q_model = None
 
         # Load the class names from the COCO dataset
         self.classes = yaml_load(check_yaml("cfg/coco.yaml"))["names"]
@@ -188,7 +193,7 @@ class OnnxYOLO:
         # Return the modified input image
         return input_image
 
-    def main(self):
+    def infer_onnx(self):
         """
         Performs inference using an ONNX model and returns the output image with drawn detections.
 
@@ -197,7 +202,7 @@ class OnnxYOLO:
         """
         # Create an inference session using the ONNX model and specify execution providers
         session = ort.InferenceSession(
-            self.onnx_model, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
+            self.model, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
         )
 
         # Get the model inputs
@@ -210,11 +215,34 @@ class OnnxYOLO:
 
         # Preprocess the image data
         img_data = self.preprocess()
-        print(img_data, img_data.shape)
 
         # Run inference using the preprocessed image data
         outputs = session.run(None, {model_inputs[0].name: img_data})
-        print(outputs)
 
         # Perform post-processing on the outputs to obtain output image.
         return self.postprocess(self.img, outputs)  # output image
+
+    def infer_pt(self):
+        """
+        Performs inference using an PyTorch model and returns the output image with drawn detections.
+
+        Returns:
+            output_img: The output image with drawn detections.
+        """
+        if "quant" not in self.model:
+            model = YOLO(self.model)
+            results = model([self.input_image])
+            for result in results:
+                result.show()
+            return
+        else:
+            # Not optimal way but we are building a quantized model and not loading
+            # There are issues with saving the quantized model
+            # LOok at the pytorch_quantize.py for the explaination
+            if self.q_model is None:
+                self.q_model = quantized_pt_model()
+            self.input_width = 640
+            self.input_height = 640
+            img_data = self.preprocess()
+            outputs = self.q_model(torch.from_numpy(img_data))
+            return self.postprocess(self.img, outputs[0].numpy())  # output image

@@ -9,6 +9,7 @@ dependencies = [
     "nvidia-modelopt[all]>=0.21.1",
     "onnxruntime>=1.18.1",
     "onnxslim>=0.1.48",
+    "pycocotools>=2.0.8",
     "ultralytics>=8.3.68",
 ]
 
