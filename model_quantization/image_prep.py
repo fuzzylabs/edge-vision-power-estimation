@@ -24,10 +24,10 @@ def main():
 
     # Use only subset of data for calibration
     with open("datasets/coco/val2017.txt", "r") as fp:
-        data = fp.readlines()
-    data = data[:NUM_CALIB_IMAGES]
+        val_data = fp.readlines()
+    val_data = val_data[:NUM_CALIB_IMAGES]
     with open("datasets/coco/val2017.txt", "w") as fp:
-        fp.writelines(data)
+        fp.writelines(val_data)
 
     batch_size = 1
     dataset = YOLODataset(
@@ -40,7 +40,7 @@ def main():
     )
     calib_tensor = []
     for data in tqdm(dataset):
-        calib_tensor.append(data["img"].float())
+        calib_tensor.append(data["img"].float() / 255.0)
     calib_tensor = np.stack(calib_tensor, axis=0)
     np.save("calib.npy", calib_tensor)
 
