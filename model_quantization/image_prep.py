@@ -19,6 +19,9 @@ NUM_CALIB_IMAGES = 500
 def main():
     pt_model = YOLO(model="yolov5su.pt", task="detect")
 
+    # Download COCO val 2017 dataset
+    data = check_det_dataset("cfg/coco.yaml")
+
     # Use only subset of data for calibration
     with open("datasets/coco/val2017.txt", "r") as fp:
         data = fp.readlines()
@@ -26,7 +29,6 @@ def main():
     with open("datasets/coco/val2017.txt", "w") as fp:
         fp.writelines(data)
 
-    data = check_det_dataset("cfg/coco.yaml")
     batch_size = 1
     dataset = YOLODataset(
         data["val"],
