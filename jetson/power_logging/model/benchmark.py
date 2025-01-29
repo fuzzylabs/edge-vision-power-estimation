@@ -17,6 +17,7 @@ from tqdm import tqdm
 
 from functools import partial
 from model.model_utils import load_model, get_layers
+from model.zero_keep_pruning import zero_keep_pruning
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -131,7 +132,7 @@ def benchmark(args: argparse.Namespace) -> None:
     Args:
         args: Arguments from CLI.
     """
-    print("Starting benchmark...")
+    print("Starting benchmark with ZKFP...")
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 
@@ -139,6 +140,9 @@ def benchmark(args: argparse.Namespace) -> None:
         input_data = torch.randn(args.input_shape, device=DEVICE)
         model = load_model(args.model, args.model_repo)
         model.eval().to(DEVICE)
+
+        model, pruning_masks = zero_keep_pruning(model, threshold=0.0)
+        print("Pruning applied")
 
         dtype = torch.float32
         if args.dtype == "float16":
@@ -198,12 +202,16 @@ def benchmark(args: argparse.Namespace) -> None:
 
         model_dir = f"{args.result_dir}/{args.model}"
         Path(model_dir).mkdir(exist_ok=True, parents=True)
-        file_name = f"{args.model}_pytorch.json"
-        file_path = f"{model_dir}/{file_name}"
-        with open(file_path, "w", encoding="utf-8") as outfile:
-            json.dump(results.model_dump(), outfile, indent=4)
+
+        # file_name = f"{args.model}_pytorch.json"
+        # file_path = f"{model_dir}/{file_name}"
+        with open(f"{model_dir}/{args.model}_zkp_results.json", "w", encoding="utf-8") as outfile:  
+            json.dump(results.dict(), outfile, indent=4)
+
         with open(f"{model_dir}/{args.model}_layerwise_latency.json", "w") as layer_profiles_file:
             json.dump(layer_profiles, layer_profiles_file)
+        
+        print("Results saved")
     except Exception as e:
         print(f"An error has occurred during benchmarking: {e}")
         return
