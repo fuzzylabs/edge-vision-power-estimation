@@ -53,12 +53,18 @@ if __name__ == "__main__":
     # cv2.imshow("Output_quant", output_image)
     # cv2.waitKey(0)
 
-    # Check tolerance on random input tensors for quantized and unquantized model
-    x = torch.randn(size=(1, 3, 640, 640))
-    print(x.shape)
-    ort_sess = ort.InferenceSession("yolov5su.onnx")
-    outputs = ort_sess.run(None, {"images": x.numpy()})
+    import numpy as np
 
-    ort_sess = ort.InferenceSession("yolov5su.quant.onnx")
-    outputs_quant = ort_sess.run(None, {"images": x.numpy()})
-    breakpoint()
+    torch.manual_seed(0)
+
+    for i in range(10):
+        # Check tolerance on random input tensors for quantized and unquantized model
+        x = torch.randn(size=(1, 3, 640, 640))
+        ort_sess = ort.InferenceSession("yolov5su.onnx")
+        outputs = ort_sess.run(None, {"images": x.numpy()})
+
+        ort_sess = ort.InferenceSession("yolov5su.quant.onnx")
+        outputs_quant = ort_sess.run(None, {"images": x.numpy()})
+
+        print(i, outputs, outputs_quant)
+        print(np.isclose(outputs, outputs_quant, atol=1e-2))

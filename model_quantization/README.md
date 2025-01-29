@@ -15,7 +15,7 @@ Prepare calibration dataset for INT8 quantization.
 python image_prep.py
 ```
 
-The model can be quantized as an FP8, INT8 or INT4 model. For FP8 quantization max calibration is used. For INT8 quantization, you have choice between max and entropy calibration algorithms and for INT4, awq_clip or rtn_dq can be chosen.
+The model can be quantized as an FP8, INT8 or INT4 model. For FP8 quantization `max` calibration is used. For INT8 quantization, you have choice between `max` and `entropy` calibration algorithms and for INT4, `awq_clip` or `rtn_dq` can be chosen.
 
 ```bash
 python -m modelopt.onnx.quantization \
