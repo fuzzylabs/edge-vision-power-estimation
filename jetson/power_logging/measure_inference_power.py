@@ -54,7 +54,11 @@ def inference(event: EventClass, args: argparse.Namespace) -> None:
         event: An object that manages a flag for communication among processes.
         args: Arguments from CLI.
     """
-    benchmark(args)
+    from ultralytics import YOLO
+
+    model = YOLO(args.model)
+    model.val(data="coco8.yaml")
+
     event.set()
 
 
