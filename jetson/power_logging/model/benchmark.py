@@ -141,8 +141,12 @@ def benchmark(args: argparse.Namespace) -> None:
         model = load_model(args.model, args.model_repo)
         model.eval().to(DEVICE)
 
-        model, pruning_masks = zero_keep_pruning(model, threshold=0.0)
-        print("Pruning applied")
+        if args.use_zkp:
+            model, pruning_masks = zero_keep_pruning(model, threshold=0.0)
+            print("Pruning applied")
+        else:
+            print("Running baseline")
+
 
         dtype = torch.float32
         if args.dtype == "float16":
@@ -200,12 +204,18 @@ def benchmark(args: argparse.Namespace) -> None:
             avg_latency=avg_latency,  # in seconds
         )
 
+
         model_dir = f"{args.result_dir}/{args.model}"
         Path(model_dir).mkdir(exist_ok=True, parents=True)
 
-        # file_name = f"{args.model}_pytorch.json"
-        # file_path = f"{model_dir}/{file_name}"
-        with open(f"{model_dir}/{args.model}_zkp_results.json", "w", encoding="utf-8") as outfile:  
+        if args.use_zkp:
+            output_filename = f"{args.model}_zkp_results.json"
+        else:
+            output_filename = f"{args.model}_baseline_results.json"
+
+        output_path = f"{model_dir}/{output_filename}"
+
+        with open(output_path, "w", encoding="utf-8") as outfile:  
             json.dump(results.dict(), outfile, indent=4)
 
         with open(f"{model_dir}/{args.model}_layerwise_latency.json", "w") as layer_profiles_file:

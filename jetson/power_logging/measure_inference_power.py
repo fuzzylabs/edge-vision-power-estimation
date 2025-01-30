@@ -127,6 +127,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Disable power measurement during benchmark execution.",
     )
+    parser.add_argument(
+        "--use-zkp",
+        action="store_true",
+        help="Apply Zero-Keep Pruning",
+    )
     args = parser.parse_args()
 
     event = Event()
