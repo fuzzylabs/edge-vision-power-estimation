@@ -50,8 +50,13 @@ def quantized_pt_model():
         for batch in data_loader:
             model(batch["img"].float() / 255.0)
 
+    pt_model.val(data="cfg/coco.yaml")
+
     # Quantize the model and perform calibration (PTQ)
     qt_model = mtq.quantize(pt_model.model, config, forward_loop)
+
+    pt_model.model = qt_model
+    pt_model.val(data="cfg/coco.yaml")
     return qt_model
 
 
@@ -61,15 +66,15 @@ def quantized_pt_model():
 
 # All different approaches tested for saving quantized pytorch model
 
-# torch.save(qt_model.state_dict(), "yolov5su.quant.pt")
+# torch.save(qt_model.state_dict(), "yolov5su.quant.pt") -> Works cannot load using torch or ultralytics
 
-# mo.save(qt_model, "yolov5su.quant.pt")
+# mo.save(qt_model, "yolov5su.quant.pt") -> Works cannot load using torch or ultralytics
 
 # model_scripted = torch.jit.script(qt_model)
-# model_scripted.save("yolov5su.quant.pth")
+# model_scripted.save("yolov5su.quant.pth")  -> ERROR
 
 # model_trace = torch.jit.script(qt_model, torch.randn(1, 3, 640, 640) / 255.0)
-# torch.jit.save(model_trace, "yolov5su.quant.pt")
+# torch.jit.save(model_trace, "yolov5su.quant.pt")  -> ERROR
 
 
 if __name__ == "__main__":
