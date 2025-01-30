@@ -24,6 +24,8 @@ Methods:
     - record(): Records an event if CUDA is available
     - elapsed_time(): Calculates elapsed time between events
 """
+
+
 class CudaEvent:
     start_time: float
     time_stamp: float
@@ -82,25 +84,26 @@ def benchmark(args: argparse.Namespace) -> None:
             args.model, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
         )
         # Get the model inputs
-        model_inputs = session.get_inputs()
         print(f"Using {DEVICE=} for benchmarking")
         if DEVICE == "cpu":
             print("Warning: Running on CPU.")
 
+        model_outputs = session.get_outputs()
+        model_inputs = session.get_inputs()
         io_binding = session.io_binding()
         st = time.perf_counter()
         print("Warm up ...")
-        with torch.no_grad():
-            for _ in range(args.warmup):
-                io_binding.bind_input(
-                    name=model_inputs[0].name,
-                    device_type="cuda",
-                    device_id=0,
-                    element_type=np.float32,
-                    shape=tuple(input_data.shape),
-                    buffer_ptr=input_data.data_ptr(),
-                )
-                session.run_with_iobinding(io_binding)
+        for _ in range(args.warmup):
+            io_binding.bind_input(
+                name=model_inputs[0].name,
+                device_type="cuda",
+                device_id=0,
+                element_type=np.float32,
+                shape=tuple(input_data.shape),
+                buffer_ptr=input_data.data_ptr(),
+            )
+            io_binding.bind_output(name=model_outputs[0].name)
+            session.run_with_iobinding(io_binding)
 
         print(f"Warm complete in {time.perf_counter() - st:.2f} sec ...")
 
@@ -111,26 +114,26 @@ def benchmark(args: argparse.Namespace) -> None:
         start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
         end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
 
-        with torch.no_grad():
-            for i in tqdm(range(args.runs)):
-                start_events[i].record()
-                io_binding.bind_input(
-                    name=model_inputs[0].name,
-                    device_type="cuda",
-                    device_id=0,
-                    element_type=np.float32,
-                    shape=tuple(input_data.shape),
-                    buffer_ptr=input_data.data_ptr(),
-                )
-                session.run_with_iobinding(io_binding)
-                end_events[i].record()
+        for i in tqdm(range(args.runs)):
+            start_events[i].record()
+            io_binding.bind_input(
+                name=model_inputs[0].name,
+                device_type="cuda",
+                device_id=0,
+                element_type=np.float32,
+                shape=tuple(input_data.shape),
+                buffer_ptr=input_data.data_ptr(),
+            )
+            io_binding.bind_output(name=model_outputs[0].name)
+            session.run_with_iobinding(io_binding)
+            end_events[i].record()
 
-                if IS_GPU:
-                    torch.cuda.synchronize()
+            if IS_GPU:
+                torch.cuda.synchronize()
 
-                latency = start_events[i].elapsed_time(end_events[i])
-                latencies.append(latency * 1.0e-3)
-                # layer_profiles.append(layer_profile.copy())
+            latency = start_events[i].elapsed_time(end_events[i])
+            latencies.append(latency * 1.0e-3)
+            # layer_profiles.append(layer_profile.copy())
 
         print("Benchmarking complete ...")
 
