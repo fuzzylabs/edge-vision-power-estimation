@@ -47,7 +47,7 @@ def get_layer_info(model, input_shape):
 
 
 def run(args):
-    model = load_model(args.model, args.model_repo)
+    model = load_model(args.model)
     if model is None:
         print(f"Model skipped '{args.model}' could not be loaded.")
         return
