@@ -1,5 +1,8 @@
 FROM nvcr.io/nvidia/pytorch:24.06-py3-igpu
 
+# nvidia-modelopt[all] already comes pre-packaged with above image
+RUN pip install git-python ultralytics
+
 # Create a user group
 RUN groupadd --gid 1000 appuser \
     && useradd --uid 1000 --gid 1000 -ms /bin/bash appuser
