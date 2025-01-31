@@ -140,6 +140,7 @@ def benchmark(args: argparse.Namespace) -> None:
         model = load_model(args.model).to(DEVICE)
 
         if args.prune:
+            print(f"Pruning model weight by {args.pruning_sparsity}")
             global_unstructured_prune(
                 model=model,
                 amount=args.pruning_sparsity
