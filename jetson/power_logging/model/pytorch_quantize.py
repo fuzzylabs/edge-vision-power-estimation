@@ -77,7 +77,3 @@ def quantized_pt_model(model_name, data_cfg, val_dataset_path):
 
 # model_trace = torch.jit.script(qt_model, torch.randn(1, 3, 640, 640) / 255.0)
 # torch.jit.save(model_trace, "yolov5su.quant.pt")
-
-
-if __name__ == "__main__":
-    quantized_pt_model()

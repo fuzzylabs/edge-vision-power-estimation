@@ -19,7 +19,7 @@ sleep 120
 
 # Models to benchmark
 # Using all YOLOv5 variants
-models=("yolov5nu" "yolov5nu_quant" "yolov5su" ""yolov5nu_quant "yolov5mu" "yolov5mu_quant" "yolov5lu" "yolov5lu_quant")
+models=("yolov5nu" "yolov5nu_quant" "yolov5su" ""yolov5su_quant "yolov5mu" "yolov5mu_quant" "yolov5lu" "yolov5lu_quant")
 
 # Iterate through models and run measure_inference_power.py script
 for model in "${models[@]}"

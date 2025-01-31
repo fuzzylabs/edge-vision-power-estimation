@@ -1,10 +1,10 @@
 from typing import Any
 
 import torch
-from pytorch_quantize import quantized_pt_model
 from ultralytics import YOLO
 
 from model.lenet import LeNet
+from model.pytorch_quantize import quantized_pt_model
 
 
 def load_model(model_name: str) -> Any:
