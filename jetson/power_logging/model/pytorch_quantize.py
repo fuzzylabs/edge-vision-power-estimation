@@ -1,19 +1,12 @@
-import os
-
 # import modelopt.torch.opt as mto
 import modelopt.torch.quantization as mtq
 
 # import torch
-from ultralytics import YOLO, settings
+from ultralytics import YOLO
 from ultralytics.data import YOLODataset, build_dataloader
 from ultralytics.data.utils import check_det_dataset
 
 NUM_CALIB_IMAGES = 500
-
-# View all settings
-settings["datasets_dir"] = os.getcwd()
-settings["weights_dir"] = os.getcwd()
-settings["runs_dir"] = os.getcwd()
 
 
 def quantized_pt_model(model_name, data_cfg, val_dataset_path):
