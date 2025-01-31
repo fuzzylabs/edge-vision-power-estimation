@@ -17,6 +17,7 @@ from tqdm import tqdm
 
 from functools import partial
 from model.model_utils import load_model, get_layers
+import shutil
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -63,9 +64,8 @@ class BenchmarkMetrics(BaseModel):
     config: dict[str, Any]
     total_time: float  # in seconds
     timestamp: str
-    latencies: list[float]  # in seconds
-    avg_latency: float  # in seconds
-    avg_throughput: float
+    start_time: float
+    end_time: float
 
 def define_and_register_hooks(model, device) -> dict:
     """
@@ -136,64 +136,39 @@ def benchmark(args: argparse.Namespace) -> None:
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 
     try:
-        input_data = torch.randn(args.input_shape, device=DEVICE)
-        model = load_model(args.model, args.model_repo)
-        model.eval().to(DEVICE)
-
-        dtype = torch.float32
-        if args.dtype == "float16":
-            dtype = torch.float16
-        if args.dtype == "bfloat16":
-            dtype = torch.bfloat16
-
-        input_data = input_data.to(dtype)
-        model = model.to(dtype)
-        print(f"Using {DEVICE=} for benchmarking")
-        if DEVICE == "cpu":
-            print("Warning: Running on CPU.")
-
-        st = time.perf_counter()
-        print("Warm up ...")
-        with torch.no_grad():
-            for _ in range(args.warmup):
-                _ = model(input_data)
-        print(f"Warm complete in {time.perf_counter()-st:.2f} sec ...")
-
-        layer_profiles = []
-        layer_profile = define_and_register_hooks(model, DEVICE)
+        model = load_model(args.model).to(DEVICE)
 
         print("Starting timing inference ...")
-        latencies = []
-        start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
-        end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
-        
-        with torch.no_grad():
-            for i in tqdm(range(args.runs)):
-                start_events[i].record()
-                _ = model(input_data)
-                end_events[i].record()
+        start_event = CudaEvent(enable_timing=True)
+        end_event = CudaEvent(enable_timing=True)
 
-                if IS_GPU:
-                    torch.cuda.synchronize()
+        save_dir = Path(args.result_dir) / args.model
+        save_dir.mkdir(exist_ok=True, parents=True)
 
-                latency = start_events[i].elapsed_time(end_events[i])
-                latencies.append(latency * 1.0e-3)
-                layer_profiles.append(layer_profile.copy())
+        # Clear ultralytics output if it exists
+        if (save_dir / "val").exists():
+            shutil.rmtree(save_dir / "val")
+
+        start_event.record()
+        validation_results = model.val(
+            data=args.dataset_name,
+            project=save_dir,
+        )
+        end_event.record()
+
+        if IS_GPU:
+            torch.cuda.synchronize()
 
         print("Benchmarking complete ...")
 
-        total_time = sum(latencies)
-        avg_latency = total_time / len(latencies)
-        avg_throughput = args.input_shape[0] / avg_latency
-
+        total_time = start_event.elapsed_time(end_event)
 
         results = BenchmarkMetrics(
             config=vars(args),
             total_time=total_time,  # in seconds
             timestamp=timestamp,
-            latencies=latencies,  # in seconds
-            avg_throughput=avg_throughput,
-            avg_latency=avg_latency,  # in seconds
+            start_time=start_event.get_time_stamp(),
+            end_time=end_event.get_time_stamp(),
         )
 
         model_dir = f"{args.result_dir}/{args.model}"
@@ -202,8 +177,16 @@ def benchmark(args: argparse.Namespace) -> None:
         file_path = f"{model_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
-        with open(f"{model_dir}/{args.model}_layerwise_latency.json", "w") as layer_profiles_file:
-            json.dump(layer_profiles, layer_profiles_file)
+
+        validation_dict = {
+            "metrics": validation_results.results_dict,
+            "speed": validation_results.speed,
+        }
+
+        with open(f"{model_dir}/validation_results.json", "w") as validation_results_file:
+            json.dump(validation_dict, validation_results_file, indent=4)
+
     except Exception as e:
+        raise e
         print(f"An error has occurred during benchmarking: {e}")
         return
