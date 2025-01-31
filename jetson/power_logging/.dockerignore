@@ -6,3 +6,5 @@ __pycache__
 .Python
 .git
 raw_data
+datasets
+*.pt
