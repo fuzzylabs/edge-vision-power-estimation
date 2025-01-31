@@ -17,6 +17,7 @@ from tqdm import tqdm
 
 from functools import partial
 from model.model_utils import load_model, get_layers
+from pytorch.pruning import global_unstructured_prune
 import shutil
 
 """
@@ -137,6 +138,12 @@ def benchmark(args: argparse.Namespace) -> None:
 
     try:
         model = load_model(args.model).to(DEVICE)
+
+        if args.prune:
+            global_unstructured_prune(
+                model=model,
+                amount=args.pruning_sparsity
+            )
 
         print("Starting timing inference ...")
         start_event = CudaEvent(enable_timing=True)

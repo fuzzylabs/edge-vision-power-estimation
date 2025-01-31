@@ -86,6 +86,19 @@ if __name__ == "__main__":
         action="store_true",
         help="Disable power measurement during benchmark execution.",
     )
+    parser.add_argument(
+        "--prune",
+        type=bool,
+        default=False,
+        required=False,
+        help="Whether to perform global unstructured pruning on the model."
+    )
+    parser.add_argument(
+        "--pruning-sparsity",
+        type=float,
+        default=0.3,
+        help="Percentage of weight to prune."
+    )
     args = parser.parse_args()
 
     event = Event()
