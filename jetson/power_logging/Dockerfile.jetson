@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:24.06-py3-igpu
+FROM nvcr.io/nvidia/pytorch:24.10-py3-igpu
 
 RUN apt update && apt install --no-install-recommends -y libgl1-mesa-glx
 
@@ -12,6 +12,8 @@ WORKDIR /app
 
 COPY --chown=appuser:appuser . ./
 
-RUN pip install ultralytics
+RUN pip install ultralytics 
+
+RUN pip install --upgrade "nvidia-modelopt[torch]"
 
 CMD ["/bin/bash", "./run_experiment.sh"]
