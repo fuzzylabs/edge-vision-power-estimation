@@ -2,6 +2,7 @@ import os
 
 # import modelopt.torch.opt as mto
 import modelopt.torch.quantization as mtq
+
 # import torch
 from ultralytics import YOLO, settings
 from ultralytics.data import YOLODataset, build_dataloader
@@ -15,22 +16,24 @@ settings["weights_dir"] = os.getcwd()
 settings["runs_dir"] = os.getcwd()
 
 
-def quantized_pt_model():
+def quantized_pt_model(model_name, data_cfg, val_dataset_path):
     # Setup the model
-    pt_model = YOLO(model="yolov5su.pt", task="detect")
+    yolo_model_name = model_name.split("_")[0]
+    pt_model = YOLO(model=f"{yolo_model_name}.pt", task="detect")
 
     # Select quantization config
     config = mtq.INT8_SMOOTHQUANT_CFG
 
     # Quantization need calibration data. Setup calibration data loader
     # Download COCO val 2017 dataset
-    data = check_det_dataset("cfg/coco.yaml")
+    data = check_det_dataset(data_cfg)
 
     # Use only subset of data for calibration
-    with open("datasets/coco/val2017.txt", "r") as fp:
+    with open(val_dataset_path, "r") as fp:
         val_data = fp.readlines()
+    val_data_orig = val_data.copy()
     val_data = val_data[:NUM_CALIB_IMAGES]
-    with open("datasets/coco/val2017.txt", "w") as fp:
+    with open(val_dataset_path, "w") as fp:
         fp.writelines(val_data)
 
     batch_size = 1
@@ -52,6 +55,10 @@ def quantized_pt_model():
 
     # Quantize the model and perform calibration (PTQ)
     qt_model = mtq.quantize(pt_model.model, config, forward_loop)
+
+    # Restore original val images list
+    with open(val_dataset_path, "w") as fp:
+        fp.writelines(val_data_orig)
     return qt_model
 
 

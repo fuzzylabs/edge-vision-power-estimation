@@ -6,10 +6,7 @@ set -eou pipefail
 OUTPUT_DIR="raw_data/prebuilt_models"
 
 # List of models to process
-MODELS=("alexnet" "vgg16" "vgg13" "vgg19" "mobilenet_v2" "mobilenet_v3_small" 
-        "mobilenet_v3_large" "resnet18" "resnet34" "resnet50" "resnet101" 
-        "resnet152" "lenet" "resnext50_32x4d" "resnext101_32x8d" 
-        "resnext101_64x4d" "convnext_tiny" "convnext_small" "convnext_base")
+MODELS=("yolov5n.pt")
 
 # Python script to run
 PYTHON_SCRIPT="./save_model_summary.py"

@@ -1,10 +1,13 @@
-import torch
 from typing import Any
+
+import torch
+from pytorch_quantize import quantized_pt_model
+from ultralytics import YOLO
+
 from model.lenet import LeNet
-from model.pytorch_quantize import quantized_pt_model
 
 
-def load_model(model_name: str, model_repo: str) -> Any:
+def load_model(model_name: str) -> Any:
     """Load model from Pytorch Hub.
 
     Args:
@@ -17,13 +20,15 @@ def load_model(model_name: str, model_repo: str) -> Any:
     Returns:
         PyTorch model
     """
-    if model_name == "yolov5su":
-        return torch.load('yolov5su.pt')['model']
-    if model_name == "yolov5su_quant":
-        return quantized_pt_model()
+    if "quant" in model_name:
+        return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
+    else:
+        return YOLO(f"{model_name}.pt")
 
-    
-def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, torch.nn.Module]]:
+
+def get_layers(
+    model: torch.nn.Module, name_prefix: str = ""
+) -> list[tuple[str, torch.nn.Module]]:
     """
     Recursively get all layers in a pytorch model.
 
@@ -43,5 +48,5 @@ def get_layers(model: torch.nn.Module, name_prefix: str="") -> list[tuple[str, t
         for child_name, child in children:
             layers = get_layers(child, name_prefix + "_" + child_name)
             result.extend(layers)
-    
+
     return result

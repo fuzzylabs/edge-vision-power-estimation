@@ -1,7 +1,6 @@
 FROM nvcr.io/nvidia/pytorch:24.06-py3-igpu
 
-# nvidia-modelopt[all] already comes pre-packaged with above image
-RUN pip install git-python ultralytics
+RUN apt update && apt install --no-install-recommends -y libgl1-mesa-glx
 
 # Create a user group
 RUN groupadd --gid 1000 appuser \
@@ -12,5 +11,7 @@ USER appuser
 WORKDIR /app
 
 COPY --chown=appuser:appuser . ./
+
+RUN pip install ultralytics
 
 CMD ["/bin/bash", "./run_experiment.sh"]

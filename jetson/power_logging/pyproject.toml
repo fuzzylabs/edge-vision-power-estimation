@@ -10,6 +10,7 @@ dependencies = [
     "pandas>=2.2.3",
     "pillow>=11.1.0",
     "torch==2.2.2",
+    "ultralytics>=8.3.69",
 ]
 
 [dependency-groups]

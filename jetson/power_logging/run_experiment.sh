@@ -6,7 +6,7 @@ set -eou pipefail
 IDLE_DURATION=120
 
 # Directory to store results
-RESULT_DIR="raw_data/prebuilt_models"
+RESULT_DIR="raw_data/pt_quantize_models"
 
 echo "Running idling power measurement..."
 python measure_idling_power.py \
@@ -18,26 +18,19 @@ echo "Sleeping for 2 minutes..."
 sleep 120
 
 # Models to benchmark
-models=("yolov5su" "yolov5su_quant")
-# Number of inference cycles
-RUNS=3
+# Using all YOLOv5 variants
+models=("yolov5nu" "yolov5nu_quant" "yolov5su" ""yolov5nu_quant "yolov5mu" "yolov5mu_quant" "yolov5lu" "yolov5lu_quant")
 
 # Iterate through models and run measure_inference_power.py script
 for model in "${models[@]}"
 do
   echo "Running inference power measurement for model: $model"
 
-  # Set input shape to be different for lenet model
-  INPUT_SHAPE='--input-shape 1 3 640 640'
-
   # Run the measure_inference_power.py script
   python measure_inference_power.py \
     --model "$model" \
-    --runs "$RUNS" \
-    --dtype "float32" \
-    --result-dir "$RESULT_DIR" \
-    --optimization-level 3 \
-    $INPUT_SHAPE
+    --dataset-name "coco.yaml" \
+    --result-dir "$RESULT_DIR"
 done
 
 echo "Experiment completed!"
