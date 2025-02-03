@@ -150,13 +150,13 @@ def benchmark(args: argparse.Namespace, use_onnx: bool = True) -> None:
     try:
         # TODO: Create an argument
         if use_onnx:
-            model = load_onnx_model(args.model).to(DEVICE)
+            model = load_onnx_model(args.model)
         else:
             model = load_model(args.model).to(DEVICE)
 
         print("Starting timing inference ...")
-        start_event = CudaEvent(enable_timing=True)
-        end_event = CudaEvent(enable_timing=True)
+        # start_event = CudaEvent(enable_timing=True)
+        # end_event = CudaEvent(enable_timing=True)
 
         save_dir = Path(args.result_dir) / args.model
         save_dir.mkdir(exist_ok=True, parents=True)
@@ -165,23 +165,23 @@ def benchmark(args: argparse.Namespace, use_onnx: bool = True) -> None:
         if (save_dir / "val").exists():
             shutil.rmtree(save_dir / "val")
 
-        start_event.record()
+        start = time.time()
+        s = time.perf_counter()
         validation_results = model.val(data=args.dataset_name, project=save_dir)
-        end_event.record()
+        end = time.time()
+        total_time = time.perf_counter() - s
 
         if IS_GPU:
             torch.cuda.synchronize()
 
         print("Benchmarking complete ...")
 
-        total_time = start_event.elapsed_time(end_event)
-
         results = BenchmarkMetrics(
             config=vars(args),
             total_time=total_time,  # in seconds
             timestamp=timestamp,
-            start_time=start_event.get_time_stamp(),
-            end_time=end_event.get_time_stamp(),
+            start_time=start,
+            end_time=end,
         )
 
         model_dir = f"{args.result_dir}/{args.model}"
