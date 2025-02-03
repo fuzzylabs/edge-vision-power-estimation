@@ -8,7 +8,6 @@ from multiprocessing.synchronize import Event as EventClass
 from pathlib import Path
 
 from model.benchmark import benchmark
-from model.benchmark_onnx import benchmark_onnx
 
 multiprocessing.set_start_method("spawn", force=True)
 
@@ -55,7 +54,7 @@ def inference(event: EventClass, args: argparse.Namespace) -> None:
         event: An object that manages a flag for communication among processes.
         args: Arguments from CLI.
     """
-    benchmark_onnx(args)
+    benchmark(args)
     event.set()
 
 

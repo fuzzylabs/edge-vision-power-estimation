@@ -26,6 +26,18 @@ def load_model(model_name: str) -> Any:
         return YOLO(f"{model_name}.pt")
 
 
+def load_onnx_model(model_name: str) -> Any:
+    """Load model from the file.
+
+    Args:
+        model_name: Name of model.
+
+    Returns:
+        ONNX model
+    """
+    return YOLO(f"{model_name}.onnx")
+
+
 def get_layers(
     model: torch.nn.Module, name_prefix: str = ""
 ) -> list[tuple[str, torch.nn.Module]]:
