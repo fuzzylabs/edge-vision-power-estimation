@@ -77,7 +77,7 @@ def benchmark_onnx(args: argparse.Namespace) -> None:
     print("Starting benchmark...")
 
     try:
-        input_data = torch.randn(args.input_shape, device=DEVICE, dtype=torch.float32)
+        input_data = torch.randn((1, 3, 640, 640), device=DEVICE, dtype=torch.float32)
         session = ort.InferenceSession(
             args.model, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
         )
@@ -111,8 +111,8 @@ def benchmark_onnx(args: argparse.Namespace) -> None:
         model_profiles = []
         print("Starting timing inference ...")
         latencies = []
-        start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
-        end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
+        start_events = [CudaEvent(enable_timing=True) for _ in range(300)]
+        end_events = [CudaEvent(enable_timing=True) for _ in range(300)]
 
         for i in tqdm(range(300)):
             start_events[i].record()
@@ -142,7 +142,7 @@ def benchmark_onnx(args: argparse.Namespace) -> None:
 
         total_time = sum(latencies)
         avg_latency = total_time / len(latencies)
-        avg_throughput = args.input_shape[0] / avg_latency
+        avg_throughput = 1 / avg_latency
 
         results = BenchmarkMetrics(
             config=vars(args),
