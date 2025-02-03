@@ -68,7 +68,7 @@ class BenchmarkMetrics(BaseModel):
     avg_throughput: float
 
 
-def benchmark(args: argparse.Namespace) -> None:
+def benchmark_onnx(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
     Args:
@@ -153,9 +153,10 @@ def benchmark(args: argparse.Namespace) -> None:
             avg_latency=avg_latency,  # in seconds
         )
 
-        model_dir = f"{args.result_dir}/{args.model}"
+        model_name = args.model.split(".")[0]
+        model_dir = f"{args.result_dir}/{model_name}"
         Path(model_dir).mkdir(exist_ok=True, parents=True)
-        file_name = f"{args.model}_onnx.json"
+        file_name = f"{model_name}_onnx.json"
         file_path = f"{model_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
