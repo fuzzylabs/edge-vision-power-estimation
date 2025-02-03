@@ -37,7 +37,7 @@ def load_onnx_model(model_name: str) -> Any:
     Returns:
         ONNX model
     """
-    return YOLO(f"{model_name}.onnx", task="detect").to("cpu")
+    return YOLO(f"{model_name}.onnx", task="detect")
 
 
 def get_layers(

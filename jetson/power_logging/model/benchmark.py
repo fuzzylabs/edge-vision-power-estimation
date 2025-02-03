@@ -167,7 +167,9 @@ def benchmark(args: argparse.Namespace, use_onnx: bool = True) -> None:
 
         start = time.time()
         s = time.perf_counter()
-        validation_results = model.val(data=args.dataset_name, project=save_dir)
+        validation_results = model.val(
+            data=args.dataset_name, project=save_dir, device="cpu"
+        )
         end = time.time()
         total_time = time.perf_counter() - s
 
