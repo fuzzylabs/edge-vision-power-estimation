@@ -164,6 +164,27 @@ Contributions are welcome! Please read the [Contributing Guide](./CONTRIBUTING.m
 - **🐛 [Report an Issue](https://github.com/fuzzylabs/edge-vision-power-estimation/issues)** : Found a bug? Let us know!
 - **💬 [Start a Discussion](https://github.com/fuzzylabs/edge-vision-power-estimation/discussions)** : Have ideas or suggestions? We'd love to hear from you.
 
+## 📖 MKDocs
+
+A GitHub workflow is set up to automatically deploy the MKDocs website whenever a new release is published in the repository.
+
+Running MKDocs Locally
+If you're working on the docs and want to preview changes locally, you'll need to set up a virtual environment and install MKDocs:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install mkdocs
+```
+
+Once that's done, you can start the local server with:
+
+```bash
+mkdocs serve
+```
+This will launch the MKDocs site, which you can view at: http://127.0.0.1:8000/
+
+
 ## 🙌 Acknowledgements
 
 The following resources have served as an inspiration for this project:
