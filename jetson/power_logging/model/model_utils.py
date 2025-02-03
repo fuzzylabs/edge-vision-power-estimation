@@ -4,7 +4,8 @@ import torch
 from ultralytics import YOLO
 
 from model.lenet import LeNet
-from model.pytorch_quantize import quantized_pt_model
+
+# from model.pytorch_quantize import quantized_pt_model
 
 
 def load_model(model_name: str) -> Any:
@@ -21,7 +22,8 @@ def load_model(model_name: str) -> Any:
         PyTorch model
     """
     if "quant" in model_name:
-        return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
+        # return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
+        return ""
     else:
         return YOLO(f"{model_name}.pt")
 
