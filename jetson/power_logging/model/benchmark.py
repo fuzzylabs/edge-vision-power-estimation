@@ -162,10 +162,7 @@ def benchmark(args: argparse.Namespace) -> None:
             shutil.rmtree(save_dir / "val")
 
         start_event.record()
-        validation_results = model.val(
-            data=args.dataset_name,
-            project=save_dir,
-        )
+        validation_results = model.val(data=args.dataset_name, project=save_dir)
         end_event.record()
 
         if IS_GPU:

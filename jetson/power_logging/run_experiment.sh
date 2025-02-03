@@ -6,7 +6,7 @@ set -eou pipefail
 IDLE_DURATION=120
 
 # Directory to store results
-RESULT_DIR="raw_data/pt_quantize_models"
+RESULT_DIR="raw_data/onnx_quantize_models"
 
 echo "Running idling power measurement..."
 python measure_idling_power.py \
@@ -19,7 +19,7 @@ sleep 120
 
 # Models to benchmark
 # Using all YOLOv5 variants
-models=("yolov5nu" "yolov5nu_quant" "yolov5su" ""yolov5su_quant "yolov5mu" "yolov5mu_quant" "yolov5lu" "yolov5lu_quant")
+models=("yolov5su.onnx" "yolov5su.quant.onnx")
 
 # Iterate through models and run measure_inference_power.py script
 for model in "${models[@]}"

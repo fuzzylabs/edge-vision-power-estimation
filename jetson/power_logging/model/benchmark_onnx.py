@@ -62,7 +62,7 @@ DEVICE = "cuda" if IS_GPU else "cpu"
 class BenchmarkMetrics(BaseModel):
     config: dict[str, Any]
     total_time: float  # in seconds
-    timestamp: str
+    timestamps: tuple
     latencies: list[float]  # in seconds
     avg_latency: float  # in seconds
     avg_throughput: float
@@ -75,8 +75,6 @@ def benchmark(args: argparse.Namespace) -> None:
         args: Arguments from CLI.
     """
     print("Starting benchmark...")
-
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 
     try:
         input_data = torch.randn(args.input_shape, device=DEVICE, dtype=torch.float32)
@@ -93,7 +91,7 @@ def benchmark(args: argparse.Namespace) -> None:
         io_binding = session.io_binding()
         st = time.perf_counter()
         print("Warm up ...")
-        for _ in range(args.warmup):
+        for _ in range(100):
             io_binding.bind_input(
                 name=model_inputs[0].name,
                 device_type="cuda",
@@ -107,14 +105,16 @@ def benchmark(args: argparse.Namespace) -> None:
 
         print(f"Warm complete in {time.perf_counter() - st:.2f} sec ...")
 
-        layer_profiles = []
+        time.sleep(10)
+        print("Sleeping for 10 seconds")
 
+        model_profiles = []
         print("Starting timing inference ...")
         latencies = []
         start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
         end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
 
-        for i in tqdm(range(args.runs)):
+        for i in tqdm(range(300)):
             start_events[i].record()
             io_binding.bind_input(
                 name=model_inputs[0].name,
@@ -131,9 +131,12 @@ def benchmark(args: argparse.Namespace) -> None:
             if IS_GPU:
                 torch.cuda.synchronize()
 
+            model_profiles.append(
+                (start_events[i].get_time_stamp(), end_events[i].get_time_stamp())
+            )
             latency = start_events[i].elapsed_time(end_events[i])
             latencies.append(latency * 1.0e-3)
-            # layer_profiles.append(layer_profile.copy())
+            time.sleep(1)
 
         print("Benchmarking complete ...")
 
@@ -144,7 +147,7 @@ def benchmark(args: argparse.Namespace) -> None:
         results = BenchmarkMetrics(
             config=vars(args),
             total_time=total_time,  # in seconds
-            timestamp=timestamp,
+            timestamps=model_profiles,
             latencies=latencies,  # in seconds
             avg_throughput=avg_throughput,
             avg_latency=avg_latency,  # in seconds
@@ -156,10 +159,6 @@ def benchmark(args: argparse.Namespace) -> None:
         file_path = f"{model_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
-        with open(
-            f"{model_dir}/{args.model}_layerwise_latency.json", "w"
-        ) as layer_profiles_file:
-            json.dump(layer_profiles, layer_profiles_file)
     except Exception as e:
         print(f"An error has occurred during benchmarking: {e}")
         return
