@@ -1,4 +1,6 @@
+import argparse
 import json
+import time
 import matplotlib.pyplot as plt 
 import numpy as np
 import pandas as pd
@@ -11,30 +13,67 @@ def load_results(path: str):
     with open(path, "r") as file:
         return json.load(file)
 
-def main():
-    baseline_data = load_results(baseline_json)
-    zkp_data = load_results(zkp_json)
+def preprocess_data(data):
+    memory_usage = data.get("memory_usage", {})
+    if isinstance(memory_usage, dict):
+        data["memory_usage_cpu"] = memory_usage.get("cpu_memory", 0.0)
+        data["memory_usage_gpu"] = memory_usage.get("gpu_memory", 0.0)
+    else:
+        data["memory_usage_cpu"] = memory_usage or 0.0
+        data["memory_usage_gpu"] = 0.0
 
-    metrics = ["avg_latency", "avg_throughput", "total_time", "power_usage", "accuracy"]
+    model_size = data.get("model_size", {})
+    if isinstance(model_size, dict):
+        data["model_size"] = model_size.get("size_MB", 0.0)
+    else:
+        data["model_size"] = model_size or 0.0
+
+    for key in ["power_usage", "accuracy", "energy_efficiency", "flops"]:
+        data[key] = data.get(key, 0.0)
+
+    return data
+
+
+
+
+def main():
+    baseline_data = preprocess_data(load_results(baseline_json))
+    zkp_data = preprocess_data(load_results(zkp_json))
+
+    metrics = ["avg_latency", "avg_throughput", "total_time", "power_usage", "accuracy",
+                "memory_usage_cpu", "memory_usage_gpu", "model_size", "flops", "energy_efficiency"
+    ]
 
     metric_names = {
         "avg_latency": "Avg Latency (Sec)",
         "avg_throughput": "Avg Throughput (Samples/Sec)",
         "total_time": "Total Time (sec)",
         "power_usage": "Power Consumption (W)",
-        "accuracy": "Accuracy (%)"
+        "accuracy": "Accuracy (%)",
+        "memory_usage": "Memory Usage (MB)",
+        "model_size": "Model Size (MB)",
+        "flops": "Floating Point Operations (FLOPS)",
+        "energy_efficiency": "Energy Efficiency (W/Sample)"
     }
 
-    baseline_values = [baseline_data[m] for m in metrics]
-    zkp_values = [zkp_data[m] for m in metrics]
+    baseline_values = [baseline_data.get(m, 0) for m in metrics]
+    zkp_values = [zkp_data.get(m, 0) for m in metrics]
 
     df = pd.DataFrame({
-        "Metric": [metric_names[m] for m in metrics],
+        "Metric": metrics,
         "Baseline": baseline_values,
         "ZKP": zkp_values
     })
     print("- Comparison Table -")
     print(df.to_string(index=False))
+
+    df.plot(x="Metric", kind="bar", figsize=(12, 6))
+    plt.title("Comparison of Baseline vs. ZKFP")
+    plt.ylabel("Metric Value")
+    plt.xticks(rotation=45, ha="right")
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
 
     # fig, axes = plt.subplots(1, len(metrics), figsize=(5 * len(metrics), 4))
     # if len(metrics) == 1:
