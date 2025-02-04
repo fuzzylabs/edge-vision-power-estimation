@@ -33,7 +33,7 @@ do
     python measure_inference_power.py \
       --model "$model" \
       --dataset-name "coco.yaml" \
-      --prune
+      --prune TRUE \
       --result-dir "$RESULT_DIR"
   done
 done
