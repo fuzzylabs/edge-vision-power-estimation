@@ -21,6 +21,7 @@ from functools import partial
 from model.model_utils import load_model, get_layers
 from model.zero_keep_pruning import zero_keep_pruning
 from thop import profile
+import shutil
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -77,6 +78,8 @@ class BenchmarkMetrics(BaseModel):
     model_size: dict
     flops: float
     energy_efficiency: float
+    start_time: float # new
+    end_time: float # new 
 
 def get_memory_usage():
     return {
@@ -190,22 +193,25 @@ def benchmark(args: argparse.Namespace) -> None:
         layer_profile = define_and_register_hooks(model, DEVICE)
 
         print("Starting timing inference ...")
-        latencies = []
-        start_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
-        end_events = [CudaEvent(enable_timing=True) for _ in range(args.runs)]
-        
-        with torch.no_grad():
-            for i in tqdm(range(args.runs)):
-                start_events[i].record()
-                _ = model(input_data)
-                end_events[i].record()
+        start_event = CudaEvent(enable_timing=True)
+        end_event = CudaEvent(enable_timing=True)
 
-                if IS_GPU:
-                    torch.cuda.synchronize()
+        save_dir = Path(args.result_dir) / args.model
+        save_dir.mkdir(exist_ok=True, parents=True)
 
-                latency = start_events[i].elapsed_time(end_events[i])
-                latencies.append(latency * 1.0e-3)
-                layer_profiles.append(layer_profile.copy())
+        # Clear ultralytics output if it exists
+        if (save_dir / "val").exists():
+            shutil.rmtree(save_dir / "val")
+
+        start_event.record()
+        validation_results = model.val(
+            data=args.dataset_name,
+            project=save_dir,
+        )
+        end_event.record()
+
+        if IS_GPU:
+            torch.cuda.synchronize()
 
         print("Benchmarking complete ...")
 
@@ -233,6 +239,8 @@ def benchmark(args: argparse.Namespace) -> None:
             model_size=model_size,
             flops=total_flops,
             energy_efficiency=energy_efficiency
+            start_time=start_event.get_time_stamp(),
+            end_time=end_event.get_time_stamp(),
         )
 
 
@@ -256,5 +264,6 @@ def benchmark(args: argparse.Namespace) -> None:
         
         print("Benchmarking complete. Results saved at: ", output_path)
     except Exception as e:
+        raise e
         print(f"An error has occurred during benchmarking: {e}")
         return

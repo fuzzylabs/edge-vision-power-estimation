@@ -66,55 +66,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model",
         type=str,
-        default="mobilenet_v2",
-        help="Specify name of pretrained CNN model from PyTorch Hub."
-        "For more information on PyTorch Hub visit: "
-        "https://pytorch.org/hub/research-models",
+        default="yolov5n",
+        help="Specify name of pretrained CNN model from ultralytics.",
     )
     parser.add_argument(
-        "--model-repo",
+        "--dataset-name",
         type=str,
-        default="pytorch/vision:v0.16.0", # This version should have all the models we want
-        help="Specify path and version to model repository from PyTorch Hub.",
-    )
-    parser.add_argument(
-        "--dtype",
-        type=str,
-        default="float16",
-        choices=["float16", "bfloat16", "float32"],
-        help="Data type for model weights and activations.\n\n"
-        '* "float16" is the same as "half".\n'
-        '* "bfloat16" for a balance between precision and range.\n'
-        '* "float32" for FP32 precision.',
-    )
-    parser.add_argument(
-        "--input-shape",
-        type=int,
-        nargs="+",
-        default=[1, 3, 224, 224],
-        help="Input shape BCHW",
-    )
-    parser.add_argument(
-        "--warmup",
-        type=int,
-        default=50,
-        help="Number of iterations to perform warmup before benchmarking",
-    )
-    parser.add_argument(
-        "--runs", type=int, default=30000, help="Number of inference cycle to run"
-    )
-    parser.add_argument(
-        "--optimization-level",
-        type=int,
-        default=5,
-        help="Builder optimization 0-5, higher levels imply longer build time, "
-        "searching for more optimization options.",
-    )
-    parser.add_argument(
-        "--min-block-size",
-        type=int,
-        default=5,
-        help="Minimum number of operators per TRT-Engine Block",
+        default="coco8.yaml",
+        help="Specify name of dataset from ultralytics.",
     )
     parser.add_argument(
         "--result-dir",
