@@ -150,8 +150,8 @@ def benchmark(args: argparse.Namespace) -> None:
         model = load_model(args.model)
 
         print("Starting timing inference ...")
-        # start_event = CudaEvent(enable_timing=True)
-        # end_event = CudaEvent(enable_timing=True)
+        start_event = CudaEvent(enable_timing=True)
+        end_event = CudaEvent(enable_timing=True)
 
         save_dir = Path(args.result_dir) / args.model
         save_dir.mkdir(exist_ok=True, parents=True)
@@ -160,32 +160,37 @@ def benchmark(args: argparse.Namespace) -> None:
         if (save_dir / "val").exists():
             shutil.rmtree(save_dir / "val")
 
-        start = time.time()
-        s = time.perf_counter()
+        ## Used for ONNX cpu time
+        # start = time.time()
+        # s = time.perf_counter()
+        start_event.record()
         validation_results = model.val(
             data=args.dataset_name,
             project=save_dir,
             # device="cpu" used only for ONNX models
         )
-        end = time.time()
-        total_time = time.perf_counter() - s
+        end_event.record()
+        ## Used for ONNX cpu time
+        # end = time.time()
+        # total_time = time.perf_counter() - s
 
         if IS_GPU:
             torch.cuda.synchronize()
 
         print("Benchmarking complete ...")
+        total_time = start_event.elapsed_time(end_event)
 
         results = BenchmarkMetrics(
             config=vars(args),
             total_time=total_time,  # in seconds
             timestamp=timestamp,
-            start_time=start,
-            end_time=end,
+            start_time=start_event.get_time_stamp(),
+            end_time=end_event.get_time_stamp(),
         )
 
         model_dir = f"{args.result_dir}/{args.model}"
         Path(model_dir).mkdir(exist_ok=True, parents=True)
-        file_name = f"{args.model}_pytorch.json"
+        file_name = f"{args.model}.json"
         file_path = f"{model_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
