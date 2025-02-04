@@ -15,9 +15,8 @@ from typing import Any
 
 import torch
 from pydantic import BaseModel
-from tqdm import tqdm
 
-from model.model_utils import get_layers, load_model, load_onnx_model
+from model.model_utils import get_layers, load_model
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -137,7 +136,7 @@ def layer_time_hook(
     layer_time_dict[layer_name]["start_time"] = start_event.get_time_stamp()
 
 
-def benchmark(args: argparse.Namespace, use_onnx: bool = True) -> None:
+def benchmark(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
     Args:
@@ -148,11 +147,7 @@ def benchmark(args: argparse.Namespace, use_onnx: bool = True) -> None:
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 
     try:
-        # TODO: Create an argument
-        if use_onnx:
-            model = load_onnx_model(args.model)
-        else:
-            model = load_model(args.model).to(DEVICE)
+        model = load_model(args.model)
 
         print("Starting timing inference ...")
         # start_event = CudaEvent(enable_timing=True)
@@ -168,7 +163,9 @@ def benchmark(args: argparse.Namespace, use_onnx: bool = True) -> None:
         start = time.time()
         s = time.perf_counter()
         validation_results = model.val(
-            data=args.dataset_name, project=save_dir, device="cpu"
+            data=args.dataset_name,
+            project=save_dir,
+            # device="cpu" used only for ONNX models
         )
         end = time.time()
         total_time = time.perf_counter() - s

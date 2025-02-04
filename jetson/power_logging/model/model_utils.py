@@ -5,39 +5,22 @@ from ultralytics import YOLO
 
 from model.lenet import LeNet
 
-# from model.pytorch_quantize import quantized_pt_model
-
 
 def load_model(model_name: str) -> Any:
-    """Load model from Pytorch Hub.
+    """Load model using ultralytics library.
 
     Args:
         model_name: Name of model.
-            It should be same as that in Pytorch Hub.
-
-    Raises:
-        ValueError: If loading model fails from PyTorch Hub
 
     Returns:
-        PyTorch model
+        YOLO model
     """
-    if "quant" in model_name:
+    if "quant.pt" in model_name:
+        # from model.pytorch_quantize import quantized_pt_model
         # return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
         return ""
     else:
-        return YOLO(f"{model_name}.pt")
-
-
-def load_onnx_model(model_name: str) -> Any:
-    """Load model from the file.
-
-    Args:
-        model_name: Name of model.
-
-    Returns:
-        ONNX model
-    """
-    return YOLO(f"{model_name}.onnx", task="detect")
+        return YOLO(f"{model_name}")
 
 
 def get_layers(
