@@ -1,2 +1,3 @@
 /prebuilt_models
 /onnx_quantize_models_cpu
+/trt_quantize_models
