@@ -126,6 +126,14 @@ def layer_time_hook(layer_time_dict, layer_name, start_event, end_event, module,
     layer_time_dict[layer_name]["start_time"] = start_event.get_time_stamp()
 
 
+def get_run_name(args: argparse.Namespace) -> str:
+    """Get run name based on CLI arguments."""
+    run_name = args.model
+    if args.prune:
+        run_name += f"_pruned-{args.pruning_sparsity}"
+
+    return run_name
+
 def benchmark(args: argparse.Namespace) -> None:
     """Benchmark latency and throughput across all backends.
 
@@ -135,6 +143,7 @@ def benchmark(args: argparse.Namespace) -> None:
     print("Starting benchmark...")
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    run_name = get_run_name(args)
 
     try:
         model = load_model(args.model).to(DEVICE)
@@ -150,7 +159,7 @@ def benchmark(args: argparse.Namespace) -> None:
         start_event = CudaEvent(enable_timing=True)
         end_event = CudaEvent(enable_timing=True)
 
-        save_dir = Path(args.result_dir) / args.model
+        save_dir = Path(args.result_dir) / run_name
         save_dir.mkdir(exist_ok=True, parents=True)
 
         # Clear ultralytics output if it exists
@@ -179,10 +188,8 @@ def benchmark(args: argparse.Namespace) -> None:
             end_time=end_event.get_time_stamp(),
         )
 
-        model_dir = f"{args.result_dir}/{args.model}"
-        Path(model_dir).mkdir(exist_ok=True, parents=True)
         file_name = f"{args.model}_pytorch.json"
-        file_path = f"{model_dir}/{file_name}"
+        file_path = f"{save_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
 
@@ -191,7 +198,7 @@ def benchmark(args: argparse.Namespace) -> None:
             "speed": validation_results.speed,
         }
 
-        with open(f"{model_dir}/validation_results.json", "w") as validation_results_file:
+        with open(f"{save_dir}/validation_results.json", "w") as validation_results_file:
             json.dump(validation_dict, validation_results_file, indent=4)
 
     except Exception as e:
