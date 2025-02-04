@@ -58,3 +58,11 @@ To run inference using quantized ONNX model
 ```bash
 python evaluate_onnx.py --with-quant
 ```
+
+## Quantized TRT model
+
+To convert ONNX models to TensorRT models, we will use `trtexec` tool.
+
+```bash
+trtexec --onnx=quant.onnx --saveEngine=quant.engine --best
+```
