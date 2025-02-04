@@ -2,6 +2,7 @@ import argparse
 import json
 import time
 import matplotlib.pyplot as plt 
+import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 
@@ -56,24 +57,53 @@ def main():
         "energy_efficiency": "Energy Efficiency (W/Sample)"
     }
 
-    baseline_values = [baseline_data.get(m, 0) for m in metrics]
-    zkp_values = [zkp_data.get(m, 0) for m in metrics]
+    baseline_values = [round(baseline_data.get(m, 0.0) or 0.0, 6) for m in metrics]
+    zkp_values = [round(zkp_data.get(m, 0.0) or 0.0, 6) for m in metrics]
+
+    percent_change = []
+    for baseline, zkp in zip(baseline_values, zkp_values):
+        if baseline != 0:
+            change = ((zkp - baseline) / baseline) * 100
+        else:
+            change = 0.0
+        percent_change.append(change)
 
     df = pd.DataFrame({
         "Metric": metrics,
         "Baseline": baseline_values,
-        "ZKP": zkp_values
+        "ZKP": zkp_values,
+        "Percent Change (%)": [round(p, 2) for p in percent_change],
     })
-    print("- Comparison Table -")
+    pd.options.display.float_format = '{:,.6f}'.format
+    print("- Comparison Table -\n")
     print(df.to_string(index=False))
 
-    df.plot(x="Metric", kind="bar", figsize=(12, 6))
-    plt.title("Comparison of Baseline vs. ZKFP")
-    plt.ylabel("Metric Value")
-    plt.xticks(rotation=45, ha="right")
-    plt.legend()
-    plt.tight_layout()
-    plt.show()
+    # fig, ax = plt.subplots(figsize=(8, 4))
+    # ax.axis("tight")
+    # ax.axis("off")
+    # table = ax.table(
+    #     cellText = df.values,
+    #     colLabels = df.columns,
+    #     cellLoc = "center",
+    #     loc = "center",
+    # )
+    # table.auto_set_font_size(False)
+    # table.set_fontsize(10)
+    # table.auto_set_column_width(col=list(range(len(df.columns))))
+    
+    # plt.title("Comparison Table")
+    # plt.tight_layout()
+    # plt.savefig("comparison_table.png")
+    # plt.show()
+
+    # ax = df.plot(x="Metric", kind="bar", figsize=(12, 6))
+    # ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.6f'))
+    # plt.title("Comparison of Baseline vs. ZKFP")
+    # plt.ylabel("Metric Value")
+    # plt.xticks(rotation=45, ha="right")
+    # plt.legend()
+    # plt.tight_layout()
+    # plt.show()
 
     # fig, axes = plt.subplots(1, len(metrics), figsize=(5 * len(metrics), 4))
     # if len(metrics) == 1:
