@@ -5,6 +5,7 @@ from multiprocessing.synchronize import Event as EventClass
 import argparse
 from pathlib import Path
 from datetime import datetime
+from time import time
 
 
 def power_logging(event: EventClass, args: argparse.Namespace) -> None:
@@ -60,6 +61,6 @@ if __name__ == "__main__":
     try:
         power_logging_process.join()
     except KeyboardInterrupt:
-        pass
+        print("Power measurement is interrupted.")
     finally:
         event.set()
