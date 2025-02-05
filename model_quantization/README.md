@@ -70,5 +70,5 @@ python download_trt_engine.py
 To convert quantized ONNX models to TensorRT models, we will use `trtexec` tool.
 
 ```bash
-trtexec --onnx=quant.onnx --saveEngine=quant.engine --best
+trtexec --onnx=yolov5nu_quant.onnx --saveEngine=yolov5nu_quant.engine --best
 ```

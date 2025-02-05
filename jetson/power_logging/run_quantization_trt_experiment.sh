@@ -20,7 +20,7 @@ sleep 120
 # Models to benchmark
 # Using all YOLOv5 variants
 # Note: Follow model_quantization/Readme.md to create ONNX and TensorRT models
-models=("yolov5nu_trt.engine" "yolov5nu_quant_trt.engine" "yolov5su_trt.engine" "yolov5su_quant_trt.engine" "yolov5mu_trt.engine" "yolov5mu_quant_trt.engine" "yolov5lu_trt.engine" "yolov5lu_quant_trt.engine")
+models=("yolov5nu.engine" "yolov5nu_quant.engine" "yolov5su.engine" "yolov5su_quant.engine" "yolov5mu.engine" "yolov5mu_quant.engine" "yolov5lu.engine" "yolov5lu_quant.engine")
 
 # Iterate through models and run measure_inference_power.py script
 for model in "${models[@]}"

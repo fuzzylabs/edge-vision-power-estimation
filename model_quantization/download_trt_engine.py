@@ -13,12 +13,7 @@ def export_to_trt_engine(
     model_name: str = "yolov5su.pt", data_path: str = "cfg/coco.yaml"
 ):
     pt_model = YOLO(model=model_name, task="detect")
-    pt_model.export(
-        format="engine",
-        data=data_path,
-        int8=True,
-        dynamic=True,
-    )
+    pt_model.export(format="engine", data=data_path, int8=True, batch=8)
 
 
 if __name__ == "__main__":
