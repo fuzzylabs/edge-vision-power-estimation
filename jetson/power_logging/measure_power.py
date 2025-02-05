@@ -18,27 +18,28 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
     Path(args.result_dir).mkdir(exist_ok=True, parents=True)
 
     logs = []
+    start_time = time()  # Current Unix timestamp
 
-    try:
-        while not event.is_set():
-            with open(
-                    "/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r"
-            ) as voltage:
-                mV = float(voltage.read())
-            with open(
-                    "/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/curr1_input", "r"
-            ) as current:
-                mC = float(current.read())
+    while not event.is_set():
+        with open(
+                "/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/in1_input", "r"
+        ) as voltage:
+            mV = float(voltage.read())
+        with open(
+                "/sys/bus/i2c/drivers/ina3221/1-0040/hwmon/hwmon1/curr1_input", "r"
+        ) as current:
+            mC = float(current.read())
 
-            # Time with seconds and microseconds
-            timestamp = datetime.now().strftime("%Y%m%d-%H:%M:%S.%f")
-            # Log the time, voltage and current.
-            logs.append(f"{timestamp},{mV},{mC}\n")
-    except KeyboardInterrupt:
-        pass
-    finally:
-        with open(f"{args.result_dir}/power_log.log", "w") as f:
-            f.writelines(logs)
+        # Time with seconds and microseconds
+        timestamp = datetime.now().strftime("%Y%m%d-%H:%M:%S.%f")
+        # Log the time, voltage and current.
+        logs.append(f"{timestamp},{mV},{mC}\n")
+
+        # For now stop after 10 minutes
+        if time() - start_time > 600:
+            event.set()
+    with open(f"{args.result_dir}/power_log.log", "w") as f:
+        f.writelines(logs)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -56,4 +57,9 @@ if __name__ == "__main__":
     event = Event()
     power_logging_process = Process(target=power_logging, args=(event, args))
     power_logging_process.start()
-    power_logging_process.join()
+    try:
+        power_logging_process.join()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        event.set()
