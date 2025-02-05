@@ -44,7 +44,7 @@ python -m modelopt.onnx.quantization \
     --quantize_mode=int8 \
     --calibration_data=calib.npy \
     --calibration_method=entropy \
-    --output_path=yolov5su.quant.onnx
+    --output_path=yolov5su_quant.onnx
 ```
 
 Run evaluation if the quantized model and unquantized model have the prediction using a validation image.

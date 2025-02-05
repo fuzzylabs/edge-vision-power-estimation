@@ -50,7 +50,7 @@ if __name__ == "__main__":
         print("Using quantized ONNX model for inference")
         # Create an instance of the YOLOv8 class with the specified arguments
         detection = InferYOLO(
-            f"{args.model}.quant_max.onnx", args.img, args.conf_thres, args.iou_thres
+            f"{args.model}_quant.onnx", args.img, args.conf_thres, args.iou_thres
         )
         output_image = detection.infer_onnx()
         cv2.namedWindow("Output_quant", cv2.WINDOW_NORMAL)
