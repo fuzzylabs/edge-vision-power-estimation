@@ -3,7 +3,6 @@ import argparse
 import cv2
 import torch
 from ultralytics.utils.checks import check_requirements
-
 from utils import InferYOLO
 
 if __name__ == "__main__":
@@ -28,7 +27,7 @@ if __name__ == "__main__":
         "--iou-thres", type=float, default=0.5, help="NMS IoU threshold"
     )
     parser.add_argument(
-        "--with-quant", action="store_true", help="Run inference quantization model"
+        "--quant", action="store_true", help="Run inference using quantization model"
     )
     args = parser.parse_args()
 

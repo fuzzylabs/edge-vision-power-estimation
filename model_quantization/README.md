@@ -17,7 +17,7 @@ python evaluate_pt.py
 To run inference using quantized PyTorch model
 
 ```bash
-python evaluate_pt.py --with-quant
+python evaluate_pt.py --quant
 ```
 
 ## Quantized ONNX model
@@ -56,12 +56,18 @@ python evaluate_onnx.py
 To run inference using quantized ONNX model
 
 ```bash
-python evaluate_onnx.py --with-quant
+python evaluate_onnx.py --quant
 ```
 
 ## Quantized TRT model
 
-To convert ONNX models to TensorRT models, we will use `trtexec` tool.
+To get TensorRT models for the original PyTorch models, run the following script.
+
+```bash
+python download_trt_engine.py
+```
+
+To convert quantized ONNX models to TensorRT models, we will use `trtexec` tool.
 
 ```bash
 trtexec --onnx=quant.onnx --saveEngine=quant.engine --best

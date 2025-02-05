@@ -11,6 +11,8 @@ NUM_CALIB_IMAGES = 500
 
 def quantized_pt_model(model_name, data_cfg, val_dataset_path):
     # Setup the model
+    # if quantized model name is yolov5su_quant.pt
+    # we use yolov5su.pt model that will be quantized
     yolo_model_name = model_name.split("_")[0]
     pt_model = YOLO(model=f"{yolo_model_name}.pt", task="detect")
 
