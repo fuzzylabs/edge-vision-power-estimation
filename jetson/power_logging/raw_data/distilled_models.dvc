@@ -1,0 +1,6 @@
+outs:
+- md5: ba92a3fefd8b041fc39cd7e18b1b929e.dir
+  size: 2456529
+  nfiles: 3
+  hash: md5
+  path: distilled_models
