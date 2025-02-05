@@ -1,0 +1,6 @@
+outs:
+- md5: 519fb7b16aeeb1a0597fb8faffbdcd6e.dir
+  size: 140720817
+  nfiles: 129
+  hash: md5
+  path: pytorch_pruned_models
