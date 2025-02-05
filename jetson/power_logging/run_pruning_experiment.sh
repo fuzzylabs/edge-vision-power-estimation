@@ -13,7 +13,7 @@ python measure_idling_power.py \
   --idle-duration $IDLE_DURATION \
   --result-dir "$RESULT_DIR"
 
- Wait for 2 minutes
+# Wait for 2 minutes
 echo "Sleeping for 2 minutes..."
 sleep 120
 
