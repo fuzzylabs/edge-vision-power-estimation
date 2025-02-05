@@ -7,7 +7,7 @@ from multiprocessing import Event, Process
 from multiprocessing.synchronize import Event as EventClass
 from pathlib import Path
 
-from model.benchmark import benchmark
+from model.benchmark import benchmark, get_run_name
 
 multiprocessing.set_start_method("spawn", force=True)
 
@@ -20,7 +20,8 @@ def power_logging(event: EventClass, args: argparse.Namespace) -> None:
         event: An object that manages a flag for communication among processes.
         args: Arguments from CLI.
     """
-    model_dir = f"{args.result_dir}/{args.model}"
+    run_name = get_run_name(args)
+    model_dir = f"{args.result_dir}/{run_name}"
     Path(model_dir).mkdir(exist_ok=True, parents=True)
 
     logs = []
