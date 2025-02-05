@@ -9,17 +9,18 @@ IDLE_DURATION=120
 RESULT_DIR="raw_data/prebuilt_models"
 
 echo "Running idling power measurement..."
-python measure_idling_power.py \
-  --idle-duration $IDLE_DURATION \
-  --result-dir "$RESULT_DIR"
+# python measure_idling_power.py \
+#  --idle-duration $IDLE_DURATION \
+#  --result-dir "$RESULT_DIR"
 
 # Wait for 2 minutes
-echo "Sleeping for 2 minutes..."
-sleep 120
+#echo "Sleeping for 2 minutes..."
+#sleep 120
 
 # Models to benchmark
 # Using all YOLOv5 variants
-models=("yolov5nu.pt" "yolov5su.pt" "yolov5mu.pt" "yolov5lu.pt" )
+# models=("yolov5nu.pt" "yolov5su.pt" "yolov5mu.pt" ) # "yolov5lu.pt" )
+models=("yolov5lu.pt")
 pruning_sparsity_options=("0.3" "0.5")
 
 # Iterate through models and run measure_inference_power.py script
@@ -34,6 +35,7 @@ do
       --model "$model" \
       --dataset-name "coco.yaml" \
       --prune TRUE \
+      --pruning-sparsity "$sparsity" \
       --result-dir "$RESULT_DIR"
   done
 done
