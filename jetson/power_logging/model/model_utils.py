@@ -16,9 +16,9 @@ def load_model(model_name: str) -> Any:
         YOLO model
     """
     if "quant.pt" in model_name:
-        # from model.pytorch_quantize import quantized_pt_model
-        # return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
-        return ""
+        from model.pytorch_quantize import quantized_pt_model
+
+        return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
     else:
         return YOLO(f"{model_name}")
 
