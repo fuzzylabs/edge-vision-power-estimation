@@ -1,0 +1,5 @@
+outs:
+- md5: ec0723989324df697cb00ffcd3af80c6
+  size: 2525
+  hash: md5
+  path: pytorch_pruned_models_measurements.csv
