@@ -22,6 +22,8 @@ from model.model_utils import load_model, get_layers
 from model.zero_keep_pruning import zero_keep_pruning
 from thop import profile
 import shutil
+from ultralytics import YOLO
+
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -153,10 +155,15 @@ def benchmark(args: argparse.Namespace) -> None:
     """
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-
     try:
         input_data = torch.randn(args.input_shape, device=DEVICE)
-        model = load_model(args.model, args.model_repo)
+        try:
+            print(f"Attempting to load YOLO model: {args.model}")
+            model = load_model(args.model)
+            print("Model loaded successfully!")
+        except Exception as e:
+            print(f"Error loading YOLO model: {e}")
+
         model.eval().to(DEVICE)
 
         if args.use_zkp:
@@ -196,25 +203,31 @@ def benchmark(args: argparse.Namespace) -> None:
         start_event = CudaEvent(enable_timing=True)
         end_event = CudaEvent(enable_timing=True)
 
-        save_dir = Path(args.result_dir) / args.model
+        save_dir = Path(args.result_dir) / f"{args.model}_zkp" if args.use_zkp else Path(args.result_dir) / f"{args.model}_baseline"
         save_dir.mkdir(exist_ok=True, parents=True)
 
+        validation_results = None
+        try:
+            start_event.record()
+            validation_results = model.val(
+                data=args.dataset_name,
+                project=save_dir,
+            )
+            end_event.record()
+        except Exception as val_error:
+            print(f"Validation Failed: {val_error}")
+        
         # Clear ultralytics output if it exists
         if (save_dir / "val").exists():
             shutil.rmtree(save_dir / "val")
-
-        start_event.record()
-        validation_results = model.val(
-            data=args.dataset_name,
-            project=save_dir,
-        )
-        end_event.record()
 
         if IS_GPU:
             torch.cuda.synchronize()
 
         print("Benchmarking complete ...")
 
+
+        latencies = [time.perf_counter() - time.perf_counter() for _ in range(args.runs)]
         total_time = sum(latencies)
         avg_latency = total_time / len(latencies)
         avg_throughput = args.input_shape[0] / avg_latency
@@ -228,6 +241,8 @@ def benchmark(args: argparse.Namespace) -> None:
         }
         Path("temp_model.pth").unlink()
 
+        output_path = save_dir / f"{args.model}_zkp_results.json" if args.use_zkp else save_dir / f"{args.model}_baseline_results.json"
+
         results = BenchmarkMetrics(
             config=vars(args),
             total_time=total_time,  # in seconds
@@ -238,16 +253,20 @@ def benchmark(args: argparse.Namespace) -> None:
             memory_usage=memory_usage,
             model_size=model_size,
             flops=total_flops,
-            energy_efficiency=energy_efficiency
+            energy_efficiency=energy_efficiency,
             start_time=start_event.get_time_stamp(),
             end_time=end_event.get_time_stamp(),
+            validation_results=validation_results,
         )
 
 
-        model_dir = f"{args.result_dir}/{args.model}"
-        Path(model_dir).mkdir(exist_ok=True, parents=True)
+        # save_dir = Path(args.result_dir) / f"{args.model}_zkp" if args.use_zkp else Path(args.result_dir) / f"{args.model}_baseline"
+        # save_dir.mkdir(exist_ok=True, parents=True)
 
-        output_path = f"{model_dir}/{args.model}_zkp_results.json" if args.use_zkp else f"{model_dir}/{args.model}_baseline_results.json"
+        # model_dir = f"{args.result_dir}/{args.model}"
+        # Path(model_dir).mkdir(exist_ok=True, parents=True)
+
+        # output_path = f"{model_dir}/{args.model}_zkp_results.json" if args.use_zkp else f"{model_dir}/{args.model}_baseline_results.json"
 
         # if args.use_zkp:
         #     output_filename = f"{args.model}_zkp_results.json"
@@ -264,6 +283,5 @@ def benchmark(args: argparse.Namespace) -> None:
         
         print("Benchmarking complete. Results saved at: ", output_path)
     except Exception as e:
-        raise e
         print(f"An error has occurred during benchmarking: {e}")
         return

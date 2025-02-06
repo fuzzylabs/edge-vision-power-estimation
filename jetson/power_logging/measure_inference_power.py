@@ -91,6 +91,13 @@ if __name__ == "__main__":
         action="store_true",
         help="Apply Zero-Keep Pruning",
     )
+    parser.add_argument(
+        "--input-shape",
+        nargs="+",
+        type=int,
+        required=True,
+        help="Input shape of model"
+    )
     args = parser.parse_args()
 
     event = Event()
