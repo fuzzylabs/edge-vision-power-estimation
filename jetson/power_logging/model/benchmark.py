@@ -184,7 +184,6 @@ def benchmark(args: argparse.Namespace) -> None:
         input_data = input_data.to(dtype)
         model = model.to(dtype)
 
-        reset_hooks()
         print("Starting...")
         if not hasattr(profile, '_hooks_registered'):
             profile._hooks_registered = True
