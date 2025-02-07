@@ -81,7 +81,6 @@ class BenchmarkMetrics(BaseModel):
     avg_throughput: float
     memory_usage: dict
     model_size: dict
-    flops: float
     energy_efficiency: float
     start_time: float # new
     end_time: float # new 
@@ -271,7 +270,6 @@ def benchmark(args: argparse.Namespace) -> None:
             avg_throughput=avg_throughput,
             memory_usage=memory_usage,
             model_size=model_size,
-            flops=total_flops,
             energy_efficiency=energy_efficiency,
             start_time=start_event.get_time_stamp(),
             end_time=end_event.get_time_stamp(),
