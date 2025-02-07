@@ -86,6 +86,37 @@ if __name__ == "__main__":
         action="store_true",
         help="Disable power measurement during benchmark execution.",
     )
+    parser.add_argument(
+        "--use-zkp",
+        action="store_true",
+        help="Apply Zero-Keep Pruning",
+    )
+    parser.add_argument(
+        "--input-shape",
+        nargs="+",
+        type=int,
+        required=True,
+        help="Input shape of model"
+    )
+    parser.add_argument(
+    "--dtype",
+    type=str,
+    choices=["float32", "float16", "bfloat16"],
+    default="float32",
+    help="Specify the dtype for model and input data (float32, float16, bfloat16).",
+    )
+    parser.add_argument(
+    "--warmup",
+    type=int,
+    default=1,
+    help="Number of warm-up iterations before measuring inference performance.",
+    )
+    parser.add_argument(
+    "--runs",
+    type=int,
+    default=10,
+    help="Number of runs to average inference performance.",
+    )
     args = parser.parse_args()
 
     event = Event()
