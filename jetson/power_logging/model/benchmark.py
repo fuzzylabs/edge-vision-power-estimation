@@ -184,6 +184,10 @@ def benchmark(args: argparse.Namespace) -> None:
         input_data = input_data.to(dtype)
         model = model.to(dtype)
 
+        if hasattr(profile, '_register_hooks'):
+            del profile._register_hooks[:]
+            print("Hooks cleared.")
+
         print("Starting...")
         if not hasattr(profile, '_hooks_registered'):
             profile._hooks_registered = True
@@ -193,9 +197,6 @@ def benchmark(args: argparse.Namespace) -> None:
         else:
             print("Hooks already in use. Skipping")
 
-        if hasattr(profile, '_register_hooks'):
-            del profile._register_hooks[:]
-            print("Hooks cleared.")
 
 
         print(f"Using {DEVICE=} for benchmarking")
