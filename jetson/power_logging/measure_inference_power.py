@@ -98,6 +98,13 @@ if __name__ == "__main__":
         required=True,
         help="Input shape of model"
     )
+    parser.add_argument(
+    "--dtype",
+    type=str,
+    choices=["float32", "float16", "bfloat16"],
+    default="float32",
+    help="Specify the dtype for model and input data (float32, float16, bfloat16).",
+    )
     args = parser.parse_args()
 
     event = Event()
