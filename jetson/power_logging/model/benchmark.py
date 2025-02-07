@@ -197,7 +197,7 @@ def benchmark(args: argparse.Namespace) -> None:
         input_data = input_data.to(dtype)
         model = model.to(dtype)
 
-        clear_hooks()
+        clear_hooks(model)
         macs, params = profile(model, inputs=(input_data,))
         print("Profiling completed successfully.")
         total_flops = macs * 2
