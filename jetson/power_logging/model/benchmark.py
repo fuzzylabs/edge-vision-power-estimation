@@ -197,12 +197,12 @@ def benchmark(args: argparse.Namespace) -> None:
         input_data = input_data.to(dtype)
         model = model.to(dtype)
 
-        clear_hooks(model)
-        if hasattr(profile, '_register_hooks'):
-            del profile._register_hooks[:]
-        macs, params = profile(model, inputs=(input_data,))
-        print("Profiling completed successfully.")
-        total_flops = macs * 2
+        # clear_hooks(model)
+        # if hasattr(profile, '_register_hooks'):
+        #     del profile._register_hooks[:]
+        # macs, params = profile(model, inputs=(input_data,))
+        # print("Profiling completed successfully.")
+        # total_flops = macs * 2
 
         print(f"Using {DEVICE=} for benchmarking")
         if DEVICE == "cpu":
