@@ -193,6 +193,11 @@ def benchmark(args: argparse.Namespace) -> None:
         else:
             print("Hooks already in use. Skipping")
 
+        if hasattr(profile, '_register_hooks'):
+            del profile._register_hooks[:]
+            print("Hooks cleared.")
+
+
         print(f"Using {DEVICE=} for benchmarking")
         if DEVICE == "cpu":
             print("Warning: Running on CPU.")
