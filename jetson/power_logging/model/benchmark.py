@@ -24,6 +24,8 @@ from thop import profile
 import shutil
 from ultralytics import YOLO
 
+if hasattr(profile, '_register_hooks'):
+    del profile._register_hooks[:]
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -182,8 +184,15 @@ def benchmark(args: argparse.Namespace) -> None:
         input_data = input_data.to(dtype)
         model = model.to(dtype)
 
-        macs, params = profile(model, inputs=(input_data,))
-        total_flops = macs * 2
+        reset_hooks()
+        print("Starting...")
+        if not hasattr(profile, '_hooks_registered'):
+            profile._hooks_registered = True
+            macs, params = profile(model, inputs=(input_data,))
+            print("Profiling Finished...")
+            total_flops = macs * 2
+        else:
+            print("Hooks already in use. Skipping")
 
         print(f"Using {DEVICE=} for benchmarking")
         if DEVICE == "cpu":
