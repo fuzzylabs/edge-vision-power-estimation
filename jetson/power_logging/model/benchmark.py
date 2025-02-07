@@ -182,6 +182,7 @@ def benchmark(args: argparse.Namespace) -> None:
 
         if args.use_zkp:
             model, pruning_masks = zero_keep_pruning(model, threshold=0.0)
+            print(len(pruning_masks))
             print("Starting benchmark with ZKFP...")
         else:
             print("Starting benchmark...")
