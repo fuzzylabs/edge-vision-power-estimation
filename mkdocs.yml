@@ -1,8 +1,10 @@
 site_name: "EcoMLOps"
-site_description: A tool for inferring and optimising the power consumption of Convolutional Neural Networks (CNN's) on edge devices.
+site_description: AI scale up for net zero
 
-repo_name: fuzzylabs/edge-vision-power-estimation
-repo_url: https://github.com/fuzzylabs/edge-vision-power-estimation
+repo_name: fuzzylabs/ecomlops
+repo_url: https://github.com/fuzzylabs/ecomlops
+
+docs_dir: website
 
 nav:
   - Introduction: 'index.md'
