@@ -21,6 +21,7 @@ from functools import partial
 from model.model_utils import load_model, get_layers
 from model.zero_keep_pruning import zero_keep_pruning
 from thop import profile
+from thop.utils import clear_hooks
 import shutil
 from ultralytics import YOLO
 
@@ -184,20 +185,10 @@ def benchmark(args: argparse.Namespace) -> None:
         input_data = input_data.to(dtype)
         model = model.to(dtype)
 
-        if hasattr(profile, '_register_hooks'):
-            del profile._register_hooks[:]
-            print("Hooks cleared.")
-
-        print("Starting...")
-        if not hasattr(profile, '_hooks_registered'):
-            profile._hooks_registered = True
-            macs, params = profile(model, inputs=(input_data,))
-            print("Profiling Finished...")
-            total_flops = macs * 2
-        else:
-            print("Hooks already in use. Skipping")
-
-
+        clear_hooks()
+        macs, params = profile(model, inputs=(input_data,))
+        print("Profiling completed successfully.")
+        total_flops = macs * 2
 
         print(f"Using {DEVICE=} for benchmarking")
         if DEVICE == "cpu":
