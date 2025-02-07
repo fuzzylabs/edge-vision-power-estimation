@@ -105,6 +105,18 @@ if __name__ == "__main__":
     default="float32",
     help="Specify the dtype for model and input data (float32, float16, bfloat16).",
     )
+    parser.add_argument(
+    "--warmup",
+    type=int,
+    default=1,
+    help="Number of warm-up iterations before measuring inference performance.",
+    )
+    parser.add_argument(
+    "--runs",
+    type=int,
+    default=10,
+    help="Number of runs to average inference performance.",
+    )
     args = parser.parse_args()
 
     event = Event()
