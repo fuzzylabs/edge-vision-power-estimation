@@ -21,7 +21,7 @@ from functools import partial
 from model.model_utils import load_model, get_layers
 from model.zero_keep_pruning import zero_keep_pruning
 from thop import profile
-from thop.utils import clear_hooks
+# from thop.utils import clear_hooks
 import shutil
 from ultralytics import YOLO
 
@@ -85,6 +85,18 @@ class BenchmarkMetrics(BaseModel):
     energy_efficiency: float
     start_time: float # new
     end_time: float # new 
+
+def clear_hooks(model):
+    """Custom function to clear all hooks from a PyTorch model."""
+
+    for module in model.modules():
+        if hasattr(module, "_backward_hooks"):
+            module._backward_hooks.clear()
+        if hasattr(module, "_forward_hooks"):
+            module._forward_hooks.clear()
+        if hasattr(module, "_forward_pre_hooks"):
+            module._forward_pre_hooks.clear()
+
 
 def get_memory_usage():
     return {
