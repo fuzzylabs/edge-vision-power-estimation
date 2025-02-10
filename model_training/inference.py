@@ -47,7 +47,7 @@ def infer(
     model_summary_path: Path,
     result_csv_path: Path,
 ) -> None:
-    """Perform inference for a given TensorRT engine file.
+    """Perform inference for a given PyTocrch engine file.
 
     DagsHub related configuration is used to pull models from
     MLflow Registry. Models are pulled from MLflow registry
@@ -107,7 +107,7 @@ def infer(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("Inference for tensorrt engine info file.")
+    parser = argparse.ArgumentParser("Inference for PyTorch engine info file.")
     parser.add_argument(
         "--owner",
         type=str,
