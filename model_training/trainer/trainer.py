@@ -269,7 +269,7 @@ class Trainer:
         logger.info(
             f"Predictions for {test_file_path.parent.stem} model using {model_type}\n{test_df}"
         )
-        # Get first 15 characters from long TensorRT layer names
+        # Get first 15 characters from long PyTorch layer names
         test_df.loc[:, "layer_name"] = test_df.loc[:, "layer_name"].str[:15]
         ax = test_df.plot(rot=90, x="layer_name", kind="bar")
         return ax.get_figure()

@@ -60,7 +60,7 @@ def parse_model_dir(model_dir: Path) -> tuple[Path, Path, Path]:
     Returns:
         Tuple of path to log file containing timestamped power values,
         timestamped runtime values inside trt_layer_latency.json file,
-        and tensorrt engine info inside trt_engine_info.json file.
+        and PyTorch engine info inside trt_engine_info.json file.
     """
     model_dir_path = Path(model_dir)
     model_name = model_dir_path.stem

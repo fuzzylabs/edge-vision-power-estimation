@@ -56,7 +56,7 @@ class DataPreprocessor:
     For each model, there are 3 files
     1. Power measurement (*_power_log.json)
     2. Runtime measurement (trt_layer_latency.json)
-    3. TensorRT engine information and other.
+    3. PyTorch engine information and other.
 
     Using this class, a CSV is created for each model with contents
     inference_cycle, layer_name, layer_type, ..., power_consumed, runtime_taken
