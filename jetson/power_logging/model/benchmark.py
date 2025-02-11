@@ -6,18 +6,17 @@ Script uses PyTorch to benchmark models and will support CUDA if it is available
 
 import argparse
 import json
+import shutil
 import time
 from datetime import datetime
+from functools import partial
 from pathlib import Path
 from typing import Any
 
 import torch
 from pydantic import BaseModel
-from tqdm import tqdm
 
-from functools import partial
-from model.model_utils import load_model, get_layers
-import shutil
+from model.model_utils import get_layers, load_model
 
 """
 Wrapper class for Torch.cuda.event for non-CUDA supported devices
@@ -26,35 +25,36 @@ Methods:
     - record(): Records an event if CUDA is available
     - elapsed_time(): Calculates elapsed time between events
 """
+
+
 class CudaEvent:
     start_time: float
     time_stamp: float
     event: torch.cuda.Event | None
 
-    def __init__(self, enable_timing = True):
+    def __init__(self, enable_timing=True):
         if IS_GPU:
             self.event = torch.cuda.Event(enable_timing=enable_timing)
         else:
             print("Warning: CUDA not available.")
-            self.event = None 
+            self.event = None
 
     def record(self):
         self.start_time = time.time()
         self.time_stamp = time.perf_counter()
-        
+
         if self.event:
             self.event.record()
-
 
     def elapsed_time(self, n_event):
         if self.event and n_event.event:
             return self.event.elapsed_time(n_event.event)
         else:
             return n_event.time_stamp - self.time_stamp
-        
+
     def get_time_stamp(self):
         return self.start_time
-    
+
 
 IS_GPU = torch.cuda.is_available()
 DEVICE = "cuda" if IS_GPU else "cpu"
@@ -66,6 +66,7 @@ class BenchmarkMetrics(BaseModel):
     timestamp: str
     start_time: float
     end_time: float
+
 
 def define_and_register_hooks(model, device) -> dict:
     """
@@ -83,13 +84,21 @@ def define_and_register_hooks(model, device) -> dict:
     for layer_name, layer in get_layers(model):
         start_event = CudaEvent(enable_timing=True)
         end_event = CudaEvent(enable_timing=True)
-        layer.register_forward_pre_hook(partial(layer_time_pre_hook, layer_time_dict, layer_name, start_event))
-        layer.register_forward_hook(partial(layer_time_hook, layer_time_dict, layer_name, start_event, end_event))
-    
+        layer.register_forward_pre_hook(
+            partial(layer_time_pre_hook, layer_time_dict, layer_name, start_event)
+        )
+        layer.register_forward_hook(
+            partial(
+                layer_time_hook, layer_time_dict, layer_name, start_event, end_event
+            )
+        )
+
     return layer_time_dict
 
 
-def layer_time_pre_hook(layer_time_dict, layer_name, start_event: CudaEvent, module, input) -> None:
+def layer_time_pre_hook(
+    layer_time_dict, layer_name, start_event: CudaEvent, module, input
+) -> None:
     """
     Pre-hook to record start time.
 
@@ -104,7 +113,9 @@ def layer_time_pre_hook(layer_time_dict, layer_name, start_event: CudaEvent, mod
     start_event.record()
 
 
-def layer_time_hook(layer_time_dict, layer_name, start_event, end_event, module, input, output) -> None:
+def layer_time_hook(
+    layer_time_dict, layer_name, start_event, end_event, module, input, output
+) -> None:
     """
     Hook to record end time and calculate duration.
 
@@ -136,7 +147,7 @@ def benchmark(args: argparse.Namespace) -> None:
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
 
     try:
-        model = load_model(args.model).to(DEVICE)
+        model = load_model(args.model)
 
         print("Starting timing inference ...")
         start_event = CudaEvent(enable_timing=True)
@@ -149,18 +160,24 @@ def benchmark(args: argparse.Namespace) -> None:
         if (save_dir / "val").exists():
             shutil.rmtree(save_dir / "val")
 
+        ## Used for ONNX cpu time
+        # start = time.time()
+        # s = time.perf_counter()
         start_event.record()
         validation_results = model.val(
             data=args.dataset_name,
             project=save_dir,
+            # device="cpu" used only for ONNX models
         )
         end_event.record()
+        ## Used for ONNX cpu time
+        # end = time.time()
+        # total_time = time.perf_counter() - s
 
         if IS_GPU:
             torch.cuda.synchronize()
 
         print("Benchmarking complete ...")
-
         total_time = start_event.elapsed_time(end_event)
 
         results = BenchmarkMetrics(
@@ -173,7 +190,7 @@ def benchmark(args: argparse.Namespace) -> None:
 
         model_dir = f"{args.result_dir}/{args.model}"
         Path(model_dir).mkdir(exist_ok=True, parents=True)
-        file_name = f"{args.model}_pytorch.json"
+        file_name = f"{args.model}.json"
         file_path = f"{model_dir}/{file_name}"
         with open(file_path, "w", encoding="utf-8") as outfile:
             json.dump(results.model_dump(), outfile, indent=4)
@@ -183,10 +200,11 @@ def benchmark(args: argparse.Namespace) -> None:
             "speed": validation_results.speed,
         }
 
-        with open(f"{model_dir}/validation_results.json", "w") as validation_results_file:
+        with open(
+            f"{model_dir}/validation_results.json", "w"
+        ) as validation_results_file:
             json.dump(validation_dict, validation_results_file, indent=4)
 
     except Exception as e:
-        raise e
         print(f"An error has occurred during benchmarking: {e}")
-        return
+        raise e

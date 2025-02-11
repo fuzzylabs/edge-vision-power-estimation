@@ -1,0 +1,74 @@
+# import modelopt.torch.opt as mto
+import modelopt.torch.quantization as mtq
+
+# import torch
+from ultralytics import YOLO
+from ultralytics.data import YOLODataset, build_dataloader
+from ultralytics.data.utils import check_det_dataset
+
+NUM_CALIB_IMAGES = 500
+
+
+def quantized_pt_model(model_name, data_cfg, val_dataset_path):
+    # Setup the model
+    # if quantized model name is yolov5su_quant.pt
+    # we use yolov5su.pt model that will be quantized
+    yolo_model_name = model_name.split("_")[0]
+    pt_model = YOLO(model=f"{yolo_model_name}.pt", task="detect")
+
+    # Select quantization config
+    config = mtq.INT8_SMOOTHQUANT_CFG
+
+    # Quantization need calibration data. Setup calibration data loader
+    # Download COCO val 2017 dataset
+    data = check_det_dataset(data_cfg)
+
+    # Use only subset of data for calibration
+    with open(val_dataset_path, "r") as fp:
+        val_data = fp.readlines()
+    val_data_orig = val_data.copy()
+    val_data = val_data[:NUM_CALIB_IMAGES]
+    with open(val_dataset_path, "w") as fp:
+        fp.writelines(val_data)
+
+    batch_size = 1
+    dataset = YOLODataset(
+        data["val"],
+        data=data,
+        task=pt_model.task,
+        imgsz=pt_model.args["imgsz"],
+        augment=False,
+        batch_size=batch_size,
+    )
+
+    data_loader = build_dataloader(dataset, batch=batch_size, workers=0)
+
+    # Define forward_loop.
+    def forward_loop(model):
+        for batch in data_loader:
+            model(batch["img"].float() / 255.0)
+
+    # Quantize the model and perform calibration (PTQ)
+    qt_model = mtq.quantize(pt_model.model, config, forward_loop)
+
+    # Restore original val images list
+    with open(val_dataset_path, "w") as fp:
+        fp.writelines(val_data_orig)
+    return qt_model
+
+
+# The quantized pytorch model cannot be pickled, traced or scripted to be saved.
+# We can save the model weights using qt_model.state_dict() but we don't have the class to assign the weights to.
+# It has to be exported to ONNX to be usable.
+
+# All different approaches tested for saving quantized pytorch model
+
+# torch.save(qt_model.state_dict(), "yolov5su.quant.pt")
+
+# mo.save(qt_model, "yolov5su.quant.pt")
+
+# model_scripted = torch.jit.script(qt_model)
+# model_scripted.save("yolov5su.quant.pth")
+
+# model_trace = torch.jit.script(qt_model, torch.randn(1, 3, 640, 640) / 255.0)
+# torch.jit.save(model_trace, "yolov5su.quant.pt")

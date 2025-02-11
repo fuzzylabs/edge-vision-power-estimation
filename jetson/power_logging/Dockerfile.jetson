@@ -12,6 +12,7 @@ WORKDIR /app
 
 COPY --chown=appuser:appuser . ./
 
+# modelopt dependency comes pre-packaged as part of the image
 RUN pip install ultralytics
 
 CMD ["/bin/bash", "./run_experiment.sh"]

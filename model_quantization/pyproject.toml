@@ -1,0 +1,21 @@
+[project]
+name = "model-quantization"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "gitpython>=3.1.44",
+    "nvidia-modelopt[all]>=0.21.1",
+    "onnxruntime>=1.18.1",
+    "onnxslim>=0.1.48",
+    "pycocotools>=2.0.8",
+    "ultralytics>=8.3.68",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "jupyter>=1.1.1",
+    "lab>=8.3",
+]
