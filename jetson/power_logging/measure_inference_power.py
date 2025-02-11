@@ -72,7 +72,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dataset-name",
         type=str,
-        default="coco8.yaml",
+        default="coco.yaml",
         help="Specify name of dataset from ultralytics.",
     )
     parser.add_argument(

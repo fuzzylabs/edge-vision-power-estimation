@@ -1,0 +1,6 @@
+outs:
+- md5: 416de914986000325716555a951b3dbd.dir
+  size: 116348441
+  nfiles: 129
+  hash: md5
+  path: trt_quantize_models
