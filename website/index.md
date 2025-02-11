@@ -1,3 +1,5 @@
+# Introduction
+
 **Our vision** is a world where massive scale up of AI and achievement of climate targets coexist and complement each other.  We see AI optimised for energy efficiency and operating in concert with renewable energy in a high-performance, sustainable global ecosystem.
 
 Current and projected AI adoption rates present an immediate challenge to global resources, and especially energy consumption. For the UK alone, energy for compute could increase CO2 equivalent emissions from under 1 million tonnes in 2024 to over 8 million tonnes in 2030, even allowing for the projected reduction in emissions as expansion of renewable electricity generation continues.  Globally the UK's position is dwarfed by the biggest players.
@@ -18,12 +20,12 @@ Here's how those tools complement each other to deliver the greenest AI, and exa
 
 ![image.png](img/vision.png)
 
-**What we've done so far**
+## What we've done so far
 
-With support through a grant from [Turing Innovation Catalyst](https://ticmanchester.org/), and as part of our [Fuzzy Labs² innovation incubator](https://www.fuzzylabs.ai/squared), we’re underway with a project focussing on energy optimisation for one particular application: computer vision on edge devices. Through this work we’re taking first steps to test out our processes ahead of expanding the scope towards the goal of open source MLOps tools for energy efficiency and optimisation for any AI application, at any scale. 
+With support through a grant from [Turing Innovation Catalyst](https://ticmanchester.org/), and as part of our [Fuzzy Labs² innovation incubator](https://www.fuzzylabs.ai/squared), we’re underway with a project focussing on energy optimisation for one particular application: computer vision on edge devices. Through this work we’re taking first steps to test out our processes ahead of expanding the scope towards the goal of open source MLOps tools for energy efficiency and optimisation for any AI application, at any scale.
 
-**Existing partners and how to get involved**
+## Existing partners and how to get involved
 
-We are already working with Lancaster University and Turing Innovation Catalyst, and starting discussions with potential commercial partners. 
+We are already working with Lancaster University and Turing Innovation Catalyst, and starting discussions with potential commercial partners.
 
 We’d love to hear from you- whether to collaborate on development, explore opportunities for trials, partnerships or just out of interest. Please drop us a line at [talk@fuzzylabs.ai](mailto:talk@fuzzylabs.ai)
