@@ -1,12 +1,17 @@
 from typing import Any
 
 import torch
-from ultralytics import YOLO
 
 from model.lenet import LeNet
 
 
-def load_model(model_name: str) -> Any:
+def load_model(
+    model_name: str,
+    in_channels: int = 3,
+    kernel_size: int = 1,
+    stride_size: int = 1,
+    out_channels: int = 1,
+) -> Any:
     """Load model using ultralytics library.
 
     Args:
@@ -19,7 +24,16 @@ def load_model(model_name: str) -> Any:
         from model.pytorch_quantize import quantized_pt_model
 
         return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
+    elif model_name == "single_conv_layer":
+        return torch.nn.Conv2d(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
+            stride=stride_size,
+        )
     else:
+        from ultralytics import YOLO
+
         return YOLO(f"{model_name}")
 
 

@@ -7,7 +7,7 @@ from multiprocessing import Event, Process
 from multiprocessing.synchronize import Event as EventClass
 from pathlib import Path
 
-from model.benchmark import benchmark
+from model.benchmark import benchmark_classify, benchmark_detection
 
 multiprocessing.set_start_method("spawn", force=True)
 
@@ -54,7 +54,10 @@ def inference(event: EventClass, args: argparse.Namespace) -> None:
         event: An object that manages a flag for communication among processes.
         args: Arguments from CLI.
     """
-    benchmark(args)
+    if args.command == "detect":
+        benchmark_detection(args)
+    elif args.command == "classify":
+        benchmark_classify(args)
     event.set()
 
 
@@ -62,18 +65,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="Power Logging for CNN Inference Cycle",
         description="Collect power usage data during inference cycles for ImageNet pretrained CNN models.",
-    )
-    parser.add_argument(
-        "--model",
-        type=str,
-        default="yolov5n",
-        help="Specify name of pretrained CNN model from ultralytics.",
-    )
-    parser.add_argument(
-        "--dataset-name",
-        type=str,
-        default="coco.yaml",
-        help="Specify name of dataset from ultralytics.",
     )
     parser.add_argument(
         "--result-dir",
@@ -86,6 +77,79 @@ if __name__ == "__main__":
         action="store_true",
         help="Disable power measurement during benchmark execution.",
     )
+    subparsers = parser.add_subparsers(help="Types of arguments", dest="command")
+    detection_parser = subparsers.add_parser(
+        "detect", help="Run benchmarking for object detection models"
+    )
+    detection_parser.add_argument(
+        "--model",
+        type=str,
+        default="yolov5n",
+        help="Specify name of pretrained CNN model from ultralytics.",
+    )
+    detection_parser.add_argument(
+        "--dataset-name",
+        type=str,
+        default="coco.yaml",
+        help="Specify name of dataset from ultralytics.",
+    )
+    classify_parser = subparsers.add_parser(
+        "classify", help="Run benchmarking for image classification models"
+    )
+    classify_parser.add_argument(
+        "--model",
+        type=str,
+        default="mobilenet_v2",
+        help="Specify name of pretrained CNN model from PyTorch Hub."
+        "For more information on PyTorch Hub visit: "
+        "https://pytorch.org/hub/research-models",
+    )
+    classify_parser.add_argument(
+        "--model-repo",
+        type=str,
+        default="pytorch/vision:v0.16.0",  # This version should have all the models we want
+        help="Specify path and version to model repository from PyTorch Hub.",
+    )
+    classify_parser.add_argument(
+        "--dtype",
+        type=str,
+        default="float16",
+        choices=["float16", "bfloat16", "float32"],
+        help="Data type for model weights and activations.\n\n"
+        '* "float16" is the same as "half".\n'
+        '* "bfloat16" for a balance between precision and range.\n'
+        '* "float32" for FP32 precision.',
+    )
+    classify_parser.add_argument(
+        "--input-shape",
+        type=int,
+        nargs="+",
+        default=[1, 3, 224, 224],
+        help="Input shape BCHW",
+    )
+    classify_parser.add_argument(
+        "--warmup",
+        type=int,
+        default=50,
+        help="Number of iterations to perform warmup before benchmarking",
+    )
+    classify_parser.add_argument(
+        "--runs", type=int, default=30000, help="Number of inference cycle to run"
+    )
+    classify_parser.add_argument(
+        "--optimization-level",
+        type=int,
+        default=5,
+        help="Builder optimization 0-5, higher levels imply longer build time, "
+        "searching for more optimization options.",
+    )
+    classify_parser.add_argument(
+        "--min-block-size",
+        type=int,
+        default=5,
+        help="Minimum number of operators per TRT-Engine Block",
+    )
+
     args = parser.parse_args()
 
     event = Event()
