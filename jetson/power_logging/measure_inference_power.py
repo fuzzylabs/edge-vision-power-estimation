@@ -7,7 +7,7 @@ from multiprocessing import Event, Process
 from multiprocessing.synchronize import Event as EventClass
 from pathlib import Path
 
-from model.benchmark import benchmark_classify, benchmark_detection
+from model.benchmark import benchmark_classify, benchmark_detection, benchmark_trt
 
 multiprocessing.set_start_method("spawn", force=True)
 
@@ -57,7 +57,8 @@ def inference(event: EventClass, args: argparse.Namespace) -> None:
     if args.command == "detect":
         benchmark_detection(args)
     elif args.command == "classify":
-        benchmark_classify(args)
+        # benchmark_classify(args)  # For Pytorch
+        benchmark_trt(args)  # For TensorRT
     event.set()
 
 

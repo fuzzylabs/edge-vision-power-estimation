@@ -6,7 +6,7 @@ set -eou pipefail
 IDLE_DURATION=120
 
 # Directory to store results
-RESULT_DIR="raw_data/single_conv_layer"
+RESULT_DIR="raw_data/single_conv_layer_trt"
 
 echo "Running idling power measurement..."
 python measure_idling_power.py \
