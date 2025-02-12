@@ -232,7 +232,7 @@ def benchmark_classify(args: argparse.Namespace) -> None:
 
     try:
         input_data = torch.randn(args.input_shape, device=DEVICE)
-        model = load_model(args.model, args.model_repo)
+        model = load_model(args.model)
         model.eval().to(DEVICE)
 
         if args.dtype == "float16":

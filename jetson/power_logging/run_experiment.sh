@@ -31,11 +31,11 @@ INPUT_SHAPE='--input-shape 1 3 224 224'
 
   # Run the measure_inference_power.py script
   python measure_inference_power.py \
+    --result-dir "$RESULT_DIR" \
     classify \
     --model "$model" \
     --runs "$RUNS" \
     --dtype "float32" \
-    --result-dir "$RESULT_DIR" \
     $INPUT_SHAPE
 done
 
