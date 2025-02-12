@@ -18,7 +18,7 @@ echo "Sleeping for 2 minutes..."
 sleep 120
 
 # Models to benchmark
-models=("conv_k1_s1_o3" "conv_k2_s1_o3" "conv_k3_s1_o3" "conv_k4_s1_o3" "conv_k5_s1_o3")
+models=("conv_k1_s1_o3" "conv_k2_s1_o3" "conv_k3_s1_o3" "conv_k4_s1_o3" "conv_k5_s1_o3" "conv_k1_s2_o3" "conv_k1_s3_o3" "conv_k1_s4_o3" "conv_k1_s5_o3" "conv_k1_s1_o6" "conv_k1_s1_o12" "conv_k1_s1_o24" "conv_k1_s1_o48")
 # Number of inference cycles
 RUNS=3000
 
