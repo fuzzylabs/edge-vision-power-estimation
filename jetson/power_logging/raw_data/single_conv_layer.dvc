@@ -1,0 +1,6 @@
+outs:
+- md5: bc9dea77e0892c26150bf8b7c5b0bd0e.dir
+  size: 5568359
+  nfiles: 40
+  hash: md5
+  path: single_conv_layer
