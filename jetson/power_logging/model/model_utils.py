@@ -5,13 +5,29 @@ import torch
 from model.lenet import LeNet
 
 
-def load_model(
-    model_name: str,
-    in_channels: int = 3,
-    kernel_size: int = 1,
-    stride_size: int = 1,
-    out_channels: int = 1,
-) -> Any:
+def extract_params(model_name: str) -> tuple[int, int, int]:
+    """Extract kernel, stride and output channels from model name.
+
+    Args:
+        model_name: Name of the model.
+        E.g. "conv_k1_s1_o1"
+
+    Returns:
+        A tuple of integers corresponding to kernel, stride and output channels
+    """
+    params = model_name.split("_")
+    kernel, stride, out_channel = None, None, None
+    for part in params:
+        if part.startswith("k"):
+            kernel = int(part[1:])
+        elif part.startswith("s"):
+            stride = int(part[1:])
+        elif part.startswith("o"):
+            out_channel = int(part[1:])
+    return kernel, stride, out_channel
+
+
+def load_model(model_name: str) -> Any:
     """Load model using ultralytics library.
 
     Args:
@@ -24,9 +40,12 @@ def load_model(
         from model.pytorch_quantize import quantized_pt_model
 
         return quantized_pt_model(model_name, "coco.yaml", "datasets/coco/val2017.txt")
-    elif model_name == "single_conv_layer":
+    elif "conv_" in model_name:
+        kernel_size, stride_size, out_channels = extract_params(model_name)
+        if None in [kernel_size, stride_size, out_channels]:
+            raise ValueError(f"Something went wrong parsing model name: {model_name}")
         return torch.nn.Conv2d(
-            in_channels=in_channels,
+            in_channels=3,
             out_channels=out_channels,
             kernel_size=kernel_size,
             stride=stride_size,
