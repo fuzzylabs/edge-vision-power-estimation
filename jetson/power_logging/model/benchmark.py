@@ -353,8 +353,8 @@ def benchmark_trt(args: argparse.Namespace) -> None:
         use_python_runtime=True,
     )
 
-    time.sleep(5)
     print("Sleeping for 5 seconds to cool down...")
+    time.sleep(5)
 
     st = time.perf_counter()
     print("Warm up ...")

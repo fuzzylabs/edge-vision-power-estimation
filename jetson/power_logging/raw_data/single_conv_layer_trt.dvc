@@ -1,0 +1,6 @@
+outs:
+- md5: 43388e2e8a00742263cb99e1f7893176.dir
+  size: 14553656
+  nfiles: 53
+  hash: md5
+  path: single_conv_layer_trt
