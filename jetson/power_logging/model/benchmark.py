@@ -353,6 +353,9 @@ def benchmark_trt(args: argparse.Namespace) -> None:
         use_python_runtime=True,
     )
 
+    time.sleep(5)
+    print("Sleeping for 5 seconds to cool down...")
+
     st = time.perf_counter()
     print("Warm up ...")
     with torch.no_grad():

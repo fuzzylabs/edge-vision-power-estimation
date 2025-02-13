@@ -4,7 +4,6 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import TypedDict
 
-import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 
@@ -81,6 +80,34 @@ def parse_latencies(
                     layer_name,
                 )
             )
+    return latency_data
+
+
+def parse_latencies_trt(
+    trt_layer_latency: dict[str, list[list[float, str]]],
+) -> defaultdict:
+    """Calculate start and end time for each layer.
+
+    Args:
+        trt_layer_latency: Dictionary containing latency data for each layer.
+
+    Returns:
+        Dictionary of cytcles where each cycle is
+        a list of tuples (cycle, start_time, end_time, duration, layer_name).
+    """
+    latency_data = defaultdict(list)
+
+    for layer_name, layer_times in tqdm(
+        trt_layer_latency.items(), desc="Preprocessing latency data"
+    ):
+        for cycle, (execution_duration, execution_end_time) in enumerate(layer_times):
+            end_timestamp = datetime.strptime(execution_end_time, "%Y%m%d-%H:%M:%S.%f")
+            duration = timedelta(milliseconds=execution_duration)
+            start_timestamp = end_timestamp - duration
+            latency_data[cycle].append(
+                (cycle, start_timestamp, end_timestamp, execution_duration, layer_name)
+            )
+
     return latency_data
 
 
