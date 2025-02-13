@@ -1,4 +1,4 @@
-site_name: "EcoMLOps"
+site_name: AI scale up for net zero
 site_description: AI scale up for net zero
 
 repo_name: fuzzylabs/ecomlops
@@ -13,6 +13,8 @@ theme:
   name: material
   features:
     - navigation.top
+  logo: img/logo.png
+  favicon: img/favicon.ico
 
 extra:
   social:
@@ -25,5 +27,8 @@ extra:
     - icon: simple/notion
       link: https://fuzzylabs.notion.site/
       name: EcoMLOps on Notion
+
+extra_css:
+  - css/extra.css
 
 copyright: Copyright &copy; <a href="https://fuzzylabs.ai">Fuzzy Labs Ltd</a>
