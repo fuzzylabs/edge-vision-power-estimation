@@ -35,6 +35,7 @@ INPUT_SHAPE='--input-shape 1 3 224 224'
     classify \
     --model "$model" \
     --runs "$RUNS" \
+    --min-block-size 1 \
     --dtype "float32" \
     $INPUT_SHAPE
 done
