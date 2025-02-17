@@ -29,9 +29,10 @@ do
 
   # Run the measure_inference_power.py script
   python measure_inference_power.py \
+    --result-dir "$RESULT_DIR" \
+    detect \
     --model "$model" \
-    --dataset-name "coco.yaml" \
-    --result-dir "$RESULT_DIR"
+    --dataset-name "coco.yaml"
 done
 
 echo "Experiment completed!"
