@@ -8,7 +8,8 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-console = Console(stderr=True)
+console = Console()
+error_console = Console(stderr=True, style="bold red")
 app = typer.Typer(no_args_is_help=True)
 
 CONFIG = {"jetson_orin": {"pytorch": {"low": 5, "average": 7, "high": 10}}}
@@ -21,7 +22,7 @@ def validate_model(model_path: str):
                 model_summary = json.load(file)
             return True, model_summary
         except json.JSONDecodeError:
-            console.print("Invalid JSON file.")
+            error_console.print("Invalid JSON file.")
             return False, None
     return False, None
 
@@ -62,13 +63,13 @@ def predict(
     If --verbose is used, a detailed summary of predictions is provided.
     """
     cfg = CONFIG["jetson_orin"]["pytorch"]
-    success = validate_model(model)
+    success, _ = validate_model(model)
     if success:
         from ecoml.infer import run_inference
 
         run_inference(model, power_profiles=cfg, verbose=verbose)
     else:
-        console.print("Expected PyTorch model summary as a JSON file")
+        error_console.print("Expected PyTorch model summary as a JSON file")
 
 
 if __name__ == "__main__":

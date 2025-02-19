@@ -13,7 +13,8 @@ from rich.table import Table
 from ecoml.data_preparation.pytorch_utils import read_layers_info
 from ecoml.model_builder.model_inference import InferenceModel
 
-console = Console(stderr=True)
+console = Console()
+error_console = Console(stderr=True, style="bold red")
 
 
 def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
@@ -150,7 +151,7 @@ def run_inference(
         data["layer_type"].append(layer_info.layer_type)
 
     if not len(data):
-        console.print(
+        error_console.print(
             "Looks like there are no convolutional, pooling or linear layers in the model"
         )
         return
