@@ -33,6 +33,9 @@ To use EcoML for energy estimation of PyTorch models, follow these steps:
 
 To use a custom model for inference, you have to generate a model summary for the PyTorch model.
 
+> [!TIP]
+> [save_model_summary.py](https://github.com/fuzzylabs/ecomlops/blob/develop/jetson/power_logging/save_model_summary.py) script can be used to create a model summary for a custom PyTorch model.
+
 `--verbose` flag can be passed to above command to get a detailed output.
 
 ## Contributing
