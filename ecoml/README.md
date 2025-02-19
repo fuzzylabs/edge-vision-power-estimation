@@ -5,7 +5,6 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
 
 ## Introduction
 
@@ -29,7 +28,7 @@ To use EcoML for energy estimation of PyTorch models, follow these steps:
  ecoml predict --model sample_data/resnet18.json
 ```
 
-[Sample data](./sample_data/) contains model summary for 3 models - Resnet18, Mobilenetv2 and VGG16.
+[Sample data](./sample_data/) folder contains model summary for 3 PyTorch models - Resnet18, Mobilenetv2 and VGG16.
 
 To use a custom model for inference, you have to generate a model summary for the PyTorch model.
 
@@ -37,7 +36,3 @@ To use a custom model for inference, you have to generate a model summary for th
 > [save_model_summary.py](https://github.com/fuzzylabs/ecomlops/blob/develop/jetson/power_logging/save_model_summary.py) script can be used to create a model summary for a custom PyTorch model.
 
 `--verbose` flag can be passed to above command to get a detailed output.
-
-## Contributing
-
-We welcome contributions to EcoML! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
