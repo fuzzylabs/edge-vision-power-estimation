@@ -3,13 +3,14 @@
 from pathlib import Path
 from typing import Any
 
+from git import Repo
+from loguru import logger
+
 from config.convolutional_features import CONV_FEATURES, CONVOLUTION_PIPELINE
 from config.dense_features import DENSE_FEATURES, DENSE_PIPELINE
 from config.pooling_features import POOLING_FEATURES, POOLING_PIPELINE
 from data_preparation.io_utils import read_yaml_file
-from git import Repo
-from loguru import logger
-from trainer.trainer import Trainer
+from trainer import Trainer
 
 
 def get_config(config_path: Path = Path("config/config.yaml")) -> Any:
@@ -111,7 +112,8 @@ def main(config: dict) -> None:
     Args:
         config: Configuration dict.
     """
-    data_tag = get_train_data_version(root_git_dir="..")
+    # data_tag = get_train_data_version(root_git_dir="..")
+    data_tag = "train/v2"
     logger.info(f"Found training data tag: {data_tag}")
 
     mlflow_config = config["mlflow"]

@@ -89,9 +89,8 @@ def infer(
             continue
 
         features = model.get_features(layer_info)
-        data["power_prediction"].append(
-            model.power_model.predict(features.values).tolist()[0]
-        )
+        data["power_prediction"].append(4)
+        # import pdb; pdb.set_trace()
         data["runtime_prediction"].append(
             model.runtime_model.predict(features.values).tolist()[0]
         )
@@ -132,14 +131,9 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if not args.trt_engine_path or not args.result_csv_path:
-        raise ValueError(
-            "Both the flags (--trt-engine-path and --result-csv-path) should be provided"
-        )
-
     infer(
         dagshub_repo_name=args.name,
         dagshub_repo_owner=args.owner,
-        trt_engine_info_path=Path(args.trt_engine_path),
+        model_summary_path=Path(args.model_summary_path),
         result_csv_path=Path(args.result_csv_path),
     )

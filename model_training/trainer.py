@@ -1,5 +1,6 @@
 """Trainer class."""
 
+import inspect
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -8,7 +9,10 @@ import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
 import pandas as pd
+from dataset_builder.dataset_builder import DatasetBuilder, TrainTestDataset
 from loguru import logger
+from mlflow.models.signature import infer_signature
+from model_builder.model_builder import ModelBuilder
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -17,9 +21,6 @@ from sklearn.metrics import (
     root_mean_squared_error,
 )
 from sklearn.pipeline import Pipeline
-
-from dataset_builder.dataset_builder import DatasetBuilder, TrainTestDataset
-from model_builder.model_builder import ModelBuilder
 
 
 def get_git_branch():
@@ -137,8 +138,8 @@ class Trainer:
         test_mlflow_data = mlflow.data.from_pandas(test_df, targets=model_type)
 
         logger.info(f"Training {model_type} model")
-        mlflow.set_experiment(f"test_{layer_type}_{model_type}_model")
-        mlflow.sklearn.autolog(log_datasets=False)
+        mlflow.set_experiment(f"{layer_type}_{model_type}_model")
+        mlflow.sklearn.autolog(log_datasets=False, log_models=False)
         with mlflow.start_run(run_name=self.mlflow_config["mlflow_experiment_name"]):
             # MLflow tags
             repo = f"git@github.com:{self.mlflow_config['dagshub_repo_owner']}/{self.mlflow_config['dagshub_repo_name']}.git"
@@ -203,6 +204,18 @@ class Trainer:
                 mlflow.log_figure(
                     fig, f"{model_name}_{layer_type}_{model_type}_prediction.png"
                 )
+
+            code_path = ["model_builder"]
+            signature = infer_signature(
+                train_features.values, pipeline.predict(train_features.values)
+            )
+            mlflow.sklearn.log_model(
+                pipeline,
+                "model",
+                code_paths=code_path,
+                signature=signature,
+                input_example=train_features.iloc[[0]],
+            )
 
     @staticmethod
     def rmspe_metric(actual, pred) -> float:
