@@ -149,6 +149,12 @@ def run_inference(
         data["layer_name"].append(layer_name)
         data["layer_type"].append(layer_info.layer_type)
 
+    if not len(data):
+        console.print(
+            "Looks like there are no convolutional, pooling or linear layers in the model"
+        )
+        return
+
     data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
     data["average_power_prediction"] = [power_profiles["average"]] * len(
         data["layer_name"]
