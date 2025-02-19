@@ -8,7 +8,7 @@
 
 ## Introduction
 
-EcoML aims to provide accurate power consumption estimates for various edge devices, helping developers optimize their applications for energy efficiency. By leveraging machine learning, EcoML can predict power usage based on different workloads and device configurations.
+EcoML aims to provide accurate power consumption estimates for edge devices, helping developers optimize their applications for energy efficiency.
 
 ## Installation
 
