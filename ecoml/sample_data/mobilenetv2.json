@@ -1,0 +1,3000 @@
+{
+  "_features_0_0": {
+    "input_shape": [
+      1,
+      3,
+      224,
+      224
+    ],
+    "output_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      2,
+      2
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_0_1": {
+    "input_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_0_2": {
+    "input_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_1_conv_0_0": {
+    "input_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_1_conv_0_1": {
+    "input_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_1_conv_0_2": {
+    "input_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_1_conv_1": {
+    "input_shape": [
+      1,
+      32,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      16,
+      112,
+      112
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_1_conv_2": {
+    "input_shape": [
+      1,
+      16,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      16,
+      112,
+      112
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_2_conv_0_0": {
+    "input_shape": [
+      1,
+      16,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      96,
+      112,
+      112
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_2_conv_0_1": {
+    "input_shape": [
+      1,
+      96,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      96,
+      112,
+      112
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_2_conv_0_2": {
+    "input_shape": [
+      1,
+      96,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      96,
+      112,
+      112
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_2_conv_1_0": {
+    "input_shape": [
+      1,
+      96,
+      112,
+      112
+    ],
+    "output_shape": [
+      1,
+      96,
+      56,
+      56
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      2,
+      2
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_2_conv_1_1": {
+    "input_shape": [
+      1,
+      96,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      96,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_2_conv_1_2": {
+    "input_shape": [
+      1,
+      96,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      96,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_2_conv_2": {
+    "input_shape": [
+      1,
+      96,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_2_conv_3": {
+    "input_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_3_conv_0_0": {
+    "input_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_3_conv_0_1": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_3_conv_0_2": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_3_conv_1_0": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_3_conv_1_1": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_3_conv_1_2": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_3_conv_2": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_3_conv_3": {
+    "input_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_4_conv_0_0": {
+    "input_shape": [
+      1,
+      24,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_4_conv_0_1": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_4_conv_0_2": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_4_conv_1_0": {
+    "input_shape": [
+      1,
+      144,
+      56,
+      56
+    ],
+    "output_shape": [
+      1,
+      144,
+      28,
+      28
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      2,
+      2
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_4_conv_1_1": {
+    "input_shape": [
+      1,
+      144,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      144,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_4_conv_1_2": {
+    "input_shape": [
+      1,
+      144,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      144,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_4_conv_2": {
+    "input_shape": [
+      1,
+      144,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_4_conv_3": {
+    "input_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_5_conv_0_0": {
+    "input_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_5_conv_0_1": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_5_conv_0_2": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_5_conv_1_0": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_5_conv_1_1": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_5_conv_1_2": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_5_conv_2": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_5_conv_3": {
+    "input_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_6_conv_0_0": {
+    "input_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_6_conv_0_1": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_6_conv_0_2": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_6_conv_1_0": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_6_conv_1_1": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_6_conv_1_2": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_6_conv_2": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_6_conv_3": {
+    "input_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_7_conv_0_0": {
+    "input_shape": [
+      1,
+      32,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_7_conv_0_1": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_7_conv_0_2": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_7_conv_1_0": {
+    "input_shape": [
+      1,
+      192,
+      28,
+      28
+    ],
+    "output_shape": [
+      1,
+      192,
+      14,
+      14
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      2,
+      2
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_7_conv_1_1": {
+    "input_shape": [
+      1,
+      192,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      192,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_7_conv_1_2": {
+    "input_shape": [
+      1,
+      192,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      192,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_7_conv_2": {
+    "input_shape": [
+      1,
+      192,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_7_conv_3": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_8_conv_0_0": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_8_conv_0_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_8_conv_0_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_8_conv_1_0": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_8_conv_1_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_8_conv_1_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_8_conv_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_8_conv_3": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_9_conv_0_0": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_9_conv_0_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_9_conv_0_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_9_conv_1_0": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_9_conv_1_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_9_conv_1_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_9_conv_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_9_conv_3": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_10_conv_0_0": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_10_conv_0_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_10_conv_0_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_10_conv_1_0": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_10_conv_1_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_10_conv_1_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_10_conv_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_10_conv_3": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_11_conv_0_0": {
+    "input_shape": [
+      1,
+      64,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_11_conv_0_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_11_conv_0_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_11_conv_1_0": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_11_conv_1_1": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_11_conv_1_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_11_conv_2": {
+    "input_shape": [
+      1,
+      384,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_11_conv_3": {
+    "input_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_12_conv_0_0": {
+    "input_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_12_conv_0_1": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_12_conv_0_2": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_12_conv_1_0": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_12_conv_1_1": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_12_conv_1_2": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_12_conv_2": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_12_conv_3": {
+    "input_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_13_conv_0_0": {
+    "input_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_13_conv_0_1": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_13_conv_0_2": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_13_conv_1_0": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_13_conv_1_1": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_13_conv_1_2": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_13_conv_2": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_13_conv_3": {
+    "input_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_14_conv_0_0": {
+    "input_shape": [
+      1,
+      96,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_14_conv_0_1": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_14_conv_0_2": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_14_conv_1_0": {
+    "input_shape": [
+      1,
+      576,
+      14,
+      14
+    ],
+    "output_shape": [
+      1,
+      576,
+      7,
+      7
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      2,
+      2
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_14_conv_1_1": {
+    "input_shape": [
+      1,
+      576,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      576,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_14_conv_1_2": {
+    "input_shape": [
+      1,
+      576,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      576,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_14_conv_2": {
+    "input_shape": [
+      1,
+      576,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_14_conv_3": {
+    "input_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_15_conv_0_0": {
+    "input_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_15_conv_0_1": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_15_conv_0_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_15_conv_1_0": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_15_conv_1_1": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_15_conv_1_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_15_conv_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_15_conv_3": {
+    "input_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_16_conv_0_0": {
+    "input_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_16_conv_0_1": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_16_conv_0_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_16_conv_1_0": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_16_conv_1_1": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_16_conv_1_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_16_conv_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_16_conv_3": {
+    "input_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_17_conv_0_0": {
+    "input_shape": [
+      1,
+      160,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_17_conv_0_1": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_17_conv_0_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_17_conv_1_0": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": [
+      3,
+      3
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      1,
+      1
+    ],
+    "type": "Conv2d"
+  },
+  "_features_17_conv_1_1": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_17_conv_1_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_features_17_conv_2": {
+    "input_shape": [
+      1,
+      960,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      320,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_17_conv_3": {
+    "input_shape": [
+      1,
+      320,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      320,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_18_0": {
+    "input_shape": [
+      1,
+      320,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      1280,
+      7,
+      7
+    ],
+    "kernel_size": [
+      1,
+      1
+    ],
+    "stride": [
+      1,
+      1
+    ],
+    "padding": [
+      0,
+      0
+    ],
+    "type": "Conv2d"
+  },
+  "_features_18_1": {
+    "input_shape": [
+      1,
+      1280,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      1280,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "BatchNorm2d"
+  },
+  "_features_18_2": {
+    "input_shape": [
+      1,
+      1280,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      1280,
+      7,
+      7
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "ReLU6"
+  },
+  "_classifier_0": {
+    "input_shape": [
+      1,
+      1280
+    ],
+    "output_shape": [
+      1,
+      1280
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "Dropout"
+  },
+  "_classifier_1": {
+    "input_shape": [
+      1,
+      1280
+    ],
+    "output_shape": [
+      1,
+      1000
+    ],
+    "kernel_size": null,
+    "stride": null,
+    "padding": null,
+    "type": "Linear"
+  }
+}

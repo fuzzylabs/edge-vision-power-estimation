@@ -1,0 +1,793 @@
+{
+    "_features_0": {
+        "input_shape": [
+            1,
+            3,
+            224,
+            224
+        ],
+        "output_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_1": {
+        "input_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "output_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_2": {
+        "input_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "output_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_3": {
+        "input_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "output_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_4": {
+        "input_shape": [
+            1,
+            64,
+            224,
+            224
+        ],
+        "output_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "kernel_size": 2,
+        "stride": 2,
+        "padding": 0,
+        "type": "MaxPool2d"
+    },
+    "_features_5": {
+        "input_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_6": {
+        "input_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_7": {
+        "input_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_8": {
+        "input_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_9": {
+        "input_shape": [
+            1,
+            128,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            128,
+            56,
+            56
+        ],
+        "kernel_size": 2,
+        "stride": 2,
+        "padding": 0,
+        "type": "MaxPool2d"
+    },
+    "_features_10": {
+        "input_shape": [
+            1,
+            128,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_11": {
+        "input_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_12": {
+        "input_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_13": {
+        "input_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_14": {
+        "input_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_15": {
+        "input_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_16": {
+        "input_shape": [
+            1,
+            256,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            256,
+            28,
+            28
+        ],
+        "kernel_size": 2,
+        "stride": 2,
+        "padding": 0,
+        "type": "MaxPool2d"
+    },
+    "_features_17": {
+        "input_shape": [
+            1,
+            256,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_18": {
+        "input_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_19": {
+        "input_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_20": {
+        "input_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_21": {
+        "input_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_22": {
+        "input_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_23": {
+        "input_shape": [
+            1,
+            512,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "kernel_size": 2,
+        "stride": 2,
+        "padding": 0,
+        "type": "MaxPool2d"
+    },
+    "_features_24": {
+        "input_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_25": {
+        "input_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_26": {
+        "input_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_27": {
+        "input_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_28": {
+        "input_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_features_29": {
+        "input_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_features_30": {
+        "input_shape": [
+            1,
+            512,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": 2,
+        "stride": 2,
+        "padding": 0,
+        "type": "MaxPool2d"
+    },
+    "_avgpool": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "AdaptiveAvgPool2d"
+    },
+    "_classifier_0": {
+        "input_shape": [
+            1,
+            25088
+        ],
+        "output_shape": [
+            1,
+            4096
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Linear"
+    },
+    "_classifier_1": {
+        "input_shape": [
+            1,
+            4096
+        ],
+        "output_shape": [
+            1,
+            4096
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_classifier_2": {
+        "input_shape": [
+            1,
+            4096
+        ],
+        "output_shape": [
+            1,
+            4096
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Dropout"
+    },
+    "_classifier_3": {
+        "input_shape": [
+            1,
+            4096
+        ],
+        "output_shape": [
+            1,
+            4096
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Linear"
+    },
+    "_classifier_4": {
+        "input_shape": [
+            1,
+            4096
+        ],
+        "output_shape": [
+            1,
+            4096
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "ReLU"
+    },
+    "_classifier_5": {
+        "input_shape": [
+            1,
+            4096
+        ],
+        "output_shape": [
+            1,
+            4096
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Dropout"
+    },
+    "_classifier_6": {
+        "input_shape": [
+            1,
+            4096
+        ],
+        "output_shape": [
+            1,
+            1000
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Linear"
+    }
+}
