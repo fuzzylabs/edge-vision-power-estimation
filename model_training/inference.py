@@ -89,8 +89,9 @@ def infer(
             continue
 
         features = model.get_features(layer_info)
-        data["power_prediction"].append(4)
-        # import pdb; pdb.set_trace()
+        data["power_prediction"].append(
+            model.power_model.predict(features.values).tolist()[0]
+        )
         data["runtime_prediction"].append(
             model.runtime_model.predict(features.values).tolist()[0]
         )
@@ -130,6 +131,11 @@ if __name__ == "__main__":
         help="Path to save prediction results as a CSV.",
     )
     args = parser.parse_args()
+
+    if not args.model_summary_path or not args.result_csv_path:
+        raise ValueError(
+            "Both the flags (--model-summary-path and --result-csv-path) should be provided"
+        )
 
     infer(
         dagshub_repo_name=args.name,
