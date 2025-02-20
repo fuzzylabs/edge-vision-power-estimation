@@ -27,15 +27,33 @@ uv sync
 
 To use EcoML for energy estimation of PyTorch models, follow these steps:
 
-```bash
- ecoml predict --model sample_data/resnet18.json
-```
+1. Using PyTorch model summary
 
-[Sample data](./sample_data/) folder contains model summary for 3 PyTorch models - Resnet18, Mobilenetv2 and VGG16.
+    ```bash
+    ecoml predict --model sample_data/resnet18.json
+    ```
 
-To use a custom model for inference, you have to generate a model summary for the PyTorch model.
+    [Sample data](./sample_data/) folder contains model summary for 3 PyTorch models - Resnet18, Mobilenetv2 and VGG16.
 
-> [!TIP]
-> [save_model_summary.py](https://github.com/fuzzylabs/ecomlops/blob/develop/jetson/power_logging/save_model_summary.py) script can be used to create a model summary for a custom PyTorch model.
+    To use a custom model for inference, you have to generate a model summary for the PyTorch model.
 
-`--verbose` flag can be passed to above command to get a detailed output.
+    > [!TIP]
+    > [save_model_summary.py](https://github.com/fuzzylabs/ecomlops/blob/develop/jetson/power_logging/save_model_summary.py) script can be used to create a model summary for a custom PyTorch model.
+
+    `--verbose` flag can be passed to above command to get a detailed output.
+
+2. Using custom PyTorch model in your workflow
+
+    ```bash
+    from ecoml.model_summary import get_summary
+
+    summary = get_summary(your_pt_model, model_input_shape, summary_file_path='summary/my_model.json')
+    ```
+
+    Here `your_pt_model` is a instance `nn.Module`, the trained PyTorch model.
+
+    Next, you can use the `predict` command to get the energy prediction using the path where model summary is saved.
+
+   ```bash
+    ecoml predict --model summary/my_model.json
+    ```

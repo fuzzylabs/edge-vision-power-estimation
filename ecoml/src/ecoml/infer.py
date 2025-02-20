@@ -2,9 +2,7 @@
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Optional
 
-import dagshub
 import pandas as pd
 from rich import print
 from rich.console import Console
@@ -95,8 +93,6 @@ def display_latency_table(df: pd.DataFrame) -> None:
 def run_inference(
     model_summary_path: Path,
     power_profiles: dict[str, int],
-    dagshub_repo_owner: Optional[str] = "fuzzylabs",
-    dagshub_repo_name: Optional[str] = "edge-vision-power-estimation",
     verbose: bool = False,
 ) -> None:
     """Perform inference for a given PyTorch engine file.
@@ -108,13 +104,8 @@ def run_inference(
     Args:
         model_summary_path: Path to pytorch model summary file.
         power_profiles: Power value for various power profiles
-        dagshub_repo_owner: DagsHub repo
-        dagshub_repo_name: DagsHub repo owner
         verbose: Show detailed output logs
     """
-    dagshub.init(
-        repo_name=dagshub_repo_name, repo_owner=dagshub_repo_owner, mlflow=True
-    )
     # TODO: Expose model version via cli
     conv_models = InferenceModel(
         model_version=1, layer_type="convolutional", verbose=verbose

@@ -174,3 +174,9 @@ cython_debug/
 .pypirc
 
 ecoml_models
+
+# PyTorch models
+*.pth
+*.pt
+
+mlruns

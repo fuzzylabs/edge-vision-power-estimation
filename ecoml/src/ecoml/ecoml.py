@@ -16,6 +16,14 @@ CONFIG = {"jetson_orin": {"pytorch": {"low": 5, "average": 7, "high": 10}}}
 
 
 def validate_model(model_path: str):
+    """Validate if the PyTorch model is a valid summary JSON file.
+
+    Args:
+        model_path: Path to PyTorch model summary
+
+    Returns:
+        A tuple of boolean if valid model and a dictionary model summary
+    """
     if Path(model_path).suffix == ".json":
         try:
             with open(model_path, "r") as file:

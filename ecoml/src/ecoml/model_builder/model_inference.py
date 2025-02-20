@@ -1,8 +1,9 @@
 """Load inference model from Mlflow registry."""
 
 import os
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 
+import dagshub
 import mlflow
 import pandas as pd
 from rich import print
@@ -20,17 +21,24 @@ ALLOWED_LAYER_TYPES = Literal["convolutional", "pooling", "dense"]
 class InferenceModel:
     """Inference Model.
 
-    It downloads model from MLFlow Registry if not present on the first run.
+    It downloads model from MLFlow Registry on DagsHub, if not present on the first run.
     """
 
     def __init__(
-        self, layer_type: ALLOWED_LAYER_TYPES, model_version: int, verbose: bool = False
+        self,
+        layer_type: ALLOWED_LAYER_TYPES,
+        model_version: int,
+        verbose: bool = False,
+        dagshub_repo_owner: Optional[str] = "fuzzylabs",
+        dagshub_repo_name: Optional[str] = "edge-vision-power-estimation",
     ):
         self.layer_type = layer_type
         self.model_version = model_version
         self.verbose = verbose
         # Download model from MLFlow Registry if not present on first run
         self.runtime_model = self.load_model(model_type="runtime")
+        self.repo_name = dagshub_repo_name
+        self.repo_owner = dagshub_repo_owner
 
     def _download_model(self, model_uri: str, dst_path: str) -> None:
         """Download model from MLflow registry to local filesystem.
@@ -42,6 +50,7 @@ class InferenceModel:
         """
         if self.verbose:
             print(f"Downloading model to {dst_path} folder")
+        dagshub.init(repo_name=self.repo_name, repo_owner=self.repo_owner, mlflow=True)
         mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path=dst_path)
 
     def load_model(self, model_type: str) -> Any:
@@ -55,7 +64,7 @@ class InferenceModel:
         model_name = f"{self.layer_type}_{model_type}_model"
         model_uri = f"models:/{model_name}/{self.model_version}"
         dst_path = f"{os.getcwd()}/ecoml_models/{self.layer_type}/{model_type}"
-        # TODO: Tighter check to see if current model version is present 
+        # TODO: Tighter check to see if current model version is present
         # instead of checking only if directory exists
         if not os.path.exists(dst_path):
             self._download_model(model_uri=model_uri, dst_path=dst_path)
