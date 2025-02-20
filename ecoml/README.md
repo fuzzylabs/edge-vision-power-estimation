@@ -42,7 +42,7 @@ To use EcoML for energy estimation of PyTorch models, follow these steps:
 2. Using custom PyTorch model in your workflow
 
     ```bash
-    from ecoml.model_summary import get_summary
+    from ecoml.model_summary.model_summary import get_summary
 
     summary = get_summary(your_pt_model, model_input_shape, summary_file_path='summary/my_model.json')
     ```
