@@ -15,10 +15,13 @@ EcoML aims to provide accurate power consumption estimates for edge devices, hel
 To install the necessary dependencies, run the following command:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install ecoml
+uv venv
+source .venv/bin/activate
+uv sync
 ```
+
+> [!NOTE]
+> Coming Soon: We will also publish the package on PyPI for ease of use.
 
 ## Usage
 
