@@ -132,14 +132,14 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if not args.trt_engine_path or not args.result_csv_path:
+    if not args.model_summary_path or not args.result_csv_path:
         raise ValueError(
-            "Both the flags (--trt-engine-path and --result-csv-path) should be provided"
+            "Both the flags (--model-summary-path and --result-csv-path) should be provided"
         )
 
     infer(
         dagshub_repo_name=args.name,
         dagshub_repo_owner=args.owner,
-        trt_engine_info_path=Path(args.trt_engine_path),
+        model_summary_path=Path(args.model_summary_path),
         result_csv_path=Path(args.result_csv_path),
     )

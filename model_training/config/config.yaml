@@ -1,12 +1,12 @@
 data:
   data_dir: "training_data"
-  test_models: ["lenet", "resnet18", "vgg16"]
+  test_models: ["lenet", "vgg16"]
 
 model:
   cross_validation: 10
 
 mlflow:
-  enable_tracking: False
-  mlflow_experiment_name: "second-data-version-exp"
+  enable_tracking: True
+  mlflow_experiment_name: "pytorch-exp"
   dagshub_repo_owner: "fuzzylabs"
   dagshub_repo_name: "edge-vision-power-estimation"

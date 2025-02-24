@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-
 from data_preparation.measurement_utils import (
     LAYER_TYPES,
     RENAME_COLUMNS,
