@@ -35,10 +35,11 @@ class InferenceModel:
         self.layer_type = layer_type
         self.model_version = model_version
         self.verbose = verbose
-        # Download model from MLFlow Registry if not present on first run
-        self.runtime_model = self.load_model(model_type="runtime")
         self.repo_name = dagshub_repo_name
         self.repo_owner = dagshub_repo_owner
+        # Download model from MLFlow Registry if not present on first run
+        self.runtime_model = self.load_model(model_type="runtime")
+        
 
     def _download_model(self, model_uri: str, dst_path: str) -> None:
         """Download model from MLflow registry to local filesystem.
