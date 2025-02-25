@@ -50,43 +50,67 @@ def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
 
 
 def display_metrics_table(metrics_df: pd.DataFrame) -> None:
-    """Display a table of energy, power and latencies for various power profiles.
+    """
+    Display a table of energy, power and latencies for various power profiles.
 
     Args:
         metrics_df: DataFrame containing predicted energy, runtime and power metrics.
     """
     table = Table(title="PyTorch Model Estimations")
+
     table.add_column(
         "Average power consumption (Watts)",
         justify="center",
         style="cyan",
         no_wrap=True,
     )
-    table.add_column("Predicted runtime (seconds)", justify="center", style="green")
     table.add_column(
-        "Average energy consumption (Joules)", justify="center", style="magenta"
+        "Predicted runtime (seconds)",
+        justify="center",
+         style="green"
     )
+    table.add_column(
+        "Average energy consumption (Joules)", 
+        justify="center", 
+        style="magenta"
+    )
+
     for _, row in metrics_df.iterrows():
-        table.add_row(str(row["power"]), str(row["latency"]), str(row["energy"]))
+        table.add_row(
+            f"{row['power']:.3f}",
+            f"{row['latency']:.3f}",
+            f"{row['energy']:.3f}"
+        )
+        
     console.print(table)
 
 
 def display_latency_table(df: pd.DataFrame) -> None:
-    """Display a table of layer name and predicted runtime for the layer.
+    """
+    Display a table of layer name and predicted runtime for the layer.
 
     Args:
         df:  Input dataframe containing layer-wise latency
     """
     table = Table(title="PyTorch Model Layer-wise Latency")
+
     table.add_column(
         "Layer Name",
         justify="center",
         style="cyan",
         no_wrap=True,
     )
-    table.add_column("Predicted runtime (seconds)", justify="center", style="green")
+    table.add_column(
+        "Predicted runtime (seconds)", 
+        justify="center", 
+        style="green"
+    )
+
     for _, row in df.iterrows():
-        table.add_row(str(row["layer_name"]), str(row["runtime_prediction"]))
+        table.add_row(
+            str(row["layer_name"]), 
+            f"{row['runtime_prediction']:.3f}"
+        )
     console.print(table)
 
 
