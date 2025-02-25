@@ -64,10 +64,10 @@ def display_metrics_table(metrics_df: pd.DataFrame) -> None:
         title="Energy Consumption",
         show_lines=True,
         caption=(
-            "This table shows energy consumption where:\n"
+            "The above table shows energy consumption where:\n"
             "- [bold]Min[/bold]: The lowest amount of predicted energy.\n"
             "- [bold]Avg[/bold]: The average amount of energy across measurements.\n"
-            "- [bold]Max[/bold]: The maximum amount of predicted energy."
+            "- [bold]Max[/bold]: The maximum amount of predicted energy.\n"
         ),
         caption_justify="left",
     )
@@ -90,12 +90,11 @@ def display_runtime_table(metrics_df: pd.DataFrame) -> None:
     runtime_table = Table(
         title="Runtime Table",
         show_lines=True,
-        caption="Showing predicted runtimes (S)"
+        caption="Showing predicted runtime across power levels in seconds"
     )
     runtime_table.add_column("Predicted runtime (s)", justify="center", style="green")
 
-    for _, runtime in metrics_df.iterrows():
-        runtime_table.add_row(f"{runtime['latency']:.3f}")
+    runtime_table.add_row(f"{metrics_df['latency'].iloc[0]:.3f}")
 
     console.print(runtime_table)
 
