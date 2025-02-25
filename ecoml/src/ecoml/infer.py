@@ -49,26 +49,26 @@ def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
     return metrics_df
 
 
-def display_metrics_table(metrics_df: pd.DataFrame) -> None:
+def display_metrics_table(metrics_df: pd.DataFrame, model_type: str = "Original") -> None:
     """
     Display a table of energy, power and latencies for various power profiles.
 
     Args:
         metrics_df: DataFrame containing predicted energy, runtime and power metrics.
     """
-    table = Table(title="PyTorch Model Estimations")
+    table = Table(title=f"{model_type} Model Energy Consumption")
 
-    table.add_column(
-        "Average power consumption (Watts)",
-        justify="center",
-        style="cyan",
-        no_wrap=True,
-    )
-    table.add_column(
-        "Predicted runtime (seconds)",
-        justify="center",
-         style="green"
-    )
+    # table.add_column(
+    #     "Average power consumption (Watts)",
+    #     justify="center",
+    #     style="cyan",
+    #     no_wrap=True,
+    # )
+    # table.add_column(
+    #     "Predicted runtime (seconds)",
+    #     justify="center",
+    #      style="green"
+    # )
     table.add_column(
         "Average energy consumption (Joules)", 
         justify="center", 
@@ -77,8 +77,8 @@ def display_metrics_table(metrics_df: pd.DataFrame) -> None:
 
     for _, row in metrics_df.iterrows():
         table.add_row(
-            f"{row['power']:.3f}",
-            f"{row['latency']:.3f}",
+            # f"{row['power']:.3f}",
+            # f"{row['latency']:.3f}",
             f"{row['energy']:.3f}"
         )
         
@@ -183,3 +183,50 @@ def run_inference(
 
     metrics_df = get_metrics(df, cfg=power_profiles)
     display_metrics_table(metrics_df)
+
+def run_inference_quantised(original_metrics_df: pd.DataFrame, quantisation: float = 0.7) -> pd.DataFrame:
+
+    quantised_df = original_metrics_df.copy();
+    quantised_df["energy"] = quantised_df["energy"] * quantisation
+    return quantised_df
+
+def compare_models(original_df: pd.DataFrame, quantised_df: pd.DataFrame) -> None:
+    """
+    Compare energy consumption between normal and quantised models.
+    """ 
+
+    table = Table(title="Original vs Quantised Energy Consumption Comparison")
+
+    table.add_column(
+        "Layer", 
+        justify="center", 
+        style="cyan"
+    )
+    table.add_column(
+        "Original Consumption (Joules)",
+        justify="center",
+        style="magenta"
+    )
+    table.add_column(
+        "Quantised Consumption (Joules)",
+        justify="center",
+        style="green"
+    )
+    table.add_column(
+        "Reduction (%)",
+        justify="center",
+        style="yellow"
+    )
+
+    for i, (original_row, quantised_row) in enumerate(zip(original_df.itertuples(), quantised_df.itertuples())):
+        reduction = ((original_row.energy - quantised_row.energy) / original_row.energy) * 100
+
+        table.add_row(
+            f"Layer {i+1}",
+            f"{original_row.energy:.3f}",
+            f"{quantised_row.energy:.3f}",
+            f"{reduction:.2f}%"
+        )
+
+    console.print(table)
+
