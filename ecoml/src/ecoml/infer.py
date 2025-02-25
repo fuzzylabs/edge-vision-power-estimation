@@ -30,21 +30,26 @@ def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
     # Total predicted runtime
     total_runtime = df["runtime_prediction"].sum()
 
-    power, energy = [], []
+    power_list, energy_list = [], []
     for power_val in cfg.values():
         # Average power
         avg_power_consumed = (
             power_val * df["runtime_prediction"]
         ).sum() / total_runtime
-        power.append(avg_power_consumed)
+        power_list.append(avg_power_consumed)
 
         # Total energy consumption
         total_energy = (power_val * df["runtime_prediction"]).sum()
-        energy.append(total_energy)
+        energy_list.append(total_energy)
 
     metrics_df = pd.DataFrame(
-        zip(power, [total_runtime] * len(power), energy),
-        columns=["power", "latency", "energy"],
+        {
+        # zip(power, [total_runtime] * len(power), energy),
+        # columns=["power", "latency", "energy"],
+            "power": power_list,
+            "latency": [total_runtime] * len(power_list),
+            "energy": energy_list,
+        }
     )
     return metrics_df
 
@@ -55,21 +60,44 @@ def display_metrics_table(metrics_df: pd.DataFrame) -> None:
     Args:
         metrics_df: DataFrame containing predicted energy, runtime and power metrics.
     """
-    table = Table(title="PyTorch Model Estimations")
-    table.add_column(
-        "Average power consumption (Watts)",
-        justify="center",
-        style="cyan",
-        no_wrap=True,
+    table = Table(
+        title="Energy Consumption",
+        show_lines=True,
+        caption=(
+            "This table shows energy consumption where:\n"
+            "- [bold]Min[/bold]: The lowest amount of predicted energy.\n"
+            "- [bold]Avg[/bold]: The average amount of energy across measurements.\n"
+            "- [bold]Max[/bold]: The maximum amount of predicted energy."
+        ),
+        caption_justify="left",
     )
-    table.add_column("Predicted runtime (seconds)", justify="center", style="green")
-    table.add_column(
-        "Average energy consumption (Joules)", justify="center", style="magenta"
-    )
-    for _, row in metrics_df.iterrows():
-        table.add_row(str(row["power"]), str(row["latency"]), str(row["energy"]))
+    stats_labels = ["Min", "Avg", "Max"]
+    table.add_column("Statistic", justify="center", style="cyan")
+    table.add_column("Consumption (J)", justify="center", style="magenta")
+
+    # table.add_column("Power (W)", justify="center", style="cyan")
+    # table.add_column("Runtime (s)", justify="center", style="green")
+    # table.add_column("Energy (J)", justify="center", style="magenta")
+
+    for label, (_, row) in zip(stats_labels, metrics_df.iterrows()):
+        table.add_row(
+            label,
+            f"{row['energy']:.3f}"
+        )
     console.print(table)
 
+def display_runtime_table(metrics_df: pd.DataFrame) -> None:
+    runtime_table = Table(
+        title="Runtime Table",
+        show_lines=True,
+        caption="Showing predicted runtimes (S)"
+    )
+    runtime_table.add_column("Predicted runtime (s)", justify="center", style="green")
+
+    for _, runtime in metrics_df.iterrows():
+        runtime_table.add_row(f"{runtime['latency']:.3f}")
+
+    console.print(runtime_table)
 
 def display_latency_table(df: pd.DataFrame) -> None:
     """Display a table of layer name and predicted runtime for the layer.
@@ -159,6 +187,7 @@ def run_inference(
 
     metrics_df = get_metrics(df, cfg=power_profiles)
     display_metrics_table(metrics_df)
+    display_runtime_table(metrics_df)
 
 
 # 1 make table neat
