@@ -49,76 +49,52 @@ def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
     return metrics_df
 
 
-def display_metrics_table(metrics_df: pd.DataFrame, model_type: str = "Original") -> None:
-    """
-    Display a table of energy, power and latencies for various power profiles.
+def display_metrics_table(metrics_df: pd.DataFrame) -> None:
+    """Display a table of energy, power and latencies for various power profiles.
 
     Args:
         metrics_df: DataFrame containing predicted energy, runtime and power metrics.
     """
-    table = Table(title=f"{model_type} Model Energy Consumption")
-
-    # table.add_column(
-    #     "Average power consumption (Watts)",
-    #     justify="center",
-    #     style="cyan",
-    #     no_wrap=True,
-    # )
-    # table.add_column(
-    #     "Predicted runtime (seconds)",
-    #     justify="center",
-    #      style="green"
-    # )
+    table = Table(title="PyTorch Model Estimations")
     table.add_column(
-        "Average energy consumption (Joules)", 
-        justify="center", 
-        style="magenta"
+        "Average power consumption (Watts)",
+        justify="center",
+        style="cyan",
+        no_wrap=True,
     )
-
+    table.add_column("Predicted runtime (seconds)", justify="center", style="green")
+    table.add_column(
+        "Average energy consumption (Joules)", justify="center", style="magenta"
+    )
     for _, row in metrics_df.iterrows():
-        table.add_row(
-            # f"{row['power']:.3f}",
-            # f"{row['latency']:.3f}",
-            f"{row['energy']:.3f}"
-        )
-        
+        table.add_row(str(row["power"]), str(row["latency"]), str(row["energy"]))
     console.print(table)
 
 
 def display_latency_table(df: pd.DataFrame) -> None:
-    """
-    Display a table of layer name and predicted runtime for the layer.
+    """Display a table of layer name and predicted runtime for the layer.
 
     Args:
         df:  Input dataframe containing layer-wise latency
     """
     table = Table(title="PyTorch Model Layer-wise Latency")
-
     table.add_column(
         "Layer Name",
         justify="center",
         style="cyan",
         no_wrap=True,
     )
-    table.add_column(
-        "Predicted runtime (seconds)", 
-        justify="center", 
-        style="green"
-    )
-
+    table.add_column("Predicted runtime (seconds)", justify="center", style="green")
     for _, row in df.iterrows():
-        table.add_row(
-            str(row["layer_name"]), 
-            f"{row['runtime_prediction']:.3f}"
-        )
+        table.add_row(str(row["layer_name"]), str(row["runtime_prediction"]))
     console.print(table)
 
 
 def run_inference(
-    model_summary_path: Path,
+    model_summary_path: Path, # Model summary not path
     power_profiles: dict[str, int],
     verbose: bool = False,
-) -> None:
+) -> None: # Return dict
     """Perform inference for a given PyTorch engine file.
 
     DagsHub related configuration is used to pull models from
@@ -140,7 +116,7 @@ def run_inference(
     dense_models = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
 
     data = defaultdict(list)
-    layers_info = read_layers_info(model_summary_path)
+    layers_info = read_layers_info(model_summary_path) # Should be layer info not path
     if verbose:
         print(f"Found {len(layers_info)} number of layers")
         print(f"Performing inference for {model_summary_path}")
@@ -184,49 +160,7 @@ def run_inference(
     metrics_df = get_metrics(df, cfg=power_profiles)
     display_metrics_table(metrics_df)
 
-def run_inference_quantised(original_metrics_df: pd.DataFrame, quantisation: float = 0.7) -> pd.DataFrame:
 
-    quantised_df = original_metrics_df.copy();
-    quantised_df["energy"] = quantised_df["energy"] * quantisation
-    return quantised_df
-
-def compare_models(original_df: pd.DataFrame, quantised_df: pd.DataFrame) -> None:
-    """
-    Compare energy consumption between normal and quantised models.
-    """ 
-
-    table = Table(title="Original vs Quantised Energy Consumption Comparison")
-
-    table.add_column(
-        "Layer", 
-        justify="center", 
-        style="cyan"
-    )
-    table.add_column(
-        "Original Consumption (Joules)",
-        justify="center",
-        style="magenta"
-    )
-    table.add_column(
-        "Quantised Consumption (Joules)",
-        justify="center",
-        style="green"
-    )
-    table.add_column(
-        "Reduction (%)",
-        justify="center",
-        style="yellow"
-    )
-
-    for i, (original_row, quantised_row) in enumerate(zip(original_df.itertuples(), quantised_df.itertuples())):
-        reduction = ((original_row.energy - quantised_row.energy) / original_row.energy) * 100
-
-        table.add_row(
-            f"Layer {i+1}",
-            f"{original_row.energy:.3f}",
-            f"{quantised_row.energy:.3f}",
-            f"{reduction:.2f}%"
-        )
-
-    console.print(table)
-
+# 1 make table neat
+# 2 Refactor function ^
+# Get rid of verbose flag, replace print with logs (later)
