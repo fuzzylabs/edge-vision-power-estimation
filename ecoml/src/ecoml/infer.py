@@ -44,14 +44,14 @@ def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbo
 
         # Extract information from the layers and append
         features = model.get_features(layer_info)
-        predicted_runtime = model.runtime_model.predict(features.values).toList()[0]
+        predicted_runtime = model.runtime_model.predict(features.values).tolist()[0]
 
         data["layer_name"].append(layer_name)
         data["layer_type"].append(layer_info.layer_type)
         data["runtime_prediction"].append(predicted_runtime)
 
     # Check if data is empty
-    if not data["later_name"]:
+    if not data["layer_name"]:
         error_console.print("No layer types found")
         return {}
     
