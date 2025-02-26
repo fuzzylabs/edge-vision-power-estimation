@@ -14,6 +14,64 @@ from ecoml.model_builder.model_inference import InferenceModel
 console = Console()
 error_console = Console(stderr=True, style="bold red")
 
+def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> dict:
+    # Get models same method
+    convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
+    pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
+    dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
+
+    # Read the layer info and if verbose flag called, address user
+    layer_info_read = read_layers_info(model_sumary_path)
+    
+    if verbose:
+        print(f"Found {len(layer_info_read)} layers in {model_sumary_path}.")
+
+    # Generate data for every layer, check which of the three a layer falls into, else skip
+    data = defaultdict(list)
+    for layer_name, layer_info in layer_info_read.items():
+        layer_type = layer_info.get_layer_type()
+
+        if layer_type == "convolutional":
+            model = convolution
+        elif layer_type == "pooling":
+            model = pooling
+        elif layer_type == "dense":
+            model = dense
+        else:
+            if verbose:
+                print(f"Skipping layer: {layer_name}")
+            continue
+
+        # Extract information from the layers and append
+        features = model.get_features(layer_info)
+        predicted_runtime = model.runtime_model.predict(features.values).toList()[0]
+
+        data["layer_name"].append(layer_name)
+        data["layer_type"].append(layer_info.layer_type)
+        data["runtime_prediction"].append(predicted_runtime)
+
+    # Check if data is empty
+    if not data["later_name"]:
+        error_console.print("No layer types found")
+        return {}
+    
+    # Add the power predictions (Can remove)
+    data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
+    data["average_power_prediction"] = [power_profiles["average"]] * len(data["layer_name"])
+    data["high_power_prediction"] = [power_profiles["high"]] * len(data["layer_name"])
+
+    # Create dataframe and get the metrics
+    layer_df = pd.DataFrame(data)
+    metrics_df = get_metrics(layer_df, cfg=power_profiles)
+
+    if verbose:
+        print("Inference complete")
+
+    # Return all to dictionary so we can call create the tables somewhere else
+    return {
+        "layer_data": layer_df,
+        "metrics_data": metrics_df
+    }
 
 def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
     """Calculate predicted runtime, power and energy metrics.
@@ -117,76 +175,77 @@ def display_latency_table(df: pd.DataFrame) -> None:
     console.print(table)
 
 
-def run_inference(
-    model_summary_path: Path, # Model summary not path
-    power_profiles: dict[str, int],
-    verbose: bool = False,
-) -> None: # Return dict
-    """Perform inference for a given PyTorch engine file.
+# def run_inference(
+#     model_summary_path: Path, # Model summary not path
+#     power_profiles: dict[str, int],
+#     verbose: bool = False,
+# ) -> None: # Return dict
+#     """Perform inference for a given PyTorch engine file.
 
-    DagsHub related configuration is used to pull models from
-    MLflow Registry. Models are pulled from MLflow registry
-    for performing prediction.
+#     DagsHub related configuration is used to pull models from
+#     MLflow Registry. Models are pulled from MLflow registry
+#     for performing prediction.
 
-    Args:
-        model_summary_path: Path to pytorch model summary file.
-        power_profiles: Power value for various power profiles
-        verbose: Show detailed output logs
-    """
-    # TODO: Expose model version via cli
-    conv_models = InferenceModel(
-        model_version=1, layer_type="convolutional", verbose=verbose
-    )
-    pooling_models = InferenceModel(
-        model_version=1, layer_type="pooling", verbose=verbose
-    )
-    dense_models = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
+#     Args:
+#         model_summary_path: Path to pytorch model summary file.
+#         power_profiles: Power value for various power profiles
+#         verbose: Show detailed output logs
+#     """
+#     # TODO: Expose model version via cli
+#     conv_models = InferenceModel(
+#         model_version=1, layer_type="convolutional", verbose=verbose
+#     )
+#     pooling_models = InferenceModel(
+#         model_version=1, layer_type="pooling", verbose=verbose
+#     )
+#     dense_models = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
 
-    data = defaultdict(list)
-    layers_info = read_layers_info(model_summary_path) # Should be layer info not path
-    if verbose:
-        print(f"Found {len(layers_info)} number of layers")
-        print(f"Performing inference for {model_summary_path}")
+#     data = defaultdict(list)
+#     layers_info = read_layers_info(model_summary_path) # Should be layer info not path
+#     if verbose:
+#         print(f"Found {len(layers_info)} number of layers")
+#         print(f"Performing inference for {model_summary_path}")
 
-    for layer_name, layer_info in layers_info.items():
-        layer_type = layer_info.get_layer_type()
-        if layer_type == "convolutional":
-            model = conv_models
-        elif layer_type == "pooling":
-            model = pooling_models
-        elif layer_type == "dense":
-            model = dense_models
-        else:
-            if verbose:
-                print(f"Skipping layer: {layer_name}")
-            continue
+#     for layer_name, layer_info in layers_info.items():
+#         layer_type = layer_info.get_layer_type()
+#         if layer_type == "convolutional":
+#             model = conv_models
+#         elif layer_type == "pooling":
+#             model = pooling_models
+#         elif layer_type == "dense":
+#             model = dense_models
+#         else:
+#             if verbose:
+#                 print(f"Skipping layer: {layer_name}")
+#             continue
 
-        features = model.get_features(layer_info)
-        data["runtime_prediction"].append(
-            model.runtime_model.predict(features.values).tolist()[0]
-        )
-        data["layer_name"].append(layer_name)
-        data["layer_type"].append(layer_info.layer_type)
+#         features = model.get_features(layer_info)
+#         data["runtime_prediction"].append(
+#             model.runtime_model.predict(features.values).tolist()[0]
+#         )
+#         data["layer_name"].append(layer_name)
+#         data["layer_type"].append(layer_info.layer_type)
 
-    if not len(data):
-        error_console.print(
-            "Looks like there are no convolutional, pooling or linear layers in the model"
-        )
-        return
+#     if not len(data):
+#         error_console.print(
+#             "Looks like there are no convolutional, pooling or linear layers in the model"
+#         )
+#         return
 
-    data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
-    data["average_power_prediction"] = [power_profiles["average"]] * len(
-        data["layer_name"]
-    )
-    data["high_power_prediction"] = [power_profiles["high"]] * len(data["layer_name"])
+#     data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
+#     data["average_power_prediction"] = [power_profiles["average"]] * len(
+#         data["layer_name"]
+#     )
+#     data["high_power_prediction"] = [power_profiles["high"]] * len(data["layer_name"])
 
-    df = pd.DataFrame.from_dict(data)
-    if verbose:
-        display_latency_table(df)
+#     df = pd.DataFrame.from_dict(data)
+#     if verbose:
+#         display_latency_table(df)
 
-    metrics_df = get_metrics(df, cfg=power_profiles)
-    display_metrics_table(metrics_df)
-    display_runtime_table(metrics_df)
+#     metrics_df = get_metrics(df, cfg=power_profiles)
+#     display_metrics_table(metrics_df)
+#     display_runtime_table(metrics_df)
+
 
 
 # 1 make table neat
