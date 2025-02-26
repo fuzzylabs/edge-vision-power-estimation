@@ -2,11 +2,13 @@
 
 from collections import defaultdict
 from pathlib import Path
+from statistics import mean
 
 import pandas as pd
 from rich import print
 from rich.console import Console
 from rich.table import Table
+from dataclasses import dataclass
 
 from ecoml.data_preparation.pytorch_utils import read_layers_info
 from ecoml.model_builder.model_inference import InferenceModel
@@ -14,7 +16,13 @@ from ecoml.model_builder.model_inference import InferenceModel
 console = Console()
 error_console = Console(stderr=True, style="bold red")
 
-def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> dict:
+@dataclass
+class InferenceResult:
+    name: str
+    ltype: str
+    runtime: float
+
+def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
     # Get models same method
     convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
     pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
@@ -27,7 +35,8 @@ def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbo
         print(f"Found {len(layer_info_read)} layers in {model_sumary_path}.")
 
     # Generate data for every layer, check which of the three a layer falls into, else skip
-    data = defaultdict(list)
+    #data = defaultdict(list)
+    inference_results = []
     for layer_name, layer_info in layer_info_read.items():
         layer_type = layer_info.get_layer_type()
 
@@ -46,32 +55,38 @@ def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbo
         features = model.get_features(layer_info)
         predicted_runtime = model.runtime_model.predict(features.values).tolist()[0]
 
-        data["layer_name"].append(layer_name)
-        data["layer_type"].append(layer_info.layer_type)
-        data["runtime_prediction"].append(predicted_runtime)
+        # data["layer_name"].append(layer_name)
+        # data["layer_type"].append(layer_info.layer_type)
+        # data["runtime_prediction"].append(predicted_runtime)
 
-    # Check if data is empty
-    if not data["layer_name"]:
-        error_console.print("No layer types found")
-        return {}
+        inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
+
     
-    # Add the power predictions (Can remove)
-    data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
-    data["average_power_prediction"] = [power_profiles["average"]] * len(data["layer_name"])
-    data["high_power_prediction"] = [power_profiles["high"]] * len(data["layer_name"])
+    return inference_results
 
-    # Create dataframe and get the metrics
-    layer_df = pd.DataFrame(data)
-    metrics_df = get_metrics(layer_df, cfg=power_profiles)
+    # # Check if data is empty
+    # if not data["layer_name"]:
+    #     error_console.print("No layer types found")
+    #     return {}
+    
+    # # Add the power predictions (Can remove)
+    # data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
+    # data["average_power_prediction"] = [power_profiles["average"]] * len(data["layer_name"])
+    # data["high_power_prediction"] = [power_profiles["high"]] * len(data["layer_name"])
 
-    if verbose:
-        print("Inference complete")
+    # # Create dataframe and get the metrics
+    # layer_df = pd.DataFrame(data)
+    # metrics_df = get_metrics(layer_df, cfg=power_profiles)
 
-    # Return all to dictionary so we can call create the tables somewhere else
-    return {
-        "layer_data": layer_df,
-        "metrics_data": metrics_df
-    }
+    # if verbose:
+    #     print("Inference complete")
+
+
+    # return {
+    #     "layer_data": layer_df,
+    #     "metrics_data": metrics_df
+    # }
+
 
 def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
     """Calculate predicted runtime, power and energy metrics.
@@ -112,7 +127,7 @@ def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
     return metrics_df
 
 
-def display_metrics_table(metrics_df: pd.DataFrame) -> None:
+def display_metrics_table(runtime_predictions: list[InferenceResult]) -> None:
     """Display a table of energy, power and latencies for various power profiles.
 
     Args:
@@ -121,12 +136,12 @@ def display_metrics_table(metrics_df: pd.DataFrame) -> None:
     table = Table(
         title="Energy Consumption",
         show_lines=True,
-        caption=(
-            "The above table shows energy consumption where:\n"
-            "- [bold]Min[/bold]: The lowest amount of predicted energy.\n"
-            "- [bold]Avg[/bold]: The average amount of energy across measurements.\n"
-            "- [bold]Max[/bold]: The maximum amount of predicted energy.\n"
-        ),
+        # caption=(
+        #     "The above table shows energy consumption where:\n"
+        #     "- [bold]Min[/bold]: The lowest amount of predicted energy.\n"
+        #     "- [bold]Avg[/bold]: The average amount of energy across measurements.\n"
+        #     "- [bold]Max[/bold]: The maximum amount of predicted energy.\n"
+        # ),
         caption_justify="left",
     )
     stats_labels = ["Min", "Avg", "Max"]
@@ -144,7 +159,7 @@ def display_metrics_table(metrics_df: pd.DataFrame) -> None:
         )
     console.print(table)
 
-def display_runtime_table(metrics_df: pd.DataFrame) -> None:
+def display_runtime_table(runtime_predictions: list[InferenceResult]) -> None:
     runtime_table = Table(
         title="Runtime Table",
         show_lines=True,
@@ -152,11 +167,15 @@ def display_runtime_table(metrics_df: pd.DataFrame) -> None:
     )
     runtime_table.add_column("Predicted runtime (s)", justify="center", style="green")
 
-    runtime_table.add_row(f"{metrics_df['latency'].iloc[0]:.3f}")
+    mean_runtime = sum(map(lambda i : i.runtime, runtime_predictions))
+
+    runtime_table.add_row(f"{mean_runtime:.3f}")
+
+    # statistics.mean(map(lambda x : x.runtime, inference_results))
 
     console.print(runtime_table)
 
-def display_latency_table(df: pd.DataFrame) -> None:
+def display_latency_table(runtime_predictions: list[InferenceResult]) -> None:
     """Display a table of layer name and predicted runtime for the layer.
 
     Args:
@@ -170,8 +189,12 @@ def display_latency_table(df: pd.DataFrame) -> None:
         no_wrap=True,
     )
     table.add_column("Predicted runtime (seconds)", justify="center", style="green")
-    for _, row in df.iterrows():
-        table.add_row(str(row["layer_name"]), str(row["runtime_prediction"]))
+    
+    for prediction in runtime_predictions:
+        table.add_row(prediction.name, str(prediction.runtime))
+
+# str(row["layer_name"]), str(row["runtime_prediction"])
+
     console.print(table)
 
 

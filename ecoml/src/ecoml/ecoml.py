@@ -85,23 +85,23 @@ def predict(
     )
 
     # Run the inference function that returns the dictionary
-    results = run_inference(Path(model), power_profiles=cfg, verbose=verbose)
+    runtime_predictions = run_inference(Path(model), power_profiles=cfg, verbose=verbose)
 
     # If it is an empty dict then throw an error
-    if not results:
+    if not runtime_predictions:
         error_console.print("Inference failed. No results were returned")
         raise typer.Exit(code=1)
     
     # Take out data from the dict
-    layer_df = results["layer_data"]
-    metrics_df = results["metrics_data"]
+    # layer_df = results["layer_data"]
+    # metrics_df = results["metrics_data"]
 
     # Display table
     if verbose:
-        display_latency_table(layer_df)
+        display_latency_table(runtime_predictions)
 
-    display_metrics_table(metrics_df)
-    display_runtime_table(metrics_df)
+    # display_metrics_table(metrics_df) # Get this working again -> comparison after 
+    display_runtime_table(runtime_predictions)
 
 
 if __name__ == "__main__":
