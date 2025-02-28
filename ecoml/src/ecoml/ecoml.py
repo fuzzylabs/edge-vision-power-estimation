@@ -100,9 +100,38 @@ def predict(
     if verbose:
         display_latency_table(runtime_predictions)
 
-    # display_metrics_table(metrics_df) # Get this working again -> comparison after 
+    display_metrics_table(runtime_predictions, power_profiles=cfg) # Get this working again -> comparison after 
     display_runtime_table(runtime_predictions)
 
+@app.command()
+def compare_models(
+    model1: Annotated[str, typer.Option(help="PyTorch model summary in json format.")],
+    model2: Annotated[str, typer.Option(help="Second PyTorch model summary in json format")],
+    verbose: bool = False,
+):
+    from ecoml.infer import(
+        run_inference,
+        display_comparison_table,
+        display_latency_table,
+        display_metrics_table,
+        display_runtime_table
+    )
+
+    cfg = CONFIG["jetson_orin"]["pytorch"]
+
+    results_baseline = run_inference(Path(model1), cfg, verbose=verbose)
+
+    if model2 is None:
+        display_latency_table(results_baseline)
+        display_runtime_table(results_baseline)
+        display_metrics_table(results_baseline, cfg)
+        return
+
+    results_compare = run_inference(Path(model2), cfg, verbose=verbose)
+
+    display_comparison_table(results_baseline, results_compare, cfg)
+
+    return
 
 if __name__ == "__main__":
     app()

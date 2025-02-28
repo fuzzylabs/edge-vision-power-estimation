@@ -23,19 +23,15 @@ class InferenceResult:
     runtime: float
 
 def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
-    # Get models same method
     convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
     pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
     dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
 
-    # Read the layer info and if verbose flag called, address user
     layer_info_read = read_layers_info(model_sumary_path)
     
     if verbose:
         print(f"Found {len(layer_info_read)} layers in {model_sumary_path}.")
 
-    # Generate data for every layer, check which of the three a layer falls into, else skip
-    #data = defaultdict(list)
     inference_results = []
     for layer_name, layer_info in layer_info_read.items():
         layer_type = layer_info.get_layer_type()
@@ -51,41 +47,13 @@ def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbo
                 print(f"Skipping layer: {layer_name}")
             continue
 
-        # Extract information from the layers and append
         features = model.get_features(layer_info)
         predicted_runtime = model.runtime_model.predict(features.values).tolist()[0]
-
-        # data["layer_name"].append(layer_name)
-        # data["layer_type"].append(layer_info.layer_type)
-        # data["runtime_prediction"].append(predicted_runtime)
 
         inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
 
     
     return inference_results
-
-    # # Check if data is empty
-    # if not data["layer_name"]:
-    #     error_console.print("No layer types found")
-    #     return {}
-    
-    # # Add the power predictions (Can remove)
-    # data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
-    # data["average_power_prediction"] = [power_profiles["average"]] * len(data["layer_name"])
-    # data["high_power_prediction"] = [power_profiles["high"]] * len(data["layer_name"])
-
-    # # Create dataframe and get the metrics
-    # layer_df = pd.DataFrame(data)
-    # metrics_df = get_metrics(layer_df, cfg=power_profiles)
-
-    # if verbose:
-    #     print("Inference complete")
-
-
-    # return {
-    #     "layer_data": layer_df,
-    #     "metrics_data": metrics_df
-    # }
 
 
 def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
@@ -127,51 +95,48 @@ def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:
     return metrics_df
 
 
-def display_metrics_table(runtime_predictions: list[InferenceResult]) -> None:
+def display_metrics_table(runtime_predictions: list[InferenceResult], power_profiles: dict[str, int]) -> None:
     """Display a table of energy, power and latencies for various power profiles.
 
     Args:
         metrics_df: DataFrame containing predicted energy, runtime and power metrics.
     """
+
+    total_runtime = sum(r.runtime for r in runtime_predictions) / 1000
+
+    energy = [pwr * total_runtime for pwr in power_profiles.values()]
+
+    energy_stats = {
+        "Min": f"{min(energy):.3f}",
+        "Avg": f"{mean(energy):.3f}",
+        "Max": f"{max(energy):.3f}",
+    }
+
     table = Table(
         title="Energy Consumption",
         show_lines=True,
-        # caption=(
-        #     "The above table shows energy consumption where:\n"
-        #     "- [bold]Min[/bold]: The lowest amount of predicted energy.\n"
-        #     "- [bold]Avg[/bold]: The average amount of energy across measurements.\n"
-        #     "- [bold]Max[/bold]: The maximum amount of predicted energy.\n"
-        # ),
         caption_justify="left",
     )
-    stats_labels = ["Min", "Avg", "Max"]
+    # stats_labels = ["Min", "Avg", "Max"]
     table.add_column("Statistic", justify="center", style="cyan")
-    table.add_column("Consumption (J)", justify="center", style="magenta")
+    table.add_column("Consumption (J)", justify="center", style="magenta") 
 
-    # table.add_column("Power (W)", justify="center", style="cyan")
-    # table.add_column("Runtime (s)", justify="center", style="green")
-    # table.add_column("Energy (J)", justify="center", style="magenta")
+    for label, value in energy_stats.items():
+        table.add_row(label, value)
 
-    for label, (_, row) in zip(stats_labels, metrics_df.iterrows()):
-        table.add_row(
-            label,
-            f"{row['energy']:.3f}"
-        )
     console.print(table)
 
 def display_runtime_table(runtime_predictions: list[InferenceResult]) -> None:
     runtime_table = Table(
         title="Runtime Table",
         show_lines=True,
-        caption="Showing predicted runtime across power levels in seconds"
+        caption="Showing predicted runtime across power levels in milliseconds"
     )
-    runtime_table.add_column("Predicted runtime (s)", justify="center", style="green")
+    runtime_table.add_column("Predicted runtime (ms)", justify="center", style="green")
 
-    mean_runtime = sum(map(lambda i : i.runtime, runtime_predictions))
+    total_runtime = sum(map(lambda i : i.runtime, runtime_predictions))
 
-    runtime_table.add_row(f"{mean_runtime:.3f}")
-
-    # statistics.mean(map(lambda x : x.runtime, inference_results))
+    runtime_table.add_row(f"{total_runtime:.3f}")
 
     console.print(runtime_table)
 
@@ -188,86 +153,52 @@ def display_latency_table(runtime_predictions: list[InferenceResult]) -> None:
         style="cyan",
         no_wrap=True,
     )
-    table.add_column("Predicted runtime (seconds)", justify="center", style="green")
+    table.add_column("Predicted runtime (milliseconds)", justify="center", style="green")
     
     for prediction in runtime_predictions:
         table.add_row(prediction.name, str(prediction.runtime))
 
-# str(row["layer_name"]), str(row["runtime_prediction"])
+    console.print(table)
+
+def display_comparison_table(baseline_results: list[InferenceResult], compare_results: list[InferenceResult], power_profiles: dict[str, int]) -> None:
+    if not baseline_results or not compare_results:
+        console.print("Cannot compare results")
+        return
+    
+    baseline_runtime = sum(r.runtime for r in baseline_results) 
+    compare_runtime = sum(r.runtime for r in compare_results)
+
+    baseline_energy = [pwr * baseline_runtime for pwr in power_profiles.value()]
+    compare_energy = [pwr * compare_runtime for pwr in power_profiles.value()]
+
+    baseline_energy_avg = mean(baseline_energy)
+    compare_energy_avg = mean(compare_energy)
+
+    runtime_improvement = (baseline_runtime - compare_runtime) / baseline_runtime * 100
+    energy_improvement = (baseline_energy_avg - compare_energy_avg) / baseline_energy_avg * 100
+
+    table = Table(Title="Comparison between models", show_lines=True)
+    table.add_column("Metric", justify="left", style="cyan")
+    table.add_column("Baseline", justify="right", style="white")
+    table.add_column("Comparison", justify="right", style="white")
+    table.add_column("Improvement", justify="right", style="green")
+
+    table.add_row(
+        "Total runtime (ms)",
+        f"{baseline_runtime:.3f}",
+        f"{compare_runtime:.3f}",
+        f"{runtime_improvement:.3f}%"
+    )
+
+    table.add_row(
+        "Avg Energy (J)",
+        f"{baseline_energy:.3f}",
+        f"{compare_energy:.3f}",
+        f"{energy_improvement:.3f}"
+    )
 
     console.print(table)
 
-
-# def run_inference(
-#     model_summary_path: Path, # Model summary not path
-#     power_profiles: dict[str, int],
-#     verbose: bool = False,
-# ) -> None: # Return dict
-#     """Perform inference for a given PyTorch engine file.
-
-#     DagsHub related configuration is used to pull models from
-#     MLflow Registry. Models are pulled from MLflow registry
-#     for performing prediction.
-
-#     Args:
-#         model_summary_path: Path to pytorch model summary file.
-#         power_profiles: Power value for various power profiles
-#         verbose: Show detailed output logs
-#     """
-#     # TODO: Expose model version via cli
-#     conv_models = InferenceModel(
-#         model_version=1, layer_type="convolutional", verbose=verbose
-#     )
-#     pooling_models = InferenceModel(
-#         model_version=1, layer_type="pooling", verbose=verbose
-#     )
-#     dense_models = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
-
-#     data = defaultdict(list)
-#     layers_info = read_layers_info(model_summary_path) # Should be layer info not path
-#     if verbose:
-#         print(f"Found {len(layers_info)} number of layers")
-#         print(f"Performing inference for {model_summary_path}")
-
-#     for layer_name, layer_info in layers_info.items():
-#         layer_type = layer_info.get_layer_type()
-#         if layer_type == "convolutional":
-#             model = conv_models
-#         elif layer_type == "pooling":
-#             model = pooling_models
-#         elif layer_type == "dense":
-#             model = dense_models
-#         else:
-#             if verbose:
-#                 print(f"Skipping layer: {layer_name}")
-#             continue
-
-#         features = model.get_features(layer_info)
-#         data["runtime_prediction"].append(
-#             model.runtime_model.predict(features.values).tolist()[0]
-#         )
-#         data["layer_name"].append(layer_name)
-#         data["layer_type"].append(layer_info.layer_type)
-
-#     if not len(data):
-#         error_console.print(
-#             "Looks like there are no convolutional, pooling or linear layers in the model"
-#         )
-#         return
-
-#     data["low_power_prediction"] = [power_profiles["low"]] * len(data["layer_name"])
-#     data["average_power_prediction"] = [power_profiles["average"]] * len(
-#         data["layer_name"]
-#     )
-#     data["high_power_prediction"] = [power_profiles["high"]] * len(data["layer_name"])
-
-#     df = pd.DataFrame.from_dict(data)
-#     if verbose:
-#         display_latency_table(df)
-
-#     metrics_df = get_metrics(df, cfg=power_profiles)
-#     display_metrics_table(metrics_df)
-#     display_runtime_table(metrics_df)
 
 
 
