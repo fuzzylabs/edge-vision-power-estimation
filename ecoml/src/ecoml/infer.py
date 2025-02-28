@@ -168,8 +168,8 @@ def display_comparison_table(baseline_results: list[InferenceResult], compare_re
     baseline_runtime = sum(r.runtime for r in baseline_results) 
     compare_runtime = sum(r.runtime for r in compare_results)
 
-    baseline_energy = [pwr * baseline_runtime for pwr in power_profiles.value()]
-    compare_energy = [pwr * compare_runtime for pwr in power_profiles.value()]
+    baseline_energy = [pwr * baseline_runtime for pwr in power_profiles.values()]
+    compare_energy = [pwr * compare_runtime for pwr in power_profiles.values()]
 
     baseline_energy_avg = mean(baseline_energy)
     compare_energy_avg = mean(compare_energy)
@@ -177,7 +177,7 @@ def display_comparison_table(baseline_results: list[InferenceResult], compare_re
     runtime_improvement = (baseline_runtime - compare_runtime) / baseline_runtime * 100
     energy_improvement = (baseline_energy_avg - compare_energy_avg) / baseline_energy_avg * 100
 
-    table = Table(Title="Comparison between models", show_lines=True)
+    table = Table(title="Comparison between models", show_lines=True)
     table.add_column("Metric", justify="left", style="cyan")
     table.add_column("Baseline", justify="right", style="white")
     table.add_column("Comparison", justify="right", style="white")
@@ -192,8 +192,8 @@ def display_comparison_table(baseline_results: list[InferenceResult], compare_re
 
     table.add_row(
         "Avg Energy (J)",
-        f"{baseline_energy:.3f}",
-        f"{compare_energy:.3f}",
+        f"{baseline_energy_avg:.3f}",
+        f"{compare_energy_avg:.3f}",
         f"{energy_improvement:.3f}"
     )
 

@@ -104,7 +104,7 @@ def predict(
     display_runtime_table(runtime_predictions)
 
 @app.command()
-def compare_models(
+def compare(
     model1: Annotated[str, typer.Option(help="PyTorch model summary in json format.")],
     model2: Annotated[str, typer.Option(help="Second PyTorch model summary in json format")],
     verbose: bool = False,
