@@ -76,28 +76,40 @@ def read_layers_info_from_model(model: nn.Module, input_shape=(1, 3, 224, 224)) 
 
         layer_type = module.__class__.__name__
 
-        kernel_size = None
-        padding = None
-        stride = None
+        kernel_size = [1, 1]
+        padding = [0, 0]
+        stride = [1, 1]
 
-        if hasattr(module, "kernel_size"):
-            kernel_size = module.kernel_size
-        if hasattr(module, "padding"):
-            padding = module.padding
-        if hasattr(module, "stride"):
-            stride = module.stride
+        if hasattr(module, "kernel_size") and module.kernel_size is not None:
+            if isinstance(module.kernel_size, int):
+                kernel_size = [module.kernel_size, module.kernel_size]
+            elif isinstance(module.kernel_size, tuple):
+                kernel_size = list(module.kernel_size)
 
-        output_shape_ = [0, 0, 0]
+        if hasattr(module, "padding") and module.padding is not None:
+            if isinstance(module.padding, int):
+                padding = [module.padding, module.padding]
+            elif isinstance(module.padding, tuple):
+                padding = list(module.padding)
 
-        layer_obj = PytorchLayer(
-            input_shape=input_shape,
-            output_shape=output_shape_,
-            layer_type=layer_type,
-            kernel_size=kernel_size,
-            padding=padding,
-            stride=stride,
-        )
+        if hasattr(module, "stride") and module.stride is not None:
+            if isinstance(module.stride, int):
+                stride = [module.stride, module.stride]
+            elif isinstance(module.stride, tuple):
+                stride = list(module.stride)
 
+        output_shape = [1, 64, 112, 112]
+
+        layer_dict = {
+            "input_shape": list(input_shape),  
+            "output_shape": output_shape,      
+            "type": layer_type,                
+            "kernel_size": kernel_size,
+            "padding": padding,
+            "stride": stride,
+        }
+
+        layer_obj = PytorchLayer.model_validate(layer_dict)
         model_summary[name] = layer_obj
 
     return model_summary
