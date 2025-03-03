@@ -16,7 +16,7 @@ app = typer.Typer(no_args_is_help=True)
 
 
 def validate_model(model_path: str):
-    """Validate if the PyTorch model is a valid summary JSON file.
+    """Validate if the PyTorch model is a valid summary JSON file or PyTorch Model.
 
     Args:
         model_path: Path to PyTorch model summary
@@ -24,14 +24,21 @@ def validate_model(model_path: str):
     Returns:
         A tuple of boolean if valid model and a dictionary model summary
     """
-    if Path(model_path).suffix == ".json":
+    path = Path(model_path)
+    suffix = path.suffix.lower()
+
+    if suffix == ".json":
         try:
-            with open(model_path, "r") as file:
-                model_summary = json.load(file)
-            return True, model_summary
+            with open(path, "r") as file:
+                _ = json.load(file)
+            return True, "json"
         except json.JSONDecodeError:
             error_console.print("Invalid JSON file.")
             return False, None
+
+    if suffix in [".pt", ".pth"]:
+        return True, "pt"
+    
     return False, None
 
 
@@ -59,7 +66,7 @@ def config():
 
 @app.command()
 def predict(
-    model: Annotated[str, typer.Option(help="PyTorch model summary in json format.")],
+    model: Annotated[str, typer.Option(help="PyTorch model (JSON or .pt file)")],
     verbose: Annotated[bool, typer.Option(help="Detailed Summary")] = False,
 ):
     """
@@ -71,21 +78,24 @@ def predict(
     """
     cfg = CONFIG["jetson_orin"]["pytorch"]
 
-    success, _ = validate_model(model)
+    success, model_type = validate_model(model)
     if not success:
-        error_console.print("Expected a valid PyTorch model summary JSON File.")
+        error_console.print("Invalid file type. Must be a .json or .pt")
         raise typer.Exit(code=1)
     
     # Import relevant functions
     from ecoml.infer import(
         run_inference,
+        run_inference_pt,
         display_latency_table,
         display_metrics_table,
         display_runtime_table
     )
 
-    # Run the inference function that returns the dictionary
-    runtime_predictions = run_inference(Path(model), power_profiles=cfg, verbose=verbose)
+    if model_type == "json":
+        runtime_predictions = run_inference(Path(model), power_profiles=cfg, verbose=verbose)
+    else:
+        runtime_predictions = run_inference_pt(Path(model), power_profiles=cfg, verbose=verbose)
 
     # If it is an empty dict then throw an error
     if not runtime_predictions:
@@ -109,6 +119,9 @@ def compare(
     model2: Annotated[str, typer.Option(help="Second PyTorch model summary in json format")],
     verbose: bool = False,
 ):
+    """
+    Compare two models and visualise improvement.
+    """
     from ecoml.infer import(
         run_inference,
         display_comparison_table,

@@ -1,4 +1,7 @@
 import json
+import torch
+import torch.nn as nn
+from typing import Dict
 from pathlib import Path
 
 from pydantic import BaseModel, Field, ValidationError, field_validator
@@ -59,3 +62,42 @@ def read_layers_info(path: Path) -> PytorchModelSummary:
             layer = PytorchLayer.model_validate(layer_dict)
             model_summary[layer_name] = layer
         return model_summary
+
+def read_layers_info_from_model(model: nn.Module, input_shape=(1, 3, 224, 224)) -> PytorchModelSummary:
+    """
+    Reading from a model specifically
+    """
+
+    model_summary: PytorchModelSummary = {}
+
+    for name, module in model.named_modules():
+        if name == "":
+            continue
+
+        layer_type = module.__class__.__name__
+
+        kernel_size = None
+        padding = None
+        stride = None
+
+        if hasattr(module, "kernel_size"):
+            kernel_size = module.kernel_size
+        if hasattr(module, "padding"):
+            padding = module.padding
+        if hasattr(module, "stride"):
+            stride = module.stride
+
+        output_shape_ = [0, 0, 0]
+
+        layer_obj = PytorchLayer(
+            input_shape=input_shape,
+            output_shape=output_shape_,
+            layer_type=layer_type,
+            kernel_size=kernel_size,
+            padding=padding,
+            stride=stride,
+        )
+
+        model_summary[name] = layer_obj
+
+    return model_summary

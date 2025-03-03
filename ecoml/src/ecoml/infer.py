@@ -1,5 +1,7 @@
 """Run inference for PyTorch model."""
 
+import torch
+
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean
@@ -10,7 +12,7 @@ from rich.console import Console
 from rich.table import Table
 from dataclasses import dataclass
 
-from ecoml.data_preparation.pytorch_utils import read_layers_info
+from ecoml.data_preparation.pytorch_utils import read_layers_info, read_layers_info_from_model
 from ecoml.model_builder.model_inference import InferenceModel
 
 console = Console()
@@ -53,6 +55,42 @@ def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbo
         inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
 
     
+    return inference_results
+
+def run_inference_pt(model_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
+    """
+    Load a PyTorch model (.pt or .pth) and run inference similar to running inference on a .json file
+    """
+
+    model = torch.load(model_path)
+    model.eval()
+
+    layer_info_read = read_layers_info_from_model(model)
+    
+    inference_results = []
+
+    convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
+    pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
+    dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
+
+    for layer_name, layer_info in layer_info_read.items():
+        layer_type = layer_info.get_layer_type()
+
+        if layer_type == "convolutional":
+            curr_model = convolution
+        elif layer_type == "pooling":
+            curr_model = pooling
+        elif layer_type == "dense":
+            curr_model = dense
+        else:
+            if verbose:
+                print(f"Skipping layer: {layer_name}")
+                continue
+
+        features = curr_model.get_features(layer_info)
+        predicted_runtime = curr_model.runtime_model.predict(features.values).tolist()[0]
+        inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
+
     return inference_results
 
 
@@ -177,31 +215,32 @@ def display_comparison_table(baseline_results: list[InferenceResult], compare_re
     runtime_improvement = (baseline_runtime - compare_runtime) / baseline_runtime * 100
     energy_improvement = (baseline_energy_avg - compare_energy_avg) / baseline_energy_avg * 100
 
-    table = Table(title="Comparison between models", show_lines=True)
+    runtime_grade = "green" if runtime_improvement > 0 else "red"
+    energy_grade = "green" if energy_improvement > 0 else "red"
+
+    table = Table(title="Comparison between models", show_lines=True, caption="Improvement based on Model 2 over Model 1")
     table.add_column("Metric", justify="left", style="cyan")
-    table.add_column("Baseline", justify="right", style="white")
-    table.add_column("Improved", justify="right", style="white")
+    table.add_column("Model 1", justify="right", style="white")
+    table.add_column("Model 2", justify="right", style="white")
     table.add_column("Improvement (%)", justify="right", style="green")
 
     table.add_row(
         "Total runtime (ms)",
         f"{baseline_runtime:.3f}",
         f"{compare_runtime:.3f}",
-        f"{runtime_improvement:.3f}"
+        f"[{runtime_grade}]{runtime_improvement:.3f}[/{runtime_grade}]"
     )
 
     table.add_row(
         "Avg Energy (J)",
         f"{baseline_energy_avg:.3f}",
         f"{compare_energy_avg:.3f}",
-        f"{energy_improvement:.3f}"
+        f"[{energy_grade}]{energy_improvement:.3f}[/{energy_grade}]"
     )
 
     console.print(table)
 
 
 # Get rid of verbose flag, replace print with logs (later)
-
-# is 5 seconds (resnet) lining up with our data. Same with joules
 
 # "if a --scenario flag, maybe predict the quantised stuff" - possibly
