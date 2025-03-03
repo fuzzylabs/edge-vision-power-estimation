@@ -180,14 +180,14 @@ def display_comparison_table(baseline_results: list[InferenceResult], compare_re
     table = Table(title="Comparison between models", show_lines=True)
     table.add_column("Metric", justify="left", style="cyan")
     table.add_column("Baseline", justify="right", style="white")
-    table.add_column("Comparison", justify="right", style="white")
-    table.add_column("Improvement", justify="right", style="green")
+    table.add_column("Improved", justify="right", style="white")
+    table.add_column("Improvement (%)", justify="right", style="green")
 
     table.add_row(
         "Total runtime (ms)",
         f"{baseline_runtime:.3f}",
         f"{compare_runtime:.3f}",
-        f"{runtime_improvement:.3f}%"
+        f"{runtime_improvement:.3f}"
     )
 
     table.add_row(
@@ -200,8 +200,8 @@ def display_comparison_table(baseline_results: list[InferenceResult], compare_re
     console.print(table)
 
 
-
-
-# 1 make table neat
-# 2 Refactor function ^
 # Get rid of verbose flag, replace print with logs (later)
+
+# is 5 seconds (resnet) lining up with our data. Same with joules
+
+# "if a --scenario flag, maybe predict the quantised stuff" - possibly
