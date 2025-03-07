@@ -61,6 +61,7 @@ def run_inference_pt(model_path: Path, power_profiles: dict[str, int], verbose: 
     """
     Load a PyTorch model (.pt or .pth) and run inference similar to running inference on a .json file
     """
+    # Change later
 
     model = torch.load(model_path)
     model.eval()
