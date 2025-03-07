@@ -171,30 +171,33 @@ def display_comparison_table(baseline_results: list[InferenceResult], compare_re
     baseline_energy = [pwr * baseline_runtime for pwr in power_profiles.values()]
     compare_energy = [pwr * compare_runtime for pwr in power_profiles.values()]
 
-    baseline_energy_avg = mean(baseline_energy)
-    compare_energy_avg = mean(compare_energy)
+    baseline_energy_avg = mean(baseline_energy) / 1000
+    compare_energy_avg = mean(compare_energy) / 1000
 
     runtime_improvement = (baseline_runtime - compare_runtime) / baseline_runtime * 100
     energy_improvement = (baseline_energy_avg - compare_energy_avg) / baseline_energy_avg * 100
+
+    runtime_grade = "green" if runtime_improvement > 0 else "red"
+    energy_grade = "green" if energy_improvement > 0 else "red"
 
     table = Table(title="Comparison between models", show_lines=True)
     table.add_column("Metric", justify="left", style="cyan")
     table.add_column("Baseline", justify="right", style="white")
     table.add_column("Improved", justify="right", style="white")
-    table.add_column("Improvement (%)", justify="right", style="green")
+    table.add_column("Difference (%)", justify="right", style="green")
 
     table.add_row(
         "Total runtime (ms)",
         f"{baseline_runtime:.3f}",
         f"{compare_runtime:.3f}",
-        f"{runtime_improvement:.3f}"
+        f"[{runtime_grade}]{runtime_improvement:.3f}[/{runtime_grade}]"
     )
 
     table.add_row(
         "Avg Energy (J)",
         f"{baseline_energy_avg:.3f}",
         f"{compare_energy_avg:.3f}",
-        f"{energy_improvement:.3f}"
+        f"[{energy_grade}]{energy_improvement:.3f}[/{energy_grade}]"
     )
 
     console.print(table)

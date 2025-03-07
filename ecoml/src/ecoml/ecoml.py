@@ -109,6 +109,9 @@ def compare(
     model2: Annotated[str, typer.Option(help="Second PyTorch model summary in json format")],
     verbose: bool = False,
 ):
+    """
+    Provide comparison between two models.
+    """
     from ecoml.infer import(
         run_inference,
         display_comparison_table,
