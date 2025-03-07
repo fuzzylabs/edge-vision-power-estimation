@@ -180,3 +180,5 @@ ecoml_models
 *.pt
 
 mlruns
+.DS_Store
+**/.DS_Store

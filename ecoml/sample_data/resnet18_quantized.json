@@ -1,0 +1,1276 @@
+{
+    "_quant": {
+        "input_shape": [
+            1,
+            3,
+            224,
+            224
+        ],
+        "output_shape": [
+            1,
+            3,
+            224,
+            224
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Quantize"
+    },
+    "_conv1": {
+        "input_shape": [
+            1,
+            3,
+            224,
+            224
+        ],
+        "output_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "kernel_size": [
+            7,
+            7
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            3,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_bn1": {
+        "input_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_relu": {
+        "input_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_maxpool": {
+        "input_shape": [
+            1,
+            64,
+            112,
+            112
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": 3,
+        "stride": 2,
+        "padding": 1,
+        "type": "MaxPool2d"
+    },
+    "_layer1_0_conv1": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer1_0_bn1": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer1_0_relu": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer1_0_conv2": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer1_0_bn2": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer1_0_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer1_1_conv1": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer1_1_bn1": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer1_1_relu": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer1_1_conv2": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer1_1_bn2": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer1_1_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_0_conv1": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer2_0_bn1": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_0_relu": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_0_conv2": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer2_0_bn2": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_0_downsample_0": {
+        "input_shape": [
+            1,
+            64,
+            56,
+            56
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "Conv2d"
+    },
+    "_layer2_0_downsample_1": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_0_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_1_conv1": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer2_1_bn1": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_1_relu": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_1_conv2": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer2_1_bn2": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer2_1_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_0_conv1": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer3_0_bn1": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_0_relu": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_0_conv2": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer3_0_bn2": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_0_downsample_0": {
+        "input_shape": [
+            1,
+            128,
+            28,
+            28
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "Conv2d"
+    },
+    "_layer3_0_downsample_1": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_0_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_1_conv1": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer3_1_bn1": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_1_relu": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_1_conv2": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer3_1_bn2": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer3_1_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_0_conv1": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer4_0_bn1": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_0_relu": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_0_conv2": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer4_0_bn2": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_0_downsample_0": {
+        "input_shape": [
+            1,
+            256,
+            14,
+            14
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "Conv2d"
+    },
+    "_layer4_0_downsample_1": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_0_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_1_conv1": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_layer4_1_bn1": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_1_relu": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_1_conv2": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "Conv2d"
+    },
+    "_layer4_1_bn2": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_layer4_1_add_relu_activation_post_process": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_avgpool": {
+        "input_shape": [
+            1,
+            512,
+            7,
+            7
+        ],
+        "output_shape": [
+            1,
+            512,
+            1,
+            1
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "AdaptiveAvgPool2d"
+    },
+    "_dequant": {
+        "input_shape": [
+            1,
+            1000
+        ],
+        "output_shape": [
+            1,
+            1000
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "DeQuantize"
+    }
+}
