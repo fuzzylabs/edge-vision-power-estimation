@@ -180,7 +180,7 @@ def display_runtime_table(runtime_predictions: list[InferenceResult]) -> None:
     console.print(runtime_table)
 
 def display_latency_table(runtime_predictions: list[InferenceResult]) -> None:
-    """Display a table of layer name and predicted runtime for the layer.
+    """Display a table of layer name and predicted runtime for the layer
 
     Args:
         df:  Input dataframe containing layer-wise latency
