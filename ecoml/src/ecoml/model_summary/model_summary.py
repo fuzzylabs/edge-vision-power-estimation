@@ -4,6 +4,9 @@ import json
 from pathlib import Path
 
 import torch
+import torch.nn.quantized as quantized_nn
+from torch.nn.intrinsic.quantized import ConvReLU2d
+
 
 
 def get_layers(
@@ -19,15 +22,21 @@ def get_layers(
     Returns:
         a list of tuple containing the layer name and the layer.
     """
-    children = list(model.named_children())
+    if isinstance(model, (ConvReLU2d, quantized_nn.Conv2d, quantized_nn.Linear, quantized_nn.BatchNorm2d)):
+        return [(name_prefix, model)]
+    
+    try:
+        children = list(model.named_children())
+    except AttributeError:
+        return [(name_prefix, model)]
 
     if len(children) == 0:
-        result = [(name_prefix, model)]
-    else:
-        result = []
-        for child_name, child in children:
-            layers = get_layers(child, name_prefix + "_" + child_name)
-            result.extend(layers)
+        return [(name_prefix, model)]
+    
+    result = []
+    for child_name, child in children:
+        layers = get_layers(child, name_prefix + "_" + child_name)
+        result.extend(layers)
 
     return result
 
@@ -66,6 +75,8 @@ def get_summary(
         return hook
 
     for layer_name, layer in get_layers(model):
+        if not hasattr(layer, "register_forward_hook"):
+            continue
         hooks.append(layer.register_forward_hook(register_hook(layer_name)))
 
     model.eval()
