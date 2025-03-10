@@ -1,7 +1,7 @@
 """Run inference for PyTorch model."""
 
 import torch
-
+import json
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean
@@ -24,38 +24,63 @@ class InferenceResult:
     ltype: str
     runtime: float
 
-def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
-    convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
-    pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
-    dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
-
-    layer_info_read = read_layers_info(model_sumary_path)
+def run_inference(model_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
+    suffix = model_path.suffix.lower() 
+    if suffix == ".json":
+        layer_info = read_layers_info(model_path)
+    elif suffix in [".pt", ".pth"]:
+        model = torch.load(model_path, map_location=torch.device('cpu'))
+        if not isinstance(model, torch.nn.Module):
+            model = model.get("model", None)
+            if model is None:
+                error_console.print("Invalid PyTorch File...")
+                return []
+        layer_info = read_layers_info_from_model(model)
+    else:
+        error_console.print("Unsupported file format...")
+        return []
     
-    if verbose:
-        print(f"Found {len(layer_info_read)} layers in {model_sumary_path}.")
+    results = []
+    for layer in layer_info.values():
+        layer_type = layer["type"]
+        model_instance = InferenceModel(model_version=1, layer_type=layer_type, verbose=verbose)
+        runtime = model_instance.predict(layer)
+        results.append(InferenceResult(name=layer_type, ltype=layer_type, runtime=runtime))
 
-    inference_results = []
-    for layer_name, layer_info in layer_info_read.items():
-        layer_type = layer_info.get_layer_type()
+    return results
 
-        if layer_type == "convolutional":
-            model = convolution
-        elif layer_type == "pooling":
-            model = pooling
-        elif layer_type == "dense":
-            model = dense
-        else:
-            if verbose:
-                print(f"Skipping layer: {layer_name}")
-            continue
+# def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
+#     convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
+#     pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
+#     dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
 
-        features = model.get_features(layer_info)
-        predicted_runtime = model.runtime_model.predict(features.values).tolist()[0]
+#     layer_info_read = read_layers_info(model_sumary_path)
+    
+#     if verbose:
+#         print(f"Found {len(layer_info_read)} layers in {model_sumary_path}.")
 
-        inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
+#     inference_results = []
+#     for layer_name, layer_info in layer_info_read.items():
+#         layer_type = layer_info.get_layer_type()
+
+#         if layer_type == "convolutional":
+#             model = convolution
+#         elif layer_type == "pooling":
+#             model = pooling
+#         elif layer_type == "dense":
+#             model = dense
+#         else:
+#             if verbose:
+#                 print(f"Skipping layer: {layer_name}")
+#             continue
+
+#         features = model.get_features(layer_info)
+#         predicted_runtime = model.runtime_model.predict(features.values).tolist()[0]
+
+#         inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
 
     
-    return inference_results
+#     return inference_results
 
 # def run_inference_pt(model_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
 #     """

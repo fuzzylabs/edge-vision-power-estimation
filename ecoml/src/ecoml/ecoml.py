@@ -92,7 +92,7 @@ def predict(
     """
     cfg = CONFIG["jetson_orin"]["pytorch"]
 
-    success, model_type = validate_model(model)
+    success, model_type, model_summary = validate_model(model)
     if not success:
         error_console.print("Invalid file type. Must be a .json or .pt")
         raise typer.Exit(code=1)
@@ -100,7 +100,6 @@ def predict(
     # Import relevant functions
     from ecoml.infer import(
         run_inference,
-        run_inference_pt,
         display_latency_table,
         display_metrics_table,
         display_runtime_table

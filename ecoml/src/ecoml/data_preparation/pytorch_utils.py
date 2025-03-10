@@ -63,53 +63,82 @@ def read_layers_info(path: Path) -> PytorchModelSummary:
             model_summary[layer_name] = layer
         return model_summary
 
-def read_layers_info_from_model(model: nn.Module, input_shape=(1, 3, 224, 224)) -> PytorchModelSummary:
+def read_layers_info_from_model(model: nn.Module, input_shape=(1, 3, 224, 224)) -> dict:
     """
     Reading from a model specifically
     """
 
-    model_summary: PytorchModelSummary = {}
+    model_info = {}
+    input = torch.randn(*input_shape)
+    hooks = []
 
-    for name, module in model.named_modules():
-        if name == "":
-            continue
+    def register_hook(layer_name):
+        def hook(module, input, output):
+            model_info[layer_name] = {
+                "input_shape": list(input[0].size()) if input else None,
+                "output_shape": list(output.size()) if output is not None else None,
+                "kernel_size": getattr(module, "kernel_size", None),
+                "stride": getattr(module, "stride", None),
+                "padding": getattr(module, "padding", None),
+                "type": module.__class__.__name__,
+            }
+        return hook
+    
+    for name, module in module.named_modules():
+        if name:
+            hooks.append(module.register_forward_hook(register_hook(name)))
 
-        layer_type = module.__class__.__name__
+    model.eval()
+    with torch.no_grad():
+        _ = model(input)
 
-        kernel_size = [1, 1]
-        padding = [0, 0]
-        stride = [1, 1]
+    for hook in hooks:
+        hook.remove()
 
-        if hasattr(module, "kernel_size") and module.kernel_size is not None:
-            if isinstance(module.kernel_size, int):
-                kernel_size = [module.kernel_size, module.kernel_size]
-            elif isinstance(module.kernel_size, tuple):
-                kernel_size = list(module.kernel_size)
+    return model_info
 
-        if hasattr(module, "padding") and module.padding is not None:
-            if isinstance(module.padding, int):
-                padding = [module.padding, module.padding]
-            elif isinstance(module.padding, tuple):
-                padding = list(module.padding)
+    # model_summary: PytorchModelSummary = {}
 
-        if hasattr(module, "stride") and module.stride is not None:
-            if isinstance(module.stride, int):
-                stride = [module.stride, module.stride]
-            elif isinstance(module.stride, tuple):
-                stride = list(module.stride)
+    # for name, module in model.named_modules():
+    #     if name == "":
+    #         continue
 
-        output_shape = [1, 64, 112, 112]
+    #     layer_type = module.__class__.__name__
 
-        layer_dict = {
-            "input_shape": list(input_shape),  
-            "output_shape": output_shape,      
-            "type": layer_type,                
-            "kernel_size": kernel_size,
-            "padding": padding,
-            "stride": stride,
-        }
+    #     kernel_size = [1, 1]
+    #     padding = [0, 0]
+    #     stride = [1, 1]
 
-        layer_obj = PytorchLayer.model_validate(layer_dict)
-        model_summary[name] = layer_obj
+    #     if hasattr(module, "kernel_size") and module.kernel_size is not None:
+    #         if isinstance(module.kernel_size, int):
+    #             kernel_size = [module.kernel_size, module.kernel_size]
+    #         elif isinstance(module.kernel_size, tuple):
+    #             kernel_size = list(module.kernel_size)
 
-    return model_summary
+    #     if hasattr(module, "padding") and module.padding is not None:
+    #         if isinstance(module.padding, int):
+    #             padding = [module.padding, module.padding]
+    #         elif isinstance(module.padding, tuple):
+    #             padding = list(module.padding)
+
+    #     if hasattr(module, "stride") and module.stride is not None:
+    #         if isinstance(module.stride, int):
+    #             stride = [module.stride, module.stride]
+    #         elif isinstance(module.stride, tuple):
+    #             stride = list(module.stride)
+
+    #     output_shape = [1, 64, 112, 112]
+
+    #     layer_dict = {
+    #         "input_shape": list(input_shape),  
+    #         "output_shape": output_shape,      
+    #         "type": layer_type,                
+    #         "kernel_size": kernel_size,
+    #         "padding": padding,
+    #         "stride": stride,
+    #     }
+
+    #     layer_obj = PytorchLayer.model_validate(layer_dict)
+    #     model_summary[name] = layer_obj
+
+    # return model_summary
