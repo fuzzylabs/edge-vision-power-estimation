@@ -57,42 +57,42 @@ def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbo
     
     return inference_results
 
-def run_inference_pt(model_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
-    """
-    Load a PyTorch model (.pt or .pth) and run inference similar to running inference on a .json file
-    """
-    # Change later
+# def run_inference_pt(model_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
+#     """
+#     Load a PyTorch model (.pt or .pth) and run inference similar to running inference on a .json file
+#     """
+#     # Change later
 
-    model = torch.load(model_path)
-    model.eval()
+#     model = torch.load(model_path)
+#     model.eval()
 
-    layer_info_read = read_layers_info_from_model(model)
+#     layer_info_read = read_layers_info_from_model(model)
     
-    inference_results = []
+#     inference_results = []
 
-    convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
-    pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
-    dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
+#     convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
+#     pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
+#     dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
 
-    for layer_name, layer_info in layer_info_read.items():
-        layer_type = layer_info.get_layer_type()
+#     for layer_name, layer_info in layer_info_read.items():
+#         layer_type = layer_info.get_layer_type()
 
-        if layer_type == "convolutional":
-            curr_model = convolution
-        elif layer_type == "pooling":
-            curr_model = pooling
-        elif layer_type == "dense":
-            curr_model = dense
-        else:
-            if verbose:
-                print(f"Skipping layer: {layer_name}")
-                continue
+#         if layer_type == "convolutional":
+#             curr_model = convolution
+#         elif layer_type == "pooling":
+#             curr_model = pooling
+#         elif layer_type == "dense":
+#             curr_model = dense
+#         else:
+#             if verbose:
+#                 print(f"Skipping layer: {layer_name}")
+#                 continue
 
-        features = curr_model.get_features(layer_info)
-        predicted_runtime = curr_model.runtime_model.predict(features.values).tolist()[0]
-        inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
+#         features = curr_model.get_features(layer_info)
+#         predicted_runtime = curr_model.runtime_model.predict(features.values).tolist()[0]
+#         inference_results.append(InferenceResult(layer_name, layer_type, predicted_runtime))
 
-    return inference_results
+#     return inference_results
 
 
 def get_metrics(df: pd.DataFrame, cfg: dict[str, int]) -> pd.DataFrame:

@@ -3,10 +3,12 @@
 import json
 from pathlib import Path
 from typing import Annotated
+import torch
 
 import typer
 from rich.console import Console
 from rich.table import Table
+from ecoml.model_summary.model_summary import get_summary
 
 CONFIG = {"jetson_orin": {"pytorch": {"low": 5, "average": 7, "high": 10}}}
 
@@ -30,15 +32,27 @@ def validate_model(model_path: str):
     if suffix == ".json":
         try:
             with open(path, "r") as file:
-                _ = json.load(file)
-            return True, "json"
+                model_summary = json.load(file)
+            return True, "json", model_summary
         except json.JSONDecodeError:
             error_console.print("Invalid JSON file.")
-            return False, None
+            return False, None, None
 
     if suffix in [".pt", ".pth"]:
-        return True, "pt"
-    
+        try:
+            model = torch.load(path, map_location=torch.device('cpu'))
+            if not isinstance(model, torch.nn.Module):
+                model = model.get("model", None)
+                if model is None:
+                    error_console.print("Invalid PyTorch file.")
+                    return False, None, None
+            model_summary = get_summary(model)
+            return True, "pytorch", model_summary
+        except Exception as e:
+            error_console.print(f"Failed to load PyTorch model: {e}")
+            return False, None, None
+        
+    error_console.print("Invalid File Type...")
     return False, None
 
 
