@@ -30,7 +30,7 @@ uv sync
 > [!NOTE]
 > Coming Soon: We will also publish the package on PyPI for ease of use.
 
-### Usage
+## Usage
 
 To use EcoML for energy estimation of PyTorch models, follow these steps:
 
