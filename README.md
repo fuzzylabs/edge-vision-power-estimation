@@ -39,37 +39,36 @@ To use EcoML for energy estimation of PyTorch models, follow these steps:
 > [!NOTE]
 > Right now, this tool works on a JSON-based model summary format. Soon, we'll directly support PyTorch files in the tool; for now, we've provided some example JSON files
 
-    ```bash
-    ecoml predict --model sample_data/resnet18.json
-    ```
+```bash
+ecoml predict --model sample_data/resnet18.json
+```
 
-    [Sample data](./sample_data/) folder contains model summary for 3 PyTorch models - Resnet18, Mobilenetv2 and VGG16.
+[Sample data](./sample_data/) folder contains model summary for 3 PyTorch models - Resnet18, Mobilenetv2 and VGG16.
 
-    To use a custom model for inference, you have to generate a model summary for the PyTorch model. Refer to the next section for how to use `ecoml` in your workflow.
+To use a custom model for inference, you have to generate a model summary for the PyTorch model. Refer to the next section for how to use `ecoml` in your workflow.
 
-    `--verbose` flag can be passed to above command to get a detailed output.
+`--verbose` flag can be passed to above command to get a detailed output.
 
 2. Comparing two different models
 
-    ```bash
-    ecoml compare --model1 sample_data/resnet18.json --model2 sample_data/resnet18_quantized.json
-    ```
+```bash
+ecoml compare --model1 sample_data/resnet18.json --model2 sample_data/resnet18_quantized.json
+```
 
 3. Using custom PyTorch model in your workflow
 
-    ```bash
-    from ecoml.model_summary.model_summary import get_summary
+```bash
+from ecoml.model_summary.model_summary import get_summary
+summary = get_summary(your_pt_model, model_input_shape, summary_file_path='summary/my_model.json')
+```
 
-    summary = get_summary(your_pt_model, model_input_shape, summary_file_path='summary/my_model.json')
-    ```
+Here `your_pt_model` is a instance `nn.Module`, the trained PyTorch model.
 
-    Here `your_pt_model` is a instance `nn.Module`, the trained PyTorch model.
+Next, you can use the `predict` command to get the energy prediction using the path where model summary is saved.
 
-    Next, you can use the `predict` command to get the energy prediction using the path where model summary is saved.
-
-   ```bash
-    ecoml predict --model summary/my_model.json
-    ```
+```bash
+ecoml predict --model summary/my_model.json
+```
 
 ## 🔗 The details
 
