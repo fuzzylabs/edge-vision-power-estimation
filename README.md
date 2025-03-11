@@ -1,5 +1,5 @@
 <h1 align="center">
-EdgeProfiler
+EcoMLOps
 </h1>
 
 <p align="center">
@@ -12,7 +12,66 @@ EdgeProfiler
   </a>
 </p>
 
-## 🔗 Quick Links
+## 🛠️ Running the tool
+
+EcoML aims to provide accurate power consumption estimates for edge devices, helping developers optimise their applications for energy efficiency. Currently, as a demonstration, it supports convolutional neural networks for deployment to the Nvidia Jetson Nano. We aim to extend this in the future.
+
+## Installation
+
+To install the necessary dependencies, run the following command:
+
+```bash
+cd ecoml/
+uv venv
+source .venv/bin/activate
+uv sync
+```
+
+> [!NOTE]
+> Coming Soon: We will also publish the package on PyPI for ease of use.
+
+### Usage
+
+To use EcoML for energy estimation of PyTorch models, follow these steps:
+
+1. Using PyTorch model summary
+
+    > [!NOTE]
+    > Right now, this tool works on a JSON-based model summary format. Soon, we'll directly support PyTorch files in the tool; for now, we've provided some example JSON files
+
+    ```bash
+    ecoml predict --model sample_data/resnet18.json
+    ```
+
+    [Sample data](./sample_data/) folder contains model summary for 3 PyTorch models - Resnet18, Mobilenetv2 and VGG16.
+
+    To use a custom model for inference, you have to generate a model summary for the PyTorch model. Refer to the next section for how to use `ecoml` in your workflow.
+
+    `--verbose` flag can be passed to above command to get a detailed output.
+
+2. Comparing two different models
+
+    ```bash
+    ecoml compare --model1 sample_data/resnet18.json --model2 sample_data/resnet18_quantized.json
+    ```
+
+3. Using custom PyTorch model in your workflow
+
+    ```bash
+    from ecoml.model_summary.model_summary import get_summary
+
+    summary = get_summary(your_pt_model, model_input_shape, summary_file_path='summary/my_model.json')
+    ```
+
+    Here `your_pt_model` is a instance `nn.Module`, the trained PyTorch model.
+
+    Next, you can use the `predict` command to get the energy prediction using the path where model summary is saved.
+
+   ```bash
+    ecoml predict --model summary/my_model.json
+    ```
+
+## 🔗 The details
 
 * [Documentation](docs)
 * Source Code
@@ -27,11 +86,11 @@ EdgeProfiler
 
 **Measure smarter, deploy greener:** A tool for inferring and optimising the power consumption of Convolutional Neural Networks (CNN's) on edge devices.
 
-EdgeProfiler helps you to understand and minimise your model's power consumption and runtime, allowing you to gauge your deployment's environmental impact during the training process to help you to make smarter training decisions. 
+EcoMLOps is a tool that helps you to understand and minimise your model's power consumption and runtime, allowing you to gauge your deployment's environmental impact during the training process to help you to make smarter training decisions. 
 
 ---
 
-**What's inside:**
+**How we built it:**
 - **Inference:** Determine power consumption and runtime for different layers in a CNN model on an Nvidia Jetson edge device using our custom models.
 - **Training:** Build your own power consumption and runtime models using DagsHub for data versioning, Scikit-Learn for model training and MLFlow for experiment tracking.
 - **Data Collection:** Record measurements of a model's power consumption and runtime storing all data versions in DagsHub.
