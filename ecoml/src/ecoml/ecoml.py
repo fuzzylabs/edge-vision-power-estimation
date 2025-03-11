@@ -3,10 +3,12 @@
 import json
 from pathlib import Path
 from typing import Annotated
-
+import torch
 import typer
 from rich.console import Console
 from rich.table import Table
+from ecoml.model_summary.model_summary import get_summary
+from ecoml.infer import run_inference, display_latency_table, display_metrics_table, display_runtime_table
 
 CONFIG = {"jetson_orin": {"pytorch": {"low": 5, "average": 7, "high": 10}}}
 
@@ -34,6 +36,14 @@ def validate_model(model_path: str):
             return False, None
     return False, None
 
+def load_model(model_path: str):
+    suffix = Path(model_path).suffix
+    if suffix in [".pth", ".pt"]:
+        model = torch.load(model_path, map_location=torch.device('cpu'))
+        if isinstance(model, dict) and "model" in model:
+            model = model["model"]
+        return model
+    return None
 
 def display_config_table(cfg: dict[str, int]) -> None:
     """Display a table of power profiles.
@@ -70,26 +80,40 @@ def predict(
     If --verbose is used, a detailed summary of predictions is provided.
     """
     cfg = CONFIG["jetson_orin"]["pytorch"]
+    model_path = Path(model)
 
-    success, _ = validate_model(model)
-    if not success:
-        error_console.print("Expected a valid PyTorch model summary JSON File.")
+    if model_path.suffix in [".pth", ".pt"]:
+        pytorch_model = load_model(model)
+        if pytorch_model is None:
+            error_console.print("Failed to load model...")
+            raise typer.Exit(code=1)
+        
+        summary = get_summary(pytorch_model)
+    elif model_path.suffix == ".json":
+        summary = model_path
+    else:
+        error_console.print("Invalid file type...")
         raise typer.Exit(code=1)
+
+    # success, _ = validate_model(model)
+    # if not success:
+    #     error_console.print("Expected a valid PyTorch model summary JSON File.")
+    #     raise typer.Exit(code=1)
     
-    # Import relevant functions
-    from ecoml.infer import(
-        run_inference,
-        display_latency_table,
-        display_metrics_table,
-        display_runtime_table
-    )
+    # # Import relevant functions
+    # from ecoml.infer import(
+    #     run_inference,
+    #     display_latency_table,
+    #     display_metrics_table,
+    #     display_runtime_table
+    # )
 
     # Run the inference function that returns the dictionary
-    runtime_predictions = run_inference(Path(model), power_profiles=cfg, verbose=verbose)
+    runtime_predictions = run_inference(summary, power_profiles=cfg, verbose=verbose)
 
     # If it is an empty dict then throw an error
     if not runtime_predictions:
-        error_console.print("Inference failed. No results were returned")
+        error_console.print("Inference failed. No results were returned...")
         raise typer.Exit(code=1)
     
     # Take out data from the dict

@@ -9,9 +9,11 @@ from rich import print
 from rich.console import Console
 from rich.table import Table
 from dataclasses import dataclass
+from typing import Union
 
-from ecoml.data_preparation.pytorch_utils import read_layers_info
+from ecoml.data_preparation.pytorch_utils import PytorchLayer, read_layers_info
 from ecoml.model_builder.model_inference import InferenceModel
+from ecoml.model_summary.model_summary import get_summary
 
 console = Console()
 error_console = Console(stderr=True, style="bold red")
@@ -22,19 +24,25 @@ class InferenceResult:
     ltype: str
     runtime: float
 
-def run_inference(model_sumary_path: Path, power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
+def run_inference(model_input: Union[Path, dict], power_profiles: dict[str, int], verbose: bool = False) -> list[InferenceResult]:
     convolution = InferenceModel(model_version=1, layer_type="convolutional", verbose=verbose)
     pooling = InferenceModel(model_version=1, layer_type="pooling", verbose=verbose)
     dense = InferenceModel(model_version=1, layer_type="dense", verbose=verbose)
 
-    layer_info_read = read_layers_info(model_sumary_path)
+    if isinstance(model_input, Path):
+        layer_info_read = read_layers_info(model_input)
+    elif isinstance(model_input, dict):
+        layer_info_read = {k: PytorchLayer(**v) for k, v in model_input.items()}
+    else:
+        error_console.print("Invalid model input...")
+        return []
     
     if verbose:
-        print(f"Found {len(layer_info_read)} layers in {model_sumary_path}.")
+        print(f"Found {len(layer_info_read)} layers in model...")
 
     inference_results = []
     for layer_name, layer_info in layer_info_read.items():
-        layer_type = layer_info.get_layer_type()
+        layer_type = layer_info.get_layer_type() if hasattr(layer_info, 'get_layer_type') else layer_info.get('type', 'unknown')
 
         if layer_type == "convolutional":
             model = convolution
