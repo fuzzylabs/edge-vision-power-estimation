@@ -22,8 +22,8 @@ def get_layers(
     Returns:
         a list of tuple containing the layer name and the layer.
     """
-    if isinstance(model, (ConvReLU2d, quantized_nn.Conv2d, quantized_nn.Linear, quantized_nn.BatchNorm2d)):
-        return [(name_prefix, model)]
+    if not hasattr(model, "_modules") or isinstance(model, (quantized_nn.Conv2d, ConvReLU2d, quantized_nn.Linear, quantized_nn.BatchNorm2d)):
+        return []
     
     try:
         children = list(model.named_children())
@@ -40,6 +40,14 @@ def get_layers(
 
     return result
 
+def is_quantized_model(model: torch.nn.Module) -> bool:
+    try:
+        return any(
+            isinstance(layer, (quantized_nn.Conv2d, ConvReLU2d, quantized_nn.Linear))
+            for _, layer in model.named_modules()
+        )
+    except AttributeError:
+        return False
 
 def get_summary(
     model: torch.nn.Module,
@@ -61,6 +69,23 @@ def get_summary(
     test = torch.randn(*input_shape)
     hooks = []
 
+    if is_quantized_model(model):
+        print("Detected quantized model...")
+        for layer in model.children():
+            try:
+                model_info[layer.__class__.__name__] = {
+                    "type": layer.__class__.__name__,
+                    "kernel_size": getattr(layer, "kernel_size", None),
+                    "stride": getattr(layer, "stride", None),
+                    "padding": getattr(layer, "padding", None),
+                    "input_shape": [1, 3, 224, 224],
+                    "output_shape": [1, 3, 224, 224],
+                }
+            except AttributeError:
+                print(f"Skipping layer {layer.__class__.__name__} as it misses attribute...")
+                continue
+        return model_info
+
     def register_hook(layer_name):
         def hook(module, input, output):
             model_info[layer_name] = {
@@ -74,12 +99,22 @@ def get_summary(
 
         return hook
 
+    valid_layers = []
     for layer_name, layer in get_layers(model):
         if not hasattr(layer, "register_forward_hook"):
             continue
+        valid_layers.append((layer_name, layer))
+
+    if not valid_layers:
+        raise ValueError("No valid layers found...")
+    
+    for layer_name, layer in valid_layers:
         hooks.append(layer.register_forward_hook(register_hook(layer_name)))
 
-    model.eval()
+    try:
+        model.eval()
+    except AttributeError:
+        print("model.eval() could not  be applied")
     with torch.no_grad():
         _ = model(test)
 
