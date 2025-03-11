@@ -36,8 +36,8 @@ To use EcoML for energy estimation of PyTorch models, follow these steps:
 
 1. Using PyTorch model summary
 
-    > [!NOTE]
-    > Right now, this tool works on a JSON-based model summary format. Soon, we'll directly support PyTorch files in the tool; for now, we've provided some example JSON files
+> [!NOTE]
+> Right now, this tool works on a JSON-based model summary format. Soon, we'll directly support PyTorch files in the tool; for now, we've provided some example JSON files
 
     ```bash
     ecoml predict --model sample_data/resnet18.json
