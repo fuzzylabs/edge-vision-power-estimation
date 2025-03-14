@@ -29,30 +29,30 @@ class InferenceModel:
         layer_type: ALLOWED_LAYER_TYPES,
         model_version: int,
         verbose: bool = False,
-        dagshub_repo_owner: Optional[str] = "fuzzylabs",
-        dagshub_repo_name: Optional[str] = "edge-vision-power-estimation",
+        # dagshub_repo_owner: Optional[str] = "fuzzylabs",
+        # dagshub_repo_name: Optional[str] = "edge-vision-power-estimation",
     ):
         self.layer_type = layer_type
         self.model_version = model_version
         self.verbose = verbose
-        self.repo_name = dagshub_repo_name
-        self.repo_owner = dagshub_repo_owner
+        # self.repo_name = dagshub_repo_name
+        # self.repo_owner = dagshub_repo_owner
         # Download model from MLFlow Registry if not present on first run
         self.runtime_model = self.load_model(model_type="runtime")
         
 
-    def _download_model(self, model_uri: str, dst_path: str) -> None:
-        """Download model from MLflow registry to local filesystem.
+    # def _download_model(self, model_uri: str, dst_path: str) -> None:
+    #     """Download model from MLflow registry to local filesystem.
 
-        Args:
-            model_uri: URI pointing to model artifact.
-            dst_path: Path of the local filesystem destination directory
-                to which to download the specified artifacts.
-        """
-        if self.verbose:
-            print(f"Downloading model to {dst_path} folder")
-        dagshub.init(repo_name=self.repo_name, repo_owner=self.repo_owner, mlflow=True)
-        mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path=dst_path)
+    #     Args:
+    #         model_uri: URI pointing to model artifact.
+    #         dst_path: Path of the local filesystem destination directory
+    #             to which to download the specified artifacts.
+    #     """
+    #     if self.verbose:
+    #         print(f"Downloading model to {dst_path} folder")
+    #     dagshub.init(repo_name=self.repo_name, repo_owner=self.repo_owner, mlflow=True)
+    #     mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path=dst_path) # HERE
 
     def load_model(self, model_type: str) -> Any:
         """Download and load power or runtime model from MLflow Registry.
@@ -62,17 +62,28 @@ class InferenceModel:
         Returns:
             Power or runtime model from MLflow Registry.
         """
-        model_name = f"{self.layer_type}_{model_type}_model"
-        model_uri = f"models:/{model_name}/{self.model_version}"
-        dst_path = f"{os.getcwd()}/ecoml_models/{self.layer_type}/{model_type}"
-        # TODO: Tighter check to see if current model version is present
-        # instead of checking only if directory exists
-        if not os.path.exists(dst_path):
-            self._download_model(model_uri=model_uri, dst_path=dst_path)
+        base_path = os.path.dirname(__file__)
+        model_path = os.path.join(base_path, f"../../ecoml_models/{self.layer_type}/{model_type}/model.pkl")
 
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Model file not foind: {model_path}. Ensure ecoml_models/ is packaged correctly")
+        
         if self.verbose:
-            print(f"Loading the {model_type} trained model from {dst_path} folder")
-        return mlflow.pyfunc.load_model(dst_path)
+            print(f"Loading the {model_type} trained model from {model_path}")
+
+        return mlflow.pyfunc.load_model(model_path)
+
+        # model_name = f"{self.layer_type}_{model_type}_model"
+        # model_uri = f"models:/{model_name}/{self.model_version}"
+        # dst_path = f"{os.getcwd()}/ecoml_models/{self.layer_type}/{model_type}"
+        # # TODO: Tighter check to see if current model version is present
+        # # instead of checking only if directory exists
+        # if not os.path.exists(dst_path):
+        #     self._download_model(model_uri=model_uri, dst_path=dst_path)
+
+        # if self.verbose:
+        #     print(f"Loading the {model_type} trained model from {dst_path} folder")
+        # return mlflow.pyfunc.load_model(dst_path)
 
     def get_features(self, layer_info: PytorchLayer) -> pd.DataFrame:
         """Get features for the model to run prediction.
