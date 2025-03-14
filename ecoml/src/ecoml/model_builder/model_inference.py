@@ -14,6 +14,8 @@ from ecoml.data_preparation.features import (
     get_pooling_features,
 )
 from ecoml.data_preparation.pytorch_utils import PytorchLayer
+import importlib.resources as pkg_resources
+import ecoml
 
 ALLOWED_LAYER_TYPES = Literal["convolutional", "pooling", "dense"]
 
@@ -62,16 +64,18 @@ class InferenceModel:
         Returns:
             Power or runtime model from MLflow Registry.
         """
-        base_path = os.path.dirname(__file__)
-        model_path = os.path.join(base_path, f"../../ecoml_models/{self.layer_type}/{model_type}/model.pkl")
+        base_path = pkg_resources.files(ecoml).joinpath("ecoml_models")
+        model_path = base_path.joinpath(f"{self.layer_type}/{model_type}/model.pkl")
 
-        if not os.path.exists(model_path):
-            raise FileNotFoundError(f"Model file not foind: {model_path}. Ensure ecoml_models/ is packaged correctly")
-        
+        if not model_path.exists():
+            raise FileNotFoundError(f"Model file not found: {model_path}. Ensure ecoml_models is packaged correctly.")
+
+        model_dir = model_path.parent
+
         if self.verbose:
-            print(f"Loading the {model_type} trained model from {model_path}")
+            print(f"Loading the {model_type} trained model from {model_dir}")
 
-        return mlflow.pyfunc.load_model(model_path)
+        return mlflow.pyfunc.load_model(str(model_dir))
 
         # model_name = f"{self.layer_type}_{model_type}_model"
         # model_uri = f"models:/{model_name}/{self.model_version}"
