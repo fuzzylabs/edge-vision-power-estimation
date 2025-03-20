@@ -44,3 +44,8 @@ torch = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.poetry]
+include = [
+    "src/ecoml/ecoml_models/**"
+]
