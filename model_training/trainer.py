@@ -1,18 +1,17 @@
 """Trainer class."""
 
-import inspect
 import subprocess
-from pathlib import Path
-from typing import Any
-
 import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
 import pandas as pd
+
+from pathlib import Path
+from typing import Any
 from dataset_builder.dataset_builder import DatasetBuilder, TrainTestDataset
 from loguru import logger
-from mlflow.models.signature import infer_signature
 from model_builder.model_builder import ModelBuilder
+from mlflow.models.signature import infer_signature
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -22,6 +21,9 @@ from sklearn.metrics import (
 )
 from sklearn.pipeline import Pipeline
 
+class ModelType:
+    POWER = "power"
+    RUNTIME = "runtime"
 
 def get_git_branch():
     """Get current branch."""
@@ -111,31 +113,39 @@ class Trainer:
         """
         train_dataset, test_dataset = dataset.train, dataset.test
         logger.info(
-            f"Number of CNN models used for training: {len(dataset.train.csv_paths)}"
+            f"Dataset Summary:\n"
+            f"- Train CNN Models: {len(dataset.train.csv_paths)}\n"
+            f"- Test CNN Models: {len(dataset.test.csv_paths)}\n"
+            f"- Training Samples: {len(train_dataset.input_features)}\n"
+            f"- Testing Samples: {len(test_dataset.input_features)}"
         )
-        logger.info(
-            f"Number of CNN models used for testing: {len(dataset.test.csv_paths)}"
-        )
-        logger.info(f"Training samples: {len(train_dataset.input_features)}")
-        logger.info(f"Testing samples: {len(test_dataset.input_features)}")
+        # logger.info(f"Number of CNN models used for training: {len(dataset.train.csv_paths)}")
+        # logger.info(f"Number of CNN models used for testing: {len(dataset.test.csv_paths)}")
+        # logger.info(f"Training samples: {len(train_dataset.input_features)}")
+        # logger.info(f"Testing samples: {len(test_dataset.input_features)}")
 
-        train_features = train_dataset.input_features
-        test_features = test_dataset.input_features
+        target_mapping = {
+            ModelType.POWER: (train_dataset.power, test_dataset.power),
+            ModelType.RUNTIME: (train_dataset.runtime, test_dataset.runtime),
+        }
 
-        if model_type == "power":
-            train_target = train_dataset.power
-            test_target = test_dataset.power
+        if model_type not in target_mapping:
+            raise ValueError(f"Invalid model type: {model_type}")
 
-        if model_type == "runtime":
-            train_target = train_dataset.runtime
-            test_target = test_dataset.runtime
+        train_target, test_target = target_mapping[model_type]
+        # train_features = train_dataset.input_features
+        # test_features = test_dataset.input_features
+
+        # if model_type == "power":
+        #     train_target = train_dataset.power
+        #     test_target = test_dataset.power
+
+        # if model_type == "runtime":
+        #     train_target = train_dataset.runtime
+        #     test_target = test_dataset.runtime
 
         # Create mlflow dataset for logging
-        train_df = pd.concat([train_features, train_target], axis=1)
-        train_mlflow_data = mlflow.data.from_pandas(train_df, targets=model_type)
 
-        test_df = pd.concat([test_features, test_target], axis=1)
-        test_mlflow_data = mlflow.data.from_pandas(test_df, targets=model_type)
 
         logger.info(f"Training {model_type} model")
         mlflow.set_experiment(f"{layer_type}_{model_type}_model")
@@ -151,14 +161,35 @@ class Trainer:
                 }
             )
 
+            train_df = pd.concat([train_dataset.input_features, train_target], axis=1)
+            test_df = pd.concat([test_dataset.input_features, test_target], axis=1)
+            mlflow.log_input(mlflow.data.from_pandas(train_df, targets=model_type), context="Train")
+            mlflow.log_input(mlflow.data.from_pandas(test_df, targets=model_type), context="Eval")
+            
             # Log datasets
-            mlflow.log_input(train_mlflow_data, context="Train")
-            mlflow.log_input(test_mlflow_data, context="Eval")
 
             # Train model
-            pipeline.fit(train_features.values, train_target.values)
-
+            pipeline.fit(train_dataset.input_features.values, train_target.values)
             logger.info(pipeline)
+
+            self._log_model_params(pipeline)
+            self._log_metrics(pipeline, train_dataset, test_dataset, test_target)
+
+            for test_file_path in test_dataset.csv_paths:
+                fig = self.plot_layerwise_predictions(test_file_path, pipeline, model_type)
+                mlflow.log_figure(fig, f"{test_file_path.parent.stem}_{layer_type}_{model_type}_prediction.png")
+
+            signature = infer_signature(
+                train_dataset.input_features.values, pipeline.predict(train_dataset.input_features.values)
+            )
+            mlflow.sklearn.log_model(
+                pipeline,
+                "model",
+                code_paths=["model_builder"],
+                signature=signature,
+                input_example=train_dataset.input_features.iloc[[0]]
+            )
+
             alpha = pipeline.named_steps["lasso"].alpha_
             coef = pipeline.named_steps["lasso"].coef_
             intercept = pipeline.named_steps["lasso"].intercept_
@@ -170,52 +201,48 @@ class Trainer:
                 f"n_features_in={n_features_in}"
             )
 
-            train_pred = pipeline.predict(train_features.values)
-            train_rmspe = Trainer.rmspe_metric(
-                actual=train_target.values, pred=train_pred
-            )
-            logger.info(f"Training RMSPE: {train_rmspe}")
+            train_pred = pipeline.predict(train_dataset.input_features.values)
+            train_rmspe = Trainer.rmspe_metric(train_target, train_pred)
             mlflow.log_metrics(
                 {"training_root_mean_squared_percentage_error": train_rmspe}
             )
 
             # Evaluation
-            predictions = pipeline.predict(test_features.values)
-            test_metrics = Trainer.eval_metrics(actual=test_target, pred=predictions)
-            logger.info(test_metrics)
+            test_pred = pipeline.predict(test_dataset.input_features.values)
+            test_metrics = Trainer.eval_metrics(test_target, test_pred)
             mlflow.log_metrics(test_metrics)
-            mlflow.log_params(
-                {
-                    "train_num_cnn_models": len(dataset.train.csv_paths),
-                    "test_num_cnn_models": len(dataset.test.csv_paths),
-                }
-            )
+            # mlflow.log_params(
+            #     {
+            #         "train_num_cnn_models": len(dataset.train.csv_paths),
+            #         "test_num_cnn_models": len(dataset.test.csv_paths),
+            #     }
+            # )
 
             # Plot and log prediction on mlflow
-            test_paths = dataset.test.csv_paths
-            for test_file_path in test_paths:
-                model_name = test_file_path.parent.stem
-                fig = self.plot_layerwise_predictions(
-                    test_file_path=test_file_path,
-                    pipeline=pipeline,
-                    model_type=model_type,
-                )
-                fig.tight_layout()
-                mlflow.log_figure(
-                    fig, f"{model_name}_{layer_type}_{model_type}_prediction.png"
-                )
+            # test_paths = dataset.test.csv_paths
+            # for test_file_path in test_paths:
+            #     model_name = test_file_path.parent.stem
+            #     fig = self.plot_layerwise_predictions(
+            #         test_file_path=test_file_path,
+            #         pipeline=pipeline,
+            #         model_type=model_type,
+            #     )
+            #     fig.tight_layout()
+            #     mlflow.log_figure(
+            #         fig, f"{model_name}_{layer_type}_{model_type}_prediction.png"
+            #     )
 
-            code_path = ["model_builder"]
-            signature = infer_signature(
-                train_features.values, pipeline.predict(train_features.values)
-            )
-            mlflow.sklearn.log_model(
-                pipeline,
-                "model",
-                code_paths=code_path,
-                signature=signature,
-                input_example=train_features.iloc[[0]],
-            )
+            # code_path = ["model_builder"]
+            # signature = infer_signature(
+            #     train_features.values, pipeline.predict(train_features.values)
+            # )
+            # mlflow.sklearn.log_model(
+            #     pipeline,
+            #     "model",
+            #     code_paths=code_path,
+            #     signature=signature,
+            #     input_example=train_features.iloc[[0]],
+            # )
 
     @staticmethod
     def rmspe_metric(actual, pred) -> float:
@@ -244,24 +271,24 @@ class Trainer:
         Returns:
             Dictionary mapping metric name to it's score.
         """
-        rmspe = Trainer.rmspe_metric(actual=actual, pred=pred)
-        rmse = root_mean_squared_error(actual, pred)
-        mse = mean_squared_error(actual, pred)
-        r2 = r2_score(actual, pred)
-        mae = mean_absolute_error(actual, pred)
-        mape = mean_absolute_percentage_error(actual, pred)
         return {
-            f"{prefix}root_mean_squared_percentage_error": rmspe,
-            f"{prefix}root_mean_squared_error": rmse,
-            f"{prefix}mean_squared_error": mse,
-            f"{prefix}r2_score": r2,
-            f"{prefix}mean_absolute_error": mae,
-            f"{prefix}mean_absolute_percentage_error": mape,
+            f"{prefix}rmspe": Trainer.rmspe_metric(actual=actual, pred=pred),
+            f"{prefix}rmse": root_mean_squared_error(actual, pred),
+            f"{prefix}mse": mean_squared_error(actual, pred),
+            f"{prefix}r2": r2_score(actual, pred),
+            f"{prefix}mae": mean_absolute_error(actual, pred),
+            f"{prefix}mape": mean_absolute_percentage_error(actual, pred),
         }
+        # return {
+        #     f"{prefix}root_mean_squared_percentage_error": rmspe,
+        #     f"{prefix}root_mean_squared_error": rmse,
+        #     f"{prefix}mean_squared_error": mse,
+        #     f"{prefix}r2_score": r2,
+        #     f"{prefix}mean_absolute_error": mae,
+        #     f"{prefix}mean_absolute_percentage_error": mape,
+        # }
 
-    def plot_layerwise_predictions(
-        self, test_file_path: Path, pipeline: Pipeline, model_type: str
-    ) -> plt.figure:
+    def plot_layerwise_predictions(self, test_file_path, pipeline, model_type) -> plt.figure:
         """Plot layerwise prediction for given model and test dataset.
 
         Args:
@@ -273,16 +300,14 @@ class Trainer:
         Returns:
             Matplotlib figure.
         """
-        test_df = self.dataset_builder.read_csv_and_convert_power(
-            file_path=test_file_path
-        )
-        pred = pipeline.predict(test_df[self.features].values)
-        test_df[f"{model_type}_pred"] = pred
-        test_df = test_df[["layer_name", f"{model_type}", f"{model_type}_pred"]]
-        logger.info(
-            f"Predictions for {test_file_path.parent.stem} model using {model_type}\n{test_df}"
-        )
-        # Get first 15 characters from long PyTorch layer names
-        test_df.loc[:, "layer_name"] = test_df.loc[:, "layer_name"].str[:15]
-        ax = test_df.plot(rot=90, x="layer_name", kind="bar")
+        df = self.dataset_builder.read_csv_and_convert_power(test_file_path)
+        df["pred"] = pipeline.predict(df[self.features].values)
+        df["layer_name"] = df["layer_name"].str[:15]
+        ax = df.plot(rot=90, x="layer_name", y=[model_type, "pred"], kind="bar")
+        # test_df = test_df[["layer_name", f"{model_type}", f"{model_type}_pred"]]
+        # logger.info(
+        #     f"Predictions for {test_file_path.parent.stem} model using {model_type}\n{test_df}"
+        # )
+        # # Get first 15 characters from long PyTorch layer names
+        # test_df.loc[:, "layer_name"] = test_df.loc[:, "layer_name"].str[:15]
         return ax.get_figure()

@@ -1,0 +1,6298 @@
+{
+    "_quant": {
+        "input_shape": [
+            1,
+            3,
+            299,
+            299
+        ],
+        "output_shape": [
+            1,
+            3,
+            299,
+            299
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Quantize"
+    },
+    "_Conv2d_1a_3x3_conv": {
+        "input_shape": [
+            1,
+            3,
+            299,
+            299
+        ],
+        "output_shape": [
+            1,
+            32,
+            149,
+            149
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Conv2d_1a_3x3_bn": {
+        "input_shape": [
+            1,
+            32,
+            149,
+            149
+        ],
+        "output_shape": [
+            1,
+            32,
+            149,
+            149
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_1a_3x3_relu": {
+        "input_shape": [
+            1,
+            32,
+            149,
+            149
+        ],
+        "output_shape": [
+            1,
+            32,
+            149,
+            149
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_2a_3x3_conv": {
+        "input_shape": [
+            1,
+            32,
+            149,
+            149
+        ],
+        "output_shape": [
+            1,
+            32,
+            147,
+            147
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Conv2d_2a_3x3_bn": {
+        "input_shape": [
+            1,
+            32,
+            147,
+            147
+        ],
+        "output_shape": [
+            1,
+            32,
+            147,
+            147
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_2a_3x3_relu": {
+        "input_shape": [
+            1,
+            32,
+            147,
+            147
+        ],
+        "output_shape": [
+            1,
+            32,
+            147,
+            147
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_2b_3x3_conv": {
+        "input_shape": [
+            1,
+            32,
+            147,
+            147
+        ],
+        "output_shape": [
+            1,
+            64,
+            147,
+            147
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Conv2d_2b_3x3_bn": {
+        "input_shape": [
+            1,
+            64,
+            147,
+            147
+        ],
+        "output_shape": [
+            1,
+            64,
+            147,
+            147
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_2b_3x3_relu": {
+        "input_shape": [
+            1,
+            64,
+            147,
+            147
+        ],
+        "output_shape": [
+            1,
+            64,
+            147,
+            147
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_maxpool1": {
+        "input_shape": [
+            1,
+            64,
+            147,
+            147
+        ],
+        "output_shape": [
+            1,
+            64,
+            73,
+            73
+        ],
+        "kernel_size": 3,
+        "stride": 2,
+        "padding": 0,
+        "type": "MaxPool2d"
+    },
+    "_Conv2d_3b_1x1_conv": {
+        "input_shape": [
+            1,
+            64,
+            73,
+            73
+        ],
+        "output_shape": [
+            1,
+            80,
+            73,
+            73
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Conv2d_3b_1x1_bn": {
+        "input_shape": [
+            1,
+            80,
+            73,
+            73
+        ],
+        "output_shape": [
+            1,
+            80,
+            73,
+            73
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_3b_1x1_relu": {
+        "input_shape": [
+            1,
+            80,
+            73,
+            73
+        ],
+        "output_shape": [
+            1,
+            80,
+            73,
+            73
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_4a_3x3_conv": {
+        "input_shape": [
+            1,
+            80,
+            73,
+            73
+        ],
+        "output_shape": [
+            1,
+            192,
+            71,
+            71
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Conv2d_4a_3x3_bn": {
+        "input_shape": [
+            1,
+            192,
+            71,
+            71
+        ],
+        "output_shape": [
+            1,
+            192,
+            71,
+            71
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Conv2d_4a_3x3_relu": {
+        "input_shape": [
+            1,
+            192,
+            71,
+            71
+        ],
+        "output_shape": [
+            1,
+            192,
+            71,
+            71
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_maxpool2": {
+        "input_shape": [
+            1,
+            192,
+            71,
+            71
+        ],
+        "output_shape": [
+            1,
+            192,
+            35,
+            35
+        ],
+        "kernel_size": 3,
+        "stride": 2,
+        "padding": 0,
+        "type": "MaxPool2d"
+    },
+    "_Mixed_5b_branch1x1_conv": {
+        "input_shape": [
+            1,
+            192,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5b_branch1x1_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch1x1_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch5x5_1_conv": {
+        "input_shape": [
+            1,
+            192,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5b_branch5x5_1_bn": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch5x5_1_relu": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch5x5_2_conv": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            5,
+            5
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            2,
+            2
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5b_branch5x5_2_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch5x5_2_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch3x3dbl_1_conv": {
+        "input_shape": [
+            1,
+            192,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5b_branch3x3dbl_1_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch3x3dbl_1_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch3x3dbl_2_conv": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5b_branch3x3dbl_2_bn": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch3x3dbl_2_relu": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch3x3dbl_3_conv": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5b_branch3x3dbl_3_bn": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch3x3dbl_3_relu": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch_pool_conv": {
+        "input_shape": [
+            1,
+            192,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            32,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5b_branch_pool_bn": {
+        "input_shape": [
+            1,
+            32,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            32,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_branch_pool_relu": {
+        "input_shape": [
+            1,
+            32,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            32,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5b_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            256,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            256,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch1x1_conv": {
+        "input_shape": [
+            1,
+            256,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5c_branch1x1_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch1x1_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch5x5_1_conv": {
+        "input_shape": [
+            1,
+            256,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5c_branch5x5_1_bn": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch5x5_1_relu": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch5x5_2_conv": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            5,
+            5
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            2,
+            2
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5c_branch5x5_2_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch5x5_2_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch3x3dbl_1_conv": {
+        "input_shape": [
+            1,
+            256,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5c_branch3x3dbl_1_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch3x3dbl_1_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch3x3dbl_2_conv": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5c_branch3x3dbl_2_bn": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch3x3dbl_2_relu": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch3x3dbl_3_conv": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5c_branch3x3dbl_3_bn": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch3x3dbl_3_relu": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch_pool_conv": {
+        "input_shape": [
+            1,
+            256,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5c_branch_pool_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_branch_pool_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5c_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch1x1_conv": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5d_branch1x1_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch1x1_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch5x5_1_conv": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5d_branch5x5_1_bn": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch5x5_1_relu": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch5x5_2_conv": {
+        "input_shape": [
+            1,
+            48,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            5,
+            5
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            2,
+            2
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5d_branch5x5_2_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch5x5_2_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch3x3dbl_1_conv": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5d_branch3x3dbl_1_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch3x3dbl_1_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch3x3dbl_2_conv": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5d_branch3x3dbl_2_bn": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch3x3dbl_2_relu": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch3x3dbl_3_conv": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5d_branch3x3dbl_3_bn": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch3x3dbl_3_relu": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch_pool_conv": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_5d_branch_pool_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_branch_pool_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_5d_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3_conv": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            384,
+            17,
+            17
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6a_branch3x3_bn": {
+        "input_shape": [
+            1,
+            384,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            384,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3_relu": {
+        "input_shape": [
+            1,
+            384,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            384,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3dbl_1_conv": {
+        "input_shape": [
+            1,
+            288,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6a_branch3x3dbl_1_bn": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3dbl_1_relu": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3dbl_2_conv": {
+        "input_shape": [
+            1,
+            64,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6a_branch3x3dbl_2_bn": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3dbl_2_relu": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3dbl_3_conv": {
+        "input_shape": [
+            1,
+            96,
+            35,
+            35
+        ],
+        "output_shape": [
+            1,
+            96,
+            17,
+            17
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6a_branch3x3dbl_3_bn": {
+        "input_shape": [
+            1,
+            96,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            96,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_branch3x3dbl_3_relu": {
+        "input_shape": [
+            1,
+            96,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            96,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6a_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch1x1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch1x1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch1x1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7_1_bn": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7_1_relu": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7_2_conv": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7_2_bn": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7_2_relu": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7_3_conv": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7_3_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7_3_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7dbl_1_bn": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_1_relu": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_2_conv": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7dbl_2_bn": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_2_relu": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_3_conv": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7dbl_3_bn": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_3_relu": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_4_conv": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7dbl_4_bn": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_4_relu": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_5_conv": {
+        "input_shape": [
+            1,
+            128,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch7x7dbl_5_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch7x7dbl_5_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch_pool_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6b_branch_pool_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_branch_pool_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6b_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch1x1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch1x1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch1x1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7_1_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7_1_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7_2_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7_2_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7_2_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7_3_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7_3_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7_3_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7dbl_1_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_1_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_2_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7dbl_2_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_2_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_3_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7dbl_3_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_3_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_4_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7dbl_4_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_4_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_5_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch7x7dbl_5_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch7x7dbl_5_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch_pool_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6c_branch_pool_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_branch_pool_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6c_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch1x1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch1x1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch1x1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7_1_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7_1_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7_2_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7_2_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7_2_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7_3_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7_3_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7_3_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7dbl_1_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_1_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_2_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7dbl_2_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_2_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_3_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7dbl_3_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_3_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_4_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7dbl_4_bn": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_4_relu": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_5_conv": {
+        "input_shape": [
+            1,
+            160,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch7x7dbl_5_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch7x7dbl_5_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch_pool_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6d_branch_pool_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_branch_pool_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6d_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch1x1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch1x1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch1x1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7_1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7_1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7_2_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7_2_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7_2_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7_3_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7_3_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7_3_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7dbl_1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_2_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7dbl_2_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_2_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_3_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7dbl_3_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_3_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_4_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7dbl_4_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_4_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_5_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch7x7dbl_5_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch7x7dbl_5_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch_pool_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_6e_branch_pool_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_branch_pool_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_6e_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch3x3_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7a_branch3x3_1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch3x3_1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch3x3_2_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7a_branch3x3_2_bn": {
+        "input_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch3x3_2_relu": {
+        "input_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_1_conv": {
+        "input_shape": [
+            1,
+            768,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7a_branch7x7x3_1_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_1_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_2_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            1,
+            7
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            3
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7a_branch7x7x3_2_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_2_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_3_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": [
+            7,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            3,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7a_branch7x7x3_3_bn": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_3_relu": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_4_conv": {
+        "input_shape": [
+            1,
+            192,
+            17,
+            17
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            2,
+            2
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7a_branch7x7x3_4_bn": {
+        "input_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_branch7x7x3_4_relu": {
+        "input_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7a_myop_activation_post_process": {
+        "input_shape": [
+            1,
+            1280,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            1280,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch1x1_conv": {
+        "input_shape": [
+            1,
+            1280,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch1x1_bn": {
+        "input_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch1x1_relu": {
+        "input_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3_1_conv": {
+        "input_shape": [
+            1,
+            1280,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch3x3_1_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3_1_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3_2a_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch3x3_2a_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3_2a_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3_2b_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch3x3_2b_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3_2b_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_myop1_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_1_conv": {
+        "input_shape": [
+            1,
+            1280,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch3x3dbl_1_bn": {
+        "input_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_1_relu": {
+        "input_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_2_conv": {
+        "input_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch3x3dbl_2_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_2_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_3a_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch3x3dbl_3a_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_3a_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_3b_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch3x3dbl_3b_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch3x3dbl_3b_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_myop2_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch_pool_conv": {
+        "input_shape": [
+            1,
+            1280,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7b_branch_pool_bn": {
+        "input_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_branch_pool_relu": {
+        "input_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7b_myop3_activation_post_process": {
+        "input_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch1x1_conv": {
+        "input_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch1x1_bn": {
+        "input_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch1x1_relu": {
+        "input_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            320,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3_1_conv": {
+        "input_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch3x3_1_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3_1_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3_2a_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch3x3_2a_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3_2a_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3_2b_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch3x3_2b_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3_2b_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_myop1_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_1_conv": {
+        "input_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch3x3dbl_1_bn": {
+        "input_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_1_relu": {
+        "input_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_2_conv": {
+        "input_shape": [
+            1,
+            448,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch3x3dbl_2_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_2_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_3a_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            3
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            1
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch3x3dbl_3a_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_3a_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_3b_conv": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": [
+            3,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            1,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch3x3dbl_3b_bn": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch3x3dbl_3b_relu": {
+        "input_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            384,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_myop2_activation_post_process": {
+        "input_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            768,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch_pool_conv": {
+        "input_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": [
+            1,
+            1
+        ],
+        "stride": [
+            1,
+            1
+        ],
+        "padding": [
+            0,
+            0
+        ],
+        "type": "ConvReLU2d"
+    },
+    "_Mixed_7c_branch_pool_bn": {
+        "input_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_branch_pool_relu": {
+        "input_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            192,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_Mixed_7c_myop3_activation_post_process": {
+        "input_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Identity"
+    },
+    "_avgpool": {
+        "input_shape": [
+            1,
+            2048,
+            8,
+            8
+        ],
+        "output_shape": [
+            1,
+            2048,
+            1,
+            1
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "AdaptiveAvgPool2d"
+    },
+    "_dropout": {
+        "input_shape": [
+            1,
+            2048,
+            1,
+            1
+        ],
+        "output_shape": [
+            1,
+            2048,
+            1,
+            1
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "Dropout"
+    },
+    "_dequant": {
+        "input_shape": [
+            1,
+            1000
+        ],
+        "output_shape": [
+            1,
+            1000
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "type": "DeQuantize"
+    }
+}

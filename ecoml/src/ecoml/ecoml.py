@@ -1,12 +1,19 @@
 """Ecoml CLI entrypoint."""
 
 import json
+import typer
 from pathlib import Path
 from typing import Annotated
-
-import typer
 from rich.console import Console
 from rich.table import Table
+from ecoml.infer import (
+    run_inference,
+    display_latency_table,
+    display_metrics_table,
+    display_runtime_table,
+    display_comparison_table
+)
+
 
 CONFIG = {"jetson_orin": {"pytorch": {"low": 5, "average": 7, "high": 10}}}
 
@@ -24,15 +31,14 @@ def validate_model(model_path: str):
     Returns:
         A tuple of boolean if valid model and a dictionary model summary
     """
-    if Path(model_path).suffix == ".json":
-        try:
-            with open(model_path, "r") as file:
-                model_summary = json.load(file)
-            return True, model_summary
-        except json.JSONDecodeError:
-            error_console.print("Invalid JSON file.")
-            return False, None
-    return False, None
+    path = Path(model_path)
+    if path.suffix != ".json":
+        raise typer.BadParameter("Expected a JSON File")
+    try:
+        with path.open("r") as file:
+            return json.load(file)
+    except json.JSONDecodeError as e:
+        raise typer.BadParameter("Cannot read file")
 
 
 def display_config_table(cfg: dict[str, int]) -> None:
@@ -59,8 +65,8 @@ def config():
 
 @app.command()
 def predict(
-    model: Annotated[str, typer.Option(help="PyTorch model summary in json format.")],
-    verbose: Annotated[bool, typer.Option(help="Detailed Summary")] = False,
+    model: str = typer.Option(..., help="PyTorch model summary in json format."),
+    verbose: bool = typer.Option(False, help="Detailed Summary"),
 ):
     """
     Predict energy estimation of a PyTorch model.
@@ -71,19 +77,12 @@ def predict(
     """
     cfg = CONFIG["jetson_orin"]["pytorch"]
 
-    success, _ = validate_model(model)
-    if not success:
-        error_console.print("Expected a valid PyTorch model summary JSON File.")
+    try:
+        validate_model(model)
+    except typer.BadParameter as e:
+        error_console.print(e)
         raise typer.Exit(code=1)
     
-    # Import relevant functions
-    from ecoml.infer import(
-        run_inference,
-        display_latency_table,
-        display_metrics_table,
-        display_runtime_table
-    )
-
     # Run the inference function that returns the dictionary
     runtime_predictions = run_inference(Path(model), power_profiles=cfg, verbose=verbose)
 
@@ -91,10 +90,6 @@ def predict(
     if not runtime_predictions:
         error_console.print("Inference failed. No results were returned")
         raise typer.Exit(code=1)
-    
-    # Take out data from the dict
-    # layer_df = results["layer_data"]
-    # metrics_df = results["metrics_data"]
 
     # Display table
     if verbose:
@@ -105,36 +100,37 @@ def predict(
 
 @app.command()
 def compare(
-    model1: Annotated[str, typer.Option(help="PyTorch model summary in json format.")],
-    model2: Annotated[str, typer.Option(help="Second PyTorch model summary in json format")],
-    verbose: bool = False,
+    model1: str = typer.Option(..., help="PyTorch model summary in json format."),
+    model2: str = typer.Option(None, help="Second PyTorch model summary in json format"),
+    verbose: bool = typer.Option(False, help="Show detailed comparison"),
 ):
     """
     Provide comparison between two models.
     """
-    from ecoml.infer import(
-        run_inference,
-        display_comparison_table,
-        display_latency_table,
-        display_metrics_table,
-        display_runtime_table
-    )
-
     cfg = CONFIG["jetson_orin"]["pytorch"]
 
-    results_baseline = run_inference(Path(model1), cfg, verbose=verbose)
-
-    if model2 is None:
-        display_latency_table(results_baseline)
+    try:
+        validate_model(model1)
+        results_baseline = run_inference(Path(model1), cfg, verbose=verbose)
+    except typer.BadParameter as e:
+        error_console.print(f"Model 1 Error: {e}")
+        raise typer.Exit(code=1)
+    
+    if not model2:
+        if verbose:
+            display_latency_table(results_baseline)
         display_runtime_table(results_baseline)
         display_metrics_table(results_baseline, cfg)
         return
-
-    results_compare = run_inference(Path(model2), cfg, verbose=verbose)
+    
+    try:
+        validate_model(model2)
+        results_compare = run_inference(Path(model2), cfg, verbose=verbose)
+    except typer.BadParameter as e:
+        error_console.print(f"Model 2 Error: {e}")
+        raise typer.Exit(code=1)
 
     display_comparison_table(results_baseline, results_compare, cfg)
-
-    return
 
 if __name__ == "__main__":
     app()
