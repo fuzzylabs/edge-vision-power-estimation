@@ -2,10 +2,8 @@
 
 from pathlib import Path
 from typing import Any
-
 from git import Repo
 from loguru import logger
-
 from config.convolutional_features import CONV_FEATURES, CONVOLUTION_PIPELINE
 from config.dense_features import DENSE_FEATURES, DENSE_PIPELINE
 from config.pooling_features import POOLING_FEATURES, POOLING_PIPELINE
