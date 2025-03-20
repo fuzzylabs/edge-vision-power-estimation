@@ -8,7 +8,6 @@ Example command:
 
 import argparse
 from pathlib import Path
-
 from data_preparation.data_preprocess import DataPreprocessor
 from data_preparation.io_utils import get_idle_power_log_file, parse_model_dir
 
@@ -29,9 +28,7 @@ def main(args: argparse.Namespace) -> None:
     ]
     print(f"Found {len(model_dirs)} models in raw data folder.")
 
-    preprocessor = DataPreprocessor(
-        idle_power_log_path=idle_power_log_path, result_dir=args.result_dir
-    )
+    preprocessor = DataPreprocessor(idle_power_log_path=idle_power_log_path, result_dir=args.result_dir)
 
     # Convert and save each model directory raw data to preprocessed data
     for model_dir in model_dirs:

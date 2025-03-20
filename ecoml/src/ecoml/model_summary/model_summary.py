@@ -2,13 +2,15 @@
 
 import json
 from pathlib import Path
+from typing import Any, Dict, List, Tuple
 
 import torch
+from loguru import logger
 
 
 def get_layers(
     model: torch.nn.Module, name_prefix: str = ""
-) -> list[tuple[str, torch.nn.Module]]:
+) -> list[Tuple[str, torch.nn.Module]]:
     """
     Recursively get all layers in a pytorch model.
 
@@ -21,22 +23,32 @@ def get_layers(
     """
     children = list(model.named_children())
 
-    if len(children) == 0:
-        result = [(name_prefix, model)]
-    else:
-        result = []
-        for child_name, child in children:
-            layers = get_layers(child, name_prefix + "_" + child_name)
-            result.extend(layers)
+    if not children:
+        return [(name_prefix, model)] if name_prefix else [("root", model)]
+    
+    result = []
+    for child_name, child in children:
+        full_name = f"{name_prefix}.{child_name}" if name_prefix else child_name
+        result.extend(get_layers(child, full_name))
 
     return result
+
+    # if len(children) == 0:
+    #     result = [(name_prefix, model)]
+    # else:
+    #     result = []
+    #     for child_name, child in children:
+    #         layers = get_layers(child, name_prefix + "_" + child_name)
+    #         result.extend(layers)
+
+    # return result
 
 
 def get_summary(
     model: torch.nn.Module,
-    input_shape: tuple = (1, 3, 224, 224),
+    input_shape: Tuple[int, int, int, int] = (1, 3, 224, 224),
     summary_file_path: str = "",
-):
+) -> Dict[str, Dict[str, Any]]:
     """
     Get key information of all layers within a model.
 
@@ -48,11 +60,11 @@ def get_summary(
     Returns:
         information about the model
     """
-    model_info = {}
+    model_info = Dict[str, Dict[str, Any]] = {}
     test = torch.randn(*input_shape)
     hooks = []
-
-    def register_hook(layer_name):
+ 
+    def register_hook(layer_name: str):
         def hook(module, input, output):
             model_info[layer_name] = {
                 "input_shape": tuple(input[0].size()) if input else None,
@@ -81,6 +93,6 @@ def get_summary(
             json.dump(
                 model_info, file, indent=4, separators=(",", ": "), ensure_ascii=False
             )
-        print(f"Saved summary json to {summary_file_path}")
+        logger.info(f"Saved summary json to {summary_file_path}")
 
     return model_info

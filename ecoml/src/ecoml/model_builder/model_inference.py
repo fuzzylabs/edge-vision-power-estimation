@@ -1,12 +1,14 @@
 """Load inference model from Mlflow registry."""
 
 import os
+from pathlib import Path
 from typing import Any, Literal, Optional
 
 import dagshub
 import mlflow
 import pandas as pd
 from rich import print
+from loguru import logger
 
 from ecoml.data_preparation.features import (
     get_convolutional_features,
@@ -37,6 +39,7 @@ class InferenceModel:
         self.verbose = verbose
         self.repo_name = dagshub_repo_name
         self.repo_owner = dagshub_repo_owner
+        self.base_model_dir = Path.cwd() / "ecoml_models" / self.layer_type
         # Download model from MLFlow Registry if not present on first run
         self.runtime_model = self.load_model(model_type="runtime")
         
@@ -50,9 +53,9 @@ class InferenceModel:
                 to which to download the specified artifacts.
         """
         if self.verbose:
-            print(f"Downloading model to {dst_path} folder")
+            logger.info(f"Downloading model to {dst_path} folder")
         dagshub.init(repo_name=self.repo_name, repo_owner=self.repo_owner, mlflow=True)
-        mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path=dst_path)
+        mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path=str(dst_path))
 
     def load_model(self, model_type: str) -> Any:
         """Download and load power or runtime model from MLflow Registry.
@@ -64,15 +67,27 @@ class InferenceModel:
         """
         model_name = f"{self.layer_type}_{model_type}_model"
         model_uri = f"models:/{model_name}/{self.model_version}"
-        dst_path = f"{os.getcwd()}/ecoml_models/{self.layer_type}/{model_type}"
+        dst_path = self.base_model_dir / model_type
         # TODO: Tighter check to see if current model version is present
         # instead of checking only if directory exists
-        if not os.path.exists(dst_path):
+        version_file = dst_path / "version.txt"
+        need_download = True
+
+        if version_file.exists():
+            local_version = version_file.read_text().strip()
+            if local_version == str(self.model_version):
+                need_download = False
+
+        if need_download:
             self._download_model(model_uri=model_uri, dst_path=dst_path)
+            version_file.write_text(str(self.model_version))
+        else:
+            if self.verbose:
+                logger.info("Model already downloaded")
 
         if self.verbose:
-            print(f"Loading the {model_type} trained model from {dst_path} folder")
-        return mlflow.pyfunc.load_model(dst_path)
+            logger.info(f"Loading the {model_type} trained model from {dst_path} folder")
+        logger.info(f"Loading {model_type} model from {dst_path}")
 
     def get_features(self, layer_info: PytorchLayer) -> pd.DataFrame:
         """Get features for the model to run prediction.
@@ -88,8 +103,11 @@ class InferenceModel:
         """
         if self.layer_type == "convolutional":
             features = get_convolutional_features(layer_info)
-        if self.layer_type == "pooling":
+        elif self.layer_type == "pooling":
             features = get_pooling_features(layer_info)
-        if self.layer_type == "dense":
+        elif self.layer_type == "dense":
             features = get_dense_features(layer_info)
-        return pd.DataFrame.from_dict([features])
+        else:
+            raise ValueError(f"Unsupported layer type: {self.layer_type}")
+        
+        return pd.DataFrame([features])
