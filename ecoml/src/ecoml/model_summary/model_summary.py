@@ -93,6 +93,6 @@ def get_summary(
             json.dump(
                 model_info, file, indent=4, separators=(",", ": "), ensure_ascii=False
             )
-        print(f"Saved summary json to {summary_file_path}")
+        logger.info(f"Saved summary json to {summary_file_path}")
 
     return model_info
