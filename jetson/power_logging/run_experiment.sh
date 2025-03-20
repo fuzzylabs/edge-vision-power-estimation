@@ -6,7 +6,7 @@ set -eou pipefail
 IDLE_DURATION=120
 
 # Directory to store results
-RESULT_DIR="raw_data/trt_quantize_models"
+RESULT_DIR="raw_data/single_conv_layer_trt"
 
 echo "Running idling power measurement..."
 python measure_idling_power.py \
@@ -18,21 +18,26 @@ echo "Sleeping for 2 minutes..."
 sleep 120
 
 # Models to benchmark
-# Using all YOLOv5 variants
-# Note: Follow model_quantization/Readme.md to create ONNX and TensorRT models
-models=("yolov5nu.engine" "yolov5nu_quant.engine" "yolov5su.engine" "yolov5su_quant.engine" "yolov5mu.engine" "yolov5mu_quant.engine" "yolov5lu.engine" "yolov5lu_quant.engine")
+models=("conv_k1_s1_o3" "conv_k2_s1_o3" "conv_k3_s1_o3" "conv_k4_s1_o3" "conv_k5_s1_o3" "conv_k1_s2_o3" "conv_k1_s3_o3" "conv_k1_s4_o3" "conv_k1_s5_o3" "conv_k1_s1_o6" "conv_k1_s1_o12" "conv_k1_s1_o24" "conv_k1_s1_o48")
+# Number of inference cycles
+RUNS=3000
 
 # Iterate through models and run measure_inference_power.py script
 for model in "${models[@]}"
 do
   echo "Running inference power measurement for model: $model"
 
+INPUT_SHAPE='--input-shape 1 3 224 224'
+
   # Run the measure_inference_power.py script
   python measure_inference_power.py \
     --result-dir "$RESULT_DIR" \
-    detect \
+    classify \
     --model "$model" \
-    --dataset-name "coco.yaml"
+    --runs "$RUNS" \
+    --min-block-size 1 \
+    --dtype "float32" \
+    $INPUT_SHAPE
 done
 
 echo "Experiment completed!"
